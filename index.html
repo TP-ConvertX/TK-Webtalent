@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebsiteProfi – Moderne Webseiten für kleine Unternehmen</title>
+  <meta name="description" content="Ich erstelle moderne, mobiloptimierte Webseiten für Selbstständige, Handwerker und Dienstleister. Klar, professionell und ohne Technik-Stress.">
+  <meta name="keywords" content="Webdesign, Website erstellen, Handwerker Website, kleine Unternehmen, Webseite, Mobiloptimiert, Landingpage">
+  <meta property="og:title" content="WebsiteProfi – Moderne Webseiten für kleine Unternehmen">
+  <meta property="og:description" content="Ich erstelle klare, schnelle und moderne Websites für Selbstständige, Handwerker und Dienstleister – ohne komplizierten Technik-Stress.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://IHRE-DOMAIN.de">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F172A'/><text y='.9em' font-size='70' x='50%' text-anchor='middle' dominant-baseline='middle' dy='.05em' fill='white' font-weight='bold' font-family='Inter'>W</text></svg>">
+  <link rel="canonical" href="https://IHRE-DOMAIN.de">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="logo-mark">W</div>
+        <span>WebsiteProfi</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#beispiele">Beispiele</a></li>
+        <li><a href="#ablauf">Ablauf</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <a href="#kontakt" class="btn btn-primary nav-cta">Jetzt anfragen</a>
+      <button class="nav-burger" id="navBurger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose" aria-label="Menü schließen">✕</button>
+    <ul>
+      <li><a href="#leistungen" class="mobile-link">Leistungen</a></li>
+      <li><a href="#beispiele" class="mobile-link">Beispiele</a></li>
+      <li><a href="#ablauf" class="mobile-link">Ablauf</a></li>
+      <li><a href="#faq" class="mobile-link">FAQ</a></li>
+      <li><a href="#kontakt" class="mobile-link">Kontakt</a></li>
+    </ul>
+    <a href="#kontakt" class="btn btn-primary mobile-cta mobile-link">Jetzt kostenlos anfragen</a>
+  </div>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <div class="hero-badge animate-fade-up" style="animation-delay:0.1s">
+            <span class="badge-dot"></span>
+            Webdesign für kleine Unternehmen
+          </div>
+          <h1 class="hero-headline animate-fade-up" style="animation-delay:0.2s">
+            Moderne Webseiten,<br>
+            die <span class="text-gradient">Kunden überzeugen</span><br>
+            und Vertrauen schaffen.
+          </h1>
+          <p class="hero-sub animate-fade-up" style="animation-delay:0.35s">
+            Ich erstelle klare, schnelle und moderne Websites für Selbstständige, Handwerker und Dienstleister – ohne komplizierten Technik-Stress für Sie.
+          </p>
+          <div class="hero-actions animate-fade-up" style="animation-delay:0.5s">
+            <a href="#kontakt" class="btn btn-primary btn-large">Kostenlos anfragen</a>
+            <a href="#beispiele" class="btn btn-ghost btn-large">Beispiele ansehen <span class="btn-arrow">→</span></a>
+          </div>
+          <div class="hero-stats animate-fade-up" style="animation-delay:0.65s">
+            <div class="stat">
+              <span class="stat-value">100%</span>
+              <span class="stat-label">Mobiloptimiert</span>
+            </div>
+            <div class="stat-sep"></div>
+            <div class="stat">
+              <span class="stat-value">Schnell</span>
+              <span class="stat-label">Ladezeiten</span>
+            </div>
+            <div class="stat-sep"></div>
+            <div class="stat">
+              <span class="stat-value">Persönlich</span>
+              <span class="stat-label">Direkter Kontakt</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual animate-fade-left" style="animation-delay:0.3s">
+          <div class="browser-mockup">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <div class="browser-url">meinbetrieb.de</div>
+              <div class="browser-secure">🔒</div>
+            </div>
+            <div class="browser-body">
+              <div class="mock-nav-bar">
+                <div class="mock-logo-block"></div>
+                <div class="mock-nav-items">
+                  <div class="mock-nav-item"></div>
+                  <div class="mock-nav-item"></div>
+                  <div class="mock-nav-item"></div>
+                  <div class="mock-btn-small"></div>
+                </div>
+              </div>
+              <div class="mock-hero-section">
+                <div class="mock-tag"></div>
+                <div class="mock-h1"></div>
+                <div class="mock-h1 mock-h1-short"></div>
+                <div class="mock-p"></div>
+                <div class="mock-p mock-p-short"></div>
+                <div class="mock-cta-row">
+                  <div class="mock-cta mock-cta-filled"></div>
+                  <div class="mock-cta mock-cta-outline"></div>
+                </div>
+              </div>
+              <div class="mock-cards-section">
+                <div class="mock-card-sm">
+                  <div class="mock-card-icon"></div>
+                  <div class="mock-card-text"></div>
+                  <div class="mock-card-text short"></div>
+                </div>
+                <div class="mock-card-sm">
+                  <div class="mock-card-icon"></div>
+                  <div class="mock-card-text"></div>
+                  <div class="mock-card-text short"></div>
+                </div>
+                <div class="mock-card-sm">
+                  <div class="mock-card-icon"></div>
+                  <div class="mock-card-text"></div>
+                  <div class="mock-card-text short"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-float float-1">
+            <span>📱</span> Responsive Design
+          </div>
+          <div class="hero-float float-2">
+            <span>⚡</span> Schnell geladen
+          </div>
+          <div class="hero-float float-3">
+            <span>🔒</span> SSL-gesichert
+          </div>
+        </div>
+      </div>
+      <div class="hero-bg-blob"></div>
+    </section>
+
+    <!-- ===== TRUST BAR ===== -->
+    <section class="trust-bar">
+      <div class="container">
+        <div class="trust-items">
+          <div class="trust-item">
+            <span class="trust-icon">📱</span>
+            <span class="trust-label">Mobiloptimiert</span>
+          </div>
+          <div class="trust-sep"></div>
+          <div class="trust-item">
+            <span class="trust-icon">✨</span>
+            <span class="trust-label">Modernes Design</span>
+          </div>
+          <div class="trust-sep"></div>
+          <div class="trust-item">
+            <span class="trust-icon">⚡</span>
+            <span class="trust-label">Schnelle Umsetzung</span>
+          </div>
+          <div class="trust-sep"></div>
+          <div class="trust-item">
+            <span class="trust-icon">🎯</span>
+            <span class="trust-label">Klare Struktur</span>
+          </div>
+          <div class="trust-sep"></div>
+          <div class="trust-item">
+            <span class="trust-icon">🤝</span>
+            <span class="trust-label">Persönlicher Kontakt</span>
+          </div>
+          <div class="trust-sep"></div>
+          <div class="trust-item">
+            <span class="trust-icon">🔍</span>
+            <span class="trust-label">SEO-freundlich</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROBLEM SEKTION ===== -->
+    <section class="section-padding" id="problem">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Das Problem</div>
+          <h2 class="section-headline">Gute Arbeit verdient eine gute Website</h2>
+          <p class="section-sub">Potenzielle Kunden suchen heute zuerst online – und ein schlechter erster Eindruck kostet echte Aufträge.</p>
+        </div>
+        <div class="problem-grid">
+          <div class="problem-card reveal">
+            <div class="problem-icon-wrap">😟</div>
+            <h3>Kein professioneller Webauftritt</h3>
+            <p>Viele Selbstständige und Handwerksbetriebe haben keine moderne Website – oder eine, die nichts mehr mit dem echten Qualitätsniveau des Betriebs zu tun hat.</p>
+          </div>
+          <div class="problem-card reveal">
+            <div class="problem-icon-wrap">📵</div>
+            <h3>Nicht fürs Handy gemacht</h3>
+            <p>Über 70 % der Nutzer surfen mit dem Smartphone. Eine nicht mobiloptimierte Website wirkt unprofessionell und wird von Google schlechter bewertet.</p>
+          </div>
+          <div class="problem-card reveal">
+            <div class="problem-icon-wrap">🚫</div>
+            <h3>Kein klarer Auftritt, keine Anfragen</h3>
+            <p>Wenn Besucher nicht sofort verstehen, was ein Betrieb anbietet und wie sie Kontakt aufnehmen können, sind sie schnell weg – zum Wettbewerb.</p>
+          </div>
+        </div>
+        <div class="problem-cta reveal">
+          <p>Das muss nicht so sein. Mit einer professionellen Website schaffen Sie in wenigen Sekunden das Vertrauen, das echte Kundenanfragen bringt.</p>
+          <a href="#kontakt" class="btn btn-primary">Website anfragen →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== LEISTUNGEN ===== -->
+    <section class="section-padding bg-light" id="leistungen">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Leistungen</div>
+          <h2 class="section-headline">Was ich für Sie erstelle</h2>
+          <p class="section-sub">Professionelle Webseiten, die genau zu Ihrem Betrieb passen – verständlich, klar und ohne technischen Aufwand für Sie.</p>
+        </div>
+        <div class="services-grid">
+          <div class="service-card reveal">
+            <div class="service-icon">🏗️</div>
+            <h3>Firmenwebsites</h3>
+            <p>Professionelle Webauftritte für Unternehmen, die Vertrauen aufbauen und gezielt Anfragen generieren.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon">🎯</div>
+            <h3>Landingpages</h3>
+            <p>Fokussierte Seiten für ein konkretes Angebot, die Besucher in Kunden verwandeln.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon">🔨</div>
+            <h3>Handwerker-Websites</h3>
+            <p>Starke Webseiten für Handwerksbetriebe – mit Leistungsübersicht, Projekten und Kontaktbereich.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon">💼</div>
+            <h3>Dienstleister-Websites</h3>
+            <p>Klare, hochwertige Webseiten für Berater, Coaches, Therapeuten und freie Dienstleister.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon">🔄</div>
+            <h3>Website-Überarbeitung</h3>
+            <p>Alte Website wirkt nicht mehr? Ich modernisiere Ihren bestehenden Webauftritt von Grund auf.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon">📱</div>
+            <h3>Mobiloptimierung</h3>
+            <p>Jede Website sieht auf Smartphone, Tablet und Desktop einwandfrei aus – garantiert.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon">✍️</div>
+            <h3>Texte & Struktur</h3>
+            <p>Klare, überzeugende Texte und eine Seitenstruktur, die Besucher direkt zur Anfrage führt.</p>
+          </div>
+          <div class="service-card service-card-accent reveal">
+            <div class="service-icon">🤖</div>
+            <h3>KI-Funktionen</h3>
+            <p>Auf Wunsch später erweiterbar: intelligente Assistenten und smarte Funktionen für Ihre Website.</p>
+            <span class="service-tag">In Planung</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ANGEBOTSKARTEN ===== -->
+    <section class="section-padding" id="angebote">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Pakete</div>
+          <h2 class="section-headline">Das passende Paket für Ihren Betrieb</h2>
+          <p class="section-sub">Kein Einheitstemplate – jede Website wird individuell für Sie entwickelt und auf Ihre Ziele abgestimmt.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card reveal">
+            <div class="pricing-tier">Starter</div>
+            <h3 class="pricing-name">Starter Website</h3>
+            <div class="pricing-price">Preis auf Anfrage</div>
+            <p class="pricing-desc">Für Selbstständige und Einsteiger, die professionell online sichtbar sein möchten.</p>
+            <ul class="pricing-features">
+              <li><span class="check">✓</span> Einseitige Website (Onepager)</li>
+              <li><span class="check">✓</span> Mobiloptimiert & schnell</li>
+              <li><span class="check">✓</span> Kontaktbereich</li>
+              <li><span class="check">✓</span> Modernes, klares Design</li>
+              <li><span class="check">✓</span> Schnelle Lieferzeit</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-outline btn-full">Anfragen</a>
+          </div>
+
+          <div class="pricing-card pricing-featured reveal">
+            <div class="pricing-popular-badge">Beliebt</div>
+            <div class="pricing-tier">Business</div>
+            <h3 class="pricing-name">Business Website</h3>
+            <div class="pricing-price">Individuelles Angebot</div>
+            <p class="pricing-desc">Für Unternehmen, die mehr Vertrauen und Anfragen über ihre Website gewinnen möchten.</p>
+            <ul class="pricing-features">
+              <li><span class="check">✓</span> Mehrere Seiten & Unterseiten</li>
+              <li><span class="check">✓</span> Professioneller Seitenaufbau</li>
+              <li><span class="check">✓</span> Texte & Struktur inklusive</li>
+              <li><span class="check">✓</span> Kontaktformular</li>
+              <li><span class="check">✓</span> SEO-Grundlagen</li>
+              <li><span class="check">✓</span> Persönliche Betreuung</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-primary btn-full">Anfragen</a>
+          </div>
+
+          <div class="pricing-card reveal">
+            <div class="pricing-tier">Premium</div>
+            <h3 class="pricing-name">Premium Website</h3>
+            <div class="pricing-price">Individuelles Angebot</div>
+            <p class="pricing-desc">Für Betriebe, die einen besonders hochwertigen Webauftritt mit erweiterten Funktionen möchten.</p>
+            <ul class="pricing-features">
+              <li><span class="check">✓</span> Umfangreiche Webpräsenz</li>
+              <li><span class="check">✓</span> Individuelles Premium-Design</li>
+              <li><span class="check">✓</span> Animationen & Interaktionen</li>
+              <li><span class="check">✓</span> SEO & Performance-Optimierung</li>
+              <li><span class="check">✓</span> Laufende Betreuung</li>
+              <li><span class="check">✓</span> Optional: KI-Funktionen</li>
+              <li><span class="check">✓</span> Erweiterbar nach Bedarf</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-outline btn-full">Anfragen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DEMO WEBSITES ===== -->
+    <section class="section-padding bg-light" id="beispiele">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Beispiele</div>
+          <h2 class="section-headline">So könnte Ihre Website aussehen</h2>
+          <p class="section-sub">Drei Beispiel-Webseiten für verschiedene Branchen – zum Ansehen und Durchklicken. Alles fiktive Demo-Projekte.</p>
+        </div>
+        <div class="demos-grid">
+
+          <a href="demos/handwerker.html" class="demo-card reveal" target="_blank">
+            <div class="demo-preview demo-preview-craft">
+              <div class="dp-mockup">
+                <div class="dp-bar"></div>
+                <div class="dp-hero dp-hero-craft">
+                  <div class="dp-headline"></div>
+                  <div class="dp-sub"></div>
+                  <div class="dp-btn"></div>
+                </div>
+                <div class="dp-cols">
+                  <div class="dp-col"></div>
+                  <div class="dp-col"></div>
+                  <div class="dp-col"></div>
+                </div>
+              </div>
+            </div>
+            <div class="demo-info">
+              <div class="demo-top">
+                <span class="demo-tag demo-tag-craft">Handwerk</span>
+                <span class="demo-arrow">→</span>
+              </div>
+              <h3>Müller Bau & Sanierung</h3>
+              <p>Starke Handwerker-Website mit Leistungen, Projekten, Kundenstimmen und Kontaktbereich.</p>
+              <span class="demo-cta">Demo ansehen</span>
+            </div>
+          </a>
+
+          <a href="demos/restaurant.html" class="demo-card reveal" target="_blank">
+            <div class="demo-preview demo-preview-restaurant">
+              <div class="dp-mockup">
+                <div class="dp-bar"></div>
+                <div class="dp-hero dp-hero-restaurant">
+                  <div class="dp-headline"></div>
+                  <div class="dp-sub"></div>
+                  <div class="dp-btn"></div>
+                </div>
+                <div class="dp-cols">
+                  <div class="dp-col"></div>
+                  <div class="dp-col"></div>
+                  <div class="dp-col"></div>
+                </div>
+              </div>
+            </div>
+            <div class="demo-info">
+              <div class="demo-top">
+                <span class="demo-tag demo-tag-restaurant">Gastronomie</span>
+                <span class="demo-arrow">→</span>
+              </div>
+              <h3>Restaurant Abendgold</h3>
+              <p>Elegante Restaurant-Website mit Speisekarte, Atmosphäre, Reservierung und Öffnungszeiten.</p>
+              <span class="demo-cta">Demo ansehen</span>
+            </div>
+          </a>
+
+          <a href="demos/coach.html" class="demo-card reveal" target="_blank">
+            <div class="demo-preview demo-preview-coach">
+              <div class="dp-mockup">
+                <div class="dp-bar"></div>
+                <div class="dp-hero dp-hero-coach">
+                  <div class="dp-headline"></div>
+                  <div class="dp-sub"></div>
+                  <div class="dp-btn"></div>
+                </div>
+                <div class="dp-cols">
+                  <div class="dp-col"></div>
+                  <div class="dp-col"></div>
+                  <div class="dp-col"></div>
+                </div>
+              </div>
+            </div>
+            <div class="demo-info">
+              <div class="demo-top">
+                <span class="demo-tag demo-tag-coach">Coaching</span>
+                <span class="demo-arrow">→</span>
+              </div>
+              <h3>Klarblick Coaching</h3>
+              <p>Hochwertige Coach-Website – persönlich, klar strukturiert und vertrauenswürdig.</p>
+              <span class="demo-cta">Demo ansehen</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ABLAUF ===== -->
+    <section class="section-padding" id="ablauf">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Ablauf</div>
+          <h2 class="section-headline">So einfach funktioniert es</h2>
+          <p class="section-sub">Von Ihrer ersten Nachricht bis zur fertigen Website – klar, unkompliziert und persönlich.</p>
+        </div>
+        <div class="process-list">
+          <div class="process-step reveal">
+            <div class="process-number">01</div>
+            <div class="process-content">
+              <h3>Kurzes Gespräch</h3>
+              <p>Wir sprechen kurz darüber, was Sie brauchen, welche Ziele Ihre Website erfüllen soll und wie Ihr Betrieb aufgestellt ist. Kostenlos und unverbindlich.</p>
+            </div>
+            <div class="process-connector"></div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-number">02</div>
+            <div class="process-content">
+              <h3>Design-Vorschlag</h3>
+              <p>Sie bekommen einen ersten Entwurf zu sehen und können Feedback geben. Wir passen solange an, bis es perfekt zu Ihnen passt.</p>
+            </div>
+            <div class="process-connector"></div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-number">03</div>
+            <div class="process-content">
+              <h3>Umsetzung</h3>
+              <p>Ich setze die Website professionell um – responsive, schnell und mit modernem Design, das zu Ihrem Betrieb passt.</p>
+            </div>
+            <div class="process-connector"></div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-number">04</div>
+            <div class="process-content">
+              <h3>Veröffentlichung</h3>
+              <p>Ihre Website geht online – inklusive SSL-Zertifikat, Domain-Einrichtung und finaler Abnahme durch Sie.</p>
+            </div>
+            <div class="process-connector"></div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-number">05</div>
+            <div class="process-content">
+              <h3>Betreuung & Anpassungen</h3>
+              <p>Auch nach dem Launch bin ich für Sie da – für Änderungen, Erweiterungen und alle weiteren Fragen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KI-ZUKUNFT ===== -->
+    <section class="ai-section">
+      <div class="container">
+        <div class="ai-inner reveal">
+          <div class="ai-left">
+            <div class="ai-badge">In Zukunft verfügbar</div>
+            <h2>Smarte Funktionen für Ihre Website</h2>
+            <p>Auf Wunsch können später intelligente Funktionen integriert werden – zum Beispiel ein KI-Assistent, der Besucherfragen direkt auf Ihrer Website beantwortet, oder ein smarter Chat, der Kunden bei der Auswahl des passenden Angebots unterstützt.</p>
+            <p class="ai-note">*Diese Möglichkeiten sind aktuell in Planung und werden schrittweise als optionale Erweiterung angeboten.</p>
+          </div>
+          <div class="ai-right">
+            <div class="ai-feature-card">
+              <span class="ai-icon">🤖</span>
+              <div>
+                <strong>KI-Chat für Besucher</strong>
+                <p>Beantwortet häufige Fragen automatisch – rund um die Uhr.</p>
+              </div>
+            </div>
+            <div class="ai-feature-card">
+              <span class="ai-icon">💬</span>
+              <div>
+                <strong>Smarte Anfragenführung</strong>
+                <p>Führt Interessenten direkt zur passenden Anfrage oder Buchung.</p>
+              </div>
+            </div>
+            <div class="ai-feature-card">
+              <span class="ai-icon">📊</span>
+              <div>
+                <strong>Intelligente Angebotsberatung</strong>
+                <p>Hilft Besuchern, das richtige Paket zu finden.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section-padding bg-light" id="faq">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">FAQ</div>
+          <h2 class="section-headline">Häufige Fragen</h2>
+          <p class="section-sub">Alles Wichtige auf einen Blick – ehrlich und ohne Agentur-Floskeln.</p>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Brauche ich schon Texte und Bilder?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Nicht zwingend. Ich helfe Ihnen, die richtigen Texte zu erarbeiten. Bilder können wir durch hochwertige Stockfotos ersetzen, oder Sie liefern eigene Fotos – beides funktioniert sehr gut.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Wie lange dauert die Erstellung einer Website?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Eine einfache Seite ist oft in 1–2 Wochen fertig. Eine umfangreichere Business-Website kann 2–4 Wochen dauern. In dringenden Fällen lässt sich oft auch schneller liefern – sprechen Sie mich einfach an.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Ist die Website auch fürs Handy optimiert?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Ja, selbstverständlich. Alle Websites, die ich erstelle, sind vollständig mobiloptimiert und sehen auf Smartphone, Tablet und Desktop einwandfrei aus.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Kann meine alte Website überarbeitet werden?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Ja. Wenn Sie bereits eine Website haben, die modernisiert werden soll, schaue ich sie mir gerne an und mache Ihnen einen konkreten Vorschlag, wie wir sie verbessern können.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Kann ich später Funktionen erweitern lassen?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Ja. Die Websites sind so gebaut, dass sie jederzeit erweitert werden können – zum Beispiel mit einem Online-Shop, einem Buchungssystem oder zukünftig mit KI-Funktionen.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Ist die Website suchmaschinenfreundlich aufgebaut?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Ja. Ich achte auf saubere HTML-Struktur, schnelle Ladezeiten, Mobile-First und optimale Seitenstruktur – das sind die Grundlagen für gutes Google-Ranking. Auf Wunsch können wir auch gezielt an Ihrer Sichtbarkeit arbeiten.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Was brauche ich für den Start?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Eigentlich nur eine Idee, was Ihre Website leisten soll. Ich führe Sie durch den gesamten Prozess – von der Domain über das Design bis zur Veröffentlichung. Um Technik brauchen Sie sich nicht zu kümmern.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KONTAKT / CTA ===== -->
+    <section class="section-padding contact-section" id="kontakt">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Kontakt</div>
+          <h2 class="section-headline">Bereit für eine Website, die professionell wirkt?</h2>
+          <p class="section-sub">Schreiben Sie mir kurz, was Sie sich vorstellen – ich melde mich schnell und unkompliziert zurück.</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <h3>Direkt Kontakt aufnehmen</h3>
+            <div class="contact-items">
+              <div class="contact-item">
+                <span class="ci-icon">📧</span>
+                <div>
+                  <strong>E-Mail</strong>
+                  <p>info@websiteprofi.de</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <span class="ci-icon">📞</span>
+                <div>
+                  <strong>Telefon</strong>
+                  <p>+49 123 456 789</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <span class="ci-icon">⏰</span>
+                <div>
+                  <strong>Erreichbar</strong>
+                  <p>Mo–Fr, 9–18 Uhr</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <span class="ci-icon">💬</span>
+                <div>
+                  <strong>Erstes Gespräch</strong>
+                  <p>Immer kostenlos & unverbindlich</p>
+                </div>
+              </div>
+            </div>
+            <div class="contact-note">
+              <span>💡</span>
+              <p>Keine Agentur-Floskeln. Ich antworte persönlich und direkt – meistens noch am selben Tag.</p>
+            </div>
+          </div>
+
+          <div class="contact-form-wrap reveal">
+            <!-- Formular sendet via Formsubmit.co – E-Mail-Adresse unten eintragen -->
+            <form class="contact-form"
+                  action="https://formsubmit.co/IHRE@EMAIL.DE"
+                  method="POST">
+              <!-- Formsubmit Konfiguration -->
+              <input type="hidden" name="_subject" value="Neue Website-Anfrage über WebsiteProfi">
+              <input type="hidden" name="_next" value="https://IHRE-DOMAIN.de/danke.html">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fname">Ihr Name *</label>
+                  <input type="text" id="fname" name="Name" placeholder="Max Mustermann" required>
+                </div>
+                <div class="form-group">
+                  <label for="fcompany">Betrieb / Firma</label>
+                  <input type="text" id="fcompany" name="Firma" placeholder="Mein Betrieb">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="femail">E-Mail-Adresse *</label>
+                <input type="email" id="femail" name="email" placeholder="ihre@email.de" required>
+              </div>
+              <div class="form-group">
+                <label for="ftype">Was suchen Sie?</label>
+                <select id="ftype" name="Anfrage-Art">
+                  <option value="">Bitte wählen…</option>
+                  <option>Neue Website erstellen</option>
+                  <option>Bestehende Website überarbeiten</option>
+                  <option>Landingpage</option>
+                  <option>Ich bin noch unsicher</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="fmessage">Ihre Nachricht</label>
+                <textarea id="fmessage" name="Nachricht" rows="4" placeholder="Erzählen Sie kurz von Ihrem Betrieb und was Sie sich vorstellen…"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full">
+                Jetzt unverbindlich anfragen →
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo footer-logo">
+            <div class="logo-mark">W</div>
+            <span>WebsiteProfi</span>
+          </a>
+          <p>Moderne Webseiten für kleine Unternehmen, Handwerker und Dienstleister – persönlich, klar, professionell.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="#leistungen">Leistungen</a>
+          <a href="#beispiele">Beispiele</a>
+          <a href="#ablauf">Ablauf</a>
+          <a href="#faq">FAQ</a>
+          <a href="#kontakt">Kontakt</a>
+        </div>
+        <div class="footer-col">
+          <h4>Demo-Websites</h4>
+          <a href="demos/handwerker.html" target="_blank">Handwerker-Website</a>
+          <a href="demos/restaurant.html" target="_blank">Restaurant-Website</a>
+          <a href="demos/coach.html" target="_blank">Coach-Website</a>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <a href="/impressum">Impressum</a>
+          <a href="/datenschutz">Datenschutz</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 WebsiteProfi. Alle Rechte vorbehalten.</p>
+        <p><a href="/impressum" style="color:inherit;opacity:0.6;">Impressum</a> · <a href="/datenschutz" style="color:inherit;opacity:0.6;">Datenschutz</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

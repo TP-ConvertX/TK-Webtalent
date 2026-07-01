@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klarblick Coaching – Demo-Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #0C1A2E; background: #fff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section-pad { padding: 100px 0; }
+    .bg-soft { background: #F8FAFF; }
+
+    /* ── DEMO BANNER ── */
+    .demo-banner {
+      background: #0C1A2E; color: #94A3B8;
+      text-align: center; padding: 10px 24px;
+      font-size: 13px; display: flex; align-items: center;
+      justify-content: center; gap: 16px;
+      position: sticky; top: 0; z-index: 200;
+    }
+    .demo-banner strong { color: #fff; }
+    .demo-back { background: #fff; color: #0C1A2E; padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; transition: all 0.2s; white-space: nowrap; }
+    .demo-back:hover { background: #EFF6FF; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 37px; z-index: 100;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #E2E8F0;
+      height: 68px;
+    }
+    .nav-inner { display: flex; align-items: center; height: 68px; gap: 40px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; color: #0C1A2E; letter-spacing: -0.02em; }
+    .logo-leaf {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, #0EA5E9, #0C4A6E);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #fff;
+    }
+    .nav-links { display: flex; gap: 28px; flex: 1; }
+    .nav-links a { font-size: 14px; color: #64748B; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #0C1A2E; }
+    .nav-cta {
+      margin-left: auto; background: #0C4A6E; color: #fff;
+      padding: 9px 20px; border-radius: 8px;
+      font-size: 14px; font-weight: 700; transition: all 0.2s;
+    }
+    .nav-cta:hover { background: #0C1A2E; }
+    .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; margin-left: auto; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: #0C1A2E; border-radius: 2px; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(160deg, #0C1A2E 0%, #0C4A6E 55%, #0E7490 100%);
+      min-height: calc(100vh - 37px - 68px);
+      display: flex; align-items: center;
+      padding: 80px 0;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 30%, rgba(14,165,233,0.18) 0%, transparent 60%);
+    }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(14,165,233,0.15); border: 1px solid rgba(14,165,233,0.3);
+      color: #7DD3FA; padding: 6px 14px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(38px, 5.5vw, 68px);
+      line-height: 1.1;
+      color: #fff; margin-bottom: 24px;
+    }
+    .hero h1 em { color: #7DD3FA; font-style: italic; }
+    .hero p { font-size: 18px; color: rgba(255,255,255,0.68); max-width: 480px; margin-bottom: 40px; line-height: 1.75; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-teal {
+      background: #0EA5E9; color: #fff;
+      padding: 14px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 700; transition: all 0.2s;
+    }
+    .btn-teal:hover { background: #0284C7; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(14,165,233,0.35); }
+    .btn-ghost-white {
+      background: rgba(255,255,255,0.1); color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      padding: 14px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 500; transition: all 0.2s;
+    }
+    .btn-ghost-white:hover { background: rgba(255,255,255,0.18); }
+    .hero-trust { margin-top: 48px; display: flex; gap: 28px; flex-wrap: wrap; }
+    .trust-pill { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.6); }
+    .trust-pill span { font-size: 16px; }
+
+    /* Foto-Placeholder */
+    .hero-photo-wrap { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+    .coach-photo {
+      width: 100%; max-width: 360px;
+      aspect-ratio: 4/5;
+      background: linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .coach-photo-inner { font-size: 110px; line-height: 1; padding-bottom: 0; opacity: 0.85; }
+    .coach-card {
+      background: #fff; border-radius: 14px;
+      padding: 16px 20px; max-width: 240px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      align-self: flex-end; margin-top: -60px;
+      margin-right: 20px;
+    }
+    .coach-card strong { display: block; font-size: 15px; margin-bottom: 4px; color: #0C1A2E; }
+    .coach-card p { font-size: 13px; color: #64748B; }
+    .coach-card-rating { display: flex; gap: 2px; margin-top: 8px; }
+    .coach-card-rating span { color: #F59E0B; font-size: 14px; }
+
+    /* ── SEKTIONS-HEADER ── */
+    .s-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #0EA5E9; margin-bottom: 14px; display: block; }
+    .s-title { font-family: 'DM Serif Display', serif; font-size: clamp(26px, 4vw, 44px); margin-bottom: 16px; line-height: 1.2; }
+    .s-sub { font-size: 17px; color: #475569; line-height: 1.75; max-width: 580px; }
+    .s-intro { margin-bottom: 56px; }
+    .s-intro.c { text-align: center; max-width: 640px; margin-left: auto; margin-right: auto; }
+
+    /* ── ANGEBOTE ── */
+    .angebote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .angebot-card {
+      background: #fff; border: 1px solid #E2E8F0;
+      border-radius: 20px; padding: 36px 28px;
+      transition: all 0.3s;
+    }
+    .angebot-card:hover { box-shadow: 0 12px 48px rgba(0,0,0,0.08); transform: translateY(-4px); border-color: #BAE6FD; }
+    .angebot-icon { font-size: 36px; margin-bottom: 20px; }
+    .angebot-card h3 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 12px; color: #0C1A2E; }
+    .angebot-card p { font-size: 15px; color: #64748B; line-height: 1.65; margin-bottom: 20px; }
+    .angebot-list { display: flex; flex-direction: column; gap: 9px; }
+    .angebot-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569; }
+    .angebot-list li::before { content: '✓'; color: #0EA5E9; font-weight: 700; flex-shrink: 0; }
+
+    /* ── VORTEILE ── */
+    .vorteile-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: center; }
+    .vorteile-list { display: flex; flex-direction: column; gap: 20px; }
+    .vorteil-item {
+      display: flex; align-items: flex-start; gap: 18px;
+      background: #fff; border: 1px solid #E2E8F0;
+      border-radius: 14px; padding: 22px;
+      transition: all 0.3s;
+    }
+    .vorteil-item:hover { border-color: #BAE6FD; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .vi-icon {
+      width: 48px; height: 48px; flex-shrink: 0;
+      background: #E0F2FE; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .vi-text h4 { font-size: 16px; font-weight: 700; margin-bottom: 5px; color: #0C1A2E; }
+    .vi-text p { font-size: 14px; color: #64748B; line-height: 1.6; }
+    .vorteile-callout {
+      background: linear-gradient(160deg, #0C1A2E, #0C4A6E);
+      border-radius: 24px; padding: 48px 40px; color: #fff;
+    }
+    .vorteile-callout h3 { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 18px; line-height: 1.25; }
+    .vorteile-callout p { color: rgba(255,255,255,0.7); font-size: 16px; line-height: 1.7; margin-bottom: 28px; }
+    .btn-teal-outline {
+      background: transparent; color: #7DD3FA;
+      border: 1.5px solid rgba(14,165,233,0.5);
+      padding: 12px 24px; border-radius: 10px;
+      font-size: 15px; font-weight: 600;
+      display: inline-flex; transition: all 0.2s; cursor: pointer; font-family: inherit;
+    }
+    .btn-teal-outline:hover { background: rgba(14,165,233,0.1); border-color: #7DD3FA; }
+
+    /* ── ABLAUF ── */
+    .ablauf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .ablauf-step {
+      text-align: center; padding: 32px 20px;
+      background: #fff; border: 1px solid #E2E8F0;
+      border-radius: 20px; transition: all 0.3s; position: relative;
+    }
+    .ablauf-step:hover { border-color: #BAE6FD; box-shadow: 0 8px 32px rgba(0,0,0,0.07); }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: #E0F2FE; color: #0C4A6E;
+      font-size: 20px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .ablauf-step h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #0C1A2E; }
+    .ablauf-step p { font-size: 14px; color: #64748B; line-height: 1.65; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { background: #0C1A2E; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .t-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px; padding: 32px;
+      transition: all 0.3s;
+    }
+    .t-card:hover { background: rgba(255,255,255,0.09); }
+    .t-stars { color: #FCD34D; font-size: 14px; letter-spacing: 2px; margin-bottom: 16px; }
+    .t-text { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.75; margin-bottom: 24px; font-style: italic; }
+    .t-author { display: flex; align-items: center; gap: 12px; }
+    .t-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      font-size: 15px; font-weight: 700; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .av-a { background: #0C4A6E; }
+    .av-b { background: #0E7490; }
+    .av-c { background: #164E63; }
+    .t-name { font-size: 15px; font-weight: 700; color: #fff; }
+    .t-role { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+    /* ── KONTAKT ── */
+    .kontakt-section { background: #F8FAFF; }
+    .kontakt-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 64px; align-items: start; }
+    .kontakt-left h2 { font-family: 'DM Serif Display', serif; font-size: 36px; margin-bottom: 16px; }
+    .kontakt-left p { color: #64748B; font-size: 16px; line-height: 1.75; margin-bottom: 32px; }
+    .kontakt-items { display: flex; flex-direction: column; gap: 20px; }
+    .k-item { display: flex; align-items: flex-start; gap: 16px; }
+    .k-icon {
+      width: 44px; height: 44px; background: #E0F2FE;
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .k-text strong { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .k-text span { font-size: 15px; color: #64748B; }
+    .kontakt-form {
+      background: #fff; border: 1.5px solid #E2E8F0;
+      border-radius: 24px; padding: 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #374151; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 12px 14px; border: 1.5px solid #E2E8F0;
+      border-radius: 10px; font-size: 15px; font-family: inherit;
+      background: #F8FAFC; outline: none; color: #0C1A2E; transition: all 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: #0EA5E9; background: #fff; box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .btn-submit {
+      width: 100%; background: #0C4A6E; color: #fff;
+      border: none; cursor: pointer; padding: 14px; border-radius: 10px;
+      font-size: 15px; font-weight: 700; font-family: inherit; transition: all 0.2s;
+    }
+    .btn-submit:hover { background: #0C1A2E; }
+    .form-success-msg {
+      display: none; margin-top: 16px;
+      background: #F0FDF4; border: 1px solid #BBF7D0;
+      color: #166534; border-radius: 10px; padding: 14px 18px; font-size: 14px;
+    }
+    .form-success-msg.show { display: block; }
+
+    /* ── FOOTER ── */
+    .footer { background: #0C1A2E; color: #64748B; padding: 60px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+    .footer-brand { color: #fff; font-weight: 800; font-size: 18px; margin-bottom: 12px; }
+    .footer-brand p { color: #64748B; font-weight: 400; font-size: 14px; margin-top: 10px; line-height: 1.65; }
+    .footer-col h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0EA5E9; margin-bottom: 16px; }
+    .footer-col a { display: block; font-size: 14px; color: #64748B; margin-bottom: 10px; transition: color 0.2s; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 24px; font-size: 13px; text-align: center; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1000px) {
+      .angebote-grid { grid-template-columns: 1fr 1fr; }
+      .ablauf-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo-wrap { display: none; }
+      .vorteile-grid { grid-template-columns: 1fr; gap: 40px; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .kontakt-grid { grid-template-columns: 1fr; gap: 40px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 38px; }
+      .section-pad { padding: 64px 0; }
+      .angebote-grid { grid-template-columns: 1fr; }
+      .ablauf-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Demo Banner -->
+  <div class="demo-banner">
+    <span>🎨 <strong>Demo-Website</strong> – Beispiel für einen Coach von WebsiteProfi</span>
+    <a href="../index.html" class="demo-back">← Zurück zur Hauptseite</a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="logo-leaf">✦</div>
+        Klarblick
+      </a>
+      <ul class="nav-links">
+        <li><a href="#angebote">Angebote</a></li>
+        <li><a href="#vorteile">Vorteile</a></li>
+        <li><a href="#ablauf">Ablauf</a></li>
+        <li><a href="#stimmen">Stimmen</a></li>
+        <li><a href="#anfrage">Anfrage</a></li>
+      </ul>
+      <a href="#anfrage" class="nav-cta">Erstgespräch buchen</a>
+      <button class="nav-burger" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-tag">
+            <span>✦</span> Business & Life Coaching
+          </div>
+          <h1>Mehr Klarheit.<br>Mehr <em>Wirkung</em>.<br>Mehr Sie.</h1>
+          <p>Ich begleite Menschen dabei, ihre beruflichen und persönlichen Ziele klar zu definieren – und den Weg dorthin wirklich zu gehen. Ehrlich, fundiert, persönlich.</p>
+          <div class="hero-btns">
+            <a href="#anfrage" class="btn-teal">Erstgespräch buchen</a>
+            <a href="#angebote" class="btn-ghost-white">Angebote ansehen</a>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-pill"><span>✓</span> 200+ Klienten begleitet</div>
+            <div class="trust-pill"><span>✓</span> Zertifizierter Coach</div>
+            <div class="trust-pill"><span>✓</span> Online & vor Ort</div>
+          </div>
+        </div>
+        <div class="hero-photo-wrap">
+          <div class="coach-photo">
+            <div class="coach-photo-inner">🧘</div>
+          </div>
+          <div class="coach-card">
+            <strong>Julia Becker</strong>
+            <p>Coach & Beraterin seit 2014</p>
+            <div class="coach-card-rating">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <span style="margin-left:6px;font-size:13px;color:#94A3B8;">5.0 · 84 Bewertungen</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Angebote -->
+  <section class="section-pad" id="angebote">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <div class="s-label">Angebote</div>
+        <h2 class="s-title">Was ich für Sie tue</h2>
+        <p class="s-sub">Jeder Mensch ist anders – mein Coaching passt sich Ihrer Situation an.</p>
+      </div>
+      <div class="angebote-grid">
+        <div class="angebot-card reveal">
+          <div class="angebot-icon">🎯</div>
+          <h3>Business Coaching</h3>
+          <p>Für Unternehmer, Führungskräfte und Selbstständige, die klarer denken, besser entscheiden und wirkungsvoller führen möchten.</p>
+          <ul class="angebot-list">
+            <li>Klarheit über Ziele und Strategie</li>
+            <li>Entscheidungsfindung stärken</li>
+            <li>Führung und Kommunikation</li>
+            <li>Work-Life-Balance verbessern</li>
+          </ul>
+        </div>
+        <div class="angebot-card reveal">
+          <div class="angebot-icon">🌱</div>
+          <h3>Life Coaching</h3>
+          <p>Für Menschen in Veränderungsphasen, die ihre Energie neu ausrichten und ein Leben führen möchten, das sich wirklich stimmig anfühlt.</p>
+          <ul class="angebot-list">
+            <li>Persönliche Werte klären</li>
+            <li>Blockaden lösen</li>
+            <li>Selbstvertrauen stärken</li>
+            <li>Neue Lebenswege gestalten</li>
+          </ul>
+        </div>
+        <div class="angebot-card reveal">
+          <div class="angebot-icon">🔄</div>
+          <h3>Karriere & Neuorientierung</h3>
+          <p>Sie stehen an einem Wendepunkt? Gemeinsam finden wir Klarheit über Ihre nächste berufliche Richtung – fundiert und realistisch.</p>
+          <ul class="angebot-list">
+            <li>Stärken und Potenziale erkennen</li>
+            <li>Berufliche Neuausrichtung</li>
+            <li>Bewerbungsstrategie</li>
+            <li>Selbstständigkeit vorbereiten</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vorteile -->
+  <section class="section-pad bg-soft" id="vorteile">
+    <div class="container">
+      <div class="vorteile-grid">
+        <div>
+          <div class="s-intro reveal">
+            <div class="s-label">Warum Klarblick</div>
+            <h2 class="s-title">Was Sie bei mir erwartet</h2>
+            <p class="s-sub">Kein Standardprogramm. Kein leeres Motivations-Feuerwerk. Nur echter Fokus auf das, was für Sie zählt.</p>
+          </div>
+          <div class="vorteile-list">
+            <div class="vorteil-item reveal">
+              <div class="vi-icon">🔬</div>
+              <div class="vi-text">
+                <h4>Fundierte Methodik</h4>
+                <p>Systemisches Coaching, NLP und kognitive Verhaltensansätze – evidenzbasiert, keine Esoterik.</p>
+              </div>
+            </div>
+            <div class="vorteil-item reveal">
+              <div class="vi-icon">🎙️</div>
+              <div class="vi-text">
+                <h4>Echte Gespräche</h4>
+                <p>Kein Skript, kein Ablesen. Ich höre wirklich zu und frage, was zählt.</p>
+              </div>
+            </div>
+            <div class="vorteil-item reveal">
+              <div class="vi-icon">📈</div>
+              <div class="vi-text">
+                <h4>Sichtbare Ergebnisse</h4>
+                <p>Konkrete Fortschritte, die Sie nach jeder Sitzung spüren – nicht erst nach Monaten.</p>
+              </div>
+            </div>
+            <div class="vorteil-item reveal">
+              <div class="vi-icon">🤝</div>
+              <div class="vi-text">
+                <h4>Vertraulich & diskret</h4>
+                <p>Was zwischen uns besprochen wird, bleibt zwischen uns. Absolute Verschwiegenheit ist selbstverständlich.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vorteile-callout reveal">
+          <h3>„Der erste Schritt ist das schwierigste. Den zweiten gehen Sie nicht allein."</h3>
+          <p>In einem unverbindlichen Erstgespräch schauen wir gemeinsam, ob wir gut zusammenpassen und was Coaching für Sie leisten kann. Ohne Druck, ohne Verpflichtung.</p>
+          <a href="#anfrage" class="btn-teal-outline">Kostenloses Erstgespräch →</a>
+          <div style="margin-top:28px;display:flex;gap:24px;">
+            <div style="text-align:center;">
+              <span style="display:block;font-size:28px;font-weight:800;color:#7DD3FA;letter-spacing:-0.02em;">10 J.</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.5);">Erfahrung</span>
+            </div>
+            <div style="text-align:center;">
+              <span style="display:block;font-size:28px;font-weight:800;color:#7DD3FA;letter-spacing:-0.02em;">200+</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.5);">Klienten</span>
+            </div>
+            <div style="text-align:center;">
+              <span style="display:block;font-size:28px;font-weight:800;color:#7DD3FA;letter-spacing:-0.02em;">5★</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.5);">Bewertung</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ablauf -->
+  <section class="section-pad" id="ablauf">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <div class="s-label">So funktioniert es</div>
+        <h2 class="s-title">Ihr Weg mit Klarblick</h2>
+        <p class="s-sub">Einfach, klar und transparent – vom ersten Gespräch bis zum Ziel.</p>
+      </div>
+      <div class="ablauf-grid">
+        <div class="ablauf-step reveal">
+          <div class="step-num">01</div>
+          <h4>Erstgespräch</h4>
+          <p>Wir sprechen 30 Minuten kostenlos. Sie schildern Ihre Situation, ich höre zu – ganz ohne Druck.</p>
+        </div>
+        <div class="ablauf-step reveal">
+          <div class="step-num">02</div>
+          <h4>Analyse</h4>
+          <p>Gemeinsam klären wir, wo Sie stehen, was Sie wirklich wollen – und was Sie bisher daran hindert.</p>
+        </div>
+        <div class="ablauf-step reveal">
+          <div class="step-num">03</div>
+          <h4>Coaching</h4>
+          <p>In regelmäßigen Sitzungen (online oder vor Ort) arbeiten wir strukturiert an Ihren Zielen.</p>
+        </div>
+        <div class="ablauf-step reveal">
+          <div class="step-num">04</div>
+          <h4>Umsetzung & Begleitung</h4>
+          <p>Sie handeln – ich bin als Sparringspartner da. Zwischen den Sitzungen sind Sie nicht allein.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kundenstimmen -->
+  <section class="section-pad testimonials-section" id="stimmen">
+    <div class="container">
+      <div class="s-intro c reveal" style="margin-bottom:56px;">
+        <div class="s-label" style="color:#7DD3FA;">Stimmen</div>
+        <h2 class="s-title" style="color:#fff;">Was Klienten sagen</h2>
+        <p class="s-sub" style="color:rgba(255,255,255,0.55);">Ehrliche Rückmeldungen von Menschen, mit denen ich arbeiten durfte.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="t-card reveal">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-text">„Julia hat mir geholfen, endlich Klarheit über meine berufliche Richtung zu bekommen. Nach nur wenigen Sitzungen hatte ich einen konkreten Plan – und das Selbstvertrauen, ihn umzusetzen."</p>
+          <div class="t-author">
+            <div class="t-avatar av-a">MH</div>
+            <div>
+              <div class="t-name">Michael H.</div>
+              <div class="t-role">Teamleiter, 38 Jahre</div>
+            </div>
+          </div>
+        </div>
+        <div class="t-card reveal">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-text">„Ich stand kurz vor dem Burnout und wusste nicht mehr, wie ich weitermachen soll. Das Coaching bei Klarblick hat mich buchstäblich gerettet. Danke, Julia!"</p>
+          <div class="t-author">
+            <div class="t-avatar av-b">SK</div>
+            <div>
+              <div class="t-name">Sabine K.</div>
+              <div class="t-role">Unternehmerin, 44 Jahre</div>
+            </div>
+          </div>
+        </div>
+        <div class="t-card reveal">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-text">„Keine leeren Phrasen, kein Selbstoptimierungs-Hype. Julia arbeitet wirklich mit einem – ehrlich, direkt und mit echtem Interesse an meiner Situation."</p>
+          <div class="t-author">
+            <div class="t-avatar av-c">LM</div>
+            <div>
+              <div class="t-name">Lukas M.</div>
+              <div class="t-role">Selbstständiger, 32 Jahre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Anfrage -->
+  <section class="section-pad kontakt-section" id="anfrage">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <div class="s-label">Anfrage</div>
+        <h2 class="s-title">Bereit für den ersten Schritt?</h2>
+        <p class="s-sub">Schreiben Sie mir – oder buchen Sie direkt ein kostenloses 30-Minuten-Erstgespräch.</p>
+      </div>
+      <div class="kontakt-grid">
+        <div class="reveal">
+          <div class="kontakt-items">
+            <div class="k-item">
+              <div class="k-icon">📧</div>
+              <div class="k-text">
+                <strong>E-Mail</strong>
+                <span>hallo@klarblick-coaching.de</span>
+              </div>
+            </div>
+            <div class="k-item">
+              <div class="k-icon">📞</div>
+              <div class="k-text">
+                <strong>Telefon</strong>
+                <span>+49 89 345 678 90</span>
+              </div>
+            </div>
+            <div class="k-item">
+              <div class="k-icon">📍</div>
+              <div class="k-text">
+                <strong>Standort</strong>
+                <span>München & online (deutschlandweit)</span>
+              </div>
+            </div>
+            <div class="k-item">
+              <div class="k-icon">☕</div>
+              <div class="k-text">
+                <strong>Erstgespräch</strong>
+                <span>30 Minuten, komplett kostenlos</span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:32px;background:#E0F2FE;border-radius:14px;padding:20px 22px;border:1px solid #BAE6FD;">
+            <p style="font-size:14px;color:#0C4A6E;line-height:1.65;">💡 <strong>Tipp:</strong> Im Erstgespräch müssen Sie sich nicht vorbereiten. Erzählen Sie einfach, was Sie bewegt – alles andere ergibt sich.</p>
+          </div>
+        </div>
+        <div class="kontakt-form reveal">
+          <form id="coachForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Ihr Name</label>
+                <input type="text" placeholder="Maria Muster">
+              </div>
+              <div class="form-group">
+                <label>Telefon (optional)</label>
+                <input type="tel" placeholder="+49 …">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>E-Mail-Adresse *</label>
+              <input type="email" placeholder="ihre@email.de">
+            </div>
+            <div class="form-group">
+              <label>Was beschäftigt Sie aktuell?</label>
+              <select>
+                <option>Bitte wählen …</option>
+                <option>Berufliche Neuorientierung</option>
+                <option>Führung & Management</option>
+                <option>Work-Life-Balance</option>
+                <option>Selbstständigkeit</option>
+                <option>Persönliche Entwicklung</option>
+                <option>Ich bin unsicher</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ihre Nachricht (optional)</label>
+              <textarea placeholder="Was ist Ihre aktuelle Situation? Was wünschen Sie sich?"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Kostenloses Erstgespräch anfragen →</button>
+            <div class="form-success-msg" id="coachSuccessMsg">
+              ✅ <strong>Danke!</strong> Das Formular ist aktuell noch nicht verbunden – dies ist eine Demo-Website von WebsiteProfi.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">✦ Klarblick Coaching</div>
+          <p>Business & Life Coaching in München und online. Für mehr Klarheit, mehr Wirkung – und mehr Sie.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Angebote</h4>
+          <a href="#angebote">Business Coaching</a>
+          <a href="#angebote">Life Coaching</a>
+          <a href="#angebote">Karriere & Neuorientierung</a>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <a href="../impressum.html">Impressum</a>
+          <a href="../datenschutz.html">Datenschutz</a>
+          <a href="../index.html">← WebsiteProfi</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Klarblick Coaching | <strong style="color:#0EA5E9;">Demo-Website</strong> erstellt von <a href="../index.html" style="color:#0EA5E9;">WebsiteProfi</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    document.getElementById('coachForm')?.addEventListener('submit', e => {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-submit');
+      btn.textContent = 'Wird gesendet…';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.style.display = 'none';
+        document.getElementById('coachSuccessMsg').classList.add('show');
+      }, 800);
+    });
+  </script>
+</body>
+</html>

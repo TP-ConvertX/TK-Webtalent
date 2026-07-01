@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Abendgold – Demo-Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #1A0A00; background: #fff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section-pad { padding: 100px 0; }
+
+    /* ── DEMO BANNER ── */
+    .demo-banner {
+      background: #1A0A00; color: #9CA3AF;
+      text-align: center; padding: 10px 24px;
+      font-size: 13px; display: flex; align-items: center;
+      justify-content: center; gap: 16px;
+      position: sticky; top: 0; z-index: 200;
+    }
+    .demo-banner strong { color: #fff; }
+    .demo-back {
+      background: #fff; color: #1A0A00; padding: 5px 14px;
+      border-radius: 6px; font-size: 12px; font-weight: 700;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .demo-back:hover { background: #F5F0EA; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 37px; z-index: 100;
+      background: rgba(26, 10, 0, 0.96);
+      backdrop-filter: blur(12px);
+      height: 68px;
+    }
+    .nav-inner { display: flex; align-items: center; height: 68px; gap: 40px; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #F5DEB3; letter-spacing: 0.01em; }
+    .nav-links { display: flex; gap: 28px; flex: 1; }
+    .nav-links a { font-size: 14px; color: rgba(245,222,179,0.65); transition: color 0.2s; font-weight: 500; }
+    .nav-links a:hover { color: #F5DEB3; }
+    .nav-cta {
+      margin-left: auto;
+      background: transparent;
+      color: #F5DEB3;
+      border: 1.5px solid rgba(245,222,179,0.5);
+      padding: 9px 20px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; transition: all 0.2s;
+    }
+    .nav-cta:hover { background: rgba(245,222,179,0.1); border-color: #F5DEB3; }
+    .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; margin-left: auto; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: #F5DEB3; border-radius: 2px; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: calc(100vh - 37px - 68px);
+      background: linear-gradient(160deg, #1A0A00 0%, #3D1A00 50%, #2D1200 100%);
+      display: flex; align-items: center;
+      padding: 80px 0;
+      position: relative; overflow: hidden;
+    }
+    .hero-ornament {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(212, 160, 23, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #D4A017; border-bottom: 1px solid rgba(212,160,23,0.4);
+      padding-bottom: 4px; margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 6vw, 80px);
+      line-height: 1.05; letter-spacing: -0.01em;
+      color: #F5DEB3; margin-bottom: 8px;
+    }
+    .hero h1 em { color: #D4A017; font-style: italic; }
+    .hero-sub-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 2.5vw, 28px);
+      color: rgba(245,222,179,0.55);
+      margin-bottom: 28px; font-style: italic;
+    }
+    .hero p {
+      font-size: 17px; color: rgba(245,222,179,0.65);
+      max-width: 520px; margin-bottom: 44px; line-height: 1.75;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-gold {
+      background: #D4A017; color: #1A0A00;
+      padding: 14px 30px; border-radius: 8px;
+      font-size: 15px; font-weight: 700;
+      transition: all 0.2s;
+    }
+    .btn-gold:hover { background: #B8891B; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,160,23,0.35); }
+    .btn-ghost-gold {
+      background: transparent; color: #F5DEB3;
+      border: 1.5px solid rgba(245,222,179,0.35);
+      padding: 14px 30px; border-radius: 8px;
+      font-size: 15px; font-weight: 500; transition: all 0.2s;
+    }
+    .btn-ghost-gold:hover { border-color: #F5DEB3; }
+    .hero-award {
+      margin-top: 60px;
+      display: inline-flex; align-items: center; gap: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(212,160,23,0.2);
+      border-radius: 12px; padding: 16px 24px;
+    }
+    .hero-award span:first-child { font-size: 28px; }
+    .hero-award p { color: rgba(245,222,179,0.7); font-size: 13px; line-height: 1.5; }
+    .hero-award strong { color: #F5DEB3; font-size: 15px; display: block; }
+
+    /* ── DIVIDER ── */
+    .divider { text-align: center; padding: 40px 0; }
+    .divider-inner { display: inline-flex; align-items: center; gap: 16px; color: #D4A017; font-size: 20px; }
+    .divider-line { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, #D4A017); }
+    .divider-line.right { background: linear-gradient(90deg, #D4A017, transparent); }
+
+    /* ── SEKTION HEADER ── */
+    .s-label { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #D4A017; margin-bottom: 14px; display: block; }
+    .s-title { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px); margin-bottom: 18px; line-height: 1.2; }
+    .s-sub { font-size: 17px; color: #78350F; line-height: 1.75; max-width: 580px; }
+    .s-intro { margin-bottom: 56px; }
+    .s-intro.centered { text-align: center; margin-left: auto; margin-right: auto; }
+
+    /* ── ATMOSPHÄRE ── */
+    .atmosphere-section { background: #FEF9F0; }
+    .atm-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: center; }
+    .atm-images {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .atm-img {
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px;
+    }
+    .atm-img-1 { height: 200px; background: linear-gradient(135deg, #7C2D12, #9A3412); grid-column: 1 / -1; }
+    .atm-img-2 { height: 140px; background: linear-gradient(135deg, #451A03, #6B2E0A); }
+    .atm-img-3 { height: 140px; background: linear-gradient(135deg, #292524, #44403C); }
+    .atm-text h2 { font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 20px; line-height: 1.2; }
+    .atm-text p { color: #78350F; font-size: 16px; line-height: 1.75; margin-bottom: 16px; }
+    .atm-detail { display: flex; gap: 24px; margin-top: 28px; }
+    .atm-d { text-align: center; }
+    .atm-d-num { display: block; font-size: 28px; font-weight: 800; color: #D4A017; letter-spacing: -0.02em; }
+    .atm-d-lbl { font-size: 12px; color: #78350F; font-weight: 600; }
+
+    /* ── SPEISEKARTE ── */
+    .menu-section { background: #1A0A00; }
+    .menu-section .s-label { color: #D4A017; }
+    .menu-section .s-title { color: #F5DEB3; }
+    .menu-section .s-sub { color: rgba(245,222,179,0.6); }
+    .menu-tabs { display: flex; gap: 0; margin-bottom: 40px; border-bottom: 1px solid rgba(245,222,179,0.15); }
+    .menu-tab {
+      padding: 12px 24px; font-size: 14px; font-weight: 600;
+      color: rgba(245,222,179,0.5); cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: all 0.2s; background: none; border-left: none; border-right: none; border-top: none; font-family: inherit;
+    }
+    .menu-tab.active { color: #D4A017; border-bottom-color: #D4A017; }
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .menu-item {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(245,222,179,0.08);
+      display: flex; justify-content: space-between; align-items: start; gap: 16px;
+    }
+    .menu-item-info h4 { font-family: 'Playfair Display', serif; font-size: 17px; color: #F5DEB3; margin-bottom: 4px; }
+    .menu-item-info p { font-size: 13px; color: rgba(245,222,179,0.5); line-height: 1.5; }
+    .menu-price { font-size: 16px; font-weight: 700; color: #D4A017; white-space: nowrap; flex-shrink: 0; }
+    .menu-item-left { padding-right: 40px; border-right: 1px solid rgba(245,222,179,0.06); }
+
+    /* ── ÖFFNUNGSZEITEN ── */
+    .oeffnung-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .oeffnung-card { background: #FEF9F0; border: 1px solid #FDE68A; border-radius: 20px; padding: 40px; }
+    .oeffnung-card h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 28px; }
+    .oeffnung-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 13px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-size: 15px;
+    }
+    .oeffnung-row:last-child { border-bottom: none; }
+    .oeffnung-day { color: #78350F; font-weight: 600; }
+    .oeffnung-time { color: #1A0A00; font-weight: 700; }
+    .oeffnung-closed { color: #9CA3AF; font-weight: 500; font-size: 14px; }
+    .reservierung-card { background: #1A0A00; border-radius: 20px; padding: 40px; }
+    .reservierung-card h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: #F5DEB3; margin-bottom: 12px; }
+    .reservierung-card p { color: rgba(245,222,179,0.6); font-size: 15px; margin-bottom: 28px; line-height: 1.65; }
+    .res-form input, .res-form select {
+      width: 100%; padding: 12px 16px; border: 1.5px solid rgba(245,222,179,0.15);
+      border-radius: 10px; font-size: 15px; font-family: inherit;
+      background: rgba(255,255,255,0.05); color: #F5DEB3;
+      outline: none; margin-bottom: 14px; transition: border-color 0.2s;
+    }
+    .res-form select option { background: #1A0A00; }
+    .res-form input:focus, .res-form select:focus { border-color: #D4A017; }
+    .res-form input::placeholder { color: rgba(245,222,179,0.3); }
+    .res-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-reserve {
+      width: 100%; background: #D4A017; color: #1A0A00;
+      border: none; cursor: pointer;
+      padding: 14px; border-radius: 10px;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      transition: all 0.2s; margin-top: 4px;
+    }
+    .btn-reserve:hover { background: #B8891B; }
+    .res-demo-msg { display: none; margin-top: 14px; background: rgba(212,160,23,0.15); border: 1px solid rgba(212,160,23,0.3); color: #FCD34D; border-radius: 10px; padding: 12px 16px; font-size: 14px; }
+    .res-demo-msg.show { display: block; }
+
+    /* ── FOOTER ── */
+    .footer { background: #0D0500; color: rgba(245,222,179,0.5); padding: 60px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+    .footer-brand { font-family: 'Playfair Display', serif; font-size: 22px; color: #F5DEB3; margin-bottom: 14px; }
+    .footer-brand p { font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.65; margin-top: 10px; }
+    .footer-col h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #D4A017; margin-bottom: 16px; }
+    .footer-col a { display: block; font-size: 14px; color: rgba(245,222,179,0.5); margin-bottom: 10px; transition: color 0.2s; }
+    .footer-col a:hover { color: #F5DEB3; }
+    .footer-bottom { border-top: 1px solid rgba(245,222,179,0.08); padding-top: 24px; font-size: 13px; text-align: center; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+      .atm-grid, .oeffnung-grid { grid-template-columns: 1fr; gap: 40px; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .menu-item-left { padding-right: 0; border-right: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 38px; }
+      .section-pad { padding: 64px 0; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .res-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Demo Banner -->
+  <div class="demo-banner">
+    <span>🎨 <strong>Demo-Website</strong> – Beispiel für ein Restaurant von WebsiteProfi</span>
+    <a href="../index.html" class="demo-back">← Zurück zur Hauptseite</a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">Abendgold</a>
+      <ul class="nav-links">
+        <li><a href="#atmosphaere">Atmosphäre</a></li>
+        <li><a href="#speisekarte">Speisekarte</a></li>
+        <li><a href="#reservierung">Reservierung</a></li>
+        <li><a href="#oeffnung">Öffnungszeiten</a></li>
+      </ul>
+      <a href="#reservierung" class="nav-cta">Tisch reservieren</a>
+      <button class="nav-burger" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-ornament"></div>
+    <div class="container">
+      <div class="hero-tag">Feine Küche · München</div>
+      <h1><em>Abendgold</em></h1>
+      <p class="hero-sub-title">Wo Genuss zur Kunst wird.</p>
+      <p>Erleben Sie klassische Küche mit modernem Anspruch – in einem Ambiente, das Sie von der ersten Minute an verzaubert. Reservieren Sie Ihren Abend jetzt.</p>
+      <div class="hero-btns">
+        <a href="#reservierung" class="btn-gold">Tisch reservieren</a>
+        <a href="#speisekarte" class="btn-ghost-gold">Speisekarte entdecken</a>
+      </div>
+      <div class="hero-award">
+        <span>🏆</span>
+        <div>
+          <strong>Restaurantführer Empfehlung 2024</strong>
+          <p>„Eines der besten Restaurants der Stadt für gehobene Küche in familiärem Rahmen."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <div class="divider-inner">
+      <div class="divider-line"></div>
+      ✦
+      <div class="divider-line right"></div>
+    </div>
+  </div>
+
+  <!-- Atmosphäre -->
+  <section class="section-pad atmosphere-section" id="atmosphaere">
+    <div class="container">
+      <div class="atm-grid">
+        <div class="atm-images reveal">
+          <div class="atm-img atm-img-1">🍷</div>
+          <div class="atm-img atm-img-2">🕯️</div>
+          <div class="atm-img atm-img-3">🎶</div>
+        </div>
+        <div class="atm-text reveal">
+          <div class="s-label">Über uns</div>
+          <h2>Ein Abend, der in Erinnerung bleibt</h2>
+          <p>Das Abendgold ist mehr als ein Restaurant – es ist ein Ort für besondere Momente. Gegründet 2009 von Familie Richter, verbinden wir die Wärme eines Familienbetriebs mit dem Anspruch feiner Küche.</p>
+          <p>Unser Küchenchef Marcus Richter setzt auf saisonale, regionale Zutaten und bringt klassische Rezepte mit modernem Twist auf Ihren Teller. Jeder Besuch soll sich wie ein kleines Fest anfühlen.</p>
+          <div class="atm-detail">
+            <div class="atm-d">
+              <span class="atm-d-num">15</span>
+              <span class="atm-d-lbl">Jahre geöffnet</span>
+            </div>
+            <div class="atm-d">
+              <span class="atm-d-num">48</span>
+              <span class="atm-d-lbl">Sitzplätze</span>
+            </div>
+            <div class="atm-d">
+              <span class="atm-d-num">3</span>
+              <span class="atm-d-lbl">Köche im Team</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Speisekarte -->
+  <section class="section-pad menu-section" id="speisekarte">
+    <div class="container">
+      <div class="s-intro centered reveal">
+        <div class="s-label">Speisekarte</div>
+        <h2 class="s-title">Unsere Küche</h2>
+        <p class="s-sub">Saisonal, regional, handgemacht – mit Zutaten, die wir persönlich auswählen.</p>
+      </div>
+      <div class="menu-tabs">
+        <button class="menu-tab active">Vorspeisen</button>
+        <button class="menu-tab">Hauptgänge</button>
+        <button class="menu-tab">Desserts</button>
+        <button class="menu-tab">Getränke</button>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-item menu-item-left">
+          <div class="menu-item-info">
+            <h4>Burrata mit Tomaten</h4>
+            <p>Frische Burrata, Heirloom-Tomaten, Basilikumöl, Meersalz</p>
+          </div>
+          <div class="menu-price">14 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Ceviche vom Wolfsbarsch</h4>
+            <p>Limette, Koriander, rote Zwiebel, Chili</p>
+          </div>
+          <div class="menu-price">18 €</div>
+        </div>
+        <div class="menu-item menu-item-left">
+          <div class="menu-item-info">
+            <h4>Wildkräutersalat</h4>
+            <p>Saisonale Wildkräuter, Walnuss, Ziegenkäse, Honig-Vinaigrette</p>
+          </div>
+          <div class="menu-price">12 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Gänseleberterrine</h4>
+            <p>Mit Brioche, Feigensenf und karamellisierten Trauben</p>
+          </div>
+          <div class="menu-price">22 €</div>
+        </div>
+        <div class="menu-item menu-item-left">
+          <div class="menu-item-info">
+            <h4>Spargelcremesuppe</h4>
+            <p>Weißer Spargel, Crème fraîche, Kerbel (saisonal)</p>
+          </div>
+          <div class="menu-price">10 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Tatar vom Weiderind</h4>
+            <p>Handgeschnitten, klassisch gewürzt, Kapern, Eigelb</p>
+          </div>
+          <div class="menu-price">20 €</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Öffnungszeiten & Reservierung -->
+  <section class="section-pad" id="oeffnung">
+    <div class="container">
+      <div class="s-intro centered reveal">
+        <div class="s-label">Ihr Besuch</div>
+        <h2 class="s-title">Wann wir für Sie da sind</h2>
+        <p class="s-sub">Wir freuen uns auf Sie – und empfehlen, im Voraus zu reservieren.</p>
+      </div>
+      <div class="oeffnung-grid" id="reservierung">
+        <div class="oeffnung-card reveal">
+          <h3>Öffnungszeiten</h3>
+          <div class="oeffnung-row">
+            <span class="oeffnung-day">Montag</span>
+            <span class="oeffnung-closed">Ruhetag</span>
+          </div>
+          <div class="oeffnung-row">
+            <span class="oeffnung-day">Dienstag – Freitag</span>
+            <span class="oeffnung-time">18:00 – 23:00 Uhr</span>
+          </div>
+          <div class="oeffnung-row">
+            <span class="oeffnung-day">Samstag</span>
+            <span class="oeffnung-time">12:00 – 15:00 &amp; 18:00 – 23:30 Uhr</span>
+          </div>
+          <div class="oeffnung-row">
+            <span class="oeffnung-day">Sonntag</span>
+            <span class="oeffnung-time">12:00 – 15:30 Uhr</span>
+          </div>
+          <div style="margin-top:28px;padding-top:24px;border-top:1px solid rgba(0,0,0,0.07);">
+            <p style="font-size:14px;color:#78350F;line-height:1.65;">📍 Amalienstraße 52, 80799 München<br>📞 +49 89 987 654 32</p>
+          </div>
+        </div>
+        <div class="reservierung-card reveal">
+          <h3>Tisch reservieren</h3>
+          <p>Reservieren Sie bequem online. Für größere Gruppen oder besondere Anlässe erreichen Sie uns gerne telefonisch.</p>
+          <form class="res-form" id="resForm">
+            <div class="res-row">
+              <input type="text" placeholder="Ihr Name">
+              <input type="tel" placeholder="Telefon">
+            </div>
+            <div class="res-row">
+              <input type="date">
+              <select>
+                <option>Uhrzeit wählen…</option>
+                <option>18:00 Uhr</option>
+                <option>18:30 Uhr</option>
+                <option>19:00 Uhr</option>
+                <option>19:30 Uhr</option>
+                <option>20:00 Uhr</option>
+                <option>20:30 Uhr</option>
+              </select>
+            </div>
+            <select style="width:100%;padding:12px 16px;border:1.5px solid rgba(245,222,179,0.15);border-radius:10px;font-size:15px;font-family:inherit;background:rgba(255,255,255,0.05);color:#F5DEB3;outline:none;margin-bottom:14px;">
+              <option>Personen: 2</option>
+              <option>Personen: 3</option>
+              <option>Personen: 4</option>
+              <option>Personen: 5–6</option>
+              <option>Personen: 7+</option>
+            </select>
+            <button type="submit" class="btn-reserve">Reservierung anfragen</button>
+            <div class="res-demo-msg" id="resDemoMsg">
+              ✅ <strong>Danke!</strong> Die Reservierung ist aktuell noch nicht verbunden – dies ist eine Demo-Website von WebsiteProfi.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Abendgold</div>
+          <p>Feine Küche in München – für Abende, die in Erinnerung bleiben. Familienbetrieb seit 2009.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="#atmosphaere">Atmosphäre</a>
+          <a href="#speisekarte">Speisekarte</a>
+          <a href="#reservierung">Reservierung</a>
+          <a href="#oeffnung">Öffnungszeiten</a>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <a href="../impressum.html">Impressum</a>
+          <a href="../datenschutz.html">Datenschutz</a>
+          <a href="../index.html">← WebsiteProfi</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Restaurant Abendgold | <strong style="color:#D4A017;">Demo-Website</strong> erstellt von <a href="../index.html" style="color:#D4A017;">WebsiteProfi</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    document.querySelectorAll('.menu-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    document.getElementById('resForm')?.addEventListener('submit', e => {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-reserve');
+      btn.textContent = 'Wird gesendet…';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.style.display = 'none';
+        document.getElementById('resDemoMsg').classList.add('show');
+      }, 800);
+    });
+  </script>
+</body>
+</html>

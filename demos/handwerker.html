@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Müller Bau & Sanierung – Demo-Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #1E293B; background: #fff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section-pad { padding: 100px 0; }
+    .bg-light { background: #F8FAFC; }
+    .bg-dark { background: #0F172A; }
+
+    /* ── DEMO BANNER ── */
+    .demo-banner {
+      background: #0F172A;
+      color: #94A3B8;
+      text-align: center;
+      padding: 10px 24px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .demo-banner strong { color: #fff; }
+    .demo-back {
+      background: #fff;
+      color: #0F172A;
+      padding: 5px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .demo-back:hover { background: #F1F5F9; }
+
+    /* ── NAVIGATION ── */
+    .nav {
+      position: sticky;
+      top: 37px;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #E2E8F0;
+      height: 68px;
+    }
+    .nav-inner { display: flex; align-items: center; height: 68px; gap: 40px; }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 18px; letter-spacing: -0.02em; color: #1E293B;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: #D97706;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff;
+    }
+    .nav-links { display: flex; gap: 28px; flex: 1; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: #64748B; transition: color 0.2s; }
+    .nav-links a:hover { color: #1E293B; }
+    .nav-cta {
+      margin-left: auto;
+      background: #D97706;
+      color: #fff;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover { background: #B45309; }
+    .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: #1E293B; border-radius: 2px; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: calc(100vh - 37px - 68px);
+      background: linear-gradient(140deg, #0F172A 0%, #1E3A5F 60%, #0D2340 100%);
+      display: flex; align-items: center;
+      padding: 80px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 80px;
+      background: #fff;
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(217,119,6,0.2);
+      border: 1px solid rgba(217,119,6,0.4);
+      color: #FCD34D;
+      padding: 6px 14px; border-radius: 100px;
+      font-size: 13px; font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5.5vw, 68px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    .hero h1 span { color: #FCD34D; }
+    .hero p {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      max-width: 560px;
+      margin-bottom: 40px;
+      line-height: 1.75;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-orange {
+      background: #D97706; color: #fff;
+      padding: 14px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 700;
+      transition: all 0.2s;
+    }
+    .btn-orange:hover { background: #B45309; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,119,6,0.3); }
+    .btn-white-ghost {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      padding: 14px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-white-ghost:hover { background: rgba(255,255,255,0.18); }
+    .hero-stats {
+      margin-top: 56px;
+      display: flex; gap: 40px;
+    }
+    .hero-stat { text-align: left; }
+    .stat-num { display: block; font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.03em; }
+    .stat-lbl { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+    /* ── SECTION HEADERS ── */
+    .s-label {
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #D97706; background: #FEF3C7;
+      padding: 4px 12px; border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .s-title { font-size: clamp(26px, 3.5vw, 40px); letter-spacing: -0.02em; margin-bottom: 16px; }
+    .s-sub { font-size: 17px; color: #64748B; line-height: 1.7; max-width: 600px; }
+    .s-intro { margin-bottom: 56px; }
+
+    /* ── LEISTUNGEN ── */
+    .leistungen-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .leistung-card {
+      background: #fff;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 32px 28px;
+      transition: all 0.3s;
+    }
+    .leistung-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-3px); }
+    .leistung-card:hover { border-color: #FCD34D; }
+    .leistung-icon { font-size: 36px; margin-bottom: 20px; }
+    .leistung-card h3 { font-size: 18px; margin-bottom: 10px; }
+    .leistung-card p { font-size: 15px; color: #64748B; line-height: 1.65; }
+
+    /* ── ÜBER UNS ── */
+    .ueber-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .ueber-visual {
+      background: linear-gradient(135deg, #1E3A5F 0%, #0F172A 100%);
+      border-radius: 20px;
+      padding: 48px 40px;
+      color: #fff;
+    }
+    .ueber-visual h3 { font-size: 28px; margin-bottom: 24px; }
+    .ueber-facts { display: flex; flex-direction: column; gap: 16px; }
+    .ueber-fact {
+      display: flex; align-items: center; gap: 16px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .ueber-fact span:first-child { font-size: 22px; }
+    .ueber-fact strong { display: block; font-size: 16px; }
+    .ueber-fact small { color: rgba(255,255,255,0.6); font-size: 13px; }
+    .ueber-text h2 { font-size: 34px; margin-bottom: 20px; letter-spacing: -0.02em; }
+    .ueber-text p { font-size: 16px; color: #64748B; line-height: 1.75; margin-bottom: 16px; }
+    .ueber-text .btn-orange { display: inline-flex; }
+
+    /* ── PROJEKTE ── */
+    .projekte-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .projekt-card {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #E2E8F0;
+      transition: all 0.3s;
+    }
+    .projekt-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.1); transform: translateY(-4px); }
+    .projekt-img {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px;
+    }
+    .projekt-img-1 { background: linear-gradient(135deg, #FEF9C3, #FEF3C7); }
+    .projekt-img-2 { background: linear-gradient(135deg, #DBEAFE, #BFDBFE); }
+    .projekt-img-3 { background: linear-gradient(135deg, #DCFCE7, #BBF7D0); }
+    .projekt-img-4 { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); }
+    .projekt-img-5 { background: linear-gradient(135deg, #FEF3C7, #FDE68A); }
+    .projekt-img-6 { background: linear-gradient(135deg, #E0F2FE, #BAE6FD); }
+    .projekt-info { padding: 20px 22px; }
+    .projekt-info h4 { font-size: 16px; margin-bottom: 6px; }
+    .projekt-info p { font-size: 13px; color: #64748B; }
+    .projekt-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 700;
+      background: #FEF3C7; color: #D97706;
+      padding: 3px 10px; border-radius: 100px;
+      margin-bottom: 8px;
+    }
+
+    /* ── KUNDENSTIMMEN ── */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testimonial-card {
+      background: #fff;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s;
+    }
+    .testimonial-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.07); }
+    .stars { color: #F59E0B; font-size: 16px; margin-bottom: 14px; letter-spacing: 2px; }
+    .testimonial-text { font-size: 15px; color: #475569; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .author-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: #fff;
+    }
+    .av1 { background: #0F172A; }
+    .av2 { background: #D97706; }
+    .av3 { background: #1D4ED8; }
+    .author-name { font-size: 15px; font-weight: 700; }
+    .author-role { font-size: 13px; color: #94A3B8; }
+
+    /* ── KONTAKT ── */
+    .kontakt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .kontakt-info h2 { font-size: 32px; margin-bottom: 20px; letter-spacing: -0.02em; }
+    .kontakt-info p { color: #64748B; margin-bottom: 32px; font-size: 16px; line-height: 1.7; }
+    .kontakt-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 20px;
+    }
+    .ki-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: #FEF3C7;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .ki-text strong { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .ki-text span { font-size: 15px; color: #64748B; }
+    .kontakt-form { background: #F8FAFC; border-radius: 20px; padding: 36px; border: 1px solid #E2E8F0; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #374151; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 11px 14px; border: 1.5px solid #E2E8F0;
+      border-radius: 10px; font-size: 15px; font-family: inherit;
+      background: #fff; outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: #D97706; box-shadow: 0 0 0 3px rgba(217,119,6,0.1); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .btn-submit {
+      width: 100%; background: #D97706; color: #fff;
+      border: none; cursor: pointer;
+      padding: 14px; border-radius: 10px;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      transition: all 0.2s;
+    }
+    .btn-submit:hover { background: #B45309; }
+    .form-demo-msg {
+      display: none;
+      margin-top: 16px;
+      background: #F0FDF4; border: 1px solid #BBF7D0;
+      color: #166534; border-radius: 10px;
+      padding: 14px 18px; font-size: 14px;
+    }
+    .form-demo-msg.show { display: block; }
+
+    /* ── FOOTER ── */
+    .footer { background: #0F172A; color: #94A3B8; padding: 56px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+    .footer-brand { color: #fff; font-weight: 800; font-size: 18px; margin-bottom: 14px; }
+    .footer-brand p { font-weight: 400; color: #64748B; font-size: 14px; margin-top: 10px; }
+    .footer-col h4 { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-col a { display: block; color: #64748B; font-size: 14px; margin-bottom: 10px; transition: color 0.2s; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 24px; font-size: 13px; text-align: center; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: flex; margin-left: auto; }
+      .ueber-grid, .kontakt-grid { grid-template-columns: 1fr; gap: 40px; }
+      .leistungen-grid, .projekte-grid, .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 36px; }
+      .leistungen-grid, .projekte-grid, .testimonials-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: column; gap: 20px; }
+      .section-pad { padding: 64px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Demo Banner -->
+  <div class="demo-banner">
+    <span>🎨 <strong>Demo-Website</strong> – Beispiel für einen Handwerksbetrieb von WebsiteProfi</span>
+    <a href="../index.html" class="demo-back">← Zurück zur Hauptseite</a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="logo-icon">🏗</div>
+        Müller Bau
+      </a>
+      <ul class="nav-links">
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#projekte">Projekte</a></li>
+        <li><a href="#ueber">Über uns</a></li>
+        <li><a href="#stimmen">Referenzen</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <a href="#kontakt" class="nav-cta">Angebot anfragen</a>
+      <button class="nav-burger" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-badge">⭐ Seit 1998 im Einsatz</div>
+      <h1>Bau & Sanierung,<br><span>auf die Sie sich</span><br>verlassen können.</h1>
+      <p>Von der Renovierung bis zum Neubau – wir bringen Qualität und Verlässlichkeit auf jede Baustelle. Persönlich, professionell und termingerecht.</p>
+      <div class="hero-btns">
+        <a href="#kontakt" class="btn-orange">Kostenlos anfragen</a>
+        <a href="#projekte" class="btn-white-ghost">Projekte ansehen</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-num">25+</span>
+          <span class="stat-lbl">Jahre Erfahrung</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">600+</span>
+          <span class="stat-lbl">Projekte abgeschlossen</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-lbl">Zufriedene Kunden</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leistungen -->
+  <section class="section-pad" id="leistungen">
+    <div class="container">
+      <div class="s-intro reveal">
+        <div class="s-label">Leistungen</div>
+        <h2 class="s-title">Was wir für Sie bauen</h2>
+        <p class="s-sub">Von der ersten Planung bis zum letzten Handgriff – mit Erfahrung, Sorgfalt und handwerklicher Präzision.</p>
+      </div>
+      <div class="leistungen-grid">
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🏠</div>
+          <h3>Renovierung & Sanierung</h3>
+          <p>Ob Bad, Küche oder komplette Wohnung – wir sanieren sauber, schnell und nach Ihren Wünschen.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🧱</div>
+          <h3>Mauerwerk & Rohbau</h3>
+          <p>Solide Fundamente, verlässlicher Rohbau – mit dem Erfahrungsschatz aus über 600 Projekten.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🚰</div>
+          <h3>Wasserschadensanierung</h3>
+          <p>Schnelle Reaktion, gründliche Trocknung und professionelle Wiederherstellung Ihrer Räume.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🪟</div>
+          <h3>Fenster & Türen</h3>
+          <p>Einbau und Austausch von Fenstern und Türen – energieeffizient und einbruchsicher.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🏗️</div>
+          <h3>Dacharbeiten</h3>
+          <p>Dachsanierung, Neubau und Reparaturen – wir sorgen dafür, dass Ihr Dach dicht bleibt.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🎨</div>
+          <h3>Innenausbau & Verputz</h3>
+          <p>Glatte Wände, schöne Oberflächen – für das perfekte Finish Ihrer Räumlichkeiten.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Über uns -->
+  <section class="section-pad bg-light" id="ueber">
+    <div class="container">
+      <div class="ueber-grid">
+        <div class="ueber-visual reveal">
+          <h3>Müller Bau &amp; Sanierung</h3>
+          <p style="color:rgba(255,255,255,0.65);font-size:15px;margin-bottom:28px;line-height:1.7;">Familiengeführter Handwerksbetrieb aus der Region – mit Leidenschaft für saubere Arbeit.</p>
+          <div class="ueber-facts">
+            <div class="ueber-fact">
+              <span>📅</span>
+              <div>
+                <strong>Gegründet 1998</strong>
+                <small>Mehr als 25 Jahre Erfahrung</small>
+              </div>
+            </div>
+            <div class="ueber-fact">
+              <span>👥</span>
+              <div>
+                <strong>14 Fachkräfte</strong>
+                <small>Qualifiziertes Handwerker-Team</small>
+              </div>
+            </div>
+            <div class="ueber-fact">
+              <span>🏅</span>
+              <div>
+                <strong>Meisterbetrieb</strong>
+                <small>Zertifiziert und versichert</small>
+              </div>
+            </div>
+            <div class="ueber-fact">
+              <span>📍</span>
+              <div>
+                <strong>Regional verwurzelt</strong>
+                <small>Bayern, Umkreis 80 km</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ueber-text reveal">
+          <div class="s-label">Über uns</div>
+          <h2>Handwerk mit Herz und Erfahrung</h2>
+          <p>Seit 1998 stehen wir für verlässliche Handwerksarbeit in der Region. Was als kleiner Familienbetrieb begann, ist heute ein eingespieltes Team von 14 erfahrenen Fachkräften – mit dem gleichen Anspruch wie am ersten Tag: sauber, pünktlich, professionell.</p>
+          <p>Wir sind kein anonymer Großbetrieb. Bei uns hat jeder Auftrag ein Gesicht, und wir kümmern uns persönlich darum, dass Sie zufrieden sind – vom ersten Gespräch bis zur Abnahme.</p>
+          <a href="#kontakt" class="btn-orange" style="margin-top:16px;display:inline-flex;align-items:center;padding:13px 24px;border-radius:10px;font-size:15px;font-weight:700;">Jetzt Kontakt aufnehmen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projekte -->
+  <section class="section-pad" id="projekte">
+    <div class="container">
+      <div class="s-intro reveal">
+        <div class="s-label">Referenzen</div>
+        <h2 class="s-title">Ausgewählte Projekte</h2>
+        <p class="s-sub">Ein kleiner Einblick in unsere abgeschlossenen Arbeiten – von der einfachen Renovierung bis zum komplexen Neubau.</p>
+      </div>
+      <div class="projekte-grid">
+        <div class="projekt-card reveal">
+          <div class="projekt-img projekt-img-1">🏠</div>
+          <div class="projekt-info">
+            <div class="projekt-tag">Sanierung</div>
+            <h4>Vollsanierung Mehrfamilienhaus</h4>
+            <p>München – 8 Wohneinheiten, 14 Wochen Laufzeit</p>
+          </div>
+        </div>
+        <div class="projekt-card reveal">
+          <div class="projekt-img projekt-img-2">🏢</div>
+          <div class="projekt-info">
+            <div class="projekt-tag">Neubau</div>
+            <h4>Gewerbebau Logistikzentrum</h4>
+            <p>Augsburg – 1.200 m² Nutzfläche</p>
+          </div>
+        </div>
+        <div class="projekt-card reveal">
+          <div class="projekt-img projekt-img-3">🚿</div>
+          <div class="projekt-info">
+            <div class="projekt-tag">Bad</div>
+            <h4>Badsanierung Einfamilienhaus</h4>
+            <p>Ingolstadt – Kompletterneuerung in 2 Wochen</p>
+          </div>
+        </div>
+        <div class="projekt-card reveal">
+          <div class="projekt-img projekt-img-4">🪟</div>
+          <div class="projekt-info">
+            <div class="projekt-tag">Fenster</div>
+            <h4>Fenstererneuerung Altbau</h4>
+            <p>Landsberg – 34 Fenster, energieeffizient</p>
+          </div>
+        </div>
+        <div class="projekt-card reveal">
+          <div class="projekt-img projekt-img-5">🏗️</div>
+          <div class="projekt-info">
+            <div class="projekt-tag">Dach</div>
+            <h4>Dachsanierung Reihenhaus</h4>
+            <p>Dachau – Komplettsanierung inkl. Dämmung</p>
+          </div>
+        </div>
+        <div class="projekt-card reveal">
+          <div class="projekt-img projekt-img-6">💧</div>
+          <div class="projekt-info">
+            <div class="projekt-tag">Wasserschaden</div>
+            <h4>Wasserschadenbehebung</h4>
+            <p>Freising – Notfall, Reaktion innerhalb 4 Stunden</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kundenstimmen -->
+  <section class="section-pad bg-light" id="stimmen">
+    <div class="container">
+      <div class="s-intro reveal">
+        <div class="s-label">Kundenstimmen</div>
+        <h2 class="s-title">Was unsere Kunden sagen</h2>
+        <p class="s-sub">Echte Rückmeldungen von Kunden, mit denen wir zusammengearbeitet haben.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">„Absolut professionelle Arbeit. Die Sanierung unserer Wohnung war in kürzester Zeit fertig, sauber und ohne Überraschungen. Klare Empfehlung!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar av1">TH</div>
+            <div>
+              <div class="author-name">Thomas H.</div>
+              <div class="author-role">Hausbesitzer, München</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">„Beim Wasserschaden hat Müller Bau innerhalb von Stunden reagiert und alles gerettet. Hervorragender Service, top Qualität."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar av2">SM</div>
+            <div>
+              <div class="author-name">Sandra M.</div>
+              <div class="author-role">Wohnungseigentümerin, Augsburg</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">„Verlässlich, pünktlich und immer erreichbar. Wir haben jetzt bereits das dritte Projekt mit Müller Bau umgesetzt – und werden wiederkommen."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar av3">PK</div>
+            <div>
+              <div class="author-name">Peter K.</div>
+              <div class="author-role">Gewerbetreibender, Ingolstadt</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kontakt -->
+  <section class="section-pad" id="kontakt">
+    <div class="container">
+      <div class="s-intro reveal">
+        <div class="s-label">Kontakt</div>
+        <h2 class="s-title">Jetzt anfragen</h2>
+        <p class="s-sub">Schreiben Sie uns oder rufen Sie an – wir melden uns schnell und besprechen Ihr Vorhaben persönlich.</p>
+      </div>
+      <div class="kontakt-grid">
+        <div class="reveal">
+          <div class="kontakt-item">
+            <div class="ki-icon">📞</div>
+            <div class="ki-text">
+              <strong>Telefon</strong>
+              <span>+49 89 123 456 78</span>
+            </div>
+          </div>
+          <div class="kontakt-item">
+            <div class="ki-icon">📧</div>
+            <div class="ki-text">
+              <strong>E-Mail</strong>
+              <span>info@mueller-bau.de</span>
+            </div>
+          </div>
+          <div class="kontakt-item">
+            <div class="ki-icon">📍</div>
+            <div class="ki-text">
+              <strong>Adresse</strong>
+              <span>Musterstraße 12, 80331 München</span>
+            </div>
+          </div>
+          <div class="kontakt-item">
+            <div class="ki-icon">⏰</div>
+            <div class="ki-text">
+              <strong>Erreichbar</strong>
+              <span>Mo–Fr 7–17 Uhr, Sa 8–13 Uhr</span>
+            </div>
+          </div>
+        </div>
+        <div class="kontakt-form reveal">
+          <form id="demoForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Ihr Name</label>
+                <input type="text" placeholder="Max Mustermann">
+              </div>
+              <div class="form-group">
+                <label>Telefon</label>
+                <input type="tel" placeholder="+49 …">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>E-Mail</label>
+              <input type="email" placeholder="ihre@email.de">
+            </div>
+            <div class="form-group">
+              <label>Art der Anfrage</label>
+              <select>
+                <option>Bitte wählen …</option>
+                <option>Renovierung / Sanierung</option>
+                <option>Neubau</option>
+                <option>Wasserschaden</option>
+                <option>Sonstiges</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Nachricht</label>
+              <textarea placeholder="Beschreiben Sie kurz Ihr Vorhaben …"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Anfrage absenden</button>
+            <div class="form-demo-msg" id="demoMsg">
+              ✅ <strong>Danke!</strong> Das Formular ist aktuell noch nicht verbunden – dies ist eine Demo-Website von WebsiteProfi.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">🏗️ Müller Bau & Sanierung</div>
+          <p style="color:#64748B;font-size:14px;line-height:1.65;">Ihr zuverlässiger Handwerksbetrieb aus München und Umgebung. Seit 1998 für Sie im Einsatz.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="#leistungen">Leistungen</a>
+          <a href="#projekte">Projekte</a>
+          <a href="#ueber">Über uns</a>
+          <a href="#kontakt">Kontakt</a>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <a href="../impressum.html">Impressum</a>
+          <a href="../datenschutz.html">Datenschutz</a>
+          <a href="../index.html">← WebsiteProfi</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Müller Bau & Sanierung | <strong style="color:#D97706;">Demo-Website</strong> erstellt von <a href="../index.html" style="color:#D97706;">WebsiteProfi</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    // Form demo
+    document.getElementById('demoForm')?.addEventListener('submit', e => {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-submit');
+      btn.textContent = 'Wird gesendet…';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.style.display = 'none';
+        document.getElementById('demoMsg').classList.add('show');
+      }, 800);
+    });
+  </script>
+</body>
+</html>
