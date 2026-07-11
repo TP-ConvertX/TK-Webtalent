@@ -1,5 +1,5 @@
 /* ===================================================
-   WEBSITEPROFI – MAIN JAVASCRIPT
+   TK WEBTALENT – MAIN JAVASCRIPT
    =================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {

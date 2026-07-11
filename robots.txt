@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://IHRE-DOMAIN.de/sitemap.xml
+Sitemap: https://tp-convertx.de/sitemap.xml
