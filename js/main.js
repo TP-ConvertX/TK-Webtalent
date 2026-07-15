@@ -82,14 +82,198 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ── CONTACT FORM SUBMIT FEEDBACK ──────────────── */
-  const contactForm = document.querySelector('.contact-form[action]');
-  if (contactForm) {
-    contactForm.addEventListener('submit', () => {
-      const btn = contactForm.querySelector('button[type="submit"]');
-      if (btn) { btn.textContent = 'Wird gesendet…'; btn.disabled = true; }
-    });
+  /* ── CHATBOT ─────────────────────────────────────── */
+  const chatMessages  = document.getElementById('chatMessages');
+  const chatInputArea = document.getElementById('chatInputArea');
+  const chatProgress  = document.getElementById('chatProgressBar');
+  const chatLabel     = document.getElementById('chatProgressLabel');
+  const chatSubtitle  = document.getElementById('chatSubtitle');
+  const chatForm      = document.getElementById('chatForm');
+
+  if (chatMessages) {
+
+  const STEPS = [
+    {
+      id: 'website', field: 'cf_website',
+      msg: '👋 Hallo! Ich bin Tim von TK Webtalent. Hast du bereits eine Website?',
+      type: 'choice',
+      choices: ['✅ Ja, aber sie braucht ein Update', '🆕 Nein, ich brauche eine neue', '🤔 Ich bin noch unsicher']
+    },
+    {
+      id: 'beruf', field: 'cf_beruf',
+      msg: 'Was machst du beruflich?',
+      placeholder: 'z.B. Elektriker, Friseur, Coach…',
+      type: 'text'
+    },
+    {
+      id: 'ziel', field: 'cf_ziel',
+      msg: 'Was ist dein wichtigstes Ziel mit der neuen Website?',
+      type: 'choice',
+      choices: ['📈 Mehr Kunden gewinnen', '🏆 Professioneller wirken', '🔍 Besser bei Google gefunden werden', '💡 Alles davon']
+    },
+    {
+      id: 'budget', field: 'cf_budget',
+      msg: 'Hast du schon eine Vorstellung vom Budget?',
+      type: 'choice',
+      choices: ['💶 Bis 500 €', '💶 500 € – 1.500 €', '💶 Über 1.500 €', '❓ Noch offen']
+    },
+    {
+      id: 'name', field: 'cf_name',
+      msg: 'Super! Wie darf ich dich ansprechen?',
+      placeholder: 'Dein Name…',
+      type: 'text'
+    },
+    {
+      id: 'email', field: 'cf_email',
+      msg: 'Und unter welcher E-Mail-Adresse kann ich dir das Angebot schicken?',
+      placeholder: 'deine@email.de',
+      type: 'email'
+    }
+  ];
+
+  let currentStep = 0;
+
+  function scrollChat() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
+
+  function addMsg(text, who) {
+    const wrap = document.createElement('div');
+    wrap.className = 'chat-msg ' + who;
+    const av = document.createElement('div');
+    av.className = 'msg-avatar';
+    av.textContent = who === 'bot' ? 'TK' : '●';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.textContent = text;
+    wrap.appendChild(av);
+    wrap.appendChild(bubble);
+    chatMessages.appendChild(wrap);
+    scrollChat();
+  }
+
+  function showTyping() {
+    const wrap = document.createElement('div');
+    wrap.className = 'chat-msg bot';
+    wrap.id = 'typingIndicator';
+    const av = document.createElement('div');
+    av.className = 'msg-avatar';
+    av.textContent = 'TK';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble typing-bubble';
+    bubble.innerHTML = '<span></span><span></span><span></span>';
+    wrap.appendChild(av);
+    wrap.appendChild(bubble);
+    chatMessages.appendChild(wrap);
+    scrollChat();
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typingIndicator');
+    if (t) t.remove();
+  }
+
+  function updateProgress(step) {
+    const pct = Math.round((step / STEPS.length) * 100);
+    if (chatProgress) chatProgress.style.width = pct + '%';
+    if (chatLabel) chatLabel.textContent = step + ' / ' + STEPS.length;
+  }
+
+  function setAnswer(stepIdx, value) {
+    const field = document.getElementById(STEPS[stepIdx].field);
+    if (field) field.value = value;
+  }
+
+  function renderInput(step) {
+    chatInputArea.innerHTML = '';
+    if (!step) return;
+
+    if (step.type === 'choice') {
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-choices';
+      step.choices.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'chat-choice-btn';
+        btn.textContent = c;
+        btn.addEventListener('click', () => handleAnswer(c));
+        wrap.appendChild(btn);
+      });
+      chatInputArea.appendChild(wrap);
+
+    } else {
+      const row = document.createElement('div');
+      row.className = 'chat-text-row';
+      const input = document.createElement('input');
+      input.type = step.type || 'text';
+      input.className = 'chat-text-input';
+      input.placeholder = step.placeholder || '';
+      const send = document.createElement('button');
+      send.className = 'chat-send-btn';
+      send.textContent = 'Weiter →';
+      send.disabled = true;
+      input.addEventListener('input', () => { send.disabled = input.value.trim() === ''; });
+      input.addEventListener('keydown', e => { if (e.key === 'Enter' && !send.disabled) handleAnswer(input.value.trim()); });
+      send.addEventListener('click', () => { if (!send.disabled) handleAnswer(input.value.trim()); });
+      row.appendChild(input);
+      row.appendChild(send);
+      chatInputArea.appendChild(row);
+      setTimeout(() => input.focus(), 100);
+    }
+  }
+
+  function handleAnswer(value) {
+    chatInputArea.innerHTML = '';
+    setAnswer(currentStep, value);
+    addMsg(value, 'user');
+    currentStep++;
+    updateProgress(currentStep);
+
+    if (currentStep >= STEPS.length) {
+      // All done – show submit
+      setTimeout(() => {
+        showTyping();
+        setTimeout(() => {
+          removeTyping();
+          addMsg('🎉 Perfekt! Ich hab alles was ich brauche. Klick unten auf „Angebot anfordern" und ich melde mich innerhalb von 24 Stunden bei dir!', 'bot');
+          if (chatSubtitle) chatSubtitle.textContent = '✓ Fertig – fast geschafft!';
+          const btn = document.createElement('button');
+          btn.className = 'chat-submit-btn';
+          btn.textContent = '📩 Angebot jetzt anfordern →';
+          btn.addEventListener('click', () => {
+            btn.textContent = 'Wird gesendet…';
+            btn.disabled = true;
+            chatForm.submit();
+          });
+          chatInputArea.appendChild(btn);
+          scrollChat();
+        }, 1400);
+      }, 300);
+      return;
+    }
+
+    const next = STEPS[currentStep];
+    setTimeout(() => {
+      showTyping();
+      setTimeout(() => {
+        removeTyping();
+        addMsg(next.msg, 'bot');
+        renderInput(next);
+      }, 900 + Math.random() * 400);
+    }, 400);
+  }
+
+  // Start conversation
+  setTimeout(() => {
+    showTyping();
+    setTimeout(() => {
+      removeTyping();
+      addMsg(STEPS[0].msg, 'bot');
+      renderInput(STEPS[0]);
+      updateProgress(0);
+    }, 1000);
+  }, 500);
+
+  } // end if (chatMessages)
 
   /* ── ACTIVE NAV LINK (on scroll) ───────────────── */
   const sections = document.querySelectorAll('section[id]');
