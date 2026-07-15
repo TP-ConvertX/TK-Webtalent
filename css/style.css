@@ -584,7 +584,19 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   width: 92%;
   transform: translateX(-50%) rotateY(-26deg);
   transform-style: preserve-3d;
-  filter: drop-shadow(-14px 40px 70px rgba(0,0,0,0.32)) drop-shadow(0 10px 24px rgba(0,0,0,0.16));
+  /* NO filter here — filter flattens preserve-3d! Shadow is on base-panel instead */
+}
+/* Floor shadow via pseudo-element on the wrap */
+.device-laptop::before {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 5%;
+  width: 90%;
+  height: 40px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.28) 0%, transparent 70%);
+  transform: rotateX(90deg);
+  transform-origin: top center;
 }
 
 /* Screen lid – opens backward from the hinge (bottom of lid) */
@@ -593,6 +605,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   transform: rotateX(52deg);
   transform-style: preserve-3d;
   position: relative;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.22), 8px 0 20px rgba(0,0,0,0.1);
 }
 
 /* Base/keyboard panel – lies flat, hinge at top */
@@ -601,6 +614,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   transform: rotateX(-52deg);
   transform-style: preserve-3d;
   position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.2);
 }
 .laptop-screen {
   background: #fff;
