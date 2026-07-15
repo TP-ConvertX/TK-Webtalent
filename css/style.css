@@ -541,41 +541,193 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   margin-top: 2px;
 }
 
-/* PHONE */
+/* PHONE – iPhone Style */
 .device-phone {
   position: absolute;
   right: 0;
   bottom: 60px;
-  width: 14%;
-  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.28));
+  width: 15%;
+  filter: drop-shadow(0 20px 48px rgba(0,0,0,0.38));
 }
 .phone-frame {
-  background: #0F172A;
-  border-radius: 16px;
-  padding: 10px 5px 8px;
+  background: linear-gradient(160deg, #2a2a2a 0%, #111 100%);
+  border-radius: 26px;
+  padding: 10px 4px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  border: 1.5px solid #334155;
+  gap: 0;
+  position: relative;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.1),
+    0 0 0 2px #0a0a0a;
+  border: 1.5px solid #3a3a3a;
 }
-.phone-notch {
-  width: 28px; height: 5px;
-  background: #1E293B;
-  border-radius: 3px;
-  margin-bottom: 2px;
+/* Volume buttons left */
+.phone-frame::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 22%;
+  width: 3px;
+  height: 14px;
+  background: #2a2a2a;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 20px 0 #2a2a2a, 0 38px 0 #2a2a2a;
+}
+/* Power button right */
+.phone-frame::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 30%;
+  width: 3px;
+  height: 24px;
+  background: #2a2a2a;
+  border-radius: 0 2px 2px 0;
+}
+.phone-dynamic-island {
+  width: 32px;
+  height: 8px;
+  background: #000;
+  border-radius: 20px;
+  margin-bottom: 5px;
 }
 .phone-screen {
   background: #fff;
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
   width: 100%;
 }
 .phone-home-bar {
-  width: 30px; height: 3px;
-  background: #334155;
-  border-radius: 2px;
-  margin-top: 4px;
+  width: 34px;
+  height: 3px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 3px;
+  margin-top: 7px;
+}
+
+/* Mini website content inside phone */
+.phone-site-header {
+  background: #0F172A;
+  padding: 4px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.phone-site-logo {
+  font-size: 5.5px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.2px;
+  line-height: 1;
+}
+.phone-site-logo span { color: #0EA5E9; }
+.phone-site-hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2px;
+}
+.phone-site-hamburger span {
+  display: block;
+  width: 7px;
+  height: 0.9px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 1px;
+}
+.phone-site-hero {
+  background: linear-gradient(150deg, #0F172A 0%, #0c2a4a 100%);
+  padding: 8px 7px 7px;
+}
+.phone-site-badge {
+  background: rgba(14,165,233,0.2);
+  color: #38BDF8;
+  font-size: 3.5px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 3px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.phone-site-h1 {
+  color: #fff;
+  font-size: 7.5px;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 2px;
+}
+.phone-site-sub {
+  color: rgba(255,255,255,0.55);
+  font-size: 4px;
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+.phone-site-cta {
+  background: #0EA5E9;
+  color: #fff;
+  font-size: 4px;
+  font-weight: 700;
+  padding: 2.5px 6px;
+  border-radius: 20px;
+  display: inline-block;
+  letter-spacing: 0.1px;
+}
+.phone-site-cards {
+  background: #F1F5F9;
+  padding: 5px 6px;
+  display: flex;
+  gap: 3px;
+}
+.phone-site-card {
+  background: #fff;
+  border: 0.5px solid #E2E8F0;
+  border-radius: 4px;
+  padding: 4px 3px;
+  flex: 1;
+  text-align: center;
+  font-size: 3.2px;
+  color: #64748B;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.phone-site-card span {
+  display: block;
+  font-size: 6.5px;
+  margin-bottom: 1.5px;
+}
+.phone-site-section-label {
+  background: #fff;
+  padding: 4px 7px 2px;
+  font-size: 3.8px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.phone-site-services {
+  background: #fff;
+  padding: 3px 6px 6px;
+  display: flex;
+  gap: 3px;
+}
+.phone-site-service {
+  background: #F8FAFC;
+  border: 0.5px solid #E2E8F0;
+  border-radius: 4px;
+  padding: 4px 3px;
+  flex: 1;
+  text-align: center;
+  font-size: 3px;
+  color: #475569;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.phone-site-service span {
+  display: block;
+  font-size: 7px;
+  margin-bottom: 2px;
 }
 
 /* Floating badges */
@@ -1386,4 +1538,80 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
   .float-1, .float-2 { display: none; }
   .process-step { grid-template-columns: 56px 1fr; gap: 16px; }
+}
+
+/* ─── COOKIE BANNER ──────────────────────────────── */
+.cookie-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.cookie-overlay.hidden {
+  display: none;
+}
+.cookie-banner {
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px 36px 32px;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.10);
+  text-align: center;
+  animation: cookiePop 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+  position: relative;
+}
+@keyframes cookiePop {
+  from { opacity: 0; transform: scale(0.82) translateY(24px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.cookie-icon-wrap {
+  font-size: 44px;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+.cookie-banner h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--c-text);
+  margin-bottom: 10px;
+}
+.cookie-banner p {
+  font-size: 14px;
+  color: var(--c-text-2);
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+.cookie-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.cookie-btn {
+  min-width: 155px;
+  font-size: 14px;
+}
+.cookie-footer-links {
+  font-size: 12px;
+  color: var(--c-text-3);
+}
+.cookie-footer-links a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cookie-footer-links a:hover { color: var(--c-accent); }
+
+@media (max-width: 500px) {
+  .cookie-banner { padding: 32px 24px 24px; }
+  .cookie-actions { flex-direction: column; }
+  .cookie-btn { width: 100%; }
 }

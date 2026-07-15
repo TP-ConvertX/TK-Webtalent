@@ -4,6 +4,22 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ── COOKIE BANNER (shows every visit) ─────────── */
+  const cookieOverlay = document.getElementById('cookieOverlay');
+  const cookieAccept  = document.getElementById('cookieAccept');
+  const cookieDecline = document.getElementById('cookieDecline');
+
+  const closeCookieBanner = () => {
+    cookieOverlay.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+
+  if (cookieOverlay) {
+    document.body.style.overflow = 'hidden';
+    cookieAccept?.addEventListener('click', closeCookieBanner);
+    cookieDecline?.addEventListener('click', closeCookieBanner);
+  }
+
   /* ── NAV SCROLL EFFECT ──────────────────────────── */
   const nav = document.getElementById('nav');
   const onScroll = () => {
