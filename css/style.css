@@ -579,8 +579,8 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 /* LAPTOP – open lid 3D, like a real laptop from 3/4 view */
 .device-laptop {
   position: absolute;
-  left: 50%;
-  bottom: 80px;
+  left: 44%;
+  bottom: 140px;
   width: 100%;
   transform: translateX(-50%) rotateY(-26deg);
   transform-style: preserve-3d;
