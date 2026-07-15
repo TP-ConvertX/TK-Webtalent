@@ -572,17 +572,20 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   position: relative;
   width: 100%;
   height: 420px;
-  perspective: 2400px;
+  perspective: 1300px;
+  perspective-origin: 42% 65%;
 }
 
-/* LAPTOP */
+/* LAPTOP – back, strong side angle */
 .device-laptop {
   position: absolute;
-  left: 0; bottom: 0;
-  width: 82%;
-  filter: drop-shadow(0 36px 64px rgba(0,0,0,0.28)) drop-shadow(0 8px 18px rgba(0,0,0,0.14));
-  transform: rotateY(-5deg) rotateX(2deg);
-  transform-origin: bottom center;
+  left: 0;
+  bottom: 0;
+  width: 76%;
+  z-index: 1;
+  filter: drop-shadow(0 28px 56px rgba(0,0,0,0.28)) drop-shadow(0 8px 16px rgba(0,0,0,0.14));
+  transform: rotateY(-42deg);
+  transform-origin: center bottom;
 }
 .laptop-screen {
   background: #fff;
@@ -624,7 +627,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   background: #252525;
   border-radius: 50%;
   position: absolute;
-  top: -34px;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%);
   box-shadow:
@@ -655,15 +658,16 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   box-shadow: 0 3px 8px rgba(0,0,0,0.32);
 }
 
-/* TABLET */
+/* TABLET – middle, slight angle */
 .device-tablet {
   position: absolute;
-  right: 3%;
-  bottom: 32px;
-  width: 25%;
-  filter: drop-shadow(0 22px 44px rgba(0,0,0,0.3)) drop-shadow(0 5px 10px rgba(0,0,0,0.14));
-  transform: rotateY(7deg) rotateX(2deg);
-  transform-origin: bottom center;
+  left: 36%;
+  bottom: 20px;
+  width: 29%;
+  z-index: 2;
+  filter: drop-shadow(0 20px 42px rgba(0,0,0,0.30)) drop-shadow(0 5px 10px rgba(0,0,0,0.14));
+  transform: rotateY(-7deg);
+  transform-origin: center bottom;
 }
 .tablet-frame {
   background: linear-gradient(145deg, #2C3038 0%, #1A1C22 60%, #101214 100%);
@@ -702,15 +706,15 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   margin-top: 2px;
 }
 
-/* PHONE – iPhone Style */
+/* PHONE – front, perfectly upright */
 .device-phone {
   position: absolute;
-  right: -1%;
-  bottom: 52px;
-  width: 19%;
-  filter: drop-shadow(0 28px 56px rgba(0,0,0,0.42)) drop-shadow(0 6px 14px rgba(0,0,0,0.22));
-  transform: rotateY(14deg) rotateX(3deg);
-  transform-origin: bottom center;
+  right: 0;
+  bottom: 44px;
+  width: 20%;
+  z-index: 3;
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.42)) drop-shadow(0 6px 14px rgba(0,0,0,0.22));
+  transform: none;
 }
 .phone-frame {
   background: linear-gradient(155deg, #3C3C3E 0%, #1C1C1E 45%, #0D0D0F 100%);
