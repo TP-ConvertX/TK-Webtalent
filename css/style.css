@@ -571,7 +571,8 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 .devices-wrap {
   position: relative;
   width: 100%;
-  height: 380px;
+  height: 420px;
+  perspective: 2400px;
 }
 
 /* LAPTOP */
@@ -579,82 +580,124 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   position: absolute;
   left: 0; bottom: 0;
   width: 82%;
-  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.18));
+  filter: drop-shadow(0 36px 64px rgba(0,0,0,0.28)) drop-shadow(0 8px 18px rgba(0,0,0,0.14));
+  transform: rotateY(-5deg) rotateX(2deg);
+  transform-origin: bottom center;
 }
 .laptop-screen {
   background: #fff;
-  border-radius: 8px 8px 0 0;
-  border: 8px solid #1E293B;
-  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  border: 8px solid #111;
+  border-bottom: 5px solid #111;
   overflow: hidden;
+  position: relative;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.07),
+    0 -1px 0 rgba(255,255,255,0.04);
+}
+/* Screen glare – shared */
+.laptop-screen::after,
+.tablet-screen::after,
+.phone-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    138deg,
+    rgba(255,255,255,0.16) 0%,
+    rgba(255,255,255,0.05) 28%,
+    transparent 55%
+  );
+  pointer-events: none;
+  z-index: 10;
 }
 .laptop-chin {
-  background: #1E293B;
-  height: 14px;
-  border-radius: 0 0 4px 4px;
+  background: linear-gradient(180deg, #181818 0%, #111 100%);
+  height: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 .laptop-cam {
   width: 5px; height: 5px;
-  background: #334155;
+  background: #252525;
   border-radius: 50%;
   position: absolute;
-  top: -11px;
+  top: -34px;
   left: 50%;
   transform: translateX(-50%);
+  box-shadow:
+    0 0 0 1.5px rgba(255,255,255,0.08),
+    inset 0 0 0 1px rgba(0,0,0,0.6),
+    0 0 3px rgba(0,150,255,0.15);
 }
 .laptop-base {
-  background: linear-gradient(180deg, #334155, #1E293B);
-  height: 14px;
-  border-radius: 0 0 8px 8px;
-  padding: 4px 16px 0;
+  background: linear-gradient(180deg, #C6CBD3 0%, #A8ADB6 40%, #9A9FA8 100%);
+  height: 16px;
+  border-radius: 0 0 5px 5px;
+  padding: 3px 18px 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    0 2px 0 rgba(0,0,0,0.18);
 }
 .laptop-keyboard {
-  height: 6px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 3px;
+  height: 7px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.09) 100%);
+  border-radius: 3px 3px 0 0;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
 }
 .laptop-foot {
-  height: 4px;
-  background: #0F172A;
-  border-radius: 0 0 12px 12px;
-  margin: 0 10%;
+  height: 3px;
+  background: linear-gradient(90deg, #8a8f97 0%, #B8BDC5 25%, #BEC3CB 50%, #B8BDC5 75%, #8a8f97 100%);
+  border-radius: 0 0 4px 4px;
+  margin: 0 9%;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.32);
 }
 
 /* TABLET */
 .device-tablet {
   position: absolute;
-  right: 2%;
-  bottom: 28px;
-  width: 26%;
-  filter: drop-shadow(0 16px 32px rgba(0,0,0,0.22));
+  right: 3%;
+  bottom: 32px;
+  width: 25%;
+  filter: drop-shadow(0 22px 44px rgba(0,0,0,0.3)) drop-shadow(0 5px 10px rgba(0,0,0,0.14));
+  transform: rotateY(7deg) rotateX(2deg);
+  transform-origin: bottom center;
 }
 .tablet-frame {
-  background: #1E293B;
-  border-radius: 12px;
-  padding: 10px 6px;
+  background: linear-gradient(145deg, #2C3038 0%, #1A1C22 60%, #101214 100%);
+  border-radius: 14px;
+  padding: 11px 7px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 0 0 0 1px rgba(255,255,255,0.05),
+    0 0 0 1px rgba(0,0,0,0.5);
 }
 .tablet-cam {
   width: 5px; height: 5px;
-  background: #334155;
+  background: #1e2128;
   border-radius: 50%;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
+  box-shadow:
+    0 0 0 1.5px rgba(255,255,255,0.09),
+    inset 0 0 0 1px rgba(0,0,0,0.6),
+    0 0 4px rgba(0,150,255,0.1);
 }
 .tablet-screen {
   background: #fff;
-  border-radius: 4px;
+  border-radius: 5px;
   overflow: hidden;
   width: 100%;
+  position: relative;
 }
 .tablet-home {
-  width: 24px; height: 5px;
-  background: #334155;
+  width: 26px; height: 4px;
+  background: rgba(255,255,255,0.18);
   border-radius: 3px;
   margin-top: 2px;
 }
@@ -662,67 +705,74 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 /* PHONE – iPhone Style */
 .device-phone {
   position: absolute;
-  right: 0;
-  bottom: 60px;
-  width: 15%;
-  filter: drop-shadow(0 20px 48px rgba(0,0,0,0.38));
+  right: -1%;
+  bottom: 52px;
+  width: 19%;
+  filter: drop-shadow(0 28px 56px rgba(0,0,0,0.42)) drop-shadow(0 6px 14px rgba(0,0,0,0.22));
+  transform: rotateY(14deg) rotateX(3deg);
+  transform-origin: bottom center;
 }
 .phone-frame {
-  background: linear-gradient(160deg, #2a2a2a 0%, #111 100%);
-  border-radius: 26px;
-  padding: 10px 4px 8px;
+  background: linear-gradient(155deg, #3C3C3E 0%, #1C1C1E 45%, #0D0D0F 100%);
+  border-radius: 32px;
+  padding: 12px 5px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
   position: relative;
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.1),
-    0 0 0 2px #0a0a0a;
-  border: 1.5px solid #3a3a3a;
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    inset 1px 0 0 rgba(255,255,255,0.07),
+    inset -1px 0 0 rgba(255,255,255,0.04),
+    0 0 0 1px rgba(255,255,255,0.1),
+    0 0 0 2.5px #050507;
+  border: none;
 }
 /* Volume buttons left */
 .phone-frame::before {
   content: '';
   position: absolute;
-  left: -4px;
-  top: 22%;
+  left: -3.5px;
+  top: 20%;
   width: 3px;
-  height: 14px;
-  background: #2a2a2a;
+  height: 13px;
+  background: linear-gradient(90deg, #222, #2e2e2e);
   border-radius: 2px 0 0 2px;
-  box-shadow: 0 20px 0 #2a2a2a, 0 38px 0 #2a2a2a;
+  box-shadow: 0 22px 0 #2a2a2a, 0 42px 0 #2a2a2a;
 }
 /* Power button right */
 .phone-frame::after {
   content: '';
   position: absolute;
-  right: -4px;
-  top: 30%;
+  right: -3.5px;
+  top: 28%;
   width: 3px;
-  height: 24px;
-  background: #2a2a2a;
+  height: 26px;
+  background: linear-gradient(90deg, #2e2e2e, #222);
   border-radius: 0 2px 2px 0;
 }
 .phone-dynamic-island {
-  width: 32px;
-  height: 8px;
+  width: 34px;
+  height: 9px;
   background: #000;
   border-radius: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
 }
 .phone-screen {
   background: #fff;
-  border-radius: 6px;
+  border-radius: 7px;
   overflow: hidden;
   width: 100%;
+  position: relative;
 }
 .phone-home-bar {
-  width: 34px;
+  width: 38px;
   height: 3px;
-  background: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.32);
   border-radius: 3px;
-  margin-top: 7px;
+  margin-top: 8px;
 }
 
 /* Mini website content inside phone */
