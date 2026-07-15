@@ -321,7 +321,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   display: flex;
   align-items: center;
   padding-top: var(--nav-height);
-  padding-bottom: 80px;
+  padding-bottom: 20px;
   background: linear-gradient(160deg, #fff 0%, #F0F9FF 50%, #EFF6FF 100%);
   position: relative;
   overflow: hidden;
@@ -348,9 +348,9 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 .hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  gap: 48px;
   align-items: center;
-  padding-top: 40px;
+  padding-top: 16px;
 }
 .hero-badge {
   display: inline-flex;
@@ -363,7 +363,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   border: 1px solid rgba(14,165,233,0.2);
   padding: 6px 14px;
   border-radius: 100px;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 .badge-dot {
   width: 7px; height: 7px;
@@ -376,25 +376,25 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   50% { opacity: 0.6; transform: scale(0.85); }
 }
 .hero-headline {
-  font-size: clamp(36px, 5vw, 62px);
+  font-size: clamp(32px, 4.5vw, 56px);
   line-height: 1.1;
   letter-spacing: -0.03em;
   color: var(--c-text);
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 .hero-sub {
-  font-size: 18px;
+  font-size: 17px;
   color: var(--c-text-2);
-  line-height: 1.75;
+  line-height: 1.65;
   max-width: 520px;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 .hero-actions {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 48px;
+  margin-bottom: 28px;
 }
 .hero-stats {
   display: flex;
@@ -986,7 +986,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   white-space: nowrap;
   animation: float 3s ease-in-out infinite;
 }
-.float-1 { bottom: 110px; left: 0px;  animation-delay: 0s; }
+.float-1 { bottom: 200px; left: 0px;  animation-delay: 0s; }
 .float-2 { top: 40px;    right: 0px;  animation-delay: 1s; }
 .float-3 { bottom: 240px; right: 0px; animation-delay: 2s; }
 @keyframes float {
