@@ -1,11 +1,10 @@
 /* ===================================================
-   TK WEBTALENT – TERMIN-E-MAIL (Gmail SMTP)
+   TK WEBTALENT – TERMIN-E-MAIL (Resend)
    Versendet Bestätigungs- und Benachrichtigungs-Mails
-   über das Google-Konto per App-Passwort.
+   via Resend bei Buchung oder Absage.
    =================================================== */
 
 const { createClient } = require('@supabase/supabase-js');
-const nodemailer        = require('nodemailer');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -18,13 +17,13 @@ module.exports = async function handler(req, res) {
   const { data: { user }, error: authErr } = await sbAnon.auth.getUser(token);
   if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
 
-  const GMAIL_USER = process.env.GMAIL_USER;
-  const GMAIL_PASS = process.env.GMAIL_APP_PASSWORD;
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || GMAIL_USER;
+  const RESEND_KEY  = process.env.RESEND_API_KEY;
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+  const FROM        = process.env.FROM_EMAIL || 'TK Webtalent <kontakt@tp-convertx.de>';
 
-  /* Gmail nicht konfiguriert → still überspringen */
-  if (!GMAIL_USER || !GMAIL_PASS) {
-    console.warn('[email] GMAIL_USER / GMAIL_APP_PASSWORD nicht gesetzt – übersprungen');
+  /* Resend nicht konfiguriert → still überspringen */
+  if (!RESEND_KEY) {
+    console.warn('[email] RESEND_API_KEY nicht gesetzt – übersprungen');
     return res.status(200).json({ ok: true, skipped: true });
   }
 
@@ -66,20 +65,23 @@ module.exports = async function handler(req, res) {
     customerName,
     formattedDate: fmt,
     adminEmail: ADMIN_EMAIL,
-    from: `TK Webtalent <${GMAIL_USER}>`
-  });
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: GMAIL_USER, pass: GMAIL_PASS }
+    from: FROM
   });
 
   for (const mail of mails) {
     if (!mail.to) continue;
     try {
-      await transporter.sendMail(mail);
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_KEY}`,
+          'Content-Type':  'application/json'
+        },
+        body: JSON.stringify(mail)
+      });
+      if (!r.ok) console.error('[email] Resend:', await r.text());
     } catch (e) {
-      console.error('[email] Sendefehler:', e.message);
+      console.error('[email] Netzwerkfehler:', e.message);
     }
   }
 
