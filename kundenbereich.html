@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mein Projekt – TK Webtalent</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F172A'/><rect width='100' height='100' rx='20' fill='url(%23g)' opacity='.9'/><text y='.72em' font-size='40' x='50%' text-anchor='middle' fill='white' font-weight='800' font-family='Inter,system-ui,sans-serif'>TK</text><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%230EA5E9'/><stop offset='1' stop-color='%230F172A'/></linearGradient></defs></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav class="portal-nav">
+  <div class="portal-nav-inner">
+    <a href="/" class="portal-nav-logo">
+      <div class="logo-mark">TK</div>
+      <span class="logo-name">Webtalent</span>
+    </a>
+    <div class="portal-nav-right">
+      <div class="portal-user-pill">
+        <div class="portal-user-avatar" id="userAvatar">—</div>
+        <span class="portal-user-name" id="userName">Konto</span>
+      </div>
+      <button class="btn btn-outline" onclick="signOut()" style="font-size:14px;padding:8px 18px">
+        Abmelden
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HAUPT-INHALT ── -->
+<main class="portal-main" id="portalMain">
+
+  <!-- Ladezustand -->
+  <div class="portal-container" id="stateLoading">
+    <div class="portal-loading">
+      <div class="portal-spinner"></div>
+      <p>Projektdaten werden geladen …</p>
+    </div>
+  </div>
+
+  <!-- Konto deaktiviert -->
+  <div class="portal-container" id="stateDisabled" style="display:none">
+    <div class="project-card" style="margin-top:40px">
+      <div class="portal-empty">
+        <div class="portal-empty-icon">🔒</div>
+        <h3>Konto deaktiviert</h3>
+        <p>Dein Konto wurde vorübergehend deaktiviert. Bitte melde dich bei <a href="mailto:kontakt@tp-convertx.de" style="color:var(--c-accent)">kontakt@tp-convertx.de</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kein Projekt vorhanden -->
+  <div class="portal-container" id="stateNoProject" style="display:none">
+    <div class="portal-welcome">
+      <p class="portal-welcome-label">Kundenbereich</p>
+      <h1 id="greetNoProject">Hallo!</h1>
+      <p class="portal-welcome-sub">Dein persönlicher Projektstatus von TK Webtalent.</p>
+    </div>
+    <div class="project-card">
+      <div class="portal-empty">
+        <div class="portal-empty-icon">🚀</div>
+        <h3>Noch kein Projekt angelegt</h3>
+        <p>Dein Webseitenprojekt wurde noch nicht eingerichtet. TK Webtalent kümmert sich darum – du wirst informiert, sobald alles bereit ist.</p>
+        <div style="margin-top:24px">
+          <a href="mailto:kontakt@tp-convertx.de" class="btn btn-primary">Nachfragen →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projekt vorhanden -->
+  <div class="portal-container" id="stateProject" style="display:none">
+    <div class="portal-welcome">
+      <p class="portal-welcome-label">Dein Projektstatus</p>
+      <h1 id="greetName">Willkommen zurück!</h1>
+      <p class="portal-welcome-sub" id="greetSub">Hier siehst du den aktuellen Stand deines Projekts.</p>
+    </div>
+
+    <!-- Projekt-Karte -->
+    <div class="project-card">
+      <div class="project-card-header">
+        <div>
+          <div class="project-name" id="projName">—</div>
+          <div class="project-meta">
+            <div class="project-updated">
+              🕐 Zuletzt aktualisiert: <span id="projUpdated">—</span>
+            </div>
+          </div>
+        </div>
+        <div id="projStatusBadge"></div>
+      </div>
+
+      <div class="project-card-body">
+
+        <!-- Phasen-Indikator -->
+        <div class="phase-section">
+          <div class="phase-section-label">Projektfortschritt</div>
+          <div id="phaseTrack"></div>
+          <div class="phase-current-row">
+            <div class="phase-badge" id="phaseBadge">
+              <div class="phase-live-dot"></div>
+              <span id="phaseName">—</span>
+            </div>
+            <span style="font-size:13px;color:var(--c-text-2)">Aktuelle Phase</span>
+          </div>
+        </div>
+
+        <!-- Status & nächste Schritte -->
+        <div class="info-grid">
+          <div class="info-block info-block-full">
+            <div class="info-block-label">Status-Beschreibung</div>
+            <div class="info-block-value" id="projDesc">
+              <span class="info-block-empty">Noch keine Beschreibung hinterlegt.</span>
+            </div>
+          </div>
+          <div class="info-block info-block-full">
+            <div class="info-block-label">Nächste Schritte</div>
+            <div class="info-block-value" id="projNext">
+              <span class="info-block-empty">Noch keine nächsten Schritte hinterlegt.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live-Vorschau -->
+        <div class="preview-section" id="previewSection" style="display:none">
+          <div class="preview-label">Live-Vorschau deiner Website</div>
+
+          <div class="preview-browser">
+            <div class="preview-browser-bar">
+              <div class="preview-dots">
+                <div class="preview-dot preview-dot-r"></div>
+                <div class="preview-dot preview-dot-y"></div>
+                <div class="preview-dot preview-dot-g"></div>
+              </div>
+              <div class="preview-url-bar" id="previewUrlBar">—</div>
+            </div>
+            <div class="preview-iframe-wrap">
+              <iframe
+                id="previewIframe"
+                class="preview-iframe"
+                title="Website-Vorschau"
+                sandbox="allow-scripts allow-same-origin allow-forms"
+                loading="lazy"
+              ></iframe>
+              <div class="preview-fallback" id="previewFallback">
+                <div class="preview-fallback-icon">🌐</div>
+                <h3>Vorschau nicht einbettbar</h3>
+                <p>Diese Website erlaubt keine Anzeige als eingebettete Vorschau. Öffne sie direkt im neuen Tab.</p>
+                <button class="btn btn-primary" id="fallbackOpenBtn" style="margin-top:8px">
+                  Website direkt öffnen →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="preview-actions">
+            <button class="btn btn-primary" id="openNewTab">
+              ↗ In neuem Tab öffnen
+            </button>
+            <button class="btn btn-outline" id="toggleFallbackBtn" style="font-size:14px">
+              Vorschau zeigt nichts?
+            </button>
+          </div>
+        </div>
+
+        <!-- Kein Vorschau-URL -->
+        <div id="previewNoUrl" style="display:none">
+          <div class="info-block">
+            <div class="info-block-label">Live-Vorschau</div>
+            <div class="info-block-value info-block-empty">Noch nicht verfügbar – wird nach dem ersten Deploy eingerichtet.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Kontakt-Hinweis -->
+    <div style="text-align:center;margin-top:32px;padding:20px;color:var(--c-text-2);font-size:14px">
+      Fragen zu deinem Projekt?
+      <a href="mailto:kontakt@tp-convertx.de" style="color:var(--c-accent);font-weight:600;margin-left:4px">
+        kontakt@tp-convertx.de
+      </a>
+    </div>
+  </div>
+
+  <!-- Fehler-Zustand -->
+  <div class="portal-container" id="stateError" style="display:none">
+    <div class="project-card" style="margin-top:40px">
+      <div class="portal-empty">
+        <div class="portal-empty-icon">⚠️</div>
+        <h3>Verbindungsfehler</h3>
+        <p id="stateErrorMsg">Deine Daten konnten nicht geladen werden. Bitte aktualisiere die Seite oder versuche es später erneut.</p>
+        <div style="margin-top:24px">
+          <button class="btn btn-primary" onclick="location.reload()">Seite neu laden</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+(async () => {
+  const sb = getSB();
+
+  /* Auth-Schutz */
+  const session = await requireAuth();
+  if (!session) return;
+
+  const userId = session.user.id;
+
+  /* Profil laden */
+  const { data: profile, error: profileErr } = await sb
+    .from('profiles')
+    .select('full_name, company_name, active')
+    .eq('id', userId)
+    .single();
+
+  if (profileErr || !profile) {
+    setState('error');
+    return;
+  }
+
+  /* Name im Nav anzeigen */
+  const firstName = (profile.full_name || 'Konto').split(' ')[0];
+  const initials  = (profile.full_name || '?').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  document.getElementById('userAvatar').textContent = initials;
+  document.getElementById('userName').textContent   = firstName;
+
+  /* Deaktiviert? */
+  if (!profile.active) {
+    setState('disabled');
+    return;
+  }
+
+  /* Projekt laden */
+  const { data: project, error: projErr } = await sb
+    .from('projects')
+    .select('*')
+    .eq('customer_id', userId)
+    .eq('archived', false)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (projErr) {
+    setState('error');
+    document.getElementById('stateErrorMsg').textContent =
+      'Projektdaten konnten nicht abgerufen werden. Bitte versuche es erneut.';
+    return;
+  }
+
+  if (!project) {
+    document.getElementById('greetNoProject').textContent =
+      'Hallo, ' + (profile.full_name || firstName) + '!';
+    setState('noProject');
+    return;
+  }
+
+  /* Projekt anzeigen */
+  setState('project');
+  renderProject(project, profile);
+
+})();
+
+function setState(name) {
+  const ids = ['Loading', 'Disabled', 'NoProject', 'Project', 'Error'];
+  ids.forEach(id => {
+    const el = document.getElementById('state' + id);
+    if (el) el.style.display = 'none';
+  });
+  const target = document.getElementById('state' + name.charAt(0).toUpperCase() + name.slice(1));
+  if (target) target.style.display = 'block';
+}
+
+function renderProject(p, profile) {
+  const name = profile.full_name || 'zurück';
+  document.getElementById('greetName').textContent = 'Willkommen zurück, ' + name.split(' ')[0] + '!';
+  document.getElementById('greetSub').textContent  =
+    profile.company_name
+      ? 'Hier siehst du den aktuellen Stand des Projekts für ' + profile.company_name + '.'
+      : 'Hier siehst du den aktuellen Stand deines Projekts.';
+
+  document.getElementById('projName').textContent    = p.project_name;
+  document.getElementById('projUpdated').textContent = formatDateTime(p.last_updated || p.updated_at);
+
+  /* Status-Badge */
+  const badgeEl = document.getElementById('projStatusBadge');
+  badgeEl.innerHTML = `<span class="badge ${statusBadgeClass(p.project_status)}">${p.project_status}</span>`;
+
+  /* Phasen-Indikator */
+  document.getElementById('phaseTrack').innerHTML = buildPhaseHTML(p.project_status);
+  document.getElementById('phaseName').textContent = p.project_status;
+
+  /* Beschreibung */
+  const descEl = document.getElementById('projDesc');
+  descEl.innerHTML = p.status_description
+    ? p.status_description.replace(/\n/g, '<br>')
+    : '<span class="info-block-empty">Noch keine Beschreibung hinterlegt.</span>';
+
+  /* Nächste Schritte */
+  const nextEl = document.getElementById('projNext');
+  nextEl.innerHTML = p.next_steps
+    ? p.next_steps.replace(/\n/g, '<br>')
+    : '<span class="info-block-empty">Noch keine nächsten Schritte hinterlegt.</span>';
+
+  /* Vorschau */
+  if (p.preview_url) {
+    document.getElementById('previewSection').style.display = 'block';
+    document.getElementById('previewNoUrl').style.display   = 'none';
+
+    const url = p.preview_url;
+    document.getElementById('previewUrlBar').textContent    = url;
+    document.getElementById('previewIframe').src            = url;
+    document.getElementById('openNewTab').onclick           = () => window.open(url, '_blank');
+    document.getElementById('fallbackOpenBtn').onclick      = () => window.open(url, '_blank');
+
+    /* Fallback nach 8 Sekunden, wenn iframe leer bleibt */
+    let iframeOk = false;
+    document.getElementById('previewIframe').addEventListener('load', () => {
+      iframeOk = true;
+    });
+    setTimeout(() => {
+      if (!iframeOk) showFallback();
+    }, 8000);
+
+    /* Manuelle Fallback-Taste */
+    document.getElementById('toggleFallbackBtn').addEventListener('click', showFallback);
+  } else {
+    document.getElementById('previewSection').style.display = 'none';
+    document.getElementById('previewNoUrl').style.display   = 'block';
+  }
+}
+
+function showFallback() {
+  document.getElementById('previewIframe').style.display  = 'none';
+  document.getElementById('previewFallback').classList.add('visible');
+}
+</script>
+
+</body>
+</html>

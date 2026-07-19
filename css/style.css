@@ -249,7 +249,30 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 }
 .nav-links li a:hover { color: var(--c-text); }
 .nav-links li a:hover::after { transform: scaleX(1); }
-.nav-cta { margin-left: auto; }
+.nav-cta { margin-left: 8px; }
+
+/* Kundenlogin-Link in der Navigation */
+.nav-client-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-accent-dark);
+  padding: 8px 16px;
+  border: 1.5px solid rgba(14,165,233,0.3);
+  border-radius: var(--radius-md);
+  background: rgba(14,165,233,0.05);
+  transition: var(--transition);
+  white-space: nowrap;
+  margin-left: auto;
+  text-decoration: none;
+}
+.nav-client-login:hover {
+  background: var(--c-accent-light);
+  border-color: var(--c-accent);
+  color: var(--c-accent-dark);
+}
 .nav-burger {
   display: none;
   flex-direction: column;

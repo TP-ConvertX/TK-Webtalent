@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kundenlogin – TK Webtalent</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F172A'/><rect width='100' height='100' rx='20' fill='url(%23g)' opacity='.9'/><text y='.72em' font-size='40' x='50%' text-anchor='middle' fill='white' font-weight='800' font-family='Inter,system-ui,sans-serif'>TK</text><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%230EA5E9'/><stop offset='1' stop-color='%230F172A'/></linearGradient></defs></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+<div class="auth-page">
+  <div class="auth-card">
+
+    <a href="/" class="auth-logo">
+      <div class="logo-mark">TK</div>
+      <span class="logo-name">Webtalent</span>
+    </a>
+
+    <!-- ── LOGIN ── -->
+    <div class="auth-view active" id="viewLogin">
+      <h1 class="auth-title">Willkommen zurück</h1>
+      <p class="auth-subtitle">Melde dich in deinem persönlichen Kundenbereich an.</p>
+
+      <div class="auth-error" id="loginError"></div>
+
+      <form class="auth-form" id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">E-Mail-Adresse</label>
+          <input
+            class="form-input"
+            type="email"
+            id="loginEmail"
+            placeholder="deine@email.de"
+            autocomplete="email"
+            required
+          >
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Passwort</label>
+          <input
+            class="form-input"
+            type="password"
+            id="loginPassword"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary auth-btn" id="loginBtn">
+          <span class="spinner"></span>
+          <span class="btn-text">Einloggen</span>
+        </button>
+      </form>
+
+      <hr class="auth-divider" style="margin:20px 0">
+
+      <div class="auth-link-row">
+        <button class="auth-link" id="showForgot">Passwort vergessen?</button>
+      </div>
+
+      <div class="auth-note" style="margin-top:20px">
+        <span class="auth-note-icon">🔒</span>
+        <span>Dieser Bereich ist ausschließlich für bestehende Kunden. Neue Zugänge werden ausschließlich von TK Webtalent eingerichtet.</span>
+      </div>
+    </div>
+
+    <!-- ── PASSWORT VERGESSEN ── -->
+    <div class="auth-view" id="viewForgot">
+      <h1 class="auth-title">Passwort zurücksetzen</h1>
+      <p class="auth-subtitle">Gib deine E-Mail-Adresse ein. Wir senden dir einen Link zum Zurücksetzen.</p>
+
+      <div class="auth-error" id="forgotError"></div>
+      <div class="auth-success" id="forgotSuccess"></div>
+
+      <form class="auth-form" id="forgotForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="forgotEmail">E-Mail-Adresse</label>
+          <input
+            class="form-input"
+            type="email"
+            id="forgotEmail"
+            placeholder="deine@email.de"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary auth-btn" id="forgotBtn">
+          <span class="spinner"></span>
+          <span class="btn-text">Link senden</span>
+        </button>
+      </form>
+
+      <div class="auth-link-row" style="margin-top:16px">
+        <button class="auth-link" id="showLogin">← Zurück zum Login</button>
+      </div>
+    </div>
+
+    <!-- ── PASSWORT ZURÜCKSETZEN ── -->
+    <div class="auth-view" id="viewReset">
+      <h1 class="auth-title">Neues Passwort</h1>
+      <p class="auth-subtitle">Wähle ein neues sicheres Passwort für deinen Account.</p>
+
+      <div class="auth-error" id="resetError"></div>
+      <div class="auth-success" id="resetSuccess"></div>
+
+      <form class="auth-form" id="resetForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="resetPassword">Neues Passwort</label>
+          <input
+            class="form-input"
+            type="password"
+            id="resetPassword"
+            placeholder="Mindestens 8 Zeichen"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="resetPassword2">Passwort bestätigen</label>
+          <input
+            class="form-input"
+            type="password"
+            id="resetPassword2"
+            placeholder="Passwort wiederholen"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary auth-btn" id="resetBtn">
+          <span class="spinner"></span>
+          <span class="btn-text">Passwort speichern</span>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+(async () => {
+  const sb = getSB();
+
+  /* Bereits eingeloggt → weiterleiten */
+  const session = await getSession();
+  if (session) {
+    window.location.href = '/kundenbereich';
+    return;
+  }
+
+  /* Recovery-Token im URL-Hash → Passwort-Reset anzeigen */
+  const hash   = window.location.hash;
+  const params = new URLSearchParams(hash.replace('#', ''));
+  if (params.get('type') === 'recovery') {
+    showView('reset');
+  }
+
+  /* Supabase Auth State Listener für Recovery */
+  sb.auth.onAuthStateChange((event) => {
+    if (event === 'PASSWORD_RECOVERY') showView('reset');
+  });
+
+  /* ── ANSICHT WECHSELN ── */
+  function showView(name) {
+    document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+  }
+
+  document.getElementById('showForgot').addEventListener('click', () => showView('forgot'));
+  document.getElementById('showLogin').addEventListener('click', () => showView('login'));
+
+  /* ── LOGIN ── */
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn   = document.getElementById('loginBtn');
+    const err   = document.getElementById('loginError');
+    const email = document.getElementById('loginEmail').value.trim();
+    const pw    = document.getElementById('loginPassword').value;
+
+    if (!email || !pw) {
+      showErr(err, 'Bitte E-Mail und Passwort eingeben.');
+      return;
+    }
+
+    setLoading(btn, true);
+    err.classList.remove('visible');
+
+    const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+
+    if (error) {
+      setLoading(btn, false);
+      if (error.message.includes('Invalid login')) {
+        showErr(err, 'E-Mail-Adresse oder Passwort ist falsch.');
+      } else if (error.message.includes('Email not confirmed')) {
+        showErr(err, 'Dein Konto wurde noch nicht bestätigt. Bitte wende dich an TK Webtalent.');
+      } else {
+        showErr(err, 'Anmeldung fehlgeschlagen. Bitte versuche es erneut.');
+      }
+      return;
+    }
+
+    /* Prüfen ob Konto aktiv ist */
+    const { data: profile } = await sb
+      .from('profiles')
+      .select('active')
+      .eq('id', (await getSession()).user.id)
+      .single();
+
+    if (profile && !profile.active) {
+      await sb.auth.signOut();
+      setLoading(btn, false);
+      showErr(err, 'Dein Konto ist deaktiviert. Bitte wende dich an TK Webtalent.');
+      return;
+    }
+
+    window.location.href = '/kundenbereich';
+  });
+
+  /* ── PASSWORT VERGESSEN ── */
+  document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn     = document.getElementById('forgotBtn');
+    const err     = document.getElementById('forgotError');
+    const success = document.getElementById('forgotSuccess');
+    const email   = document.getElementById('forgotEmail').value.trim();
+
+    if (!email) {
+      showErr(err, 'Bitte E-Mail-Adresse eingeben.');
+      return;
+    }
+
+    setLoading(btn, true);
+    err.classList.remove('visible');
+    success.classList.remove('visible');
+
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/kunden-login'
+    });
+
+    setLoading(btn, false);
+
+    if (error) {
+      showErr(err, 'Fehler beim Senden. Bitte versuche es erneut.');
+      return;
+    }
+
+    success.textContent = 'E-Mail gesendet! Prüfe deinen Posteingang (auch den Spam-Ordner).';
+    success.classList.add('visible');
+    document.getElementById('forgotBtn').disabled = true;
+  });
+
+  /* ── NEUES PASSWORT ── */
+  document.getElementById('resetForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('resetBtn');
+    const err = document.getElementById('resetError');
+    const suc = document.getElementById('resetSuccess');
+    const pw1 = document.getElementById('resetPassword').value;
+    const pw2 = document.getElementById('resetPassword2').value;
+
+    if (pw1.length < 8) {
+      showErr(err, 'Das Passwort muss mindestens 8 Zeichen haben.');
+      return;
+    }
+    if (pw1 !== pw2) {
+      showErr(err, 'Die Passwörter stimmen nicht überein.');
+      return;
+    }
+
+    setLoading(btn, true);
+    err.classList.remove('visible');
+
+    const { error } = await sb.auth.updateUser({ password: pw1 });
+
+    setLoading(btn, false);
+
+    if (error) {
+      showErr(err, 'Fehler beim Speichern des Passworts. Bitte erneut versuchen.');
+      return;
+    }
+
+    suc.textContent = 'Passwort erfolgreich geändert. Du wirst weitergeleitet …';
+    suc.classList.add('visible');
+    btn.disabled = true;
+    setTimeout(() => { window.location.href = '/kundenbereich'; }, 1800);
+  });
+
+  /* ── HILFSFUNKTIONEN ── */
+  function setLoading(btn, on) {
+    btn.classList.toggle('loading', on);
+    btn.disabled = on;
+  }
+
+  function showErr(el, msg) {
+    el.textContent = msg;
+    el.classList.add('visible');
+  }
+
+})();
+</script>
+
+</body>
+</html>

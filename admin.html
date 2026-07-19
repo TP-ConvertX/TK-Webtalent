@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin – TK Webtalent</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F172A'/><rect width='100' height='100' rx='20' fill='url(%23g)' opacity='.9'/><text y='.72em' font-size='40' x='50%' text-anchor='middle' fill='white' font-weight='800' font-family='Inter,system-ui,sans-serif'>TK</text><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%230EA5E9'/><stop offset='1' stop-color='%230F172A'/></linearGradient></defs></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav class="portal-nav">
+  <div class="portal-nav-inner">
+    <a href="/" class="portal-nav-logo">
+      <div class="logo-mark">TK</div>
+      <span class="logo-name">Webtalent</span>
+    </a>
+    <div class="portal-nav-right">
+      <span style="font-size:12px;font-weight:600;color:var(--c-accent);background:var(--c-accent-light);padding:4px 12px;border-radius:100px;border:1px solid rgba(14,165,233,0.2)">Admin</span>
+      <button class="btn btn-outline" onclick="signOut()" style="font-size:14px;padding:8px 18px">Abmelden</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── LAYOUT ── -->
+<div class="admin-page" id="adminPage" style="display:none">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-section">
+      <div class="admin-sidebar-label">Navigation</div>
+      <button class="admin-nav-item active" data-panel="overview" onclick="switchPanel('overview', this)">
+        <span class="admin-nav-icon">📊</span> Übersicht
+      </button>
+      <button class="admin-nav-item" data-panel="customers" onclick="switchPanel('customers', this)">
+        <span class="admin-nav-icon">👤</span> Kunden
+      </button>
+      <button class="admin-nav-item" data-panel="projects" onclick="switchPanel('projects', this)">
+        <span class="admin-nav-icon">🚀</span> Projekte
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="admin-content">
+
+    <!-- ── ÜBERSICHT ── -->
+    <div class="admin-panel active" id="panelOverview">
+      <div class="admin-panel-header">
+        <h2 class="admin-panel-title">Übersicht</h2>
+        <span id="adminGreeting" style="font-size:14px;color:var(--c-text-2)"></span>
+      </div>
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <div class="admin-stat-number" id="statCustomers">—</div>
+          <div class="admin-stat-label">Kunden gesamt</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-number" id="statActive">—</div>
+          <div class="admin-stat-label">Aktive Kunden</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-number" id="statProjects">—</div>
+          <div class="admin-stat-label">Aktive Projekte</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-number" id="statLive">—</div>
+          <div class="admin-stat-label">Veröffentlicht</div>
+        </div>
+      </div>
+      <div style="padding:24px;background:#fff;border-radius:var(--radius-xl);border:1px solid var(--c-border);font-size:15px;color:var(--c-text-2);line-height:1.7">
+        <strong style="color:var(--c-text);display:block;margin-bottom:8px">Schnellstart</strong>
+        1. Neuen Kunden anlegen unter <em>Kunden → Neuer Kunde</em>.<br>
+        2. Projekt erstellen unter <em>Projekte → Neues Projekt</em> und dem Kunden zuweisen.<br>
+        3. Vorschau-URL und Phase pflegen – der Kunde sieht sofort den aktuellen Stand.
+      </div>
+    </div>
+
+    <!-- ── KUNDEN ── -->
+    <div class="admin-panel" id="panelCustomers">
+      <div class="admin-panel-header">
+        <h2 class="admin-panel-title">Kunden</h2>
+        <button class="btn btn-primary" onclick="openModal('modalAddCustomer')" style="font-size:14px;padding:10px 20px">
+          + Neuer Kunde
+        </button>
+      </div>
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name / Firma</th>
+              <th>E-Mail</th>
+              <th>Status</th>
+              <th>Erstellt</th>
+              <th>Aktionen</th>
+            </tr>
+          </thead>
+          <tbody id="customersTableBody">
+            <tr><td colspan="5" style="text-align:center;color:var(--c-text-3);padding:40px">
+              <div class="portal-spinner" style="margin:0 auto 12px"></div>Wird geladen …
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PROJEKTE ── -->
+    <div class="admin-panel" id="panelProjects">
+      <div class="admin-panel-header">
+        <h2 class="admin-panel-title">Projekte</h2>
+        <button class="btn btn-primary" onclick="openModal('modalAddProject')" style="font-size:14px;padding:10px 20px">
+          + Neues Projekt
+        </button>
+      </div>
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Projektname</th>
+              <th>Kunde</th>
+              <th>Phase</th>
+              <th>Aktualisiert</th>
+              <th>Aktionen</th>
+            </tr>
+          </thead>
+          <tbody id="projectsTableBody">
+            <tr><td colspan="5" style="text-align:center;color:var(--c-text-3);padding:40px">
+              <div class="portal-spinner" style="margin:0 auto 12px"></div>Wird geladen …
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Lade-Bildschirm -->
+<div id="adminLoading" style="min-height:calc(100vh - 68px);display:flex;align-items:center;justify-content:center;background:var(--c-bg-light)">
+  <div class="portal-loading">
+    <div class="portal-spinner"></div>
+    <p>Admin-Bereich wird geladen …</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════════════ -->
+
+<!-- Modal: Neuer Kunde -->
+<div class="modal-overlay" id="modalAddCustomer">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Neuer Kunde</h3>
+      <button class="modal-close" onclick="closeModal('modalAddCustomer')">✕</button>
+    </div>
+    <div class="modal-error" id="addCustomerError"></div>
+    <form class="modal-form" id="addCustomerForm" novalidate>
+      <div class="form-group">
+        <label class="form-label">Name *</label>
+        <input class="form-input" type="text" id="newCustomerName" placeholder="Max Mustermann" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Firmenname</label>
+        <input class="form-input" type="text" id="newCustomerCompany" placeholder="Musterfirma GmbH">
+      </div>
+      <div class="form-group">
+        <label class="form-label">E-Mail-Adresse *</label>
+        <input class="form-input" type="email" id="newCustomerEmail" placeholder="kunde@beispiel.de" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Temporäres Passwort *</label>
+        <input class="form-input" type="password" id="newCustomerPassword" placeholder="Mindestens 8 Zeichen" required>
+        <small style="font-size:12px;color:var(--c-text-2);margin-top:2px">Der Kunde kann das Passwort über „Passwort vergessen" selbst ändern.</small>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modalAddCustomer')" style="font-size:14px">Abbrechen</button>
+        <button type="submit" class="btn btn-primary auth-btn" id="addCustomerBtn" style="font-size:14px;min-width:140px">
+          <span class="spinner"></span>
+          <span class="btn-text">Konto erstellen</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Kunde bearbeiten -->
+<div class="modal-overlay" id="modalEditCustomer">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Kunde bearbeiten</h3>
+      <button class="modal-close" onclick="closeModal('modalEditCustomer')">✕</button>
+    </div>
+    <div class="modal-error" id="editCustomerError"></div>
+    <form class="modal-form" id="editCustomerForm" novalidate>
+      <input type="hidden" id="editCustomerId">
+      <div class="form-group">
+        <label class="form-label">Name *</label>
+        <input class="form-input" type="text" id="editCustomerName" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Firmenname</label>
+        <input class="form-input" type="text" id="editCustomerCompany">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="editCustomerActive">
+          <option value="true">Aktiv</option>
+          <option value="false">Deaktiviert</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modalEditCustomer')" style="font-size:14px">Abbrechen</button>
+        <button type="submit" class="btn btn-primary auth-btn" id="editCustomerBtn" style="font-size:14px;min-width:120px">
+          <span class="spinner"></span>
+          <span class="btn-text">Speichern</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Neues Projekt -->
+<div class="modal-overlay" id="modalAddProject">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Neues Projekt</h3>
+      <button class="modal-close" onclick="closeModal('modalAddProject')">✕</button>
+    </div>
+    <div class="modal-error" id="addProjectError"></div>
+    <form class="modal-form" id="addProjectForm" novalidate>
+      <div class="form-group">
+        <label class="form-label">Projektname *</label>
+        <input class="form-input" type="text" id="newProjectName" placeholder="z.B. Website Elektriker Müller" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kunde *</label>
+        <select class="form-select" id="newProjectCustomer" required>
+          <option value="">Kunden auswählen …</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phase</label>
+        <select class="form-select" id="newProjectStatus">
+          <option>Planung</option>
+          <option>Design</option>
+          <option>Entwicklung</option>
+          <option>Überarbeitung</option>
+          <option>Freigabe</option>
+          <option>Veröffentlicht</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Vorschau-URL</label>
+        <input class="form-input" type="url" id="newProjectUrl" placeholder="https://vorschau.vercel.app">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status-Beschreibung</label>
+        <textarea class="form-textarea" id="newProjectDesc" placeholder="Was ist gerade in Arbeit?"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nächste Schritte</label>
+        <textarea class="form-textarea" id="newProjectNext" placeholder="Was kommt als Nächstes?"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modalAddProject')" style="font-size:14px">Abbrechen</button>
+        <button type="submit" class="btn btn-primary auth-btn" id="addProjectBtn" style="font-size:14px;min-width:140px">
+          <span class="spinner"></span>
+          <span class="btn-text">Projekt anlegen</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Projekt bearbeiten -->
+<div class="modal-overlay" id="modalEditProject">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Projekt bearbeiten</h3>
+      <button class="modal-close" onclick="closeModal('modalEditProject')">✕</button>
+    </div>
+    <div class="modal-error" id="editProjectError"></div>
+    <form class="modal-form" id="editProjectForm" novalidate>
+      <input type="hidden" id="editProjectId">
+      <div class="form-group">
+        <label class="form-label">Projektname *</label>
+        <input class="form-input" type="text" id="editProjectName" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kunde</label>
+        <select class="form-select" id="editProjectCustomer" required>
+          <option value="">Kunden auswählen …</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phase</label>
+        <select class="form-select" id="editProjectStatus">
+          <option>Planung</option>
+          <option>Design</option>
+          <option>Entwicklung</option>
+          <option>Überarbeitung</option>
+          <option>Freigabe</option>
+          <option>Veröffentlicht</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Vorschau-URL</label>
+        <input class="form-input" type="url" id="editProjectUrl" placeholder="https://vorschau.vercel.app">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status-Beschreibung</label>
+        <textarea class="form-textarea" id="editProjectDesc"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nächste Schritte</label>
+        <textarea class="form-textarea" id="editProjectNext"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modalEditProject')" style="font-size:14px">Abbrechen</button>
+        <button type="submit" class="btn btn-primary auth-btn" id="editProjectBtn" style="font-size:14px;min-width:120px">
+          <span class="spinner"></span>
+          <span class="btn-text">Speichern</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+let sb, currentSession;
+let allCustomers = []; // Cache für Kunden-Dropdown
+
+(async () => {
+  sb = getSB();
+
+  const auth = await requireAdmin();
+  if (!auth) return;
+
+  currentSession = auth.session;
+  document.getElementById('adminLoading').style.display = 'none';
+  document.getElementById('adminPage').style.display    = 'grid';
+  document.getElementById('adminGreeting').textContent  =
+    'Eingeloggt als ' + (auth.profile.full_name || 'Admin');
+
+  await Promise.all([loadStats(), loadCustomers(), loadProjects()]);
+})();
+
+/* ── PANEL WECHSELN ── */
+function switchPanel(name, btn) {
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel' + capitalize(name)).classList.add('active');
+  btn.classList.add('active');
+}
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* ── STATISTIKEN ── */
+async function loadStats() {
+  const [
+    { count: total },
+    { count: active },
+    { count: projects },
+    { count: live }
+  ] = await Promise.all([
+    sb.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'customer'),
+    sb.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'customer').eq('active', true),
+    sb.from('projects').select('*', { count: 'exact', head: true }).eq('archived', false),
+    sb.from('projects').select('*', { count: 'exact', head: true }).eq('project_status', 'Veröffentlicht').eq('archived', false)
+  ]);
+  document.getElementById('statCustomers').textContent = total ?? '—';
+  document.getElementById('statActive').textContent    = active ?? '—';
+  document.getElementById('statProjects').textContent  = projects ?? '—';
+  document.getElementById('statLive').textContent      = live ?? '—';
+}
+
+/* ── KUNDEN LADEN ── */
+async function loadCustomers() {
+  const { data, error } = await sb
+    .from('profiles')
+    .select('id, full_name, company_name, role, active, created_at')
+    .eq('role', 'customer')
+    .order('created_at', { ascending: false });
+
+  const tbody = document.getElementById('customersTableBody');
+
+  if (error || !data) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#DC2626;padding:32px">Fehler beim Laden.</td></tr>';
+    return;
+  }
+
+  allCustomers = data;
+
+  /* Dropdown-Listen für Projekt-Modals aktualisieren */
+  ['newProjectCustomer', 'editProjectCustomer'].forEach(id => {
+    const sel = document.getElementById(id);
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">Kunden auswählen …</option>';
+    data.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = c.full_name + (c.company_name ? ' – ' + c.company_name : '');
+      sel.appendChild(opt);
+    });
+    if (cur) sel.value = cur;
+  });
+
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--c-text-3);padding:40px">Noch keine Kunden angelegt.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td>
+        <div class="table-name">${esc(c.full_name)}</div>
+        ${c.company_name ? `<div class="table-meta">${esc(c.company_name)}</div>` : ''}
+      </td>
+      <td style="color:var(--c-text-2);font-size:13px">—</td>
+      <td><span class="badge ${c.active ? 'badge-green' : 'badge-red'}">${c.active ? 'Aktiv' : 'Deaktiviert'}</span></td>
+      <td style="font-size:13px;color:var(--c-text-2)">${formatDate(c.created_at)}</td>
+      <td>
+        <div class="table-actions">
+          <button class="action-btn action-btn-edit" onclick="editCustomer('${c.id}')">Bearbeiten</button>
+          <button class="action-btn ${c.active ? 'action-btn-danger' : 'action-btn-success'}"
+            onclick="toggleCustomer('${c.id}', ${c.active})">
+            ${c.active ? 'Deaktivieren' : 'Aktivieren'}
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+/* ── PROJEKTE LADEN ── */
+async function loadProjects() {
+  const { data, error } = await sb
+    .from('projects')
+    .select('*, profiles(full_name, company_name)')
+    .eq('archived', false)
+    .order('created_at', { ascending: false });
+
+  const tbody = document.getElementById('projectsTableBody');
+
+  if (error || !data) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#DC2626;padding:32px">Fehler beim Laden.</td></tr>';
+    return;
+  }
+
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--c-text-3);padding:40px">Noch keine Projekte angelegt.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = data.map(p => {
+    const cust = p.profiles ? p.profiles.full_name + (p.profiles.company_name ? ' – ' + p.profiles.company_name : '') : '—';
+    return `
+      <tr>
+        <td>
+          <div class="table-name">${esc(p.project_name)}</div>
+          ${p.preview_url ? `<div class="table-meta"><a href="${esc(p.preview_url)}" target="_blank" style="color:var(--c-accent)">↗ Vorschau</a></div>` : ''}
+        </td>
+        <td style="font-size:13px;color:var(--c-text-2)">${esc(cust)}</td>
+        <td><span class="badge ${statusBadgeClass(p.project_status)}">${esc(p.project_status)}</span></td>
+        <td style="font-size:13px;color:var(--c-text-2)">${formatDateTime(p.last_updated || p.updated_at)}</td>
+        <td>
+          <div class="table-actions">
+            <button class="action-btn action-btn-edit" onclick="editProject(${JSON.stringify(p).split('"').join("'")})">Bearbeiten</button>
+            <button class="action-btn action-btn-danger" onclick="archiveProject('${p.id}')">Archivieren</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* ── KUNDEN ANLEGEN ── */
+document.getElementById('addCustomerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn  = document.getElementById('addCustomerBtn');
+  const err  = document.getElementById('addCustomerError');
+  const name = document.getElementById('newCustomerName').value.trim();
+  const co   = document.getElementById('newCustomerCompany').value.trim();
+  const mail = document.getElementById('newCustomerEmail').value.trim();
+  const pw   = document.getElementById('newCustomerPassword').value;
+
+  err.classList.remove('visible');
+
+  if (!name || !mail || !pw) {
+    showModalErr(err, 'Bitte alle Pflichtfelder ausfüllen.');
+    return;
+  }
+  if (pw.length < 8) {
+    showModalErr(err, 'Das Passwort muss mindestens 8 Zeichen haben.');
+    return;
+  }
+
+  setLoading(btn, true);
+  const token = currentSession?.access_token;
+
+  const res = await fetch(API_CREATE_USER, {
+    method: 'POST',
+    headers: {
+      'Content-Type':  'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({ email: mail, password: pw, full_name: name, company_name: co })
+  });
+
+  const json = await res.json();
+  setLoading(btn, false);
+
+  if (!res.ok) {
+    showModalErr(err, json.error || 'Fehler beim Erstellen des Kontos.');
+    return;
+  }
+
+  showToast('Konto für ' + name + ' wurde erstellt.', 'success');
+  closeModal('modalAddCustomer');
+  document.getElementById('addCustomerForm').reset();
+  await Promise.all([loadCustomers(), loadStats()]);
+});
+
+/* ── KUNDEN BEARBEITEN ── */
+function editCustomer(id) {
+  const c = allCustomers.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('editCustomerId').value      = c.id;
+  document.getElementById('editCustomerName').value    = c.full_name;
+  document.getElementById('editCustomerCompany').value = c.company_name || '';
+  document.getElementById('editCustomerActive').value  = String(c.active);
+  document.getElementById('editCustomerError').classList.remove('visible');
+  openModal('modalEditCustomer');
+}
+
+document.getElementById('editCustomerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn  = document.getElementById('editCustomerBtn');
+  const err  = document.getElementById('editCustomerError');
+  const id   = document.getElementById('editCustomerId').value;
+  const name = document.getElementById('editCustomerName').value.trim();
+  const co   = document.getElementById('editCustomerCompany').value.trim();
+  const act  = document.getElementById('editCustomerActive').value === 'true';
+
+  if (!name) { showModalErr(err, 'Name ist erforderlich.'); return; }
+
+  setLoading(btn, true);
+  const { error } = await sb.from('profiles').update({
+    full_name:    name,
+    company_name: co || null,
+    active:       act
+  }).eq('id', id);
+
+  setLoading(btn, false);
+  if (error) { showModalErr(err, 'Fehler beim Speichern.'); return; }
+
+  showToast('Kundendaten gespeichert.', 'success');
+  closeModal('modalEditCustomer');
+  await loadCustomers();
+});
+
+/* ── KUNDEN AKTIVIEREN/DEAKTIVIEREN ── */
+async function toggleCustomer(id, currentlyActive) {
+  const confirm = window.confirm(currentlyActive
+    ? 'Diesen Kunden wirklich deaktivieren? Er kann sich dann nicht mehr einloggen.'
+    : 'Diesen Kunden wieder aktivieren?');
+  if (!confirm) return;
+
+  const { error } = await sb.from('profiles').update({ active: !currentlyActive }).eq('id', id);
+  if (error) { showToast('Fehler beim Ändern.', 'error'); return; }
+  showToast(currentlyActive ? 'Kunde deaktiviert.' : 'Kunde aktiviert.', 'success');
+  await Promise.all([loadCustomers(), loadStats()]);
+}
+
+/* ── PROJEKT ANLEGEN ── */
+document.getElementById('addProjectForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn  = document.getElementById('addProjectBtn');
+  const err  = document.getElementById('addProjectError');
+  const name = document.getElementById('newProjectName').value.trim();
+  const cust = document.getElementById('newProjectCustomer').value;
+  const stat = document.getElementById('newProjectStatus').value;
+  const url  = document.getElementById('newProjectUrl').value.trim();
+  const desc = document.getElementById('newProjectDesc').value.trim();
+  const next = document.getElementById('newProjectNext').value.trim();
+
+  err.classList.remove('visible');
+  if (!name || !cust) { showModalErr(err, 'Projektname und Kunde sind erforderlich.'); return; }
+  if (url && !isValidUrl(url)) { showModalErr(err, 'Bitte eine gültige URL eingeben.'); return; }
+
+  setLoading(btn, true);
+  const { error } = await sb.from('projects').insert({
+    project_name:       name,
+    customer_id:        cust,
+    project_status:     stat,
+    preview_url:        url || null,
+    status_description: desc || null,
+    next_steps:         next || null,
+    last_updated:       new Date().toISOString()
+  });
+
+  setLoading(btn, false);
+  if (error) { showModalErr(err, 'Fehler beim Anlegen des Projekts.'); return; }
+
+  showToast('Projekt "' + name + '" wurde angelegt.', 'success');
+  closeModal('modalAddProject');
+  document.getElementById('addProjectForm').reset();
+  await Promise.all([loadProjects(), loadStats()]);
+});
+
+/* ── PROJEKT BEARBEITEN ── */
+function editProject(pRaw) {
+  /* pRaw kommt als object (onclick übergibt JSON-ähnlich) */
+  const p = typeof pRaw === 'string' ? JSON.parse(pRaw.split("'").join('"')) : pRaw;
+  document.getElementById('editProjectId').value     = p.id;
+  document.getElementById('editProjectName').value   = p.project_name;
+  document.getElementById('editProjectStatus').value = p.project_status;
+  document.getElementById('editProjectUrl').value    = p.preview_url || '';
+  document.getElementById('editProjectDesc').value   = p.status_description || '';
+  document.getElementById('editProjectNext').value   = p.next_steps || '';
+  document.getElementById('editProjectError').classList.remove('visible');
+  /* Kunden-Dropdown vorauswählen */
+  setTimeout(() => {
+    document.getElementById('editProjectCustomer').value = p.customer_id || '';
+  }, 50);
+  openModal('modalEditProject');
+}
+
+document.getElementById('editProjectForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn  = document.getElementById('editProjectBtn');
+  const err  = document.getElementById('editProjectError');
+  const id   = document.getElementById('editProjectId').value;
+  const name = document.getElementById('editProjectName').value.trim();
+  const cust = document.getElementById('editProjectCustomer').value;
+  const stat = document.getElementById('editProjectStatus').value;
+  const url  = document.getElementById('editProjectUrl').value.trim();
+  const desc = document.getElementById('editProjectDesc').value.trim();
+  const next = document.getElementById('editProjectNext').value.trim();
+
+  if (!name || !cust) { showModalErr(err, 'Projektname und Kunde sind erforderlich.'); return; }
+  if (url && !isValidUrl(url)) { showModalErr(err, 'Bitte eine gültige URL eingeben.'); return; }
+
+  setLoading(btn, true);
+  const { error } = await sb.from('projects').update({
+    project_name:       name,
+    customer_id:        cust,
+    project_status:     stat,
+    preview_url:        url || null,
+    status_description: desc || null,
+    next_steps:         next || null,
+    last_updated:       new Date().toISOString()
+  }).eq('id', id);
+
+  setLoading(btn, false);
+  if (error) { showModalErr(err, 'Fehler beim Speichern.'); return; }
+
+  showToast('Projekt gespeichert.', 'success');
+  closeModal('modalEditProject');
+  await loadProjects();
+});
+
+/* ── PROJEKT ARCHIVIEREN ── */
+async function archiveProject(id) {
+  if (!window.confirm('Dieses Projekt wirklich archivieren? Es wird aus der Kunden-Ansicht ausgeblendet.')) return;
+  const { error } = await sb.from('projects').update({ archived: true }).eq('id', id);
+  if (error) { showToast('Fehler beim Archivieren.', 'error'); return; }
+  showToast('Projekt archiviert.', 'success');
+  await Promise.all([loadProjects(), loadStats()]);
+}
+
+/* ── MODAL-STEUERUNG ── */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal(overlay.id);
+  });
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+  }
+});
+
+/* ── HILFSFUNKTIONEN ── */
+function setLoading(btn, on) {
+  btn.classList.toggle('loading', on);
+  btn.disabled = on;
+}
+function showModalErr(el, msg) {
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function isValidUrl(url) {
+  try { new URL(url); return true; } catch { return false; }
+}
+</script>
+
+</body>
+</html>

@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /kunden-login
+Disallow: /kundenbereich
+Disallow: /admin
+Disallow: /api/
 
 Sitemap: https://tk-webtalent.vercel.app/sitemap.xml
