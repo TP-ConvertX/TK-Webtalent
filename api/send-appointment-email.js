@@ -13,8 +13,8 @@ module.exports = async function handler(req, res) {
   const token = (req.headers.authorization || '').replace('Bearer ', '').trim();
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
 
-  const sbAnon = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  const { data: { user }, error: authErr } = await sbAnon.auth.getUser(token);
+  const sbAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+  const { data: { user }, error: authErr } = await sbAdmin.auth.getUser(token);
   if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
 
   const RESEND_KEY  = process.env.RESEND_API_KEY;
@@ -42,10 +42,6 @@ module.exports = async function handler(req, res) {
 
   /* Kunden-E-Mail über Service Role nachschlagen (Admin-Aktionen) */
   if (customerId && !customerEmail) {
-    const sbAdmin = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
     const { data: { user: cu } } = await sbAdmin.auth.admin.getUserById(customerId);
     customerEmail = cu?.email || null;
 
