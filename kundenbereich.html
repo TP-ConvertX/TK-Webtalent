@@ -233,6 +233,7 @@
   const session = await requireAuth();
   if (!session) return;
 
+  _session = session;
   const userId = session.user.id;
 
   /* Profil laden */
@@ -246,6 +247,9 @@
     setState('error');
     return;
   }
+
+  _customerEmail = session.user.email;
+  _customerName  = profile.full_name || '';
 
   /* Name im Nav anzeigen */
   const firstName = (profile.full_name || 'Konto').split(' ')[0];
@@ -392,9 +396,27 @@ function showFallback() {
 
 <script>
 /* ── TERMINKALENDER (Kundenbereich) ── */
+let _session, _customerEmail, _customerName;
 let _apptUserId;
 let _allAppts = [];
 let _pendingDate, _pendingTime;
+
+function sendApptEmail(type, date, time) {
+  const token = _session?.access_token;
+  if (!token) return;
+  fetch('/api/send-appointment-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({
+      type,
+      date,
+      time,
+      formattedDate:  calFormatAppt(date, time),
+      customerEmail:  _customerEmail,
+      customerName:   _customerName
+    })
+  }).catch(() => {});
+}
 
 async function loadCalendar(uid) {
   _apptUserId = uid;
@@ -471,14 +493,17 @@ async function confirmBook() {
 
   closeBookModal();
   showToast('Termin erfolgreich gebucht!', 'success');
+  sendApptEmail('customer_booked', _pendingDate, _pendingTime);
   await loadCalendar(_apptUserId);
 }
 
 async function calOnCancel(id) {
+  const ap = _allAppts.find(a => a.id === id);
   if (!window.confirm('Termin wirklich absagen?')) return;
   const { error } = await getSB().from('appointments').update({ status: 'cancelled' }).eq('id', id);
   if (error) { showToast('Fehler beim Absagen.', 'error'); return; }
   showToast('Termin abgesagt.', 'success');
+  if (ap) sendApptEmail('customer_cancelled', ap.appointment_date, ap.appointment_time.slice(0, 5));
   await loadCalendar(_apptUserId);
 }
 

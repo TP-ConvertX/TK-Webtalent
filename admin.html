@@ -764,6 +764,16 @@ function isValidUrl(url) {
 let _adminAllAppts = [];
 let _adminPendingDate, _adminPendingTime;
 
+function sendApptEmail(type, customerId, date, time) {
+  const token = currentSession?.access_token;
+  if (!token) return;
+  fetch('/api/send-appointment-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ type, customerId, date, time, formattedDate: calFormatAppt(date, time) })
+  }).catch(() => {});
+}
+
 async function loadAppointments() {
   const { data } = await sb
     .from('appointments')
@@ -820,10 +830,12 @@ function calOnBook(date, time) {
 function calOnCancel(id) { adminCancelAppt(id); }
 
 async function adminCancelAppt(id) {
+  const ap = _adminAllAppts.find(a => a.id === id);
   if (!window.confirm('Termin wirklich stornieren?')) return;
   const { error } = await sb.from('appointments').update({ status: 'cancelled' }).eq('id', id);
   if (error) { showToast('Fehler beim Stornieren.', 'error'); return; }
   showToast('Termin storniert.', 'success');
+  if (ap) sendApptEmail('admin_cancelled', ap.customer_id, ap.appointment_date, ap.appointment_time.slice(0, 5));
   await loadAppointments();
 }
 
@@ -856,6 +868,7 @@ document.getElementById('adminBookForm').addEventListener('submit', async (e) =>
 
   showToast('Termin wurde angelegt.', 'success');
   closeModal('modalAdminBook');
+  sendApptEmail('admin_booked', cust, _adminPendingDate, _adminPendingTime);
   await loadAppointments();
 });
 </script>
