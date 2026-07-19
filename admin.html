@@ -44,6 +44,9 @@
       <button class="admin-nav-item" data-panel="projects" onclick="switchPanel('projects', this)">
         <span class="admin-nav-icon">🚀</span> Projekte
       </button>
+      <button class="admin-nav-item" data-panel="appointments" onclick="switchPanel('appointments', this)">
+        <span class="admin-nav-icon">📅</span> Termine
+      </button>
     </div>
   </aside>
 
@@ -136,6 +139,15 @@
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- ── TERMINE ── -->
+    <div class="admin-panel" id="panelAppointments">
+      <div class="admin-panel-header">
+        <h2 class="admin-panel-title">Termine</h2>
+      </div>
+      <div id="adminApptList" style="margin-bottom:24px"></div>
+      <div id="adminCalContainer"></div>
     </div>
 
   </main>
@@ -333,9 +345,41 @@
   </div>
 </div>
 
+<!-- Modal: Termin (Admin) anlegen -->
+<div class="modal-overlay" id="modalAdminBook">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-header">
+      <h3 class="modal-title">Termin anlegen</h3>
+      <button class="modal-close" onclick="closeModal('modalAdminBook')">✕</button>
+    </div>
+    <div class="modal-error" id="adminBookError"></div>
+    <form class="modal-form" id="adminBookForm" novalidate>
+      <div style="background:var(--c-bg-light);border-radius:12px;padding:14px;font-size:15px;font-weight:600;color:var(--c-text);text-align:center;margin-bottom:16px" id="adminBookDateDisplay">—</div>
+      <div class="form-group">
+        <label class="form-label">Kunde *</label>
+        <select class="form-select" id="adminBookCustomer" required>
+          <option value="">Kunden auswählen …</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notizen (intern)</label>
+        <textarea class="form-textarea" id="adminBookNotes" placeholder="Interne Notizen …" style="min-height:80px"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modalAdminBook')" style="font-size:14px">Abbrechen</button>
+        <button type="submit" class="btn btn-primary auth-btn" id="adminBookBtn" style="font-size:14px;min-width:160px">
+          <span class="spinner"></span>
+          <span class="btn-text">Termin buchen</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-config.js"></script>
 <script src="js/auth.js"></script>
+<script src="js/calendar.js"></script>
 <script>
 let sb, currentSession;
 let allCustomers = []; // Cache für Kunden-Dropdown
@@ -352,7 +396,7 @@ let allCustomers = []; // Cache für Kunden-Dropdown
   document.getElementById('adminGreeting').textContent  =
     'Eingeloggt als ' + (auth.profile.full_name || 'Admin');
 
-  await Promise.all([loadStats(), loadCustomers(), loadProjects()]);
+  await Promise.all([loadStats(), loadCustomers(), loadProjects(), loadAppointments()]);
 })();
 
 /* ── PANEL WECHSELN ── */
@@ -713,6 +757,107 @@ function esc(str) {
 function isValidUrl(url) {
   try { new URL(url); return true; } catch { return false; }
 }
+</script>
+
+<script>
+/* ── TERMINKALENDER (Admin) ── */
+let _adminAllAppts = [];
+let _adminPendingDate, _adminPendingTime;
+
+async function loadAppointments() {
+  const { data } = await sb
+    .from('appointments')
+    .select('id, customer_id, appointment_date, appointment_time, status, notes, profiles(full_name)')
+    .eq('status', 'confirmed')
+    .order('appointment_date', { ascending: true })
+    .order('appointment_time', { ascending: true });
+
+  _adminAllAppts = data || [];
+  renderAdminAppts(_adminAllAppts);
+
+  _calRefreshFn = function(off) {
+    calRender('adminCalContainer', { appointments: _adminAllAppts, myId: null, isAdmin: true, weekOff: off });
+  };
+  _calRefreshFn(_calWeekOff);
+}
+
+function renderAdminAppts(appts) {
+  const el = document.getElementById('adminApptList');
+  if (!el) return;
+  const today = new Date().toISOString().split('T')[0];
+  const upcoming = appts.filter(a => a.appointment_date >= today);
+  if (!upcoming.length) {
+    el.innerHTML = '<p style="font-size:14px;color:var(--c-text-2)">Keine bevorstehenden Termine.</p>';
+    return;
+  }
+  el.innerHTML = '<div style="font-size:12px;font-weight:700;color:var(--c-text-2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Bevorstehende Termine</div>'
+    + upcoming.map(a => `<div class="appt-item appt-item-admin">
+        <div>
+          <div class="appt-datetime">${calFormatAppt(a.appointment_date, a.appointment_time)}</div>
+          <div style="font-size:13px;color:var(--c-text-2)">${calEsc(a.profiles?.full_name || 'Unbekannt')}</div>
+        </div>
+        <button class="appt-cancel-btn" onclick="adminCancelAppt('${a.id}')">Stornieren</button>
+      </div>`).join('');
+}
+
+function calOnBook(date, time) {
+  _adminPendingDate = date;
+  _adminPendingTime = time;
+  document.getElementById('adminBookDateDisplay').textContent = calFormatAppt(date, time);
+  document.getElementById('adminBookError').classList.remove('visible');
+  const sel = document.getElementById('adminBookCustomer');
+  sel.innerHTML = '<option value="">Kunden auswählen …</option>';
+  allCustomers.filter(c => c.active).forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.full_name + (c.company_name ? ' – ' + c.company_name : '');
+    sel.appendChild(opt);
+  });
+  document.getElementById('adminBookNotes').value = '';
+  openModal('modalAdminBook');
+}
+
+function calOnCancel(id) { adminCancelAppt(id); }
+
+async function adminCancelAppt(id) {
+  if (!window.confirm('Termin wirklich stornieren?')) return;
+  const { error } = await sb.from('appointments').update({ status: 'cancelled' }).eq('id', id);
+  if (error) { showToast('Fehler beim Stornieren.', 'error'); return; }
+  showToast('Termin storniert.', 'success');
+  await loadAppointments();
+}
+
+document.getElementById('adminBookForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn   = document.getElementById('adminBookBtn');
+  const err   = document.getElementById('adminBookError');
+  const cust  = document.getElementById('adminBookCustomer').value;
+  const notes = document.getElementById('adminBookNotes').value.trim();
+
+  if (!cust) { showModalErr(err, 'Bitte einen Kunden auswählen.'); return; }
+
+  setLoading(btn, true);
+  err.classList.remove('visible');
+
+  const { error } = await sb.from('appointments').insert({
+    customer_id:      cust,
+    appointment_date: _adminPendingDate,
+    appointment_time: _adminPendingTime + ':00',
+    status:           'confirmed',
+    notes:            notes || null
+  });
+
+  setLoading(btn, false);
+
+  if (error) {
+    showModalErr(err, error.code === '23505' ? 'Dieser Termin ist bereits vergeben.' : 'Fehler beim Speichern.');
+    return;
+  }
+
+  showToast('Termin wurde angelegt.', 'success');
+  closeModal('modalAdminBook');
+  await loadAppointments();
+});
 </script>
 
 </body>

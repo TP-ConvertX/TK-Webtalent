@@ -189,6 +189,22 @@
     </div>
   </div>
 
+  <!-- Termine (sichtbar wenn eingeloggt + aktiv) -->
+  <div class="portal-container" id="apptSection" style="display:none">
+    <div class="project-card" style="margin-top:24px">
+      <div class="project-card-header">
+        <div>
+          <div class="project-name" style="font-size:18px">Beratungstermine</div>
+          <div style="font-size:13px;color:var(--c-text-2);margin-top:2px">Mo–Fr 17–20 Uhr · Sa–So 12–18 Uhr · 60-Minuten-Slots</div>
+        </div>
+      </div>
+      <div class="project-card-body" style="padding-top:8px">
+        <div id="myApptList" style="margin-bottom:20px"></div>
+        <div id="calContainer"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Fehler-Zustand -->
   <div class="portal-container" id="stateError" style="display:none">
     <div class="project-card" style="margin-top:40px">
@@ -208,6 +224,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-config.js"></script>
 <script src="js/auth.js"></script>
+<script src="js/calendar.js"></script>
 <script>
 (async () => {
   const sb = getSB();
@@ -241,6 +258,10 @@
     setState('disabled');
     return;
   }
+
+  /* Terminkalender anzeigen */
+  document.getElementById('apptSection').style.display = 'block';
+  loadCalendar(userId);
 
   /* Projekt laden */
   const { data: project, error: projErr } = await sb
@@ -345,6 +366,128 @@ function showFallback() {
   document.getElementById('previewIframe').style.display  = 'none';
   document.getElementById('previewFallback').classList.add('visible');
 }
+</script>
+
+<!-- Modal: Termin buchen -->
+<div class="modal-overlay" id="modalBook">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <h3 class="modal-title">Termin buchen</h3>
+      <button class="modal-close" onclick="closeBookModal()">✕</button>
+    </div>
+    <div class="modal-error" id="bookError"></div>
+    <div style="padding:0 24px 24px">
+      <p style="font-size:15px;color:var(--c-text-2);margin-bottom:20px">Möchtest du diesen Termin wirklich buchen?</p>
+      <div style="background:var(--c-bg-light);border-radius:12px;padding:16px;font-size:15px;font-weight:600;color:var(--c-text);text-align:center" id="bookDateDisplay">—</div>
+      <div class="modal-actions" style="margin-top:24px">
+        <button class="btn btn-outline" onclick="closeBookModal()" style="font-size:14px">Abbrechen</button>
+        <button class="btn btn-primary auth-btn" id="bookConfirmBtn" style="font-size:14px;min-width:160px" onclick="confirmBook()">
+          <span class="spinner"></span>
+          <span class="btn-text">Jetzt buchen</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── TERMINKALENDER (Kundenbereich) ── */
+let _apptUserId;
+let _allAppts = [];
+let _pendingDate, _pendingTime;
+
+async function loadCalendar(uid) {
+  _apptUserId = uid;
+  const { data } = await getSB()
+    .from('appointments')
+    .select('id, customer_id, appointment_date, appointment_time, status')
+    .eq('status', 'confirmed');
+
+  _allAppts = data || [];
+  renderMyAppts(_allAppts.filter(a => a.customer_id === uid));
+
+  _calRefreshFn = function(off) {
+    calRender('calContainer', { appointments: _allAppts, myId: uid, isAdmin: false, weekOff: off });
+  };
+  _calRefreshFn(_calWeekOff);
+}
+
+function renderMyAppts(mine) {
+  const el = document.getElementById('myApptList');
+  if (!el) return;
+  const today = new Date().toISOString().split('T')[0];
+  const upcoming = mine
+    .filter(a => a.appointment_date >= today)
+    .sort((a, b) => (a.appointment_date + a.appointment_time).localeCompare(b.appointment_date + b.appointment_time));
+  if (!upcoming.length) {
+    el.innerHTML = '<p style="font-size:14px;color:var(--c-text-2)">Noch keine Termine gebucht.</p>';
+    return;
+  }
+  el.innerHTML = '<div style="font-size:12px;font-weight:700;color:var(--c-text-2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Deine nächsten Termine</div>'
+    + upcoming.map(a => `<div class="appt-item">
+        <div class="appt-datetime">${calFormatAppt(a.appointment_date, a.appointment_time)}</div>
+        <button class="appt-cancel-btn" onclick="calOnCancel('${a.id}')">Absagen</button>
+      </div>`).join('');
+}
+
+function calOnBook(date, time) {
+  _pendingDate = date;
+  _pendingTime = time;
+  document.getElementById('bookDateDisplay').textContent = calFormatAppt(date, time);
+  document.getElementById('bookError').classList.remove('visible');
+  document.getElementById('modalBook').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBookModal() {
+  document.getElementById('modalBook').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+async function confirmBook() {
+  const btn = document.getElementById('bookConfirmBtn');
+  const err = document.getElementById('bookError');
+  btn.classList.add('loading');
+  btn.disabled = true;
+  err.classList.remove('visible');
+
+  const { error } = await getSB().from('appointments').insert({
+    customer_id:      _apptUserId,
+    appointment_date: _pendingDate,
+    appointment_time: _pendingTime + ':00',
+    status:           'confirmed'
+  });
+
+  btn.classList.remove('loading');
+  btn.disabled = false;
+
+  if (error) {
+    err.textContent = error.code === '23505'
+      ? 'Dieser Termin ist leider nicht mehr verfügbar. Bitte wähle einen anderen.'
+      : 'Fehler beim Buchen. Bitte erneut versuchen.';
+    err.classList.add('visible');
+    return;
+  }
+
+  closeBookModal();
+  showToast('Termin erfolgreich gebucht!', 'success');
+  await loadCalendar(_apptUserId);
+}
+
+async function calOnCancel(id) {
+  if (!window.confirm('Termin wirklich absagen?')) return;
+  const { error } = await getSB().from('appointments').update({ status: 'cancelled' }).eq('id', id);
+  if (error) { showToast('Fehler beim Absagen.', 'error'); return; }
+  showToast('Termin abgesagt.', 'success');
+  await loadCalendar(_apptUserId);
+}
+
+document.getElementById('modalBook').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('modalBook')) closeBookModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.getElementById('modalBook').classList.contains('open')) closeBookModal();
+});
 </script>
 
 </body>
