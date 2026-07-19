@@ -5,8 +5,8 @@
    Der Service Role Key darf NIEMALS hier stehen.
    =================================================== */
 
-const SUPABASE_URL      = 'https://DEIN-PROJEKT-ID.supabase.co';
-const SUPABASE_ANON_KEY = 'DEIN-ANON-KEY-HIER-EINTRAGEN';
+const SUPABASE_URL      = 'https://dwcmmghuaswwmsojitls.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_hKg2lc-bdM87f5EXjsEqcQ_RArHVqi_';
 
 // Interner API-Endpunkt (Vercel Serverless Function)
 const API_CREATE_USER = '/api/create-user';
