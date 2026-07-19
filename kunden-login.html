@@ -213,7 +213,7 @@
     /* Prüfen ob Konto aktiv ist */
     const { data: profile } = await sb
       .from('profiles')
-      .select('active')
+      .select('active, role')
       .eq('id', (await getSession()).user.id)
       .single();
 
@@ -224,7 +224,12 @@
       return;
     }
 
-    window.location.href = '/kundenbereich';
+    // Admins → Admin-Bereich, Kunden → Kundenbereich
+    if (profile && profile.role === 'admin') {
+      window.location.href = '/admin';
+    } else {
+      window.location.href = '/kundenbereich';
+    }
   });
 
   /* ── PASSWORT VERGESSEN ── */
