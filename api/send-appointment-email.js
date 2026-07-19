@@ -1,10 +1,11 @@
 /* ===================================================
-   TK WEBTALENT – TERMIN-E-MAIL
+   TK WEBTALENT – TERMIN-E-MAIL (Gmail SMTP)
    Versendet Bestätigungs- und Benachrichtigungs-Mails
-   via Resend bei Buchung oder Absage.
+   über das Google-Konto per App-Passwort.
    =================================================== */
 
 const { createClient } = require('@supabase/supabase-js');
+const nodemailer        = require('nodemailer');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -17,13 +18,13 @@ module.exports = async function handler(req, res) {
   const { data: { user }, error: authErr } = await sbAnon.auth.getUser(token);
   if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
 
-  const RESEND_KEY  = process.env.RESEND_API_KEY;
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-  const FROM        = process.env.FROM_EMAIL || 'TK Webtalent <noreply@tk-webtalent.de>';
+  const GMAIL_USER = process.env.GMAIL_USER;
+  const GMAIL_PASS = process.env.GMAIL_APP_PASSWORD;
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || GMAIL_USER;
 
-  /* Resend nicht konfiguriert → still überspringen (kein Fehler für den User) */
-  if (!RESEND_KEY) {
-    console.warn('[email] RESEND_API_KEY nicht gesetzt – übersprungen');
+  /* Gmail nicht konfiguriert → still überspringen */
+  if (!GMAIL_USER || !GMAIL_PASS) {
+    console.warn('[email] GMAIL_USER / GMAIL_APP_PASSWORD nicht gesetzt – übersprungen');
     return res.status(200).json({ ok: true, skipped: true });
   }
 
@@ -65,23 +66,20 @@ module.exports = async function handler(req, res) {
     customerName,
     formattedDate: fmt,
     adminEmail: ADMIN_EMAIL,
-    from: FROM
+    from: `TK Webtalent <${GMAIL_USER}>`
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: GMAIL_USER, pass: GMAIL_PASS }
   });
 
   for (const mail of mails) {
     if (!mail.to) continue;
     try {
-      const r = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${RESEND_KEY}`,
-          'Content-Type':  'application/json'
-        },
-        body: JSON.stringify(mail)
-      });
-      if (!r.ok) console.error('[email] Resend:', await r.text());
+      await transporter.sendMail(mail);
     } catch (e) {
-      console.error('[email] Netzwerkfehler:', e.message);
+      console.error('[email] Sendefehler:', e.message);
     }
   }
 
@@ -92,16 +90,15 @@ module.exports = async function handler(req, res) {
 function tpl(body) {
   return `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#F8FAFC;font-family:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif}</style>
-</head><body>
-<div style="max-width:520px;margin:32px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,.08)">
+</head><body style="margin:0;padding:20px;background:#F8FAFC;font-family:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif">
+<div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,.08)">
   <div style="background:#0F172A;padding:20px 28px;display:flex;align-items:center">
     <div style="background:linear-gradient(135deg,#0EA5E9,#0284C7);width:36px;height:36px;border-radius:8px;font-size:13px;font-weight:800;color:#fff;display:inline-flex;align-items:center;justify-content:center">TK</div>
     <span style="color:#fff;font-size:17px;font-weight:700;margin-left:10px">Webtalent</span>
   </div>
   <div style="padding:28px 28px 24px">${body}</div>
   <div style="padding:14px 28px;background:#F8FAFC;border-top:1px solid #E2E8F0;font-size:12px;color:#94A3B8;text-align:center">
-    TK Webtalent · Krauchenwies &nbsp;|&nbsp; <a href="https://tk-webtalent.de" style="color:#0EA5E9;text-decoration:none">tk-webtalent.de</a>
+    TK Webtalent &nbsp;|&nbsp; <a href="https://tk-webtalent.de" style="color:#0EA5E9;text-decoration:none">tk-webtalent.de</a>
   </div>
 </div>
 </body></html>`;
@@ -116,7 +113,6 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, adminEm
   const h1   = (t) => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
   const p    = (t) => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
   const link = (href, label) => `<a href="${href}" style="color:#0EA5E9">${label}</a>`;
-
   const kb   = link('https://tk-webtalent.de/kundenbereich', 'Kundenbereich');
   const adm  = link('https://tk-webtalent.de/admin', 'Admin-Bereich');
 
@@ -131,7 +127,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, adminEm
           ${h1('Termin bestätigt!')}
           ${p('Dein Beratungstermin bei TK Webtalent ist gebucht.')}
           ${box(formattedDate)}
-          ${p('Der Termin dauert <strong>60 Minuten</strong>. Wir besprechen dabei den Stand deines Projekts und die nächsten Schritte. Du erhältst kurz vorher weitere Details.')}
+          ${p('Der Termin dauert <strong>60 Minuten</strong>. Wir besprechen dabei den Stand deines Projekts und die nächsten Schritte.')}
           ${p(`Musst du absagen? Kein Problem – einfach im ${kb} stornieren.`)}
           ${sign}
         `)
@@ -183,7 +179,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, adminEm
           ${h1('Termin abgesagt')}
           ${p(`<strong>${customerName}</strong> hat den Termin abgesagt.`)}
           ${box(formattedDate)}
-          ${p(`Das Zeitfenster ist jetzt wieder frei.`)}
+          ${p('Das Zeitfenster ist wieder frei.')}
         `)
       }
     ];
@@ -197,7 +193,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, adminEm
           ${h1('Termin storniert')}
           ${p('TK Webtalent hat deinen Beratungstermin leider stornieren müssen.')}
           ${box(formattedDate)}
-          ${p(`Wir entschuldigen uns für die Unannehmlichkeiten. Buche gerne einen neuen Termin im ${kb} oder melde dich direkt bei uns.`)}
+          ${p(`Wir entschuldigen uns. Buche gerne einen neuen Termin im ${kb}.`)}
           ${sign}
         `)
       }
