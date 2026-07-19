@@ -1750,6 +1750,10 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   .float-2 { top: 20px; right: -12px; }
   .float-3 { display: none; }
 
+  /* Laptop auf Tablet anpassen */
+  .devices-wrap { height: 380px; perspective: 700px; }
+  .device-laptop { left: 50%; bottom: 80px; transform: translateX(-50%) rotateY(-15deg); }
+
   .problem-grid { grid-template-columns: 1fr; }
   .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
   .pricing-featured { transform: none; }
@@ -1777,6 +1781,16 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
   .float-1, .float-2 { display: none; }
   .process-step { grid-template-columns: 56px 1fr; gap: 16px; }
+
+  /* Laptop skalieren für kleine Bildschirme */
+  .devices-wrap { height: 300px; perspective: 550px; }
+  .device-laptop { bottom: 55px; transform: translateX(-50%) rotateY(-10deg) scale(0.82); }
+  .laptop-base-panel { transform: rotateX(75deg); }
+}
+
+@media (max-width: 420px) {
+  .devices-wrap { height: 250px; }
+  .device-laptop { bottom: 40px; transform: translateX(-50%) rotateY(-8deg) scale(0.65); }
 }
 
 /* ─── COOKIE BANNER ──────────────────────────────── */
