@@ -83,6 +83,7 @@
   <link rel="dns-prefetch" href="https://formsubmit.co">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portal.css">
 </head>
 <body>
 
@@ -144,6 +145,7 @@
           <div class="hero-actions animate-fade-up" style="animation-delay:0.5s">
             <a href="#kontakt" class="btn btn-primary btn-large">Kostenlos anfragen</a>
             <a href="#beispiele" class="btn btn-ghost btn-large">Beispiele ansehen <span class="btn-arrow">→</span></a>
+            <button onclick="openGuestBookModal()" class="btn btn-outline btn-large" style="border-color:var(--c-accent);color:var(--c-accent)">📅 Telefontermin buchen</button>
           </div>
           <div class="hero-stats animate-fade-up" style="animation-delay:0.65s">
             <div class="stat">
@@ -745,6 +747,11 @@
               <span>💡</span>
               <p>Keine Agentur-Floskeln. Ich antworte persönlich und direkt – meistens noch am selben Tag.</p>
             </div>
+            <div style="margin-top:28px;padding:22px;background:linear-gradient(135deg,#F0F9FF 0%,#EFF6FF 100%);border:1.5px solid rgba(14,165,233,0.25);border-radius:var(--radius-lg)">
+              <div style="font-size:13px;font-weight:700;color:var(--c-accent);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Alternativ: Direkttermin</div>
+              <p style="font-size:14px;color:var(--c-text-2);margin-bottom:16px;line-height:1.6">Lieber direkt reden? Buche dir einen kostenlosen 60-Minuten-Telefontermin – ohne Wartezeit.</p>
+              <button onclick="openGuestBookModal()" class="btn btn-primary" style="width:100%;justify-content:center">📅 Telefontermin vereinbaren</button>
+            </div>
           </div>
 
           <!-- CHATBOT WIDGET -->
@@ -849,5 +856,201 @@
   </div>
 
   <script src="js/main.js"></script>
+
+  <!-- ===== TELEFONTERMIN-MODAL ===== -->
+  <div class="modal-overlay" id="guestBookModal">
+    <div class="modal" style="max-width:820px;padding:0;overflow:hidden">
+
+      <!-- Header -->
+      <div class="modal-header" style="padding:22px 28px;border-bottom:1px solid var(--c-border);margin-bottom:0">
+        <div>
+          <h3 class="modal-title">Telefontermin vereinbaren</h3>
+          <p style="font-size:13px;color:var(--c-text-2);margin-top:3px">Mo–Fr 17–20 Uhr · Sa–So 12–18 Uhr · 60 Min · kostenlos & unverbindlich</p>
+        </div>
+        <button class="modal-close" onclick="closeGuestBookModal()">✕</button>
+      </div>
+
+      <!-- Schritt 1: Kalender -->
+      <div id="guestCalStep" style="padding:24px 28px">
+        <div id="guestCalLoading" style="text-align:center;padding:60px 0">
+          <div class="portal-spinner" style="margin:0 auto 16px"></div>
+          <p style="font-size:14px;color:var(--c-text-2)">Verfügbare Termine werden geladen …</p>
+        </div>
+        <div id="guestCalContainer" style="display:none"></div>
+      </div>
+
+      <!-- Schritt 2: Name & E-Mail eingeben -->
+      <div id="guestFormStep" style="display:none;padding:24px 28px">
+        <button onclick="guestBackToCal()" style="border:none;background:none;color:var(--c-accent);font-size:14px;font-weight:600;cursor:pointer;padding:0;margin-bottom:20px;font-family:inherit;display:flex;align-items:center;gap:6px">← Anderen Termin wählen</button>
+        <div id="guestSelectedDisplay" style="background:var(--c-bg-light);border:1px solid var(--c-border);border-radius:var(--radius-lg);padding:15px 20px;font-size:15px;font-weight:700;color:var(--c-text);text-align:center;margin-bottom:24px">—</div>
+        <div class="modal-form">
+          <div class="form-group">
+            <label class="form-label" for="guestName">Ihr Name *</label>
+            <input type="text" class="form-input" id="guestName" placeholder="Max Mustermann" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="guestEmail">Ihre E-Mail *</label>
+            <input type="email" class="form-input" id="guestEmail" placeholder="ihre@email.de" autocomplete="email">
+          </div>
+          <div class="modal-error" id="guestBookError"></div>
+          <div class="modal-actions">
+            <button class="btn btn-outline" onclick="guestBackToCal()">Zurück</button>
+            <button class="btn btn-primary auth-btn" id="guestBookBtn" onclick="submitGuestBook()" style="min-width:160px;width:auto">
+              <span class="spinner"></span>
+              <span class="btn-text">Jetzt buchen</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schritt 3: Erfolg -->
+      <div id="guestSuccessStep" style="display:none;padding:52px 28px;text-align:center">
+        <div style="font-size:58px;margin-bottom:16px">✅</div>
+        <h3 style="font-size:22px;font-weight:800;color:var(--c-text);letter-spacing:-.02em;margin-bottom:8px">Termin erfolgreich gebucht!</h3>
+        <p style="font-size:15px;color:var(--c-text-2);margin-bottom:22px">Sie erhalten in Kürze eine Bestätigungs-E-Mail.</p>
+        <div id="guestSuccessDate" style="background:var(--c-accent-light);border:1px solid rgba(14,165,233,0.3);border-radius:var(--radius-lg);padding:14px 24px;font-size:15px;font-weight:700;color:var(--c-text);display:inline-block;margin-bottom:30px"></div>
+        <div>
+          <button class="btn btn-primary" onclick="closeGuestBookModal()">Schließen</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Kalender + Buchungslogik -->
+  <script src="js/calendar.js"></script>
+  <script>
+  /* ── Öffentliche Terminbuchung ── */
+  var _guestPendingDate = null;
+  var _guestPendingTime = null;
+  var _guestAppts       = [];
+
+  function openGuestBookModal() {
+    document.getElementById('guestBookModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (!document.getElementById('guestCalContainer').childElementCount) {
+      loadGuestCalendar();
+    }
+  }
+
+  function closeGuestBookModal() {
+    document.getElementById('guestBookModal').classList.remove('open');
+    document.body.style.overflow = '';
+    showGuestStep('cal');
+    document.getElementById('guestName').value  = '';
+    document.getElementById('guestEmail').value = '';
+    document.getElementById('guestBookError').classList.remove('visible');
+  }
+
+  function showGuestStep(step) {
+    document.getElementById('guestCalStep').style.display     = step === 'cal'     ? '' : 'none';
+    document.getElementById('guestFormStep').style.display    = step === 'form'    ? '' : 'none';
+    document.getElementById('guestSuccessStep').style.display = step === 'success' ? '' : 'none';
+  }
+
+  async function loadGuestCalendar() {
+    document.getElementById('guestCalLoading').style.display   = '';
+    document.getElementById('guestCalContainer').style.display = 'none';
+
+    try {
+      const r = await fetch('/api/get-availability');
+      const d = await r.json();
+      _guestAppts = (d.appointments || []).map(function(a) {
+        return {
+          id:               a.appointment_date + '_' + a.appointment_time,
+          customer_id:      '__taken__',
+          appointment_date: a.appointment_date,
+          appointment_time: a.appointment_time,
+          status:           'confirmed'
+        };
+      });
+    } catch(e) {
+      _guestAppts = [];
+    }
+
+    document.getElementById('guestCalLoading').style.display   = 'none';
+    document.getElementById('guestCalContainer').style.display = '';
+
+    _calWeekOff = 0;
+    _calRefreshFn = function(off) {
+      calRender('guestCalContainer', { appointments: _guestAppts, myId: '__me__', isAdmin: false, weekOff: off });
+    };
+    _calRefreshFn(0);
+  }
+
+  /* Überschreibt die leere Funktion aus calendar.js */
+  function calOnBook(date, time) {
+    _guestPendingDate = date;
+    _guestPendingTime = time;
+    document.getElementById('guestSelectedDisplay').textContent = calFormatAppt(date, time);
+    document.getElementById('guestBookError').classList.remove('visible');
+    showGuestStep('form');
+  }
+
+  function guestBackToCal() {
+    showGuestStep('cal');
+  }
+
+  async function submitGuestBook() {
+    var name  = document.getElementById('guestName').value.trim();
+    var email = document.getElementById('guestEmail').value.trim();
+    var err   = document.getElementById('guestBookError');
+
+    if (!name) {
+      err.textContent = 'Bitte geben Sie Ihren Namen ein.';
+      err.classList.add('visible');
+      return;
+    }
+    if (!email || !email.includes('@')) {
+      err.textContent = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
+      err.classList.add('visible');
+      return;
+    }
+
+    var btn = document.getElementById('guestBookBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+    err.classList.remove('visible');
+
+    try {
+      var r = await fetch('/api/book-guest', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ name: name, email: email, date: _guestPendingDate, time: _guestPendingTime })
+      });
+      var d = await r.json();
+
+      if (!r.ok) {
+        err.textContent = d.error === 'slot_taken'
+          ? 'Dieser Termin ist leider bereits vergeben. Bitte wähle einen anderen.'
+          : (d.error || 'Fehler beim Buchen. Bitte erneut versuchen.');
+        err.classList.add('visible');
+        return;
+      }
+
+      document.getElementById('guestSuccessDate').textContent = calFormatAppt(_guestPendingDate, _guestPendingTime);
+      showGuestStep('success');
+
+      /* Kalender neu laden damit der Slot als belegt erscheint */
+      document.getElementById('guestCalContainer').innerHTML = '';
+      _guestAppts = [];
+    } catch(e) {
+      err.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
+      err.classList.add('visible');
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  }
+
+  document.getElementById('guestBookModal').addEventListener('click', function(e) {
+    if (e.target === this) closeGuestBookModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('guestBookModal').classList.contains('open')) {
+      closeGuestBookModal();
+    }
+  });
+  </script>
 </body>
 </html>
