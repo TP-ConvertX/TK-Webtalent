@@ -79,7 +79,7 @@ module.exports = async function handler(req, res) {
   /* E-Mails senden */
   const RESEND_KEY  = process.env.RESEND_API_KEY;
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'kunzelmanntim00@gmail.com';
-  const FROM        = process.env.FROM_EMAIL  || 'TK Webtalent <kontakt@tp-convertx.de>';
+  const from        = process.env.FROM_EMAIL  || 'TK Webtalent <kontakt@tp-convertx.de>';
   const fmt         = formatAppt(date, time);
 
   if (RESEND_KEY) {
