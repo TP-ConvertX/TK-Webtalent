@@ -396,10 +396,10 @@ function showFallback() {
 
 <script>
 /* ── TERMINKALENDER (Kundenbereich) ── */
-let _session, _customerEmail, _customerName;
-let _apptUserId;
-let _allAppts = [];
-let _pendingDate, _pendingTime;
+var _session, _customerEmail, _customerName;
+var _apptUserId;
+var _allAppts = [];
+var _pendingDate, _pendingTime;
 
 function sendApptEmail(type, date, time) {
   const token = _session?.access_token;
