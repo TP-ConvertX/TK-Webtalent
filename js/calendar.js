@@ -28,7 +28,7 @@ function calMonday(off) {
 }
 
 function calAdd(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
-function calISO(d)    { return d.toISOString().split('T')[0]; }
+function calISO(d)    { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function calFmt(d)    { return d.getDate() + '. ' + CAL_MONTHS[d.getMonth()]; }
 
 function calNav(dir) {

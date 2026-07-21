@@ -52,10 +52,8 @@
     .ds-section ul li { font-size: 15px; color: #475569; line-height: 1.75; margin-bottom: 6px; list-style: disc; }
     .ds-section table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
     .ds-section table th { background: #F8FAFC; padding: 10px 14px; text-align: left; font-weight: 600; color: #374151; border: 1px solid #E2E8F0; }
-    .ds-section table td { padding: 10px 14px; color: #475569; border: 1px solid #E2E8F0; line-height: 1.6; }
+    .ds-section table td { padding: 10px 14px; color: #475569; border: 1px solid #E2E8F0; line-height: 1.6; vertical-align: top; }
 
-    .placeholder-note { background: #FFFBEB; border: 1.5px dashed #F59E0B; border-radius: 10px; padding: 14px 18px; font-size: 14px; color: #B45309; margin-bottom: 24px; }
-    .placeholder-note strong { display: block; margin-bottom: 2px; }
     .info-box { background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 12px; padding: 16px 20px; font-size: 14px; color: #0369A1; margin: 16px 0; line-height: 1.65; }
 
     .bottom-links { text-align: center; padding: 24px 0 48px; font-size: 14px; color: #94A3B8; }
@@ -74,7 +72,7 @@
   <div class="topbar">
     <div class="topbar-inner">
       <a href="/" class="logo">
-        <div class="logo-mark">W</div>
+        <div class="logo-mark">TK</div>
         TK Webtalent
       </a>
       <a href="/" class="back-link">← Zurück zur Startseite</a>
@@ -85,7 +83,7 @@
     <div class="page-header">
       <div class="page-label">Rechtliches</div>
       <h1>Datenschutzerklärung</h1>
-      <p>Stand: Juli 2025 | Gemäß DSGVO, BDSG und DDG</p>
+      <p>Stand: Juli 2026 | Gemäß DSGVO, BDSG und DDG</p>
     </div>
 
     <div class="toc">
@@ -96,6 +94,12 @@
         <li><a href="#hosting">Hosting (Vercel)</a></li>
         <li><a href="#google-fonts">Google Fonts</a></li>
         <li><a href="#kontaktformular">Kontaktformular (Formsubmit)</a></li>
+        <li><a href="#terminbuchung">Öffentliche Terminbuchung</a></li>
+        <li><a href="#kundenbereich">Kundenbereich & Authentifizierung (Supabase)</a></li>
+        <li><a href="#nachrichten">Nachrichten & Dateiuploads</a></li>
+        <li><a href="#email">E-Mail-Benachrichtigungen (Resend)</a></li>
+        <li><a href="#realtime">Echtzeit-Funktionen (Online-Status & Tipp-Anzeige)</a></li>
+        <li><a href="#localstorage">Lokale Datenspeicherung (LocalStorage)</a></li>
         <li><a href="#cookies">Cookies</a></li>
         <li><a href="#rechte">Ihre Rechte</a></li>
         <li><a href="#aenderungen">Änderungen dieser Datenschutzerklärung</a></li>
@@ -121,16 +125,16 @@
       <!-- 2. Überblick -->
       <div class="ds-section" id="ueberblick">
         <h2>2. Überblick der Datenverarbeitung</h2>
-        <p>Die folgenden Dienste und Technologien werden auf dieser Website eingesetzt. Bei jeder Nutzung dieser Website können dabei personenbezogene Daten verarbeitet werden.</p>
+        <p>Die folgenden Dienste und Technologien werden auf dieser Website eingesetzt. Bei jeder Nutzung können dabei personenbezogene Daten verarbeitet werden.</p>
         <table>
           <tr>
             <th>Dienst</th>
             <th>Zweck</th>
-            <th>Daten</th>
+            <th>Verarbeitete Daten</th>
           </tr>
           <tr>
             <td>Vercel (Hosting)</td>
-            <td>Bereitstellung der Website</td>
+            <td>Bereitstellung der Website und API-Endpunkte</td>
             <td>IP-Adresse, Browsertyp, Zugriffszeiten</td>
           </tr>
           <tr>
@@ -141,7 +145,17 @@
           <tr>
             <td>Formsubmit.co</td>
             <td>Verarbeitung von Kontaktformularen</td>
-            <td>Formulardaten (Name, E-Mail, Nachricht)</td>
+            <td>Name, E-Mail, Nachrichtentext</td>
+          </tr>
+          <tr>
+            <td>Supabase</td>
+            <td>Authentifizierung, Datenbank, Dateispeicherung, Echtzeit-Verbindungen</td>
+            <td>E-Mail, Name, Unternehmen, Projektdaten, Termine, Nachrichten, Dateianhänge, Session-Token, Online-Status (temporär)</td>
+          </tr>
+          <tr>
+            <td>Resend</td>
+            <td>Versand von Transaktions-E-Mails</td>
+            <td>E-Mail-Adresse, Name, Nachrichteninhalt (Vorschau)</td>
           </tr>
         </table>
       </div>
@@ -149,65 +163,183 @@
       <!-- 3. Hosting -->
       <div class="ds-section" id="hosting">
         <h2>3. Hosting (Vercel)</h2>
-        <p>Diese Website wird bei <strong>Vercel Inc.</strong> (340 Pine Street, Suite 701, San Francisco, CA 94104, USA) gehostet.</p>
-        <p>Wenn Sie unsere Website besuchen, werden automatisch Informationen in sogenannten Server-Logfiles gespeichert, die Ihr Browser an uns übermittelt. Dies sind:</p>
+        <p>Diese Website wird bei <strong>Vercel Inc.</strong> (340 Pine Street, Suite 701, San Francisco, CA 94104, USA) gehostet. Vercel stellt sowohl die statischen Seiten als auch die serverseitigen API-Endpunkte (Serverless Functions) bereit, über die Terminbuchungen und Nachrichten verarbeitet werden.</p>
+        <p>Wenn Sie unsere Website besuchen oder API-Endpunkte aufrufen, werden automatisch Informationen in Server-Logfiles gespeichert:</p>
         <ul>
           <li>IP-Adresse des anfragenden Geräts</li>
           <li>Datum und Uhrzeit des Zugriffs</li>
-          <li>Name und URL der abgerufenen Datei</li>
+          <li>Name und URL der abgerufenen Ressource</li>
           <li>Betriebssystem und Browser des Nutzers</li>
           <li>Übertragene Datenmenge und HTTP-Statuscode</li>
         </ul>
-        <p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse). Das berechtigte Interesse liegt in der Sicherstellung der technischen Funktionsfähigkeit und Sicherheit der Website.</p>
-        <p>Vercel ist nach dem EU-US Data Privacy Framework zertifiziert. Weitere Informationen: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">https://vercel.com/legal/privacy-policy</a></p>
+        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Sicherstellung der technischen Funktionsfähigkeit und Sicherheit der Website). Vercel ist nach dem EU-US Data Privacy Framework zertifiziert. Weitere Informationen: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">vercel.com/legal/privacy-policy</a></p>
       </div>
 
       <!-- 4. Google Fonts -->
       <div class="ds-section" id="google-fonts">
         <h2>4. Google Fonts</h2>
         <p>Diese Website verwendet Google Fonts, einen Dienst von Google LLC (1600 Amphitheatre Parkway, Mountain View, CA 94043, USA). Dabei werden Schriftarten von den Google-Servern geladen, was zur Übermittlung Ihrer IP-Adresse an Google führt.</p>
-        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer einheitlichen Darstellung der Website). Informationen zum Datenschutz bei Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">https://policies.google.com/privacy</a></p>
-
-        <div class="info-box">
-          💡 <strong>Alternative:</strong> Wenn Sie Google Fonts vollständig lokal einbinden möchten, können die Schriftdateien heruntergeladen und direkt auf dem Server bereitgestellt werden. Damit entfällt die Datenübertragung an Google vollständig.
-        </div>
+        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer einheitlichen Darstellung der Website). Informationen zum Datenschutz bei Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></p>
       </div>
 
       <!-- 5. Kontaktformular -->
       <div class="ds-section" id="kontaktformular">
         <h2>5. Kontaktformular (Formsubmit)</h2>
-        <p>Auf dieser Website steht ein Kontaktformular zur Verfügung. Wenn Sie dieses nutzen, werden Ihre eingegebenen Daten (Name, E-Mail-Adresse, Firma und Nachricht) an <strong>Formsubmit.co</strong> übertragen und von dort per E-Mail an uns weitergeleitet.</p>
+        <p>Auf der Startseite steht ein Kontaktformular zur Verfügung. Wenn Sie dieses nutzen, werden Ihre eingegebenen Daten an <strong>Formsubmit.co</strong> übertragen und von dort per E-Mail an uns weitergeleitet.</p>
 
-        <h3>Welche Daten werden verarbeitet?</h3>
+        <h3>Verarbeitete Daten</h3>
         <ul>
           <li>Name</li>
           <li>E-Mail-Adresse</li>
           <li>Betrieb / Firma (freiwillig)</li>
           <li>Art der Anfrage (freiwillig)</li>
           <li>Nachrichtentext (freiwillig)</li>
-          <li>IP-Adresse und Zeitstempel der Übertragung (durch Formsubmit)</li>
+          <li>IP-Adresse und Zeitstempel (durch Formsubmit)</li>
         </ul>
 
-        <h3>Anbieter des Formulardienstes</h3>
-        <p>Formsubmit wird betrieben von Formsubmit LLC. Die Daten werden ausschließlich zur Weiterleitung der Anfrage genutzt und nicht dauerhaft gespeichert. Weitere Informationen: <a href="https://formsubmit.co/privacy" target="_blank" rel="noopener">https://formsubmit.co/privacy</a></p>
+        <h3>Anbieter</h3>
+        <p>Formsubmit wird betrieben von Formsubmit LLC. Die Daten werden ausschließlich zur Weiterleitung der Anfrage genutzt und nicht dauerhaft gespeichert. Weitere Informationen: <a href="https://formsubmit.co/privacy" target="_blank" rel="noopener">formsubmit.co/privacy</a></p>
+
+        <h3>Rechtsgrundlage & Speicherdauer</h3>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO (Einwilligung durch aktive Übermittlung des Formulars). Die Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern oder der Zweck entfällt.</p>
+      </div>
+
+      <!-- 6. Terminbuchung -->
+      <div class="ds-section" id="terminbuchung">
+        <h2>6. Öffentliche Terminbuchung</h2>
+        <p>Auf der Website besteht die Möglichkeit, einen kostenlosen Beratungstermin (Telefontermin) direkt zu buchen, ohne sich vorher registrieren zu müssen.</p>
+
+        <h3>Verarbeitete Daten</h3>
+        <ul>
+          <li>Name</li>
+          <li>E-Mail-Adresse</li>
+          <li>Gewählter Termin (Datum und Uhrzeit)</li>
+        </ul>
+
+        <h3>Zweck der Verarbeitung</h3>
+        <p>Die Daten werden benötigt, um den Termin in unserem System anzulegen, Ihnen eine Buchungsbestätigung per E-Mail zuzusenden und den Termin intern zu verwalten.</p>
+
+        <h3>Datenspeicherung</h3>
+        <p>Die Termindaten (Datum, Uhrzeit, Status) werden in der Datenbank von Supabase gespeichert (siehe Abschnitt 7). Ihre E-Mail-Adresse und Ihr Name werden ausschließlich für den E-Mail-Versand verwendet und nicht dauerhaft in der Datenbank persistiert.</p>
 
         <h3>Rechtsgrundlage</h3>
-        <p>Die Verarbeitung der im Kontaktformular eingegebenen Daten erfolgt ausschließlich auf der Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Sie können diese Einwilligung jederzeit widerrufen. Die bis zum Widerruf erfolgte Datenverarbeitung bleibt rechtmäßig.</p>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen auf Anfrage der betroffenen Person).</p>
 
         <h3>Speicherdauer</h3>
-        <p>Die per Kontaktformular übermittelten Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt. Gesetzliche Aufbewahrungspflichten bleiben unberührt.</p>
+        <p>Termindaten werden gelöscht, sobald sie für die Geschäftsbeziehung nicht mehr benötigt werden, spätestens jedoch nach Ablauf gesetzlicher Aufbewahrungsfristen.</p>
       </div>
 
-      <!-- 6. Cookies -->
+      <!-- 7. Kundenbereich -->
+      <div class="ds-section" id="kundenbereich">
+        <h2>7. Kundenbereich & Authentifizierung (Supabase)</h2>
+        <p>Aktive Kunden erhalten Zugang zu einem passwortgeschützten Kundenbereich unter <strong>tk-webtalent.de/kundenbereich</strong>. Die technische Infrastruktur für Authentifizierung und Datenbankbetrieb wird durch <strong>Supabase Inc.</strong> (San Francisco, USA) bereitgestellt.</p>
+
+        <h3>Verarbeitete Daten im Kundenbereich</h3>
+        <ul>
+          <li>E-Mail-Adresse (für Login und Benachrichtigungen)</li>
+          <li>Vollständiger Name</li>
+          <li>Firmenname (optional)</li>
+          <li>Projektstatus, Projektbeschreibung, nächste Schritte, Vorschau-URL</li>
+          <li>Gebuchte Beratungstermine (Datum, Uhrzeit, Status)</li>
+          <li>Session-Token (temporär, für die Dauer der Sitzung)</li>
+          <li>Kontozustand (aktiv / deaktiviert)</li>
+        </ul>
+
+        <h3>Zweck der Verarbeitung</h3>
+        <p>Die Daten dienen der Authentifizierung, der Darstellung des aktuellen Projektstatus, der Verwaltung von Beratungsterminen und der Kommunikation zwischen Kunde und Dienstleister.</p>
+
+        <h3>Anbieter: Supabase</h3>
+        <p>Supabase Inc., 970 Toa Payoh North, #07-04, Singapur 318992 (Betrieb der Dienste über Rechenzentren der AWS in der EU-Region Frankfurt am Main, Deutschland).</p>
+        <p>Supabase verarbeitet Daten als Auftragsverarbeiter gemäß Art. 28 DSGVO. Ein Auftragsverarbeitungsvertrag (Data Processing Agreement) liegt vor. Weitere Informationen: <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a></p>
+
+        <h3>Rechtsgrundlage</h3>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) für alle Daten, die zur Erbringung der vereinbarten Webdesign-Leistung und deren Kommunikation erforderlich sind.</p>
+
+        <h3>Speicherdauer</h3>
+        <p>Kundendaten werden für die Dauer der Geschäftsbeziehung gespeichert. Nach Beendigung des Projekts und auf Wunsch des Kunden werden die Daten gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+      </div>
+
+      <!-- 8. Nachrichten -->
+      <div class="ds-section" id="nachrichten">
+        <h2>8. Nachrichten & Dateiuploads</h2>
+        <p>Innerhalb des Kundenbereichs steht eine Nachrichtenfunktion zur Verfügung, über die Kunden direkt mit TK Webtalent kommunizieren können.</p>
+
+        <h3>Verarbeitete Daten</h3>
+        <ul>
+          <li>Nachrichteninhalt (Text)</li>
+          <li>Hochgeladene Dateien (Bilder, Videos, PDF-Dokumente, ZIP-Archive u. a.)</li>
+          <li>Zeitstempel jeder Nachricht</li>
+          <li>Absender-Kennzeichnung (Kunde oder Admin)</li>
+          <li>Lesestatus (Zeitpunkt, zu dem eine Nachricht gelesen wurde)</li>
+        </ul>
+
+        <h3>Dateiuploads</h3>
+        <p>Hochgeladene Dateien werden im Supabase Storage-Dienst in einem zugriffsgeschützten Bucket (<em>message-files</em>) gespeichert. Der Zugriff auf Dateien ist über öffentliche URLs möglich, die nur denjenigen bekannt sind, denen sie mitgeteilt werden. Kunden sollten daher keine sensiblen persönlichen Daten Dritter hochladen.</p>
+
+        <h3>Rechtsgrundlage & Speicherdauer</h3>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung). Nachrichten und Dateien werden für die Dauer der Geschäftsbeziehung aufbewahrt und auf Anfrage gelöscht.</p>
+      </div>
+
+      <!-- 9. E-Mail -->
+      <div class="ds-section" id="email">
+        <h2>9. E-Mail-Benachrichtigungen (Resend)</h2>
+        <p>Für den Versand von Transaktions-E-Mails (Terminbestätigungen, Nachrichten-Benachrichtigungen) wird der Dienst <strong>Resend</strong> von Resend Inc. (548 Market St, PMB 72878, San Francisco, CA 94104, USA) eingesetzt.</p>
+
+        <h3>Anlässe für automatische E-Mails</h3>
+        <ul>
+          <li>Bestätigung einer Terminbuchung (an Kunden und intern)</li>
+          <li>Benachrichtigung bei neuen Nachrichten im Kundenbereich (sofern der Empfänger gerade nicht online ist)</li>
+        </ul>
+
+        <div class="info-box">
+          💡 <strong>Online-Erkennung:</strong> E-Mail-Benachrichtigungen werden nur dann versandt, wenn der Empfänger zum Zeitpunkt des Nachrichtenversands nicht aktiv im Kundenbereich oder Admin-Bereich eingeloggt ist. Ist der Empfänger online, entfällt die E-Mail.
+        </div>
+
+        <h3>Verarbeitete Daten</h3>
+        <ul>
+          <li>E-Mail-Adresse des Empfängers</li>
+          <li>Name des Empfängers</li>
+          <li>Betreffzeile und Nachrichteninhalt (gekürzte Vorschau)</li>
+          <li>Technische Metadaten des Versands (Zeitstempel, Zustellstatus)</li>
+        </ul>
+
+        <h3>Rechtsgrundlage</h3>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung / vorvertragliche Maßnahmen). Resend verarbeitet Daten als Auftragsverarbeiter. Weitere Informationen: <a href="https://resend.com/privacy" target="_blank" rel="noopener">resend.com/privacy</a></p>
+      </div>
+
+      <!-- 10. Realtime -->
+      <div class="ds-section" id="realtime">
+        <h2>10. Echtzeit-Funktionen (Online-Status & Tipp-Anzeige)</h2>
+        <p>Im Nachrichten-Bereich werden zwei Echtzeit-Funktionen eingesetzt, die über Supabase Realtime (WebSocket-Verbindungen) realisiert werden:</p>
+
+        <h3>Online-Status-Anzeige</h3>
+        <p>Solange ein Nutzer den Nachrichten-Bereich geöffnet hat, wird sein Anwesenheitsstatus (<em>online</em>) über einen verschlüsselten WebSocket-Kanal an die Gegenseite übertragen. Dieser Status wird <strong>nicht dauerhaft gespeichert</strong> — er existiert ausschließlich für die Dauer der aktiven Browser-Sitzung und wird automatisch beendet, wenn der Tab geschlossen wird.</p>
+
+        <h3>Tipp-Indikator</h3>
+        <p>Wenn ein Nutzer im Nachrichtenfeld tippt, wird ein kurzlebiges Signal (<em>„schreibt …"</em>) an die Gegenseite übertragen. Dieses Signal enthält ausschließlich die Information, dass gerade getippt wird — <strong>kein Inhalt des Textes wird übertragen</strong>. Das Signal wird nach spätestens 2 Sekunden ohne Tastendruck automatisch beendet und nicht gespeichert.</p>
+
+        <h3>Rechtsgrundlage</h3>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bereitstellung einer effizienten Kommunikationsfunktion).</p>
+      </div>
+
+      <!-- 11. LocalStorage -->
+      <div class="ds-section" id="localstorage">
+        <h2>11. Lokale Datenspeicherung (LocalStorage)</h2>
+        <p>Für die Authentifizierung im Kunden- und Admin-Bereich speichert Supabase einen verschlüsselten <strong>Session-Token</strong> im LocalStorage Ihres Browsers. Dieser Token dient ausschließlich dazu, Sie nach dem Schließen des Tabs weiterhin als eingeloggt zu erkennen, ohne dass Sie sich erneut anmelden müssen.</p>
+        <p>Der Token enthält keine Klardaten (keine Passwörter, keine Nachrichten). Er wird automatisch gelöscht, wenn Sie sich abmelden, oder nach Ablauf der Sitzungsgültigkeitsdauer.</p>
+        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (technisch notwendig für den Betrieb des Kundenbereichs).</p>
+      </div>
+
+      <!-- 12. Cookies -->
       <div class="ds-section" id="cookies">
-        <h2>6. Cookies</h2>
-        <p>Diese Website setzt keine Tracking-Cookies oder Marketing-Cookies ein. Es werden ausschließlich technisch notwendige Maßnahmen verwendet, die für den Betrieb der Website erforderlich sind. Es ist kein Cookie-Banner notwendig.</p>
-        <p>Sollten in Zukunft Analyse- oder Marketing-Dienste hinzugefügt werden, wird diese Datenschutzerklärung entsprechend aktualisiert und ein Cookie-Consent-Tool eingebunden.</p>
+        <h2>12. Cookies</h2>
+        <p>Diese Website setzt keine Tracking-Cookies, Analyse-Cookies oder Marketing-Cookies ein. Im Kundenbereich wird der Supabase-Session-Token im LocalStorage des Browsers abgelegt (kein Cookie im technischen Sinne). Ein Cookie-Banner ist daher nicht erforderlich.</p>
+        <p>Sollten in Zukunft Analyse- oder Marketing-Dienste hinzugefügt werden, wird diese Datenschutzerklärung aktualisiert und ein Cookie-Consent-Tool eingebunden.</p>
       </div>
 
-      <!-- 7. Rechte -->
+      <!-- 13. Rechte -->
       <div class="ds-section" id="rechte">
-        <h2>7. Ihre Rechte als betroffene Person</h2>
+        <h2>13. Ihre Rechte als betroffene Person</h2>
         <p>Sie haben nach der DSGVO folgende Rechte gegenüber uns:</p>
         <ul>
           <li><strong>Auskunftsrecht</strong> (Art. 15 DSGVO): Sie können Auskunft über Ihre gespeicherten Daten verlangen.</li>
@@ -215,20 +347,20 @@
           <li><strong>Recht auf Löschung</strong> (Art. 17 DSGVO): Sie können die Löschung Ihrer Daten verlangen, sofern keine gesetzliche Aufbewahrungspflicht entgegensteht.</li>
           <li><strong>Recht auf Einschränkung der Verarbeitung</strong> (Art. 18 DSGVO).</li>
           <li><strong>Recht auf Datenübertragbarkeit</strong> (Art. 20 DSGVO).</li>
-          <li><strong>Widerspruchsrecht</strong> (Art. 21 DSGVO): Sie können der Verarbeitung Ihrer Daten widersprechen.</li>
-          <li><strong>Recht auf Widerruf der Einwilligung</strong> (Art. 7 Abs. 3 DSGVO).</li>
+          <li><strong>Widerspruchsrecht</strong> (Art. 21 DSGVO): Sie können der Verarbeitung Ihrer Daten widersprechen, sofern die Verarbeitung auf berechtigtem Interesse beruht.</li>
+          <li><strong>Recht auf Widerruf der Einwilligung</strong> (Art. 7 Abs. 3 DSGVO): Soweit die Verarbeitung auf einer Einwilligung beruht, können Sie diese jederzeit widerrufen.</li>
         </ul>
         <p>Zur Ausübung Ihrer Rechte wenden Sie sich bitte an: <a href="mailto:kontakt@tp-convertx.de">kontakt@tp-convertx.de</a></p>
 
         <h3>Beschwerderecht bei einer Aufsichtsbehörde</h3>
-        <p>Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Eine Liste der Aufsichtsbehörden in Deutschland finden Sie unter: <a href="https://www.bfdi.bund.de" target="_blank" rel="noopener">https://www.bfdi.bund.de</a></p>
+        <p>Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Eine Liste der Aufsichtsbehörden in Deutschland finden Sie unter: <a href="https://www.bfdi.bund.de" target="_blank" rel="noopener">www.bfdi.bund.de</a></p>
       </div>
 
-      <!-- 8. Änderungen -->
+      <!-- 14. Änderungen -->
       <div class="ds-section" id="aenderungen">
-        <h2>8. Änderungen dieser Datenschutzerklärung</h2>
-        <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie stets den aktuellen rechtlichen Anforderungen anzupassen oder um Änderungen unserer Leistungen in der Datenschutzerklärung umzusetzen. Die neue Datenschutzerklärung gilt dann für Ihren nächsten Besuch.</p>
-        <p>Stand dieser Erklärung: Juli 2025</p>
+        <h2>14. Änderungen dieser Datenschutzerklärung</h2>
+        <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie stets den aktuellen rechtlichen Anforderungen anzupassen oder um Änderungen unserer Leistungen umzusetzen. Die neue Datenschutzerklärung gilt dann für Ihren nächsten Besuch.</p>
+        <p>Stand dieser Erklärung: Juli 2026</p>
       </div>
 
     </div>

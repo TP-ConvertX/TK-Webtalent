@@ -1155,6 +1155,44 @@
   flex-wrap: wrap;
 }
 
+/* ─── ONLINE-STATUS ──────────────────────────────── */
+.msg-online { display: flex; align-items: center; gap: 5px; }
+.msg-online-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.4s, box-shadow 0.4s;
+}
+.msg-online-dot.online  { background: #22C55E; box-shadow: 0 0 0 2px rgba(34,197,94,0.25); }
+.msg-online-dot.offline { background: #CBD5E1; }
+.msg-status-text         { font-size: 12px; font-weight: 500; }
+.msg-status-text.online  { color: #16A34A; }
+.msg-status-text.offline { color: var(--c-text-3); }
+
+/* ─── TIPP-INDIKATOR ─────────────────────────────── */
+.msg-typing-row {
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 2px 2px;
+  font-size: 12px;
+  color: var(--c-text-3);
+}
+.typing-dots { display: flex; gap: 3px; align-items: center; }
+.typing-dot {
+  width: 5px; height: 5px;
+  background: var(--c-text-3);
+  border-radius: 50%;
+  animation: typingBounce 1.2s infinite ease-in-out both;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+  40%           { transform: translateY(-5px); opacity: 1; }
+}
+
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 900px) {
   .admin-page { grid-template-columns: 1fr; }
@@ -1189,6 +1227,7 @@
   .portal-container { padding: 0 16px; }
   .portal-main { padding: 28px 0 60px; }
   .portal-welcome h1 { font-size: 26px; }
+  .portal-welcome { margin-bottom: 24px; }
 
   .phase-track { gap: 0; }
   .phase-name { font-size: 9px; }
@@ -1199,9 +1238,76 @@
   .data-table th, .data-table td { padding: 12px 14px; }
 
   .portal-user-pill .portal-user-name { display: none; }
+
+  /* Message thread – taller on mobile (single column) */
+  .msg-thread { max-height: 480px; }
+
+  /* Message bubbles – allow wider on small screens */
+  .msg-row { max-width: 92%; }
+
+  /* Send row: textarea full-width on its own row, buttons below */
+  .msg-send-row {
+    flex-wrap: wrap;
+  }
+  .msg-textarea {
+    flex: 1 1 100%;
+  }
+
+  /* Calendar navigation – compact on mobile */
+  .cal-nav { gap: 6px; margin-bottom: 10px; }
+  .cal-btn-nav { padding: 6px 10px; font-size: 12px; }
+  .cal-nav-title { font-size: 13px; }
+  .cal-cell { min-height: 52px; font-size: 11px; }
+  .cal-th { padding: 8px 2px; }
+  .cal-dnum { font-size: 14px; }
+  .cal-time { min-height: 52px; font-size: 10px; padding: 0 4px; }
+
+  /* Appointments legend wraps neatly */
+  .cal-legend { gap: 10px; }
+  .cal-leg-item { font-size: 11px; }
+}
+
+@media (max-width: 480px) {
+  /* Nav: tighter height and padding */
+  .portal-nav-inner { height: 56px; padding: 0 14px; }
+  .portal-nav-logo .logo-name { font-size: 15px; }
+  .portal-nav-right .btn-outline { padding: 7px 12px !important; font-size: 13px !important; }
+
+  /* Less horizontal padding on very small phones */
+  .portal-container { padding: 0 12px; }
+
+  /* Smaller project card padding */
+  .project-card-header { padding: 16px; gap: 10px; }
+  .project-card-body   { padding: 16px; }
+  .project-name        { font-size: 16px !important; }
+
+  /* Shrink the welcome section */
+  .portal-main { padding: 20px 0 48px; }
+
+  /* Message input area */
+  .msg-input-area { padding: 12px 0 0; }
+  .msg-textarea   { font-size: 15px; }   /* Prevents iOS zoom on focus */
+
+  /* Calendar: thinner cells for very small screens */
+  .cal-cell { min-height: 46px; padding: 2px; }
+  .cal-time { min-height: 46px; }
+
+  /* Modal: edge-to-edge on small phones */
+  .modal-overlay .modal {
+    padding: 20px 14px;
+    border-radius: var(--radius-lg);
+    max-height: 92vh;
+    overflow-y: auto;
+  }
 }
 
 @media (max-width: 420px) {
   .auth-card { padding: 28px 20px; }
   .admin-stats { grid-template-columns: 1fr 1fr; }
+
+  /* Smallest screens: even more compact */
+  .portal-nav-inner { padding: 0 10px; gap: 8px; }
+  .logo-mark { width: 28px; height: 28px; font-size: 10px; }
+  .portal-user-pill { padding: 4px 10px 4px 4px; }
+  .portal-user-avatar { width: 24px; height: 24px; font-size: 9px; }
 }

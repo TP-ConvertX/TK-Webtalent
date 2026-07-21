@@ -213,11 +213,25 @@
           <div class="project-name" style="font-size:18px">💬 Nachrichten</div>
           <div style="font-size:13px;color:var(--c-text-2);margin-top:2px">Schreib mir direkt – Änderungen, Fragen, Dateien</div>
         </div>
-        <button onclick="loadMessages()" style="border:none;background:none;color:var(--c-accent);font-size:13px;font-weight:600;cursor:pointer;padding:0;font-family:inherit">↻ Aktualisieren</button>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="msg-online">
+            <div class="msg-online-dot offline" id="adminOnlineDot"></div>
+            <span class="msg-status-text offline" id="adminStatusText">TK Webtalent offline</span>
+          </div>
+          <button onclick="loadMessages()" style="border:none;background:none;color:var(--c-accent);font-size:13px;font-weight:600;cursor:pointer;padding:0;font-family:inherit">↻</button>
+        </div>
       </div>
       <div class="project-card-body" style="padding-top:8px">
         <div class="msg-thread" id="msgThread">
           <div class="msg-empty">Noch keine Nachrichten. Schreib einfach los!</div>
+        </div>
+        <div class="msg-typing-row" id="msgTypingRow" style="display:none">
+          <div class="typing-dots">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+          <span>TK Webtalent schreibt …</span>
         </div>
         <div class="msg-input-area">
           <div class="msg-file-preview" id="msgFilePreview"></div>
@@ -260,6 +274,41 @@
 <script src="js/auth.js"></script>
 <script src="js/calendar.js"></script>
 <script>
+var _msgChannel   = null;
+var _adminOnline  = false;
+var _typingTimer  = null;
+
+function setupMsgChannel(uid) {
+  _msgChannel = getSB().channel('msg:' + uid);
+  _msgChannel
+    .on('presence', { event: 'sync' }, function() {
+      var users = Object.values(_msgChannel.presenceState()).flat();
+      _adminOnline = users.some(function(u) { return u.role === 'admin'; });
+      var dot  = document.getElementById('adminOnlineDot');
+      var txt  = document.getElementById('adminStatusText');
+      if (!dot) return;
+      dot.className = 'msg-online-dot ' + (_adminOnline ? 'online' : 'offline');
+      txt.className = 'msg-status-text ' + (_adminOnline ? 'online' : 'offline');
+      txt.textContent = _adminOnline ? 'TK Webtalent online' : 'TK Webtalent offline';
+    })
+    .on('broadcast', { event: 'typing' }, function(ev) {
+      if (ev.payload && ev.payload.role === 'admin') {
+        document.getElementById('msgTypingRow').style.display = 'flex';
+      }
+    })
+    .on('broadcast', { event: 'stop_typing' }, function(ev) {
+      if (ev.payload && ev.payload.role === 'admin') {
+        document.getElementById('msgTypingRow').style.display = 'none';
+      }
+    })
+    .on('broadcast', { event: 'new_message' }, function(ev) {
+      if (ev.payload && ev.payload.role === 'admin') loadMessages();
+    })
+    .subscribe(async function(status) {
+      if (status === 'SUBSCRIBED') await _msgChannel.track({ role: 'customer' });
+    });
+}
+
 (async () => {
   const sb = getSB();
 
@@ -302,6 +351,7 @@
   document.getElementById('msgSection').style.display  = 'block';
   loadCalendar(userId);
   loadMessages();
+  setupMsgChannel(userId);
 
   /* Projekt laden */
   const { data: project, error: projErr } = await sb
@@ -653,14 +703,18 @@ async function sendMessage() {
   btn.classList.add('loading'); btn.disabled = true;
 
   try {
+    clearTimeout(_typingTimer);
+    if (_msgChannel) _msgChannel.send({ type: 'broadcast', event: 'stop_typing', payload: { role: 'customer' } });
+
     var r = await fetch('/api/send-message', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _session?.access_token },
       body:    JSON.stringify({
-        customerId:  _session?.user?.id,
-        sender:      'customer',
-        content:     text || null,
-        attachments: _msgAttachments
+        customerId:      _session?.user?.id,
+        sender:          'customer',
+        content:         text || null,
+        attachments:     _msgAttachments,
+        recipientOnline: _adminOnline
       })
     });
     var d = await r.json();
@@ -669,6 +723,7 @@ async function sendMessage() {
     document.getElementById('msgText').value = '';
     _msgAttachments = [];
     renderFilePreview();
+    if (_msgChannel) _msgChannel.send({ type: 'broadcast', event: 'new_message', payload: { role: 'customer' } });
     await loadMessages();
   } catch(e) {
     err.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
@@ -678,10 +733,16 @@ async function sendMessage() {
   }
 }
 
-/* Textarea auto-resize */
+/* Textarea auto-resize + Tipp-Broadcast */
 document.getElementById('msgText').addEventListener('input', function() {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  if (!_msgChannel) return;
+  _msgChannel.send({ type: 'broadcast', event: 'typing', payload: { role: 'customer' } });
+  clearTimeout(_typingTimer);
+  _typingTimer = setTimeout(function() {
+    _msgChannel.send({ type: 'broadcast', event: 'stop_typing', payload: { role: 'customer' } });
+  }, 2000);
 });
 </script>
 

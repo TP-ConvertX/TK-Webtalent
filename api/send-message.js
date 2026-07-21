@@ -41,7 +41,7 @@ module.exports = async function handler(req, res) {
   const { data: senderProfile } = await sbAdmin
     .from('profiles').select('full_name, role').eq('id', user.id).single();
 
-  const { customerId, sender, content, attachments } = req.body || {};
+  const { customerId, sender, content, attachments, recipientOnline } = req.body || {};
 
   if (!customerId || !sender) return res.status(400).json({ error: 'Missing fields' });
   if (!content && !(attachments && attachments.length)) return res.status(400).json({ error: 'Empty message' });
@@ -70,7 +70,7 @@ module.exports = async function handler(req, res) {
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'kunzelmanntim00@gmail.com';
   const from        = process.env.FROM_EMAIL  || 'TK Webtalent <kontakt@tp-convertx.de>';
 
-  if (RESEND_KEY) {
+  if (RESEND_KEY && !recipientOnline) {
     const { data: custProfile } = await sbAdmin
       .from('profiles').select('full_name').eq('id', customerId).single();
     const { data: { user: custUser } } = await sbAdmin.auth.admin.getUserById(customerId);

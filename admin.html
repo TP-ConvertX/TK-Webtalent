@@ -367,13 +367,27 @@
   <div class="modal" style="max-width:620px;padding:0;overflow-y:auto;max-height:92vh">
     <div class="modal-header" style="padding:20px 24px;border-bottom:1px solid var(--c-border);margin-bottom:0;position:sticky;top:0;background:#fff;z-index:1">
       <div>
-        <h3 class="modal-title" id="adminMsgTitle">Nachrichten</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <h3 class="modal-title" id="adminMsgTitle">Nachrichten</h3>
+          <div class="msg-online">
+            <div class="msg-online-dot offline" id="custOnlineDot"></div>
+            <span class="msg-status-text offline" id="custStatusText">Offline</span>
+          </div>
+        </div>
         <p id="adminMsgSub" style="font-size:13px;color:var(--c-text-2);margin-top:2px"></p>
       </div>
       <button class="modal-close" onclick="closeMsgThread()">✕</button>
     </div>
     <div style="padding:20px 24px 24px">
       <div class="msg-thread" id="adminMsgThread" style="max-height:360px"></div>
+      <div class="msg-typing-row" id="adminTypingRow" style="display:none">
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+        <span id="adminTypingName">Kunde schreibt …</span>
+      </div>
       <div class="msg-input-area">
         <div class="msg-file-preview" id="adminMsgFilePreview"></div>
         <div class="msg-send-row">
@@ -892,6 +906,54 @@ async function adminCancelAppt(id) {
 let _adminMsgCustomerId   = null;
 let _adminMsgCustomerName = null;
 let _adminMsgAttachments  = [];
+let _adminMsgChannel      = null;
+let _custOnline           = false;
+let _adminTypingTimer     = null;
+
+function setupAdminMsgChannel(customerId) {
+  teardownAdminMsgChannel();
+  _adminMsgChannel = getSB().channel('msg:' + customerId);
+  _adminMsgChannel
+    .on('presence', { event: 'sync' }, function() {
+      const users = Object.values(_adminMsgChannel.presenceState()).flat();
+      _custOnline = users.some(u => u.role === 'customer');
+      const dot = document.getElementById('custOnlineDot');
+      const txt = document.getElementById('custStatusText');
+      if (!dot) return;
+      dot.className = 'msg-online-dot ' + (_custOnline ? 'online' : 'offline');
+      txt.className = 'msg-status-text ' + (_custOnline ? 'online' : 'offline');
+      txt.textContent = _custOnline ? 'Online' : 'Offline';
+    })
+    .on('broadcast', { event: 'typing' }, function(ev) {
+      if (ev.payload?.role === 'customer') {
+        const name = _adminMsgCustomerName || 'Kunde';
+        const el = document.getElementById('adminTypingName');
+        if (el) el.textContent = name + ' schreibt …';
+        const row = document.getElementById('adminTypingRow');
+        if (row) row.style.display = 'flex';
+      }
+    })
+    .on('broadcast', { event: 'stop_typing' }, function(ev) {
+      if (ev.payload?.role === 'customer') {
+        const row = document.getElementById('adminTypingRow');
+        if (row) row.style.display = 'none';
+      }
+    })
+    .on('broadcast', { event: 'new_message' }, function(ev) {
+      if (ev.payload?.role === 'customer') loadAdminThread();
+    })
+    .subscribe(async function(status) {
+      if (status === 'SUBSCRIBED') await _adminMsgChannel.track({ role: 'admin' });
+    });
+}
+
+function teardownAdminMsgChannel() {
+  if (_adminMsgChannel) {
+    getSB().removeChannel(_adminMsgChannel);
+    _adminMsgChannel = null;
+  }
+  _custOnline = false;
+}
 
 function adminMsgEsc(s) {
   return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -969,6 +1031,7 @@ async function openMsgThread(customerId, name, company) {
 
   openModal('modalMsgThread');
   await loadAdminThread();
+  setupAdminMsgChannel(customerId);
 
   /* Kunden-Nachrichten als gelesen markieren */
   sb.from('messages')
@@ -1009,8 +1072,9 @@ async function loadAdminThread() {
 }
 
 function closeMsgThread() {
+  teardownAdminMsgChannel();
   closeModal('modalMsgThread');
-  loadMsgCustomers(); /* Unread-Badges aktualisieren */
+  loadMsgCustomers();
 }
 
 document.getElementById('adminMsgFileInput').addEventListener('change', async function() {
@@ -1053,14 +1117,18 @@ async function adminSendMessage() {
   setLoading(btn, true);
 
   try {
+    clearTimeout(_adminTypingTimer);
+    if (_adminMsgChannel) _adminMsgChannel.send({ type: 'broadcast', event: 'stop_typing', payload: { role: 'admin' } });
+
     const r = await fetch('/api/send-message', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentSession?.access_token },
       body:    JSON.stringify({
-        customerId:  _adminMsgCustomerId,
-        sender:      'admin',
-        content:     text || null,
-        attachments: _adminMsgAttachments
+        customerId:      _adminMsgCustomerId,
+        sender:          'admin',
+        content:         text || null,
+        attachments:     _adminMsgAttachments,
+        recipientOnline: _custOnline
       })
     });
     const d = await r.json();
@@ -1070,6 +1138,7 @@ async function adminSendMessage() {
     _adminMsgAttachments = [];
     renderAdminFilePreview();
     showToast('Nachricht gesendet.', 'success');
+    if (_adminMsgChannel) _adminMsgChannel.send({ type: 'broadcast', event: 'new_message', payload: { role: 'admin' } });
     await loadAdminThread();
   } catch(e) {
     err.textContent = 'Verbindungsfehler.';
@@ -1079,10 +1148,16 @@ async function adminSendMessage() {
   }
 }
 
-/* Textarea auto-resize */
+/* Textarea auto-resize + Tipp-Broadcast */
 document.getElementById('adminMsgText').addEventListener('input', function() {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  if (!_adminMsgChannel) return;
+  _adminMsgChannel.send({ type: 'broadcast', event: 'typing', payload: { role: 'admin' } });
+  clearTimeout(_adminTypingTimer);
+  _adminTypingTimer = setTimeout(function() {
+    _adminMsgChannel.send({ type: 'broadcast', event: 'stop_typing', payload: { role: 'admin' } });
+  }, 2000);
 });
 
 document.getElementById('adminBookForm').addEventListener('submit', async (e) => {
