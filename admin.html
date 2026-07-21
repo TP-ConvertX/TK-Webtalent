@@ -47,6 +47,10 @@
       <button class="admin-nav-item" data-panel="appointments" onclick="switchPanel('appointments', this)">
         <span class="admin-nav-icon">📅</span> Termine
       </button>
+      <button class="admin-nav-item" data-panel="messages" onclick="switchPanel('messages', this); loadMsgCustomers()">
+        <span class="admin-nav-icon">💬</span> Nachrichten
+        <span id="msgNavBadge" style="display:none;background:var(--c-accent);color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:100px;margin-left:auto"></span>
+      </button>
     </div>
   </aside>
 
@@ -138,6 +142,19 @@
             </td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- ── NACHRICHTEN ── -->
+    <div class="admin-panel" id="panelMessages">
+      <div class="admin-panel-header">
+        <h2 class="admin-panel-title">Nachrichten</h2>
+        <button class="btn btn-outline" onclick="loadMsgCustomers()" style="font-size:14px;padding:8px 16px">↻ Aktualisieren</button>
+      </div>
+      <div id="msgCustomersList">
+        <div style="text-align:center;padding:40px;color:var(--c-text-3)">
+          <div class="portal-spinner" style="margin:0 auto 12px"></div>Wird geladen …
+        </div>
       </div>
     </div>
 
@@ -342,6 +359,38 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal: Nachrichten-Thread -->
+<div class="modal-overlay" id="modalMsgThread">
+  <div class="modal" style="max-width:620px;padding:0;overflow-y:auto;max-height:92vh">
+    <div class="modal-header" style="padding:20px 24px;border-bottom:1px solid var(--c-border);margin-bottom:0;position:sticky;top:0;background:#fff;z-index:1">
+      <div>
+        <h3 class="modal-title" id="adminMsgTitle">Nachrichten</h3>
+        <p id="adminMsgSub" style="font-size:13px;color:var(--c-text-2);margin-top:2px"></p>
+      </div>
+      <button class="modal-close" onclick="closeMsgThread()">✕</button>
+    </div>
+    <div style="padding:20px 24px 24px">
+      <div class="msg-thread" id="adminMsgThread" style="max-height:360px"></div>
+      <div class="msg-input-area">
+        <div class="msg-file-preview" id="adminMsgFilePreview"></div>
+        <div class="msg-send-row">
+          <textarea class="msg-textarea" id="adminMsgText" placeholder="Antwort schreiben …" rows="2" onkeydown="if(event.key==='Enter'&&event.ctrlKey)adminSendMessage()"></textarea>
+          <label class="btn btn-outline" style="cursor:pointer;padding:9px 12px;flex-shrink:0;display:flex;align-items:center" title="Datei anhängen">
+            📎
+            <input type="file" id="adminMsgFileInput" style="display:none" accept="image/*,video/*,.pdf,.doc,.docx,.zip" multiple>
+          </label>
+          <button class="btn btn-primary auth-btn" id="adminMsgSendBtn" onclick="adminSendMessage()" style="width:auto;min-width:80px;flex-shrink:0">
+            <span class="spinner"></span>
+            <span class="btn-text">Senden</span>
+          </button>
+        </div>
+        <div style="font-size:11px;color:var(--c-text-3)">Tipp: Strg+Enter zum Senden</div>
+        <div class="modal-error" id="adminMsgError"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -838,6 +887,203 @@ async function adminCancelAppt(id) {
   if (ap) sendApptEmail('admin_cancelled', ap.customer_id, ap.appointment_date, ap.appointment_time.slice(0, 5));
   await loadAppointments();
 }
+
+/* ── NACHRICHTEN (Admin) ── */
+let _adminMsgCustomerId   = null;
+let _adminMsgCustomerName = null;
+let _adminMsgAttachments  = [];
+
+function adminMsgEsc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function loadMsgCustomers() {
+  const el = document.getElementById('msgCustomersList');
+
+  const [{ data: customers }, { data: unreadRows }] = await Promise.all([
+    sb.from('profiles').select('id, full_name, company_name')
+      .eq('role', 'customer').eq('active', true).order('full_name'),
+    sb.from('messages').select('customer_id').eq('sender', 'customer').is('read_at', null)
+  ]);
+
+  /* Unread badge in sidebar */
+  const totalUnread = (unreadRows || []).length;
+  const navBadge = document.getElementById('msgNavBadge');
+  navBadge.style.display = totalUnread ? 'inline-block' : 'none';
+  navBadge.textContent   = totalUnread;
+
+  if (!customers || !customers.length) {
+    el.innerHTML = '<p style="text-align:center;color:var(--c-text-3);padding:40px">Keine aktiven Kunden.</p>';
+    return;
+  }
+
+  /* Unread map per customer */
+  const unreadMap = {};
+  (unreadRows || []).forEach(m => { unreadMap[m.customer_id] = (unreadMap[m.customer_id] || 0) + 1; });
+
+  /* Last message per customer */
+  const { data: lastMsgs } = await sb.from('messages')
+    .select('customer_id, content, attachments, created_at, sender')
+    .order('created_at', { ascending: false });
+  const lastMap = {};
+  (lastMsgs || []).forEach(m => { if (!lastMap[m.customer_id]) lastMap[m.customer_id] = m; });
+
+  el.innerHTML = '<div class="msg-customers-list">'
+    + customers.map(c => {
+        const unread = unreadMap[c.id] || 0;
+        const last   = lastMap[c.id];
+        const preview = last
+          ? (last.content ? last.content.slice(0,70) + (last.content.length > 70 ? '…' : '')
+             : (last.attachments?.length ? '📎 Dateianhang' : ''))
+          : 'Noch keine Nachrichten';
+        const time = last ? formatDate(last.created_at) : '';
+        return `<div class="msg-customer-item">
+          <div class="msg-customer-info">
+            <div class="msg-customer-name">${adminMsgEsc(c.full_name)}
+              ${c.company_name ? `<span style="font-weight:400;color:var(--c-text-2);font-size:13px"> · ${adminMsgEsc(c.company_name)}</span>` : ''}
+            </div>
+            <div class="msg-customer-preview">${adminMsgEsc(preview)}${time ? ' · ' + time : ''}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+            ${unread ? `<span class="msg-unread-badge">${unread} neu</span>` : ''}
+            <button class="action-btn action-btn-edit"
+              onclick="openMsgThread('${c.id}','${adminMsgEsc(c.full_name)}','${adminMsgEsc(c.company_name||'')}')">
+              Chat öffnen
+            </button>
+          </div>
+        </div>`;
+      }).join('')
+    + '</div>';
+}
+
+async function openMsgThread(customerId, name, company) {
+  _adminMsgCustomerId   = customerId;
+  _adminMsgCustomerName = name;
+  _adminMsgAttachments  = [];
+
+  document.getElementById('adminMsgTitle').textContent = name;
+  document.getElementById('adminMsgSub').textContent   = company || 'Nachrichten-Verlauf';
+  document.getElementById('adminMsgText').value        = '';
+  document.getElementById('adminMsgError').classList.remove('visible');
+  document.getElementById('adminMsgFilePreview').innerHTML = '';
+
+  openModal('modalMsgThread');
+  await loadAdminThread();
+
+  /* Kunden-Nachrichten als gelesen markieren */
+  sb.from('messages')
+    .update({ read_at: new Date().toISOString() })
+    .eq('customer_id', customerId).eq('sender', 'customer').is('read_at', null)
+    .then(() => {});
+}
+
+async function loadAdminThread() {
+  const thread = document.getElementById('adminMsgThread');
+  thread.innerHTML = '<div style="text-align:center;padding:24px"><div class="portal-spinner" style="margin:0 auto"></div></div>';
+
+  const { data } = await sb.from('messages').select('*')
+    .eq('customer_id', _adminMsgCustomerId)
+    .order('created_at', { ascending: true });
+
+  if (!data || !data.length) {
+    thread.innerHTML = '<div class="msg-empty">Noch keine Nachrichten.</div>';
+    return;
+  }
+
+  thread.innerHTML = data.map(m => {
+    const isOut   = m.sender === 'admin';
+    const dt      = new Date(m.created_at);
+    const time    = dt.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit' })
+                  + ' · ' + dt.toLocaleTimeString('de-DE', { hour:'2-digit', minute:'2-digit' });
+    const attachHtml = (m.attachments || []).map(a => {
+      const icon = a.type?.startsWith('image') ? '🖼' : a.type?.startsWith('video') ? '🎥' : '📎';
+      return `<a class="msg-attachment" href="${adminMsgEsc(a.url)}" target="_blank" download>${icon} ${adminMsgEsc(a.name)}</a>`;
+    }).join('');
+    return `<div class="msg-row ${isOut ? 'msg-out' : 'msg-in'}">
+      ${m.content ? `<div class="msg-bubble">${adminMsgEsc(m.content).replace(/\n/g,'<br>')}</div>` : ''}
+      ${attachHtml}
+      <span class="msg-time">${isOut ? 'Du (Admin)' : adminMsgEsc(_adminMsgCustomerName)} · ${time}</span>
+    </div>`;
+  }).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+
+function closeMsgThread() {
+  closeModal('modalMsgThread');
+  loadMsgCustomers(); /* Unread-Badges aktualisieren */
+}
+
+document.getElementById('adminMsgFileInput').addEventListener('change', async function() {
+  const files = Array.from(this.files);
+  setLoading(document.getElementById('adminMsgSendBtn'), true);
+
+  for (const file of files) {
+    const path = `admin/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    const { data, error } = await sb.storage.from('message-files').upload(path, file);
+    if (!error && data) {
+      const { data: { publicUrl } } = sb.storage.from('message-files').getPublicUrl(data.path);
+      _adminMsgAttachments.push({ name: file.name, url: publicUrl, type: file.type });
+    }
+  }
+
+  setLoading(document.getElementById('adminMsgSendBtn'), false);
+  renderAdminFilePreview();
+  this.value = '';
+});
+
+function renderAdminFilePreview() {
+  document.getElementById('adminMsgFilePreview').innerHTML = _adminMsgAttachments.map((a, i) =>
+    `<div class="msg-file-chip">📎 ${adminMsgEsc(a.name)} <button onclick="removeAdminAttachment(${i})">×</button></div>`
+  ).join('');
+}
+function removeAdminAttachment(i) { _adminMsgAttachments.splice(i,1); renderAdminFilePreview(); }
+
+async function adminSendMessage() {
+  const text = document.getElementById('adminMsgText').value.trim();
+  const err  = document.getElementById('adminMsgError');
+  err.classList.remove('visible');
+
+  if (!text && !_adminMsgAttachments.length) {
+    err.textContent = 'Bitte eine Nachricht eingeben.';
+    err.classList.add('visible');
+    return;
+  }
+
+  const btn = document.getElementById('adminMsgSendBtn');
+  setLoading(btn, true);
+
+  try {
+    const r = await fetch('/api/send-message', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentSession?.access_token },
+      body:    JSON.stringify({
+        customerId:  _adminMsgCustomerId,
+        sender:      'admin',
+        content:     text || null,
+        attachments: _adminMsgAttachments
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) { err.textContent = d.error || 'Fehler beim Senden.'; err.classList.add('visible'); return; }
+
+    document.getElementById('adminMsgText').value = '';
+    _adminMsgAttachments = [];
+    renderAdminFilePreview();
+    showToast('Nachricht gesendet.', 'success');
+    await loadAdminThread();
+  } catch(e) {
+    err.textContent = 'Verbindungsfehler.';
+    err.classList.add('visible');
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+/* Textarea auto-resize */
+document.getElementById('adminMsgText').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
 
 document.getElementById('adminBookForm').addEventListener('submit', async (e) => {
   e.preventDefault();

@@ -205,6 +205,40 @@
     </div>
   </div>
 
+  <!-- Nachrichten (sichtbar wenn eingeloggt + aktiv) -->
+  <div class="portal-container" id="msgSection" style="display:none">
+    <div class="project-card" style="margin-top:24px">
+      <div class="project-card-header">
+        <div>
+          <div class="project-name" style="font-size:18px">💬 Nachrichten</div>
+          <div style="font-size:13px;color:var(--c-text-2);margin-top:2px">Schreib mir direkt – Änderungen, Fragen, Dateien</div>
+        </div>
+        <button onclick="loadMessages()" style="border:none;background:none;color:var(--c-accent);font-size:13px;font-weight:600;cursor:pointer;padding:0;font-family:inherit">↻ Aktualisieren</button>
+      </div>
+      <div class="project-card-body" style="padding-top:8px">
+        <div class="msg-thread" id="msgThread">
+          <div class="msg-empty">Noch keine Nachrichten. Schreib einfach los!</div>
+        </div>
+        <div class="msg-input-area">
+          <div class="msg-file-preview" id="msgFilePreview"></div>
+          <div class="msg-send-row">
+            <textarea class="msg-textarea" id="msgText" placeholder="Nachricht schreiben …" rows="2" onkeydown="if(event.key==='Enter'&&event.ctrlKey)sendMessage()"></textarea>
+            <label class="btn btn-outline" style="cursor:pointer;padding:9px 12px;flex-shrink:0;display:flex;align-items:center" title="Bild, Video oder Datei anhängen">
+              📎
+              <input type="file" id="msgFileInput" style="display:none" accept="image/*,video/*,.pdf,.doc,.docx,.zip" multiple>
+            </label>
+            <button class="btn btn-primary auth-btn" id="msgSendBtn" onclick="sendMessage()" style="width:auto;min-width:90px;flex-shrink:0">
+              <span class="spinner"></span>
+              <span class="btn-text">Senden</span>
+            </button>
+          </div>
+          <div style="font-size:11px;color:var(--c-text-3)">Tipp: Strg+Enter zum Senden</div>
+          <div class="modal-error" id="msgError"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Fehler-Zustand -->
   <div class="portal-container" id="stateError" style="display:none">
     <div class="project-card" style="margin-top:40px">
@@ -263,9 +297,11 @@
     return;
   }
 
-  /* Terminkalender anzeigen */
+  /* Terminkalender + Nachrichten anzeigen */
   document.getElementById('apptSection').style.display = 'block';
+  document.getElementById('msgSection').style.display  = 'block';
   loadCalendar(userId);
+  loadMessages();
 
   /* Projekt laden */
   const { data: project, error: projErr } = await sb
@@ -512,6 +548,140 @@ document.getElementById('modalBook').addEventListener('click', (e) => {
 });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && document.getElementById('modalBook').classList.contains('open')) closeBookModal();
+});
+</script>
+
+<script>
+/* ── NACHRICHTEN (Kundenbereich) ── */
+var _msgAttachments = [];
+
+function msgEsc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function loadMessages() {
+  const uid = _session?.user?.id;
+  if (!uid) return;
+
+  const { data } = await getSB()
+    .from('messages')
+    .select('*')
+    .eq('customer_id', uid)
+    .order('created_at', { ascending: true });
+
+  renderThread(data || []);
+
+  /* Admin-Nachrichten als gelesen markieren */
+  getSB().from('messages')
+    .update({ read_at: new Date().toISOString() })
+    .eq('customer_id', uid)
+    .eq('sender', 'admin')
+    .is('read_at', null)
+    .then(() => {});
+}
+
+function renderThread(msgs) {
+  const thread = document.getElementById('msgThread');
+  if (!msgs.length) {
+    thread.innerHTML = '<div class="msg-empty">Noch keine Nachrichten. Schreib einfach los!</div>';
+    return;
+  }
+  thread.innerHTML = msgs.map(function(m) {
+    var isOut = m.sender === 'customer';
+    var dt    = new Date(m.created_at);
+    var time  = dt.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit' })
+              + ' · ' + dt.toLocaleTimeString('de-DE', { hour:'2-digit', minute:'2-digit' });
+    var attachHtml = (m.attachments || []).map(function(a) {
+      var icon = a.type && a.type.startsWith('image') ? '🖼' : a.type && a.type.startsWith('video') ? '🎥' : '📎';
+      return '<a class="msg-attachment" href="' + msgEsc(a.url) + '" target="_blank">' + icon + ' ' + msgEsc(a.name) + '</a>';
+    }).join('');
+    return '<div class="msg-row ' + (isOut ? 'msg-out' : 'msg-in') + '">'
+      + (m.content ? '<div class="msg-bubble">' + msgEsc(m.content).replace(/\n/g,'<br>') + '</div>' : '')
+      + attachHtml
+      + '<span class="msg-time">' + (isOut ? 'Du' : 'TK Webtalent') + ' · ' + time + '</span>'
+      + '</div>';
+  }).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+
+document.getElementById('msgFileInput').addEventListener('change', async function() {
+  var files = Array.from(this.files);
+  if (!files.length) return;
+  var btn = document.getElementById('msgSendBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+  var uid = _session?.user?.id;
+
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    var path = uid + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    var up   = await getSB().storage.from('message-files').upload(path, file);
+    if (!up.error && up.data) {
+      var pub = getSB().storage.from('message-files').getPublicUrl(up.data.path);
+      _msgAttachments.push({ name: file.name, url: pub.data.publicUrl, type: file.type });
+    }
+  }
+
+  btn.classList.remove('loading'); btn.disabled = false;
+  renderFilePreview();
+  this.value = '';
+});
+
+function renderFilePreview() {
+  document.getElementById('msgFilePreview').innerHTML = _msgAttachments.map(function(a, i) {
+    return '<div class="msg-file-chip">📎 ' + msgEsc(a.name)
+      + ' <button onclick="removeMsgAttachment(' + i + ')">×</button></div>';
+  }).join('');
+}
+
+function removeMsgAttachment(i) {
+  _msgAttachments.splice(i, 1);
+  renderFilePreview();
+}
+
+async function sendMessage() {
+  var text = document.getElementById('msgText').value.trim();
+  var err  = document.getElementById('msgError');
+  err.classList.remove('visible');
+
+  if (!text && !_msgAttachments.length) {
+    err.textContent = 'Bitte eine Nachricht eingeben oder eine Datei anhängen.';
+    err.classList.add('visible');
+    return;
+  }
+
+  var btn = document.getElementById('msgSendBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  try {
+    var r = await fetch('/api/send-message', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _session?.access_token },
+      body:    JSON.stringify({
+        customerId:  _session?.user?.id,
+        sender:      'customer',
+        content:     text || null,
+        attachments: _msgAttachments
+      })
+    });
+    var d = await r.json();
+    if (!r.ok) { err.textContent = d.error || 'Fehler beim Senden.'; err.classList.add('visible'); return; }
+
+    document.getElementById('msgText').value = '';
+    _msgAttachments = [];
+    renderFilePreview();
+    await loadMessages();
+  } catch(e) {
+    err.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
+    err.classList.add('visible');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+  }
+}
+
+/* Textarea auto-resize */
+document.getElementById('msgText').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
 });
 </script>
 
