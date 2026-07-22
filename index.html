@@ -84,6 +84,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/portal.css">
+
+  <!-- 3D-Laptop im Hero (nur Desktop) -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js"></script>
 </head>
 <body>
 
@@ -127,7 +130,8 @@
   <main>
 
     <!-- ===== HERO ===== -->
-    <section class="hero" id="hero">
+    <section class="hero hero-pin-outer" id="hero">
+      <div class="hero-pin-inner">
       <div class="container hero-inner">
         <div class="hero-content">
           <div class="hero-badge animate-fade-up" style="animation-delay:0.1s">
@@ -167,125 +171,28 @@
 
         <div class="hero-visual animate-fade-left" style="animation-delay:0.3s">
 
-          <!-- MULTI-DEVICE MOCKUP -->
+          <!-- 3D LAPTOP: dreht sich beim Scrollen, auf allen Bildschirmgrößen -->
           <div class="devices-wrap">
-
-            <!-- LAPTOP -->
-            <div class="device-laptop">
-              <!-- LID: screen panel, rotates from hinge (bottom) -->
-              <div class="laptop-lid">
-              <div class="laptop-screen">
-                <div class="lp-header">
-                  <div class="lp-logo">TK <span>Webtalent</span></div>
-                  <div class="lp-nav">
-                    <span>Leistungen</span>
-                    <span>Beispiele</span>
-                    <span>Kontakt</span>
-                    <div class="lp-btn">Anfragen</div>
-                  </div>
-                </div>
-                <div class="lp-hero">
-                  <div class="lp-badge">Webdesign für kleine Unternehmen</div>
-                  <div class="lp-h1">Moderne Webseiten,</div>
-                  <div class="lp-h1 lp-accent">die Kunden überzeugen.</div>
-                  <div class="lp-sub">Professionelle Websites für Handwerker &amp; Selbstständige – schnell, klar, mobiloptimiert.</div>
-                  <div class="lp-ctas">
-                    <div class="lp-cta-primary">Kostenlos anfragen</div>
-                    <div class="lp-cta-ghost">Beispiele ansehen →</div>
-                  </div>
-                </div>
-                <div class="lp-cards">
-                  <div class="lp-card">
-                    <div class="lp-card-icon">📱</div>
-                    <div class="lp-card-title">Mobiloptimiert</div>
-                    <div class="lp-card-text">Perfekt auf jedem Gerät</div>
-                  </div>
-                  <div class="lp-card">
-                    <div class="lp-card-icon">⚡</div>
-                    <div class="lp-card-title">Blitzschnell</div>
-                    <div class="lp-card-text">Kurze Ladezeiten</div>
-                  </div>
-                  <div class="lp-card">
-                    <div class="lp-card-icon">🎯</div>
-                    <div class="lp-card-title">Klar strukturiert</div>
-                    <div class="lp-card-text">Führt zu Anfragen</div>
-                  </div>
-                </div>
-              </div>
-              <div class="laptop-chin">
-                <div class="laptop-cam"></div>
-              </div>
-              </div><!-- end laptop-lid -->
-              <!-- BASE PANEL: keyboard + foot, rotates from hinge (top) -->
-              <div class="laptop-base-panel">
-              <div class="laptop-base">
-                <div class="laptop-keyboard">
-                  <div class="kb-row kb-fn-row">
-                    <div class="kb-key kb-esc"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div><div class="kb-key kb-fn-key"></div>
-                  </div>
-                  <div class="kb-row">
-                    <div class="kb-key kb-wide"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key kb-wide"></div>
-                  </div>
-                  <div class="kb-row">
-                    <div class="kb-key kb-tab"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key kb-tab"></div>
-                  </div>
-                  <div class="kb-row">
-                    <div class="kb-key kb-caps"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key kb-caps"></div>
-                  </div>
-                  <div class="kb-row">
-                    <div class="kb-key kb-shift"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key kb-shift"></div>
-                  </div>
-                  <div class="kb-row kb-bottom-row">
-                    <div class="kb-key kb-fn"></div><div class="kb-key kb-ctrl"></div><div class="kb-key kb-alt"></div><div class="kb-key kb-space"></div><div class="kb-key kb-alt"></div><div class="kb-key kb-ctrl"></div>
-                  </div>
-                  <div class="kb-trackpad"></div>
-                </div>
-              </div>
-              <div class="laptop-foot"></div>
-              </div><!-- end laptop-base-panel -->
-            </div>
-
-
+            <model-viewer
+              id="heroLaptop"
+              class="laptop-3d"
+              src="assets/models/3d_clipart_-_webdev.glb"
+              alt="3D-Illustration eines Laptops umgeben von Web-Entwicklungs-Icons (HTML, CSS, JS)"
+              environment-image="neutral"
+              exposure="1.1"
+              shadow-intensity="1"
+              shadow-softness="0.9"
+              camera-orbit="95deg 78deg 92%"
+              field-of-view="28deg"
+              loading="eager"
+              reveal="auto">
+            </model-viewer>
           </div><!-- end devices-wrap -->
 
-          <!-- MOBILE HERO CARD (nur auf Mobile sichtbar) -->
-          <div class="hero-mobile-preview">
-            <div class="hmp-browser">
-              <div class="hmp-bar">
-                <div class="hmp-dots"><i></i><i></i><i></i></div>
-                <div class="hmp-url">tk-webtalent.de</div>
-              </div>
-              <div class="hmp-screen">
-                <div class="hmp-nav">
-                  <div class="hmp-logo">TK <span>Webtalent</span></div>
-                  <div class="hmp-navlinks"><span></span><span></span><span></span></div>
-                </div>
-                <div class="hmp-hero">
-                  <div class="hmp-tag">Webdesign · BDW</div>
-                  <div class="hmp-h1">Moderne Webseiten,<br><em>die Kunden überzeugen.</em></div>
-                  <div class="hmp-btn">Kostenlos anfragen →</div>
-                </div>
-                <div class="hmp-cards">
-                  <div class="hmp-card"><span>📱</span><b>Mobiloptimiert</b></div>
-                  <div class="hmp-card"><span>⚡</span><b>Blitzschnell</b></div>
-                  <div class="hmp-card"><span>🎯</span><b>Strukturiert</b></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-float float-1">
-            <span>📱</span> Responsive Design
-          </div>
-          <div class="hero-float float-2">
-            <span>⚡</span> Schnell geladen
-          </div>
-          <div class="hero-float float-3">
-            <span>🔒</span> SSL-gesichert
-          </div>
         </div>
       </div>
       <div class="hero-bg-blob"></div>
+      </div><!-- end hero-pin-inner -->
     </section>
 
     <!-- ===== TRUST BAR ===== -->
@@ -835,6 +742,7 @@
       <div class="footer-bottom">
         <p>© 2025 TK Webtalent. Alle Rechte vorbehalten.</p>
         <p><a href="/impressum" style="color:inherit;opacity:0.6;">Impressum</a> · <a href="/datenschutz" style="color:inherit;opacity:0.6;">Datenschutz</a></p>
+        <p style="font-size:11px;opacity:0.45;">3D-Illustration "3D Clipart - WebDev" von <a href="https://sketchfab.com/Helindu" target="_blank" rel="noopener" style="color:inherit;">Helindu</a>, lizenziert unter <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="color:inherit;">CC BY 4.0</a></p>
       </div>
     </div>
   </footer>

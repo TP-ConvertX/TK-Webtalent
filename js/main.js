@@ -78,6 +78,56 @@ document.addEventListener('DOMContentLoaded', () => {
     revealObserver.observe(el);
   });
 
+  /* ── HERO 3D-LAPTOP SCROLL-PIN ──────────────────── */
+  const heroPin  = document.querySelector('.hero-pin-outer');
+  const laptop3d = document.getElementById('heroLaptop');
+
+  if (heroPin && laptop3d) {
+    const ORBIT_START = { theta: 95, phi: 78, radius: 92 }; // weggedreht (kommt von links)
+    const ORBIT_END    = { theta: 18, phi: 72, radius: 82 };  // zugewandt
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const setOrbit = (progress) => {
+      const theta  = lerp(ORBIT_START.theta, ORBIT_END.theta, progress);
+      const phi    = lerp(ORBIT_START.phi, ORBIT_END.phi, progress);
+      const radius = lerp(ORBIT_START.radius, ORBIT_END.radius, progress);
+      // setAttribute statt Property: model-viewer ist ein async geladenes
+      // Custom Element und liest die Attribute auch vor dem Upgrade korrekt ein.
+      laptop3d.setAttribute('camera-orbit', `${theta}deg ${phi}deg ${radius}%`);
+    };
+
+    let ticking = false;
+    const updateOrbit = () => {
+      ticking = false;
+      if (reducedMotionQuery.matches) return;
+      const total = heroPin.offsetHeight - window.innerHeight;
+      if (total <= 0) { setOrbit(1); return; }
+      const scrolled = Math.min(Math.max(-heroPin.getBoundingClientRect().top, 0), total);
+      setOrbit(scrolled / total);
+    };
+
+    const requestUpdate = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateOrbit);
+      }
+    };
+
+    const applyModeChange = () => {
+      if (reducedMotionQuery.matches) {
+        setOrbit(1); // Modell direkt zugewandt zeigen, keine Scroll-Animation
+      } else {
+        updateOrbit();
+      }
+    };
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate, { passive: true });
+    reducedMotionQuery.addEventListener('change', applyModeChange);
+    applyModeChange();
+  }
+
   /* ── FAQ ACCORDION ──────────────────────────────── */
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
