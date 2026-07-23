@@ -156,18 +156,21 @@
   const sb = getSB();
   let lastUnconfirmedEmail = '';
 
-  /* Bereits eingeloggt → weiterleiten */
-  const session = await getSession();
-  if (session) {
-    window.location.href = '/kundenbereich';
-    return;
-  }
+  /* Recovery-Token im URL-Hash → Passwort-Reset anzeigen (muss vor dem Session-Redirect geprüft werden,
+     da ein Klick auf den Reset-Link selbst bereits eine gültige Session erzeugt) */
+  const hash      = window.location.hash;
+  const params    = new URLSearchParams(hash.replace('#', ''));
+  const isRecovery = params.get('type') === 'recovery';
 
-  /* Recovery-Token im URL-Hash → Passwort-Reset anzeigen */
-  const hash   = window.location.hash;
-  const params = new URLSearchParams(hash.replace('#', ''));
-  if (params.get('type') === 'recovery') {
+  if (isRecovery) {
     showView('reset');
+  } else {
+    /* Bereits eingeloggt → weiterleiten */
+    const session = await getSession();
+    if (session) {
+      window.location.href = '/kundenbereich';
+      return;
+    }
   }
 
   /* Supabase Auth State Listener für Recovery */
