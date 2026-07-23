@@ -73,7 +73,7 @@ module.exports = async function handler(req, res) {
   const { data: newUser, error: createErr } = await supabaseAdmin.auth.admin.createUser({
     email:         trimmedEmail,
     password:      String(password),
-    email_confirm: true       /* E-Mail direkt bestätigt – kein Bestätigungsmail nötig */
+    email_confirm: false      /* Kunde muss E-Mail erst bestätigen, bevor Login möglich ist */
   });
 
   if (createErr) {
@@ -98,9 +98,16 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Fehler beim Anlegen des Profils. Bitte erneut versuchen.' });
   }
 
+  /* ── Bestätigungsmail an den Kunden senden ── */
+  await supabaseAdmin.auth.resend({
+    type:  'signup',
+    email: trimmedEmail,
+    options: { emailRedirectTo: 'https://tk-webtalent.de/kunden-login' }
+  });
+
   return res.status(200).json({
     success: true,
     userId:  newUser.user.id,
-    message: `Konto für ${trimmedName} erfolgreich erstellt.`
+    message: `Konto für ${trimmedName} erstellt. Der Kunde muss die E-Mail-Adresse bestätigen, bevor der Login möglich ist.`
   });
 };
