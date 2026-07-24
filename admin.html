@@ -458,6 +458,11 @@ let allCustomers = []; // Cache für Kunden-Dropdown
   if (!auth) return;
 
   currentSession = auth.session;
+
+  /* Session bei automatischer Token-Erneuerung aktuell halten */
+  sb.auth.onAuthStateChange((_event, newSession) => {
+    if (newSession) currentSession = newSession;
+  });
   document.getElementById('adminLoading').style.display = 'none';
   document.getElementById('adminPage').style.display    = 'grid';
   document.getElementById('adminGreeting').textContent  =

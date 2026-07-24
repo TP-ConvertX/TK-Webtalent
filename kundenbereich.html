@@ -323,6 +323,11 @@ function setupMsgChannel(uid) {
   _session = session;
   const userId = session.user.id;
 
+  /* Session bei automatischer Token-Erneuerung aktuell halten */
+  sb.auth.onAuthStateChange((_event, newSession) => {
+    if (newSession) _session = newSession;
+  });
+
   /* Profil laden */
   const { data: profile, error: profileErr } = await sb
     .from('profiles')
