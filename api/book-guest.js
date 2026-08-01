@@ -21,7 +21,7 @@ function tpl(body) {
 <body style="margin:0;padding:20px;background:#F8FAFC;font-family:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif">
 <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,.08)">
   <div style="background:#0F172A;padding:20px 28px;display:flex;align-items:center">
-    <div style="background:linear-gradient(135deg,#0EA5E9,#0284C7);width:36px;height:36px;border-radius:8px;font-size:13px;font-weight:800;color:#fff;display:inline-flex;align-items:center;justify-content:center">TK</div>
+    <img src="https://tk-webtalent.de/assets/logo-icon.png" width="36" height="36" alt="TK" style="display:block">
     <span style="color:#fff;font-size:17px;font-weight:700;margin-left:10px">Webtalent</span>
   </div>
   <div style="padding:28px 28px 24px">${body}</div>
