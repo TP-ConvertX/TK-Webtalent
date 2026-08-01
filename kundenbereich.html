@@ -241,6 +241,10 @@
               📎
               <input type="file" id="msgFileInput" style="display:none" accept="image/*,video/*,.pdf,.doc,.docx,.zip" multiple>
             </label>
+            <label class="btn btn-outline" style="cursor:pointer;padding:9px 12px;flex-shrink:0;display:flex;align-items:center" title="Ganzen Ordner anhängen">
+              📁
+              <input type="file" id="msgFolderInput" style="display:none" webkitdirectory directory multiple>
+            </label>
             <button class="btn btn-primary auth-btn" id="msgSendBtn" onclick="sendMessage()" style="width:auto;min-width:90px;flex-shrink:0">
               <span class="spinner"></span>
               <span class="btn-text">Senden</span>
@@ -318,6 +322,11 @@ function setupMsgChannel(uid) {
 
   _session = session;
   const userId = session.user.id;
+
+  /* Session bei automatischer Token-Erneuerung aktuell halten */
+  sb.auth.onAuthStateChange((_event, newSession) => {
+    if (newSession) _session = newSession;
+  });
 
   /* Profil laden */
   const { data: profile, error: profileErr } = await sb
@@ -654,25 +663,42 @@ function renderThread(msgs) {
   thread.scrollTop = thread.scrollHeight;
 }
 
-document.getElementById('msgFileInput').addEventListener('change', async function() {
-  var files = Array.from(this.files);
+async function uploadMsgAttachments(fileList) {
+  var files = Array.from(fileList);
   if (!files.length) return;
   var btn = document.getElementById('msgSendBtn');
   btn.classList.add('loading'); btn.disabled = true;
   var uid = _session?.user?.id;
+  var failed = [];
 
   for (var i = 0; i < files.length; i++) {
-    var file = files[i];
-    var path = uid + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-    var up   = await getSB().storage.from('message-files').upload(path, file);
+    var file    = files[i];
+    var relName = file.webkitRelativePath || file.name;
+    var path    = uid + '/' + Date.now() + '_' + relName.replace(/[^a-zA-Z0-9._\-/]/g,'_');
+    var up      = await getSB().storage.from('message-files').upload(path, file);
     if (!up.error && up.data) {
       var pub = getSB().storage.from('message-files').getPublicUrl(up.data.path);
-      _msgAttachments.push({ name: file.name, url: pub.data.publicUrl, type: file.type });
+      _msgAttachments.push({ name: relName, url: pub.data.publicUrl, type: file.type });
+    } else {
+      failed.push(relName + (up.error ? ' – ' + up.error.message : ''));
     }
   }
 
   btn.classList.remove('loading'); btn.disabled = false;
   renderFilePreview();
+
+  if (failed.length) {
+    showToast('Upload fehlgeschlagen: ' + failed.join(', '), 'error');
+  }
+}
+
+document.getElementById('msgFileInput').addEventListener('change', async function() {
+  await uploadMsgAttachments(this.files);
+  this.value = '';
+});
+
+document.getElementById('msgFolderInput').addEventListener('change', async function() {
+  await uploadMsgAttachments(this.files);
   this.value = '';
 });
 

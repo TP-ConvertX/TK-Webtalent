@@ -206,7 +206,7 @@
       <div class="form-group">
         <label class="form-label">Temporäres Passwort *</label>
         <input class="form-input" type="password" id="newCustomerPassword" placeholder="Mindestens 8 Zeichen" required>
-        <small style="font-size:12px;color:var(--c-text-2);margin-top:2px">Der Kunde kann das Passwort über „Passwort vergessen" selbst ändern.</small>
+        <small style="font-size:12px;color:var(--c-text-2);margin-top:2px">Der Kunde erhält eine Bestätigungsmail und muss die E-Mail-Adresse bestätigen, bevor der Login möglich ist. Das Passwort kann er danach jederzeit über „Passwort vergessen" ändern.</small>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn btn-outline" onclick="closeModal('modalAddCustomer')" style="font-size:14px">Abbrechen</button>
@@ -396,6 +396,10 @@
             📎
             <input type="file" id="adminMsgFileInput" style="display:none" accept="image/*,video/*,.pdf,.doc,.docx,.zip" multiple>
           </label>
+          <label class="btn btn-outline" style="cursor:pointer;padding:9px 12px;flex-shrink:0;display:flex;align-items:center" title="Ganzen Ordner anhängen">
+            📁
+            <input type="file" id="adminMsgFolderInput" style="display:none" webkitdirectory directory multiple>
+          </label>
           <button class="btn btn-primary auth-btn" id="adminMsgSendBtn" onclick="adminSendMessage()" style="width:auto;min-width:80px;flex-shrink:0">
             <span class="spinner"></span>
             <span class="btn-text">Senden</span>
@@ -454,6 +458,11 @@ let allCustomers = []; // Cache für Kunden-Dropdown
   if (!auth) return;
 
   currentSession = auth.session;
+
+  /* Session bei automatischer Token-Erneuerung aktuell halten */
+  sb.auth.onAuthStateChange((_event, newSession) => {
+    if (newSession) currentSession = newSession;
+  });
   document.getElementById('adminLoading').style.display = 'none';
   document.getElementById('adminPage').style.display    = 'grid';
   document.getElementById('adminGreeting').textContent  =
@@ -631,7 +640,7 @@ document.getElementById('addCustomerForm').addEventListener('submit', async (e) 
     return;
   }
 
-  showToast('Konto für ' + name + ' wurde erstellt.', 'success');
+  showToast('Konto für ' + name + ' wurde erstellt. Bestätigungsmail wurde gesendet.', 'success');
   closeModal('modalAddCustomer');
   document.getElementById('addCustomerForm').reset();
   await Promise.all([loadCustomers(), loadStats()]);
@@ -1077,21 +1086,38 @@ function closeMsgThread() {
   loadMsgCustomers();
 }
 
-document.getElementById('adminMsgFileInput').addEventListener('change', async function() {
-  const files = Array.from(this.files);
+async function uploadAdminMsgAttachments(fileList) {
+  const files = Array.from(fileList);
   setLoading(document.getElementById('adminMsgSendBtn'), true);
+  const failed = [];
 
   for (const file of files) {
-    const path = `admin/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    const relName = file.webkitRelativePath || file.name;
+    const path = `admin/${Date.now()}_${relName.replace(/[^a-zA-Z0-9._\-/]/g,'_')}`;
     const { data, error } = await sb.storage.from('message-files').upload(path, file);
     if (!error && data) {
       const { data: { publicUrl } } = sb.storage.from('message-files').getPublicUrl(data.path);
-      _adminMsgAttachments.push({ name: file.name, url: publicUrl, type: file.type });
+      _adminMsgAttachments.push({ name: relName, url: publicUrl, type: file.type });
+    } else {
+      failed.push(relName + (error ? ' – ' + error.message : ''));
     }
   }
 
   setLoading(document.getElementById('adminMsgSendBtn'), false);
   renderAdminFilePreview();
+
+  if (failed.length) {
+    showToast('Upload fehlgeschlagen: ' + failed.join(', '), 'error');
+  }
+}
+
+document.getElementById('adminMsgFileInput').addEventListener('change', async function() {
+  await uploadAdminMsgAttachments(this.files);
+  this.value = '';
+});
+
+document.getElementById('adminMsgFolderInput').addEventListener('change', async function() {
+  await uploadAdminMsgAttachments(this.files);
   this.value = '';
 });
 

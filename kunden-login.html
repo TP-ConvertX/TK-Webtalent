@@ -28,6 +28,9 @@
       <p class="auth-subtitle">Melde dich in deinem persönlichen Kundenbereich an.</p>
 
       <div class="auth-error" id="loginError"></div>
+      <div class="auth-link-row" id="resendRow" style="display:none;margin:-4px 0 16px">
+        <button type="button" class="auth-link" id="resendConfirmBtn">Bestätigungsmail erneut senden</button>
+      </div>
 
       <form class="auth-form" id="loginForm" novalidate>
         <div class="form-group">
@@ -151,19 +154,23 @@
 <script>
 (async () => {
   const sb = getSB();
+  let lastUnconfirmedEmail = '';
 
-  /* Bereits eingeloggt → weiterleiten */
-  const session = await getSession();
-  if (session) {
-    window.location.href = '/kundenbereich';
-    return;
-  }
+  /* Recovery-Token im URL-Hash → Passwort-Reset anzeigen (muss vor dem Session-Redirect geprüft werden,
+     da ein Klick auf den Reset-Link selbst bereits eine gültige Session erzeugt) */
+  const hash      = window.location.hash;
+  const params    = new URLSearchParams(hash.replace('#', ''));
+  const isRecovery = params.get('type') === 'recovery';
 
-  /* Recovery-Token im URL-Hash → Passwort-Reset anzeigen */
-  const hash   = window.location.hash;
-  const params = new URLSearchParams(hash.replace('#', ''));
-  if (params.get('type') === 'recovery') {
+  if (isRecovery) {
     showView('reset');
+  } else {
+    /* Bereits eingeloggt → weiterleiten */
+    const session = await getSession();
+    if (session) {
+      window.location.href = '/kundenbereich';
+      return;
+    }
   }
 
   /* Supabase Auth State Listener für Recovery */
@@ -179,6 +186,29 @@
 
   document.getElementById('showForgot').addEventListener('click', () => showView('forgot'));
   document.getElementById('showLogin').addEventListener('click', () => showView('login'));
+
+  /* ── BESTÄTIGUNGSMAIL ERNEUT SENDEN ── */
+  document.getElementById('resendConfirmBtn').addEventListener('click', async () => {
+    if (!lastUnconfirmedEmail) return;
+    const resendBtn = document.getElementById('resendConfirmBtn');
+    resendBtn.disabled = true;
+    resendBtn.textContent = 'Wird gesendet …';
+
+    const { error } = await sb.auth.resend({
+      type: 'signup',
+      email: lastUnconfirmedEmail,
+      options: { emailRedirectTo: window.location.origin + '/kunden-login' }
+    });
+
+    if (error) {
+      resendBtn.disabled = false;
+      resendBtn.textContent = 'Bestätigungsmail erneut senden';
+      showToast('Fehler beim Senden. Bitte versuche es später erneut.', 'error');
+    } else {
+      resendBtn.textContent = 'Mail wurde gesendet ✓';
+      showToast('Bestätigungsmail wurde erneut gesendet.', 'success');
+    }
+  });
 
   /* ── LOGIN ── */
   document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -200,10 +230,13 @@
 
     if (error) {
       setLoading(btn, false);
+      document.getElementById('resendRow').style.display = 'none';
       if (error.message.includes('Invalid login')) {
         showErr(err, 'E-Mail-Adresse oder Passwort ist falsch.');
       } else if (error.message.includes('Email not confirmed')) {
-        showErr(err, 'Dein Konto wurde noch nicht bestätigt. Bitte wende dich an TK Webtalent.');
+        showErr(err, 'Bitte bestätige zuerst deine E-Mail-Adresse. Wir haben dir nach der Kontoerstellung einen Link geschickt (auch im Spam-Ordner prüfen).');
+        lastUnconfirmedEmail = email;
+        document.getElementById('resendRow').style.display = 'block';
       } else {
         showErr(err, 'Anmeldung fehlgeschlagen. Bitte versuche es erneut.');
       }
