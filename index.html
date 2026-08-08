@@ -85,8 +85,15 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/portal.css">
 
-  <!-- 3D-Laptop im Hero (nur Desktop) -->
-  <script type="module" src="https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js"></script>
+  <!-- 3D-Glaskarte im Hero -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.184.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -171,22 +178,9 @@
 
         <div class="hero-visual animate-fade-left" style="animation-delay:0.3s">
 
-          <!-- 3D LAPTOP: dreht sich beim Scrollen, auf allen Bildschirmgrößen -->
+          <!-- 3D GLASKARTE: dreht sich beim Scrollen, auf allen Bildschirmgrößen -->
           <div class="devices-wrap">
-            <model-viewer
-              id="heroLaptop"
-              class="laptop-3d"
-              src="assets/models/3d_clipart_-_webdev.glb"
-              alt="3D-Illustration eines Laptops umgeben von Web-Entwicklungs-Icons (HTML, CSS, JS)"
-              environment-image="neutral"
-              exposure="1.1"
-              shadow-intensity="1"
-              shadow-softness="0.9"
-              camera-orbit="95deg 78deg 92%"
-              field-of-view="28deg"
-              loading="eager"
-              reveal="auto">
-            </model-viewer>
+            <canvas id="heroGlassCard" class="glass-card-3d" role="img" aria-label="3D-Glaskarte mit einer Vorschau der TK Webtalent Website"></canvas>
           </div><!-- end devices-wrap -->
 
         </div>
@@ -742,7 +736,6 @@
       <div class="footer-bottom">
         <p>© 2025 TK Webtalent. Alle Rechte vorbehalten.</p>
         <p><a href="/impressum" style="color:inherit;opacity:0.6;">Impressum</a> · <a href="/datenschutz" style="color:inherit;opacity:0.6;">Datenschutz</a></p>
-        <p style="font-size:11px;opacity:0.45;">3D-Illustration "3D Clipart - WebDev" von <a href="https://sketchfab.com/Helindu" target="_blank" rel="noopener" style="color:inherit;">Helindu</a>, lizenziert unter <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="color:inherit;">CC BY 4.0</a></p>
       </div>
     </div>
   </footer>
@@ -763,6 +756,7 @@
     </div>
   </div>
 
+  <script type="module" src="js/hero-glass-card.js"></script>
   <script src="js/main.js"></script>
 
   <!-- ===== TELEFONTERMIN-MODAL ===== -->
