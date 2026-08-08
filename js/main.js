@@ -114,6 +114,42 @@ document.addEventListener('DOMContentLoaded', () => {
     applyModeChange();
   }
 
+  /* ── FENSTER-DURCHBLICK SCROLL-PIN ───────────────── */
+  const windowSection = document.querySelector('.window-section');
+  const windowTrack   = document.getElementById('windowTrack');
+
+  if (windowSection && windowTrack) {
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let maxTranslate = 0;
+
+    const measure = () => {
+      maxTranslate = Math.max(0, windowTrack.scrollWidth - windowTrack.parentElement.clientWidth);
+    };
+
+    let ticking = false;
+    const updateProgress = () => {
+      ticking = false;
+      if (reducedMotionQuery.matches) { windowTrack.style.transform = ''; return; }
+      const total = windowSection.offsetHeight - window.innerHeight;
+      const progress = total <= 0 ? 0 : Math.min(Math.max(-windowSection.getBoundingClientRect().top, 0), total) / total;
+      windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
+    };
+
+    const requestUpdate = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateProgress);
+      }
+    };
+
+    const remeasureAndUpdate = () => { measure(); updateProgress(); };
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', remeasureAndUpdate, { passive: true });
+    reducedMotionQuery.addEventListener('change', remeasureAndUpdate);
+    remeasureAndUpdate();
+  }
+
   /* ── FAQ ACCORDION ──────────────────────────────── */
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
