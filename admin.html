@@ -845,20 +845,20 @@ function isValidUrl(url) {
 let _adminAllAppts = [];
 let _adminPendingDate, _adminPendingTime;
 
-function sendApptEmail(type, customerId, date, time, appointmentType) {
+function sendApptEmail(type, customerId, date, time, appointmentType, appointmentId) {
   const token = currentSession?.access_token;
   if (!token) return;
   fetch('/api/send-appointment-email', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-    body: JSON.stringify({ type, customerId, date, time, appointmentType, formattedDate: calFormatAppt(date, time) })
+    body: JSON.stringify({ type, customerId, date, time, appointmentType, appointmentId, formattedDate: calFormatAppt(date, time) })
   }).catch(() => {});
 }
 
 async function loadAppointments() {
   const { data } = await sb
     .from('appointments')
-    .select('id, customer_id, appointment_date, appointment_time, status, notes, appointment_type, profiles(full_name)')
+    .select('id, customer_id, appointment_date, appointment_time, status, notes, appointment_type, guest_name, profiles(full_name)')
     .eq('status', 'confirmed')
     .order('appointment_date', { ascending: true })
     .order('appointment_time', { ascending: true });
@@ -885,7 +885,7 @@ function renderAdminAppts(appts) {
     + upcoming.map(a => `<div class="appt-item appt-item-admin">
         <div>
           <div class="appt-datetime">${calFormatAppt(a.appointment_date, a.appointment_time)}</div>
-          <div style="font-size:13px;color:var(--c-text-2)">${calEsc(a.profiles?.full_name || 'Unbekannt')} · ${calTypeLabel(a.appointment_type)}</div>
+          <div style="font-size:13px;color:var(--c-text-2)">${calEsc(a.profiles?.full_name || a.guest_name || 'Unbekannt')} · ${calTypeLabel(a.appointment_type)}</div>
         </div>
         <button class="appt-cancel-btn" onclick="adminCancelAppt('${a.id}')">Stornieren</button>
       </div>`).join('');
@@ -912,12 +912,19 @@ function calOnBook(date, time) {
 function calOnCancel(id) { adminCancelAppt(id); }
 
 async function adminCancelAppt(id) {
-  const ap = _adminAllAppts.find(a => a.id === id);
   if (!window.confirm('Termin wirklich stornieren?')) return;
-  const { error } = await sb.from('appointments').update({ status: 'cancelled' }).eq('id', id);
-  if (error) { showToast('Fehler beim Stornieren.', 'error'); return; }
+  try {
+    const r = await fetch('/api/cancel-appointment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    });
+    if (!r.ok) { showToast('Fehler beim Stornieren.', 'error'); return; }
+  } catch (e) {
+    showToast('Fehler beim Stornieren.', 'error');
+    return;
+  }
   showToast('Termin storniert.', 'success');
-  if (ap) sendApptEmail('admin_cancelled', ap.customer_id, ap.appointment_date, ap.appointment_time.slice(0, 5));
   await loadAppointments();
 }
 
@@ -1210,14 +1217,14 @@ document.getElementById('adminBookForm').addEventListener('submit', async (e) =>
   setLoading(btn, true);
   err.classList.remove('visible');
 
-  const { error } = await sb.from('appointments').insert({
+  const { data, error } = await sb.from('appointments').insert({
     customer_id:      cust,
     appointment_date: _adminPendingDate,
     appointment_time: _adminPendingTime + ':00',
     status:           'confirmed',
     notes:            notes || null,
     appointment_type: apptType
-  });
+  }).select('id').single();
 
   setLoading(btn, false);
 
@@ -1228,7 +1235,7 @@ document.getElementById('adminBookForm').addEventListener('submit', async (e) =>
 
   showToast('Termin wurde angelegt.', 'success');
   closeModal('modalAdminBook');
-  sendApptEmail('admin_booked', cust, _adminPendingDate, _adminPendingTime, apptType);
+  sendApptEmail('admin_booked', cust, _adminPendingDate, _adminPendingTime, apptType, data.id);
   await loadAppointments();
 });
 </script>

@@ -505,7 +505,7 @@ var _apptUserId;
 var _allAppts = [];
 var _pendingDate, _pendingTime;
 
-function sendApptEmail(type, date, time, appointmentType) {
+function sendApptEmail(type, date, time, appointmentType, appointmentId) {
   const token = _session?.access_token;
   if (!token) return;
   fetch('/api/send-appointment-email', {
@@ -516,6 +516,7 @@ function sendApptEmail(type, date, time, appointmentType) {
       date,
       time,
       appointmentType,
+      appointmentId,
       formattedDate:  calFormatAppt(date, time),
       customerEmail:  _customerEmail,
       customerName:   _customerName
@@ -592,13 +593,13 @@ async function confirmBook() {
   btn.disabled = true;
   err.classList.remove('visible');
 
-  const { error } = await getSB().from('appointments').insert({
+  const { data, error } = await getSB().from('appointments').insert({
     customer_id:      _apptUserId,
     appointment_date: _pendingDate,
     appointment_time: _pendingTime + ':00',
     status:           'confirmed',
     appointment_type: apptType
-  });
+  }).select('id').single();
 
   btn.classList.remove('loading');
   btn.disabled = false;
@@ -613,17 +614,24 @@ async function confirmBook() {
 
   closeBookModal();
   showToast('Termin erfolgreich gebucht!', 'success');
-  sendApptEmail('customer_booked', _pendingDate, _pendingTime, apptType);
+  sendApptEmail('customer_booked', _pendingDate, _pendingTime, apptType, data.id);
   await loadCalendar(_apptUserId);
 }
 
 async function calOnCancel(id) {
-  const ap = _allAppts.find(a => a.id === id);
   if (!window.confirm('Termin wirklich absagen?')) return;
-  const { error } = await getSB().from('appointments').update({ status: 'cancelled' }).eq('id', id);
-  if (error) { showToast('Fehler beim Absagen.', 'error'); return; }
+  try {
+    const r = await fetch('/api/cancel-appointment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    });
+    if (!r.ok) { showToast('Fehler beim Absagen.', 'error'); return; }
+  } catch (e) {
+    showToast('Fehler beim Absagen.', 'error');
+    return;
+  }
   showToast('Termin abgesagt.', 'success');
-  if (ap) sendApptEmail('customer_cancelled', ap.appointment_date, ap.appointment_time.slice(0, 5));
   await loadCalendar(_apptUserId);
 }
 
