@@ -118,6 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const windowSection = document.querySelector('.window-section');
   const windowTrack   = document.getElementById('windowTrack');
 
+  const windowCta = document.getElementById('windowCta');
+
   if (windowSection && windowTrack) {
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let maxTranslate = 0;
@@ -129,10 +131,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let ticking = false;
     const updateProgress = () => {
       ticking = false;
-      if (reducedMotionQuery.matches) { windowTrack.style.transform = ''; return; }
+      if (reducedMotionQuery.matches) {
+        windowTrack.style.transform = '';
+        windowCta?.classList.add('visible'); // kein Scroll-Trick, Button gleich zeigen
+        return;
+      }
       const total = windowSection.offsetHeight - window.innerHeight;
       const progress = total <= 0 ? 0 : Math.min(Math.max(-windowSection.getBoundingClientRect().top, 0), total) / total;
       windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
+      windowCta?.classList.toggle('visible', progress >= 0.92);
     };
 
     const requestUpdate = () => {

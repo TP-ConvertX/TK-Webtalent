@@ -1060,6 +1060,29 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 
 .snippet-label { font-size: 11px; font-weight: 700; color: var(--c-text-3); text-transform: uppercase; letter-spacing: 0.06em; }
 
+.window-cta {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: #0F172A;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 28px;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(15,23,42,0.22);
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.window-cta.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.window-cta:hover { background: #1E293B; }
+
 @media (max-width: 640px) {
   .window-viewport { height: 210px; }
   .window-snippet { flex-basis: 170px; height: 170px; padding: 14px; }
