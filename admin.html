@@ -430,12 +430,16 @@
       </div>
       <div class="form-group">
         <label class="form-label">Terminart *</label>
-        <select class="form-select" id="adminBookApptType" required>
+        <select class="form-select" id="adminBookApptType" required onchange="toggleAdminAddressField()">
           <option value="">Bitte wählen …</option>
           <option value="telefon">📞 Telefonisch</option>
           <option value="persoenlich">🤝 Persönlich vor Ort</option>
           <option value="zoom">💻 Per Zoom</option>
         </select>
+      </div>
+      <div class="form-group" id="adminAddressGroup" style="display:none">
+        <label class="form-label">Adresse</label>
+        <input type="text" class="form-input" id="adminBookAddress" placeholder="Straße, Hausnummer, PLZ, Ort">
       </div>
       <div class="form-group">
         <label class="form-label">Notizen (intern)</label>
@@ -845,20 +849,20 @@ function isValidUrl(url) {
 let _adminAllAppts = [];
 let _adminPendingDate, _adminPendingTime;
 
-function sendApptEmail(type, customerId, date, time, appointmentType, appointmentId) {
+function sendApptEmail(type, customerId, date, time, appointmentType, appointmentId, address) {
   const token = currentSession?.access_token;
   if (!token) return;
   fetch('/api/send-appointment-email', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-    body: JSON.stringify({ type, customerId, date, time, appointmentType, appointmentId, formattedDate: calFormatAppt(date, time) })
+    body: JSON.stringify({ type, customerId, date, time, appointmentType, appointmentId, address, formattedDate: calFormatAppt(date, time) })
   }).catch(() => {});
 }
 
 async function loadAppointments() {
   const { data } = await sb
     .from('appointments')
-    .select('id, customer_id, appointment_date, appointment_time, status, notes, appointment_type, guest_name, profiles(full_name)')
+    .select('id, customer_id, appointment_date, appointment_time, status, notes, appointment_type, appointment_address, guest_name, profiles(full_name)')
     .eq('status', 'confirmed')
     .order('appointment_date', { ascending: true })
     .order('appointment_time', { ascending: true });
@@ -886,6 +890,7 @@ function renderAdminAppts(appts) {
         <div>
           <div class="appt-datetime">${calFormatAppt(a.appointment_date, a.appointment_time)}</div>
           <div style="font-size:13px;color:var(--c-text-2)">${calEsc(a.profiles?.full_name || a.guest_name || 'Unbekannt')} · ${calTypeLabel(a.appointment_type)}</div>
+          ${a.appointment_type === 'persoenlich' && a.appointment_address ? `<div style="font-size:12px;color:var(--c-accent);margin-top:2px">📍 ${calEsc(a.appointment_address)}</div>` : ''}
         </div>
         <button class="appt-cancel-btn" onclick="adminCancelAppt('${a.id}')">Stornieren</button>
       </div>`).join('');
@@ -906,7 +911,14 @@ function calOnBook(date, time) {
   });
   document.getElementById('adminBookNotes').value = '';
   document.getElementById('adminBookApptType').value = '';
+  document.getElementById('adminBookAddress').value = '';
+  document.getElementById('adminAddressGroup').style.display = 'none';
   openModal('modalAdminBook');
+}
+
+function toggleAdminAddressField() {
+  const isPersoenlich = document.getElementById('adminBookApptType').value === 'persoenlich';
+  document.getElementById('adminAddressGroup').style.display = isPersoenlich ? '' : 'none';
 }
 
 function calOnCancel(id) { adminCancelAppt(id); }
@@ -1209,6 +1221,7 @@ document.getElementById('adminBookForm').addEventListener('submit', async (e) =>
   const err   = document.getElementById('adminBookError');
   const cust     = document.getElementById('adminBookCustomer').value;
   const apptType = document.getElementById('adminBookApptType').value;
+  const address  = document.getElementById('adminBookAddress').value.trim();
   const notes    = document.getElementById('adminBookNotes').value.trim();
 
   if (!cust) { showModalErr(err, 'Bitte einen Kunden auswählen.'); return; }
@@ -1223,7 +1236,8 @@ document.getElementById('adminBookForm').addEventListener('submit', async (e) =>
     appointment_time: _adminPendingTime + ':00',
     status:           'confirmed',
     notes:            notes || null,
-    appointment_type: apptType
+    appointment_type: apptType,
+    appointment_address: apptType === 'persoenlich' ? (address || null) : null
   }).select('id').single();
 
   setLoading(btn, false);
@@ -1235,7 +1249,7 @@ document.getElementById('adminBookForm').addEventListener('submit', async (e) =>
 
   showToast('Termin wurde angelegt.', 'success');
   closeModal('modalAdminBook');
-  sendApptEmail('admin_booked', cust, _adminPendingDate, _adminPendingTime, apptType, data.id);
+  sendApptEmail('admin_booked', cust, _adminPendingDate, _adminPendingTime, apptType, data.id, address);
   await loadAppointments();
 });
 </script>

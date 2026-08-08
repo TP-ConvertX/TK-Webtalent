@@ -149,10 +149,22 @@ function apptCancelNote(appointmentId) {
   return `<p style="font-size:13px;color:#94A3B8;margin-top:16px">Termin doch nicht möglich? <a href="${href}" style="color:#0EA5E9">Hier stornieren</a>.</p>`;
 }
 
+function escapeHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* Zusatz-Absatz fürs E-Mail-Template mit der vom Kunden hinterlegten Adresse
+   (nur bei "Persönlich vor Ort" relevant – Tim muss wissen, wo er hin muss). */
+function apptAddressNote(type, address) {
+  if (type !== 'persoenlich' || !address) return '';
+  return `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">📍 Adresse: <strong>${escapeHtml(address)}</strong></p>`;
+}
+
 module.exports = {
   APPT_TYPES,
   apptTypeLabel,
   apptZoomNote,
+  apptAddressNote,
   apptCancelNote,
   isTuesday,
   createZoomMeeting,

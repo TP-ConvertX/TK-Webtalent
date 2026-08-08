@@ -8,6 +8,7 @@ const { createClient } = require('@supabase/supabase-js');
 const {
   apptTypeLabel,
   apptZoomNote,
+  apptAddressNote,
   apptCancelNote,
   createZoomMeeting,
   emailTpl,
@@ -43,6 +44,7 @@ module.exports = async function handler(req, res) {
     time,
     formattedDate,
     appointmentType,
+    address,
     customerEmail: passedEmail,
     customerName:  passedName
   } = req.body;
@@ -81,6 +83,7 @@ module.exports = async function handler(req, res) {
     customerName,
     formattedDate: fmt,
     appointmentType,
+    address,
     zoomJoinUrl,
     appointmentId,
     adminEmail: ADMIN_EMAIL,
@@ -110,7 +113,7 @@ module.exports = async function handler(req, res) {
 /* customer_cancelled/admin_cancelled gibt's hier nicht mehr – Stornierungen
    (inkl. E-Mail-Benachrichtigung an Kunde + Admin, Zoom-Löschung) laufen
    zentral über api/cancel-appointment.js, egal von wo sie ausgelöst werden. */
-function buildEmails(type, { customerEmail, customerName, formattedDate, appointmentType, zoomJoinUrl, appointmentId, adminEmail, from }) {
+function buildEmails(type, { customerEmail, customerName, formattedDate, appointmentType, address, zoomJoinUrl, appointmentId, adminEmail, from }) {
   const sign       = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
   const h1         = (t) => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
   const p          = (t) => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
@@ -119,6 +122,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, appoint
   const adm        = link('https://tk-webtalent.de/admin', 'Admin-Bereich');
   const typeLbl    = apptTypeLabel(appointmentType);
   const zoomNote   = apptZoomNote(appointmentType, zoomJoinUrl);
+  const addressNote = apptAddressNote(appointmentType, address);
   const cancelNote = apptCancelNote(appointmentId);
 
   switch (type) {
@@ -133,6 +137,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, appoint
           ${p(`Dein Beratungstermin bei TK Webtalent ist gebucht: <strong>${typeLbl}</strong>.`)}
           ${emailBox(formattedDate)}
           ${zoomNote}
+          ${addressNote}
           ${p('Der Termin dauert <strong>60 Minuten</strong>. Wir besprechen dabei den Stand deines Projekts und die nächsten Schritte.')}
           ${p(`Musst du absagen? Kein Problem – einfach im ${kb} stornieren.`)}
           ${sign}
@@ -147,6 +152,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, appoint
           ${p(`<strong>${customerName}</strong> hat einen Beratungstermin gebucht: <strong>${typeLbl}</strong>.`)}
           ${emailBox(formattedDate)}
           ${zoomNote}
+          ${addressNote}
           ${p(`Einsehen und verwalten im ${adm}.`)}
           ${cancelNote}
         `)
@@ -163,6 +169,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, appoint
           ${p(`TK Webtalent hat einen Beratungstermin für dich angelegt: <strong>${typeLbl}</strong>.`)}
           ${emailBox(formattedDate)}
           ${zoomNote}
+          ${addressNote}
           ${p(`Falls der Termin nicht passt, kannst du ihn im ${kb} absagen oder uns direkt kontaktieren.`)}
           ${sign}
           ${cancelNote}

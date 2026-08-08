@@ -480,12 +480,16 @@ function showFallback() {
       <div style="background:var(--c-bg-light);border-radius:12px;padding:16px;font-size:15px;font-weight:600;color:var(--c-text);text-align:center;margin-bottom:16px" id="bookDateDisplay">—</div>
       <div class="form-group">
         <label class="form-label" for="bookApptType">Terminart *</label>
-        <select class="form-select" id="bookApptType">
+        <select class="form-select" id="bookApptType" onchange="toggleBookAddressField()">
           <option value="">Bitte wählen …</option>
           <option value="telefon">📞 Telefonisch</option>
           <option value="persoenlich">🤝 Persönlich vor Ort</option>
           <option value="zoom">💻 Per Zoom</option>
         </select>
+      </div>
+      <div class="form-group" id="bookAddressGroup" style="display:none">
+        <label class="form-label" for="bookAddress">Deine Adresse *</label>
+        <input type="text" class="form-input" id="bookAddress" placeholder="Straße, Hausnummer, PLZ, Ort" autocomplete="street-address">
       </div>
       <div class="modal-actions" style="margin-top:24px">
         <button class="btn btn-outline" onclick="closeBookModal()" style="font-size:14px">Abbrechen</button>
@@ -505,7 +509,7 @@ var _apptUserId;
 var _allAppts = [];
 var _pendingDate, _pendingTime;
 
-function sendApptEmail(type, date, time, appointmentType, appointmentId) {
+function sendApptEmail(type, date, time, appointmentType, appointmentId, address) {
   const token = _session?.access_token;
   if (!token) return;
   fetch('/api/send-appointment-email', {
@@ -517,6 +521,7 @@ function sendApptEmail(type, date, time, appointmentType, appointmentId) {
       time,
       appointmentType,
       appointmentId,
+      address,
       formattedDate:  calFormatAppt(date, time),
       customerEmail:  _customerEmail,
       customerName:   _customerName
@@ -563,6 +568,8 @@ function calOnBook(date, time) {
   _pendingTime = time;
   document.getElementById('bookDateDisplay').textContent = calFormatAppt(date, time);
   document.getElementById('bookApptType').value = '';
+  document.getElementById('bookAddress').value = '';
+  document.getElementById('bookAddressGroup').style.display = 'none';
   document.getElementById('bookError').classList.remove('visible');
   document.getElementById('modalBook').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -573,13 +580,24 @@ function closeBookModal() {
   document.body.style.overflow = '';
 }
 
+function toggleBookAddressField() {
+  const isPersoenlich = document.getElementById('bookApptType').value === 'persoenlich';
+  document.getElementById('bookAddressGroup').style.display = isPersoenlich ? '' : 'none';
+}
+
 async function confirmBook() {
   const btn = document.getElementById('bookConfirmBtn');
   const err = document.getElementById('bookError');
   const apptType = document.getElementById('bookApptType').value;
+  const address  = document.getElementById('bookAddress').value.trim();
 
   if (!apptType) {
     err.textContent = 'Bitte wähle eine Terminart aus.';
+    err.classList.add('visible');
+    return;
+  }
+  if (apptType === 'persoenlich' && !address) {
+    err.textContent = 'Bitte gib deine Adresse ein.';
     err.classList.add('visible');
     return;
   }
@@ -598,7 +616,8 @@ async function confirmBook() {
     appointment_date: _pendingDate,
     appointment_time: _pendingTime + ':00',
     status:           'confirmed',
-    appointment_type: apptType
+    appointment_type: apptType,
+    appointment_address: apptType === 'persoenlich' ? address : null
   }).select('id').single();
 
   btn.classList.remove('loading');
@@ -614,7 +633,7 @@ async function confirmBook() {
 
   closeBookModal();
   showToast('Termin erfolgreich gebucht!', 'success');
-  sendApptEmail('customer_booked', _pendingDate, _pendingTime, apptType, data.id);
+  sendApptEmail('customer_booked', _pendingDate, _pendingTime, apptType, data.id, address);
   await loadCalendar(_apptUserId);
 }
 

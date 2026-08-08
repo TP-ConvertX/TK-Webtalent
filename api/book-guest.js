@@ -8,6 +8,7 @@ const {
   APPT_TYPES,
   apptTypeLabel,
   apptZoomNote,
+  apptAddressNote,
   apptCancelNote,
   isTuesday,
   createZoomMeeting,
@@ -29,13 +30,16 @@ function formatAppt(dateStr, timeStr) {
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { name, email, date, time, appointmentType } = req.body || {};
+  const { name, email, date, time, appointmentType, address } = req.body || {};
 
   if (!name || !email || !date || !time || !appointmentType) {
     return res.status(400).json({ error: 'Fehlende Pflichtfelder' });
   }
   if (!APPT_TYPES.includes(appointmentType)) {
     return res.status(400).json({ error: 'Ungültige Terminart' });
+  }
+  if (appointmentType === 'persoenlich' && !address) {
+    return res.status(400).json({ error: 'Adresse fehlt' });
   }
   if (isTuesday(date)) {
     return res.status(400).json({ error: 'tuesday_blocked' });
@@ -66,6 +70,7 @@ module.exports = async function handler(req, res) {
     status:           'confirmed',
     customer_id:      null,
     appointment_type: appointmentType,
+    appointment_address: appointmentType === 'persoenlich' ? address : null,
     guest_name:       name,
     guest_email:      email
   }).select('id').single();
@@ -94,9 +99,10 @@ module.exports = async function handler(req, res) {
     const h1       = t => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
     const p        = t => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
     const sign     = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
-    const typeLbl  = apptTypeLabel(appointmentType);
-    const zoomNote = apptZoomNote(appointmentType, zoomJoinUrl);
-    const cancelNote = apptCancelNote(inserted.id);
+    const typeLbl     = apptTypeLabel(appointmentType);
+    const zoomNote    = apptZoomNote(appointmentType, zoomJoinUrl);
+    const addressNote = apptAddressNote(appointmentType, address);
+    const cancelNote  = apptCancelNote(inserted.id);
 
     const mails = [
       {
@@ -108,6 +114,7 @@ module.exports = async function handler(req, res) {
           ${p(`Dein Termin bei TK Webtalent ist gebucht: <strong>${typeLbl}</strong>.`)}
           ${emailBox(fmt)}
           ${zoomNote}
+          ${addressNote}
           ${p('Der Termin dauert <strong>60 Minuten</strong>.')}
           ${p('Fragen vorher? Schreib einfach an <a href="mailto:kontakt@tp-convertx.de" style="color:#0EA5E9">kontakt@tp-convertx.de</a>.')}
           ${sign}
@@ -122,6 +129,7 @@ module.exports = async function handler(req, res) {
           ${p(`<strong>${name}</strong> (<a href="mailto:${email}" style="color:#0EA5E9">${email}</a>) hat einen Termin über die Website gebucht: <strong>${typeLbl}</strong>.`)}
           ${emailBox(fmt)}
           ${zoomNote}
+          ${addressNote}
           ${cancelNote}
         `)
       }
