@@ -4,6 +4,7 @@
    =================================================== */
 
 const { createClient } = require('@supabase/supabase-js');
+const { APPT_TYPES, apptTypeLabel, apptZoomNote, isTuesday } = require('./_appointment-helpers');
 
 const CAL_DAYS   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 const CAL_MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
@@ -39,10 +40,16 @@ function box(date) {
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { name, email, date, time } = req.body || {};
+  const { name, email, date, time, appointmentType } = req.body || {};
 
-  if (!name || !email || !date || !time) {
+  if (!name || !email || !date || !time || !appointmentType) {
     return res.status(400).json({ error: 'Fehlende Pflichtfelder' });
+  }
+  if (!APPT_TYPES.includes(appointmentType)) {
+    return res.status(400).json({ error: 'Ungültige Terminart' });
+  }
+  if (isTuesday(date)) {
+    return res.status(400).json({ error: 'tuesday_blocked' });
   }
 
   const sbAdmin = createClient(
@@ -68,7 +75,8 @@ module.exports = async function handler(req, res) {
     appointment_date: date,
     appointment_time: time + ':00',
     status:           'confirmed',
-    customer_id:      null
+    customer_id:      null,
+    appointment_type: appointmentType
   });
 
   if (insertErr) {
@@ -83,9 +91,11 @@ module.exports = async function handler(req, res) {
   const fmt         = formatAppt(date, time);
 
   if (RESEND_KEY) {
-    const h1   = t => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
-    const p    = t => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
-    const sign = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
+    const h1       = t => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
+    const p        = t => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
+    const sign     = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
+    const typeLbl  = apptTypeLabel(appointmentType);
+    const zoomNote = apptZoomNote(appointmentType);
 
     const mails = [
       {
@@ -94,9 +104,10 @@ module.exports = async function handler(req, res) {
         html: tpl(`
           <p style="font-size:14px;color:#64748B;margin-bottom:12px">Hallo ${name},</p>
           ${h1('Termin bestätigt!')}
-          ${p('Dein Telefontermin bei TK Webtalent ist gebucht.')}
+          ${p(`Dein Termin bei TK Webtalent ist gebucht: <strong>${typeLbl}</strong>.`)}
           ${box(fmt)}
-          ${p('Der Termin dauert <strong>60 Minuten</strong>. Tim meldet sich pünktlich bei dir – per Telefon oder Videocall, ganz wie du möchtest.')}
+          ${zoomNote}
+          ${p('Der Termin dauert <strong>60 Minuten</strong>.')}
           ${p('Fragen vorher? Schreib einfach an <a href="mailto:kontakt@tp-convertx.de" style="color:#0EA5E9">kontakt@tp-convertx.de</a>.')}
           ${sign}
         `)
@@ -105,9 +116,10 @@ module.exports = async function handler(req, res) {
         from, to: ADMIN_EMAIL,
         subject: `📅 Neuer Gast-Termin: ${name}`,
         html: tpl(`
-          ${h1('Neuer Telefontermin (Gast)')}
-          ${p(`<strong>${name}</strong> (<a href="mailto:${email}" style="color:#0EA5E9">${email}</a>) hat einen Telefontermin über die Website gebucht.`)}
+          ${h1('Neuer Termin (Gast)')}
+          ${p(`<strong>${name}</strong> (<a href="mailto:${email}" style="color:#0EA5E9">${email}</a>) hat einen Termin über die Website gebucht: <strong>${typeLbl}</strong>.`)}
           ${box(fmt)}
+          ${zoomNote}
         `)
       }
     ];

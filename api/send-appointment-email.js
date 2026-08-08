@@ -5,6 +5,7 @@
    =================================================== */
 
 const { createClient } = require('@supabase/supabase-js');
+const { apptTypeLabel, apptZoomNote } = require('./_appointment-helpers');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -33,6 +34,7 @@ module.exports = async function handler(req, res) {
     date,
     time,
     formattedDate,
+    appointmentType,
     customerEmail: passedEmail,
     customerName:  passedName
   } = req.body;
@@ -60,6 +62,7 @@ module.exports = async function handler(req, res) {
     customerEmail,
     customerName,
     formattedDate: fmt,
+    appointmentType,
     adminEmail: ADMIN_EMAIL,
     from: FROM
   });
@@ -106,13 +109,15 @@ function box(date) {
   return `<div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:14px 20px;margin:16px 0;font-size:15px;font-weight:700;color:#0F172A;text-align:center">📅 ${date}</div>`;
 }
 
-function buildEmails(type, { customerEmail, customerName, formattedDate, adminEmail, from }) {
-  const sign = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
-  const h1   = (t) => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
-  const p    = (t) => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
-  const link = (href, label) => `<a href="${href}" style="color:#0EA5E9">${label}</a>`;
-  const kb   = link('https://tk-webtalent.de/kundenbereich', 'Kundenbereich');
-  const adm  = link('https://tk-webtalent.de/admin', 'Admin-Bereich');
+function buildEmails(type, { customerEmail, customerName, formattedDate, appointmentType, adminEmail, from }) {
+  const sign     = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
+  const h1       = (t) => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
+  const p        = (t) => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
+  const link     = (href, label) => `<a href="${href}" style="color:#0EA5E9">${label}</a>`;
+  const kb       = link('https://tk-webtalent.de/kundenbereich', 'Kundenbereich');
+  const adm      = link('https://tk-webtalent.de/admin', 'Admin-Bereich');
+  const typeLbl  = apptTypeLabel(appointmentType);
+  const zoomNote = apptZoomNote(appointmentType);
 
   switch (type) {
 
@@ -123,8 +128,9 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, adminEm
         html: tpl(`
           <p style="font-size:14px;color:#64748B;margin-bottom:12px">Hallo ${customerName},</p>
           ${h1('Termin bestätigt!')}
-          ${p('Dein Beratungstermin bei TK Webtalent ist gebucht.')}
+          ${p(`Dein Beratungstermin bei TK Webtalent ist gebucht: <strong>${typeLbl}</strong>.`)}
           ${box(formattedDate)}
+          ${zoomNote}
           ${p('Der Termin dauert <strong>60 Minuten</strong>. Wir besprechen dabei den Stand deines Projekts und die nächsten Schritte.')}
           ${p(`Musst du absagen? Kein Problem – einfach im ${kb} stornieren.`)}
           ${sign}
@@ -135,8 +141,9 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, adminEm
         subject: `📅 Neuer Termin: ${customerName}`,
         html: tpl(`
           ${h1('Neuer Termin gebucht')}
-          ${p(`<strong>${customerName}</strong> hat einen Beratungstermin gebucht.`)}
+          ${p(`<strong>${customerName}</strong> hat einen Beratungstermin gebucht: <strong>${typeLbl}</strong>.`)}
           ${box(formattedDate)}
+          ${zoomNote}
           ${p(`Einsehen und verwalten im ${adm}.`)}
         `)
       }
@@ -149,8 +156,9 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, adminEm
         html: tpl(`
           <p style="font-size:14px;color:#64748B;margin-bottom:12px">Hallo ${customerName},</p>
           ${h1('Termin eingetragen')}
-          ${p('TK Webtalent hat einen Beratungstermin für dich angelegt.')}
+          ${p(`TK Webtalent hat einen Beratungstermin für dich angelegt: <strong>${typeLbl}</strong>.`)}
           ${box(formattedDate)}
+          ${zoomNote}
           ${p(`Falls der Termin nicht passt, kannst du ihn im ${kb} absagen oder uns direkt kontaktieren.`)}
           ${sign}
         `)

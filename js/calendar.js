@@ -16,6 +16,13 @@ const SLOT_HOURS = {
 const CAL_DAYS   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 const CAL_MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
+const CAL_TYPE_LABELS = {
+  telefon:     '📞 Telefonisch',
+  persoenlich: '🤝 Persönlich',
+  zoom:        '💻 Zoom',
+};
+function calTypeLabel(t) { return CAL_TYPE_LABELS[t] || CAL_TYPE_LABELS.telefon; }
+
 let _calWeekOff      = 0;
 let _calRefreshFn    = null;
 
@@ -81,7 +88,9 @@ function calRender(containerId, { appointments, myId, isAdmin, weekOff }) {
       const ds   = calISO(d);
       const ts   = String(hr).padStart(2, '0') + ':00';
       const key  = ds + ' ' + ts;
-      const has  = (SLOT_HOURS[dow] || []).includes(hr);
+      /* Dienstags nur im Admin-Bereich buchbar (Minijob) */
+      const tuesdayBlocked = dow === 2 && !isAdmin;
+      const has  = !tuesdayBlocked && (SLOT_HOURS[dow] || []).includes(hr);
       const past = d < today || (ds === calISO(today) && hr <= nowH);
       const ap   = bk[key];
 
@@ -100,6 +109,7 @@ function calRender(containerId, { appointments, myId, isAdmin, weekOff }) {
           const name = ap.profiles?.full_name || 'Kunde';
           h += `<div class="cal-cell cal-admin-bk">
             <div class="cal-cust-name">${calEsc(name)}</div>
+            <div class="cal-appt-type">${calTypeLabel(ap.appointment_type)}</div>
             <button class="cal-x-btn" onclick="calOnCancel('${ap.id}')">Stornieren</button>
           </div>`;
         } else {

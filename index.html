@@ -800,6 +800,15 @@
         <div id="guestSelectedDisplay" style="background:var(--c-bg-light);border:1px solid var(--c-border);border-radius:var(--radius-lg);padding:15px 20px;font-size:15px;font-weight:700;color:var(--c-text);text-align:center;margin-bottom:24px">—</div>
         <div class="modal-form">
           <div class="form-group">
+            <label class="form-label" for="guestApptType">Terminart *</label>
+            <select class="form-select" id="guestApptType">
+              <option value="">Bitte wählen …</option>
+              <option value="telefon">📞 Telefonisch</option>
+              <option value="persoenlich">🤝 Persönlich vor Ort</option>
+              <option value="zoom">💻 Per Zoom</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label class="form-label" for="guestName">Ihr Name *</label>
             <input type="text" class="form-input" id="guestName" placeholder="Max Mustermann" autocomplete="name">
           </div>
@@ -852,8 +861,9 @@
     document.getElementById('guestBookModal').classList.remove('open');
     document.body.style.overflow = '';
     showGuestStep('cal');
-    document.getElementById('guestName').value  = '';
-    document.getElementById('guestEmail').value = '';
+    document.getElementById('guestName').value      = '';
+    document.getElementById('guestEmail').value     = '';
+    document.getElementById('guestApptType').value  = '';
     document.getElementById('guestBookError').classList.remove('visible');
   }
 
@@ -907,10 +917,16 @@
   }
 
   async function submitGuestBook() {
-    var name  = document.getElementById('guestName').value.trim();
-    var email = document.getElementById('guestEmail').value.trim();
-    var err   = document.getElementById('guestBookError');
+    var name     = document.getElementById('guestName').value.trim();
+    var email    = document.getElementById('guestEmail').value.trim();
+    var apptType = document.getElementById('guestApptType').value;
+    var err      = document.getElementById('guestBookError');
 
+    if (!apptType) {
+      err.textContent = 'Bitte wählen Sie eine Terminart aus.';
+      err.classList.add('visible');
+      return;
+    }
     if (!name) {
       err.textContent = 'Bitte geben Sie Ihren Namen ein.';
       err.classList.add('visible');
@@ -931,13 +947,15 @@
       var r = await fetch('/api/book-guest', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ name: name, email: email, date: _guestPendingDate, time: _guestPendingTime })
+        body:    JSON.stringify({ name: name, email: email, date: _guestPendingDate, time: _guestPendingTime, appointmentType: apptType })
       });
       var d = await r.json();
 
       if (!r.ok) {
         err.textContent = d.error === 'slot_taken'
           ? 'Dieser Termin ist leider bereits vergeben. Bitte wähle einen anderen.'
+          : d.error === 'tuesday_blocked'
+          ? 'Dienstags sind leider keine Termine möglich. Bitte wähle einen anderen Tag.'
           : (d.error || 'Fehler beim Buchen. Bitte erneut versuchen.');
         err.classList.add('visible');
         return;
