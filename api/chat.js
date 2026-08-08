@@ -194,7 +194,14 @@ module.exports = async function handler(req, res) {
       urlTitle: 'Anfrage prüfen',
     });
 
-    return res.status(200).json({ reply: FALLBACK_DONE_MESSAGE, done: true, leadId });
+    /* Claudes eigenen Text neben dem Tool-Aufruf verwenden, falls vorhanden –
+       z.B. wenn der Kunde im letzten Turn noch eine Frage gestellt hat, die
+       beantwortet werden sollte, bevor der Chat endet. Nur bei komplett
+       leerem Text auf die Standard-Nachricht zurückfallen. */
+    const closingTextBlock = response.content.find(b => b.type === 'text');
+    const closingReply = (closingTextBlock && closingTextBlock.text.trim()) || FALLBACK_DONE_MESSAGE;
+
+    return res.status(200).json({ reply: closingReply, done: true, leadId });
   }
 
   const textBlock = response.content.find(b => b.type === 'text');
