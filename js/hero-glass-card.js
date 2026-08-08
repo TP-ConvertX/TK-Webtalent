@@ -141,16 +141,17 @@ function makeContactShadow() {
   c.width = c.height = size;
   const ctx = c.getContext('2d');
   const grad = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-  grad.addColorStop(0, 'rgba(15,23,42,0.28)');
+  grad.addColorStop(0, 'rgba(15,23,42,0.11)');
+  grad.addColorStop(0.6, 'rgba(15,23,42,0.05)');
   grad.addColorStop(1, 'rgba(15,23,42,0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, size, size);
   const tex = new THREE.CanvasTexture(c);
   const mesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(3.6, 3.6),
+    new THREE.PlaneGeometry(2.8, 2.8),
     new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false })
   );
-  mesh.position.set(0, -1.35, -0.3);
+  mesh.position.set(0, -1.3, -0.3);
   mesh.rotation.x = -Math.PI / 2.6;
   return mesh;
 }
