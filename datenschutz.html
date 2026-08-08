@@ -207,20 +207,24 @@
       <!-- 6. Terminbuchung -->
       <div class="ds-section" id="terminbuchung">
         <h2>6. Öffentliche Terminbuchung</h2>
-        <p>Auf der Website besteht die Möglichkeit, einen kostenlosen Beratungstermin (Telefontermin) direkt zu buchen, ohne sich vorher registrieren zu müssen.</p>
+        <p>Auf der Website besteht die Möglichkeit, einen kostenlosen Beratungstermin (telefonisch, persönlich vor Ort oder per Zoom) direkt zu buchen, ohne sich vorher registrieren zu müssen.</p>
 
         <h3>Verarbeitete Daten</h3>
         <ul>
           <li>Name</li>
           <li>E-Mail-Adresse</li>
-          <li>Gewählter Termin (Datum und Uhrzeit)</li>
+          <li>Gewählter Termin (Datum, Uhrzeit und Terminart)</li>
+          <li>Adresse (nur bei Auswahl eines persönlichen Termins vor Ort)</li>
         </ul>
 
         <h3>Zweck der Verarbeitung</h3>
-        <p>Die Daten werden benötigt, um den Termin in unserem System anzulegen, Ihnen eine Buchungsbestätigung per E-Mail zuzusenden und den Termin intern zu verwalten.</p>
+        <p>Die Daten werden benötigt, um den Termin in unserem System anzulegen, Ihnen eine Buchungsbestätigung per E-Mail zuzusenden, den Termin intern zu verwalten und – bei Stornierung – die entsprechende Benachrichtigung zu versenden.</p>
 
         <h3>Datenspeicherung</h3>
-        <p>Die Termindaten (Datum, Uhrzeit, Status) werden in der Datenbank von Supabase gespeichert (siehe Abschnitt 7). Ihre E-Mail-Adresse und Ihr Name werden ausschließlich für den E-Mail-Versand verwendet und nicht dauerhaft in der Datenbank persistiert.</p>
+        <p>Die Termindaten (Datum, Uhrzeit, Terminart, Status) sowie Ihr Name und Ihre E-Mail-Adresse werden in der Datenbank von Supabase gespeichert (siehe Abschnitt 7), damit der Termin später auch von Ihnen selbst über einen Link in der Bestätigungs-E-Mail storniert werden kann. Bei einem persönlichen Termin vor Ort wird zusätzlich die von Ihnen angegebene Adresse gespeichert.</p>
+
+        <h3>Zoom (bei Terminart "Per Zoom")</h3>
+        <p>Wählen Sie als Terminart "Per Zoom", wird für den Termin automatisiert ein Meeting über die Zoom-API angelegt. Dabei werden Datum, Uhrzeit und ein Gesprächstitel an Zoom Video Communications, Inc. übermittelt. Es gelten die Datenschutzbestimmungen von Zoom.</p>
 
         <h3>Rechtsgrundlage</h3>
         <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen auf Anfrage der betroffenen Person).</p>
