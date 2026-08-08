@@ -12,8 +12,10 @@
    =================================================== */
 
 const { createClient } = require('@supabase/supabase-js');
-const { buildLeadOfferEmail } = require('./_lead-helpers');
+const { buildLeadOfferEmail, maintenancePriceEur, MAINTENANCE_PERCENT } = require('./_lead-helpers');
 const { escapeHtml } = require('./_appointment-helpers');
+
+const MAINTENANCE_LABELS = { ja: '✅ Ja, interessiert', nein: '❌ Kein Interesse', unsicher: '🤔 Unsicher' };
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -121,6 +123,9 @@ module.exports = async function handler(req, res) {
       </div>
       ${lead.design_direction ? `<div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:14px 18px;margin:16px 0">
         <p style="font-size:13px;color:#5B21B6;margin:0"><strong>🎨 Design-Idee (KI):</strong> ${escapeHtml(lead.design_direction)}</p>
+      </div>` : ''}
+      ${lead.wants_maintenance ? `<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px 18px;margin:16px 0">
+        <p style="font-size:13px;color:#166534;margin:0"><strong>🔧 Betreuung:</strong> ${escapeHtml(MAINTENANCE_LABELS[lead.wants_maintenance] || lead.wants_maintenance)} — bei Zusage ca. <strong>${maintenancePriceEur(lead.suggested_price_eur)} €/Monat</strong> (${MAINTENANCE_PERCENT}% des Projektpreises)</p>
       </div>` : ''}
       ${renderTranscript(lead.conversation)}
       <div style="display:flex;gap:10px;margin-top:24px">

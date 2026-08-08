@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (chatMessages) {
 
-  const OPENING_MESSAGE = '👋 Hallo! Ich bin Tim von TK Webtalent. Erzähl mir kurz: worum geht es bei deinem Projekt?';
+  const OPENING_MESSAGE = '👋 Hallo! Ich bin der digitale Assistent von TK Webtalent. Erzähl mir kurz: worum geht es bei deinem Projekt?';
 
   let conversationHistory = [];
   let chatBusy  = false;

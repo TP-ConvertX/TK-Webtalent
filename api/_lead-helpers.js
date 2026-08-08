@@ -7,18 +7,23 @@ const { emailTpl, emailBox, escapeHtml } = require('./_appointment-helpers');
 
 const MIN_PRICE = 549;
 const MAX_PRICE = 5000;
+const MAINTENANCE_PERCENT = 15;
+
+function maintenancePriceEur(priceEur) {
+  return Math.round((priceEur || 0) * MAINTENANCE_PERCENT / 100);
+}
 
 /* ─── SYSTEM-PROMPT ────────────────────────────────────
    Persona + Pflichtfelder + Preis-Logik + Anti-Unsinn-Regeln.
    Wird mit cache_control gecacht (Prompt ist lang genug für die
    1024-Token-Untergrenze von Claude Sonnet 5). */
-const SYSTEM_PROMPT = `Du bist Tim, der Gründer von TK Webtalent (Webdesign-Agentur für kleine Unternehmen, Selbstständige und Vereine). Du führst über einen Chat auf der Website ein kurzes, persönliches Erstgespräch mit einem potenziellen Kunden, um am Ende ein passendes Angebot vorzuschlagen.
+const SYSTEM_PROMPT = `Du bist der digitale Assistent von TK Webtalent (Webdesign-Agentur für kleine Unternehmen, Selbstständige und Vereine). Du bist NICHT Tim persönlich – Tim ist der Gründer, in dessen Auftrag du dieses kurze Erstgespräch mit einem potenziellen Kunden führst, um am Ende ein passendes Angebot vorzuschlagen. Wenn du gefragt wirst, wer du bist, oder dich vorstellst, sag klar und ehrlich, dass du der KI-Assistent von TK Webtalent bist und Tim das Angebot am Ende persönlich prüft – behaupte nie, du wärst Tim selbst.
 
 DEIN TON
 - Freundlich, direkt, unkompliziert – wie ein echtes Gespräch, keine Marketing-Floskeln.
 - Du stellst IMMER nur EINE Frage pro Nachricht. Warte auf die Antwort, bevor du die nächste stellst.
 - Du nervst nicht mit Small Talk – du willst zügig, aber angenehm zu den nötigen Infos kommen.
-- Du erwähnst NIEMALS einen konkreten Preis im Chat. Die Preisentscheidung triffst nicht du gegenüber dem Kunden – das übernimmt Tim persönlich nach interner Prüfung. Wenn der Kunde nach dem Preis fragt, sag ihm freundlich, dass er ein individuelles Angebot per E-Mail bekommt, sobald du alle Infos hast.
+- Du erwähnst NIEMALS einen konkreten Preis im Chat (weder für das Projekt noch für die Betreuung). Die Preisentscheidung triffst nicht du gegenüber dem Kunden – das übernimmt Tim persönlich nach interner Prüfung. Wenn der Kunde nach dem Preis fragt, sag ihm freundlich, dass er ein individuelles Angebot per E-Mail bekommt, sobald du alle Infos hast.
 
 PFLICHTINFORMATIONEN, DIE DU SAMMELN MUSST
 1. Name des Kunden
@@ -28,6 +33,15 @@ PFLICHTINFORMATIONEN, DIE DU SAMMELN MUSST
 5. Hauptziel des Projekts (z.B. mehr Kunden, professionellerer Auftritt, Online-Shop, …)
 6. Projekt-Details (Umfang, gewünschte Funktionen, Besonderheiten – frag konkret nach, was gebraucht wird)
 7. Optional: ein Budget-Hinweis, falls der Kunde von sich aus etwas nennt (nicht aktiv nach einer Zahl fragen, aber aufnehmen falls erwähnt)
+8. Ob der Kunde Interesse an einer laufenden Betreuung der Website hat (siehe unten) – als "ja", "nein" oder "unsicher"
+
+BETREUUNGS-ANGEBOT
+Bevor du zum Abschluss kommst, erwähnst du aktiv, dass Tim neben der einmaligen Erstellung auch eine laufende monatliche Betreuung der Website anbietet, und fragst, ob das grundsätzlich interessant wäre. Nenne dabei KEINEN konkreten Preis oder Prozentsatz (das bespricht Tim persönlich) – bring stattdessen 2-3 überzeugende, konkrete Argumente, warum sich das lohnt, z.B.:
+- Regelmäßige Sicherheits-Updates, damit die Website nicht angreifbar oder veraltet wird
+- Kleine Änderungen (Texte, Bilder, Öffnungszeiten, Angebote) werden einfach & unkompliziert übernommen, ohne dass jedes Mal extra abgerechnet wird
+- Technischer Support, falls mal etwas nicht funktioniert – ohne dass der Kunde sich selbst darum kümmern muss
+- Regelmäßige Backups zur Absicherung
+Frag danach kurz, ob das interessant klingt, und halte fest, wie der Kunde reagiert (ja/nein/unsicher). Akzeptiere jede klare Antwort, häng dich nicht daran fest, wenn der Kunde kein Interesse hat.
 
 UNSINN ERKENNEN UND HINTERFRAGEN
 Wenn eine Antwort offensichtlich unsinnig, leer, ein Platzhalter oder nicht ernst gemeint ist (z.B. Name = ".", "asdf", "xyz", eine einzelne Zahl als Name, eine ungültige E-Mail-Adresse, eine Antwort die offensichtlich nicht zur Frage passt), akzeptiere sie NICHT stillschweigend. Sprich es direkt und freundlich an und bitte um eine echte Antwort, bevor du weitermachst. Beispiel: "Das sieht nicht nach deinem echten Namen aus – wie darf ich dich denn ansprechen?"
@@ -43,7 +57,7 @@ DESIGN-IDEE
 Zusätzlich zum Preis gibst du Tim eine kurze, konkrete Design-Idee für das Projekt mit auf den Weg – kein fertiges Design, nur ein Gedankenanstoß, damit er nicht bei null anfängt: eine Farbpalette (2-3 Farben, grob beschrieben oder als Hex-Werte), eine Stilrichtung (z.B. "modern-minimalistisch", "warm & handwerklich", "verspielt", "seriös-corporate") und optional 1-2 Referenz-Stichworte, passend zu Branche und Ton des Gesprächs. Das ist NIE für den Kunden sichtbar, nur intern für Tim.
 
 ABSCHLUSS
-Sobald alle Pflichtinformationen plausibel vorliegen, rufe das Tool "submit_lead_summary" mit allen gesammelten Daten, deinem eingeschätzten Preis samt kurzer interner Begründung und der Design-Idee auf. Rufe das Tool NICHT vorzeitig auf, bevor du wirklich alle Pflichtinformationen hast. Nach dem Tool-Aufruf endet das Gespräch für den Kunden – bedanke dich nicht extra im Text, das übernimmt die Anwendung.`;
+Sobald alle Pflichtinformationen plausibel vorliegen (inklusive der Reaktion auf das Betreuungs-Angebot), rufe das Tool "submit_lead_summary" mit allen gesammelten Daten, deinem eingeschätzten Preis samt kurzer interner Begründung und der Design-Idee auf. Rufe das Tool NICHT vorzeitig auf, bevor du wirklich alle Pflichtinformationen hast. Nach dem Tool-Aufruf endet das Gespräch für den Kunden – bedanke dich nicht extra im Text, das übernimmt die Anwendung.`;
 
 /* ─── TOOL-SCHEMA für die Anthropic Messages API ──────── */
 const SUBMIT_LEAD_TOOL = {
@@ -62,8 +76,9 @@ const SUBMIT_LEAD_TOOL = {
       suggested_price_eur: { type: 'integer', minimum: MIN_PRICE, maximum: MAX_PRICE, description: `Eingeschätzter fairer Preis in Euro (${MIN_PRICE}-${MAX_PRICE})` },
       price_reasoning:     { type: 'string', description: 'Kurze interne Begründung für Tim, warum dieser Preis passt – NICHT für den Kunden sichtbar' },
       design_direction:    { type: 'string', description: 'Kurze interne Design-Idee für Tim: Farbpalette, Stilrichtung, ggf. Referenz-Stichworte – NICHT für den Kunden sichtbar' },
+      wants_maintenance:   { type: 'string', enum: ['ja', 'nein', 'unsicher'], description: 'Ob der Kunde Interesse an der laufenden monatlichen Betreuung der Website hat' },
     },
-    required: ['name', 'email', 'profession', 'main_goal', 'project_details', 'suggested_price_eur', 'price_reasoning', 'design_direction'],
+    required: ['name', 'email', 'profession', 'main_goal', 'project_details', 'suggested_price_eur', 'price_reasoning', 'design_direction', 'wants_maintenance'],
   },
 };
 
@@ -105,6 +120,7 @@ function buildAdminReviewEmail(lead, reviewUrl) {
   const h1 = t => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
   const p  = t => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
   const row = (label, val) => val ? `<p style="font-size:13px;color:#475569;margin:4px 0"><strong>${escapeHtml(label)}:</strong> ${escapeHtml(val)}</p>` : '';
+  const maintenanceLabel = { ja: '✅ Ja, interessiert', nein: '❌ Kein Interesse', unsicher: '🤔 Unsicher' }[lead.wants_maintenance] || lead.wants_maintenance;
 
   return emailTpl(`
     ${h1('🆕 Neue Chatbot-Anfrage')}
@@ -119,6 +135,9 @@ function buildAdminReviewEmail(lead, reviewUrl) {
       ${row('Projekt-Details', lead.project_details)}
       ${row('Budget-Hinweis (Kunde)', lead.budget_hint)}
     </div>
+    ${lead.wants_maintenance ? `<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px 18px;margin:16px 0">
+      <p style="font-size:13px;color:#166534;margin:0"><strong>🔧 Betreuung:</strong> ${escapeHtml(maintenanceLabel)} — bei Zusage ca. <strong>${maintenancePriceEur(lead.suggested_price_eur)} €/Monat</strong> (${MAINTENANCE_PERCENT}% des Projektpreises)</p>
+    </div>` : ''}
     <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:14px 18px;margin:16px 0">
       <p style="font-size:13px;color:#92400E;margin:0"><strong>Preis-Begründung (intern):</strong> ${escapeHtml(lead.price_reasoning)}</p>
     </div>
@@ -151,6 +170,8 @@ module.exports = {
   FALLBACK_DONE_MESSAGE,
   MIN_PRICE,
   MAX_PRICE,
+  MAINTENANCE_PERCENT,
+  maintenancePriceEur,
   sendPushover,
   buildAdminReviewEmail,
   buildLeadOfferEmail,

@@ -50,6 +50,15 @@ async function callClaude(messages) {
   return r.json();
 }
 
+const NON_EMPTY_FIELDS = [
+  ['name', 'name'],
+  ['profession', 'profession'],
+  ['main_goal', 'main_goal'],
+  ['project_details', 'project_details'],
+  ['price_reasoning', 'price_reasoning'],
+  ['design_direction', 'design_direction'],
+];
+
 function validateLeadInput(input) {
   if (typeof input.suggested_price_eur !== 'number' || input.suggested_price_eur < MIN_PRICE || input.suggested_price_eur > MAX_PRICE) {
     return `suggested_price_eur muss eine Zahl zwischen ${MIN_PRICE} und ${MAX_PRICE} sein.`;
@@ -57,8 +66,13 @@ function validateLeadInput(input) {
   if (!input.email || !EMAIL_RE.test(input.email)) {
     return 'email ist keine gültige E-Mail-Adresse. Bitte beim Kunden nachfragen, falls sie fehlt oder ungültig aussieht, und das Tool erst danach erneut aufrufen.';
   }
-  if (!input.name || !input.name.trim()) {
-    return 'name darf nicht leer sein.';
+  for (const [field, label] of NON_EMPTY_FIELDS) {
+    if (!input[field] || !String(input[field]).trim()) {
+      return `${label} fehlt oder ist leer. Bitte diesen Wert im erneuten Tool-Aufruf ausfüllen.`;
+    }
+  }
+  if (!['ja', 'nein', 'unsicher'].includes(input.wants_maintenance)) {
+    return 'wants_maintenance muss genau "ja", "nein" oder "unsicher" sein.';
   }
   return null;
 }
@@ -132,6 +146,7 @@ module.exports = async function handler(req, res) {
         suggested_price_eur: lead.suggested_price_eur,
         price_reasoning: lead.price_reasoning,
         design_direction: lead.design_direction || null,
+        wants_maintenance: lead.wants_maintenance || null,
         raw_tool_input: lead,
       })
       .select('id')
