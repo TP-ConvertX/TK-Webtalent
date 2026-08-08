@@ -131,6 +131,7 @@ module.exports = async function handler(req, res) {
         budget_hint: lead.budget_hint || null,
         suggested_price_eur: lead.suggested_price_eur,
         price_reasoning: lead.price_reasoning,
+        design_direction: lead.design_direction || null,
         raw_tool_input: lead,
       })
       .select('id')

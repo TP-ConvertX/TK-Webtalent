@@ -119,6 +119,9 @@ module.exports = async function handler(req, res) {
       <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:14px 18px;margin:16px 0">
         <p style="font-size:13px;color:#92400E;margin:0"><strong>Preis-Begründung (KI):</strong> ${escapeHtml(lead.price_reasoning)}</p>
       </div>
+      ${lead.design_direction ? `<div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:14px 18px;margin:16px 0">
+        <p style="font-size:13px;color:#5B21B6;margin:0"><strong>🎨 Design-Idee (KI):</strong> ${escapeHtml(lead.design_direction)}</p>
+      </div>` : ''}
       ${renderTranscript(lead.conversation)}
       <div style="display:flex;gap:10px;margin-top:24px">
         <form method="POST" action="/api/lead-review" style="flex:1">

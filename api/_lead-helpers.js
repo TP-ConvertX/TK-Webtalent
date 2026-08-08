@@ -39,8 +39,11 @@ Sobald du alle Pflichtinformationen hast, schätzt du intern einen fairen Preis 
 - Obere Spanne (3000–${MAX_PRICE}€): komplexe Projekte mit vielen Funktionen (z.B. Shop, Kundenbereich, individuelle Integrationen), hohe Ansprüche an Design oder Umfang.
 Wäge realistisch ab, was der Kunde tatsächlich beschrieben hat – erfinde keine Anforderungen dazu.
 
+DESIGN-IDEE
+Zusätzlich zum Preis gibst du Tim eine kurze, konkrete Design-Idee für das Projekt mit auf den Weg – kein fertiges Design, nur ein Gedankenanstoß, damit er nicht bei null anfängt: eine Farbpalette (2-3 Farben, grob beschrieben oder als Hex-Werte), eine Stilrichtung (z.B. "modern-minimalistisch", "warm & handwerklich", "verspielt", "seriös-corporate") und optional 1-2 Referenz-Stichworte, passend zu Branche und Ton des Gesprächs. Das ist NIE für den Kunden sichtbar, nur intern für Tim.
+
 ABSCHLUSS
-Sobald alle Pflichtinformationen plausibel vorliegen, rufe das Tool "submit_lead_summary" mit allen gesammelten Daten und deinem eingeschätzten Preis samt kurzer interner Begründung auf. Rufe das Tool NICHT vorzeitig auf, bevor du wirklich alle Pflichtinformationen hast. Nach dem Tool-Aufruf endet das Gespräch für den Kunden – bedanke dich nicht extra im Text, das übernimmt die Anwendung.`;
+Sobald alle Pflichtinformationen plausibel vorliegen, rufe das Tool "submit_lead_summary" mit allen gesammelten Daten, deinem eingeschätzten Preis samt kurzer interner Begründung und der Design-Idee auf. Rufe das Tool NICHT vorzeitig auf, bevor du wirklich alle Pflichtinformationen hast. Nach dem Tool-Aufruf endet das Gespräch für den Kunden – bedanke dich nicht extra im Text, das übernimmt die Anwendung.`;
 
 /* ─── TOOL-SCHEMA für die Anthropic Messages API ──────── */
 const SUBMIT_LEAD_TOOL = {
@@ -58,8 +61,9 @@ const SUBMIT_LEAD_TOOL = {
       budget_hint:         { type: 'string', description: 'Vom Kunden genannter Budget-Hinweis, falls vorhanden' },
       suggested_price_eur: { type: 'integer', minimum: MIN_PRICE, maximum: MAX_PRICE, description: `Eingeschätzter fairer Preis in Euro (${MIN_PRICE}-${MAX_PRICE})` },
       price_reasoning:     { type: 'string', description: 'Kurze interne Begründung für Tim, warum dieser Preis passt – NICHT für den Kunden sichtbar' },
+      design_direction:    { type: 'string', description: 'Kurze interne Design-Idee für Tim: Farbpalette, Stilrichtung, ggf. Referenz-Stichworte – NICHT für den Kunden sichtbar' },
     },
-    required: ['name', 'email', 'profession', 'main_goal', 'project_details', 'suggested_price_eur', 'price_reasoning'],
+    required: ['name', 'email', 'profession', 'main_goal', 'project_details', 'suggested_price_eur', 'price_reasoning', 'design_direction'],
   },
 };
 
@@ -118,6 +122,9 @@ function buildAdminReviewEmail(lead, reviewUrl) {
     <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:14px 18px;margin:16px 0">
       <p style="font-size:13px;color:#92400E;margin:0"><strong>Preis-Begründung (intern):</strong> ${escapeHtml(lead.price_reasoning)}</p>
     </div>
+    ${lead.design_direction ? `<div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:14px 18px;margin:16px 0">
+      <p style="font-size:13px;color:#5B21B6;margin:0"><strong>🎨 Design-Idee (intern):</strong> ${escapeHtml(lead.design_direction)}</p>
+    </div>` : ''}
     <a href="${reviewUrl}" style="display:block;text-align:center;padding:14px;background:#0F172A;color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;margin-top:8px">Anfrage prüfen & Angebot freigeben →</a>
   `);
 }
