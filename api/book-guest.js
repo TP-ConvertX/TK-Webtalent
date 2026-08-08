@@ -4,7 +4,7 @@
    =================================================== */
 
 const { createClient } = require('@supabase/supabase-js');
-const { APPT_TYPES, apptTypeLabel, apptZoomNote, isTuesday } = require('./_appointment-helpers');
+const { APPT_TYPES, apptTypeLabel, apptZoomNote, isTuesday, createZoomMeeting } = require('./_appointment-helpers');
 
 const CAL_DAYS   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 const CAL_MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
@@ -84,6 +84,12 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: insertErr.message });
   }
 
+  /* Bei Zoom-Terminen: echtes Meeting in Tims Zoom-Konto anlegen */
+  let zoomJoinUrl = null;
+  if (appointmentType === 'zoom') {
+    zoomJoinUrl = await createZoomMeeting({ date, time, topic: `Beratungstermin mit ${name} – TK Webtalent` });
+  }
+
   /* E-Mails senden */
   const RESEND_KEY  = process.env.RESEND_API_KEY;
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'kunzelmanntim00@gmail.com';
@@ -95,7 +101,7 @@ module.exports = async function handler(req, res) {
     const p        = t => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
     const sign     = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
     const typeLbl  = apptTypeLabel(appointmentType);
-    const zoomNote = apptZoomNote(appointmentType);
+    const zoomNote = apptZoomNote(appointmentType, zoomJoinUrl);
 
     const mails = [
       {

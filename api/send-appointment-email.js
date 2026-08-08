@@ -5,7 +5,7 @@
    =================================================== */
 
 const { createClient } = require('@supabase/supabase-js');
-const { apptTypeLabel, apptZoomNote } = require('./_appointment-helpers');
+const { apptTypeLabel, apptZoomNote, createZoomMeeting } = require('./_appointment-helpers');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -57,12 +57,19 @@ module.exports = async function handler(req, res) {
     }
   }
 
+  /* Bei neuen Zoom-Terminen: echtes Meeting in Tims Zoom-Konto anlegen */
+  let zoomJoinUrl = null;
+  if (appointmentType === 'zoom' && (type === 'customer_booked' || type === 'admin_booked') && date && time) {
+    zoomJoinUrl = await createZoomMeeting({ date, time, topic: `Beratungstermin mit ${customerName} – TK Webtalent` });
+  }
+
   const fmt = formattedDate || `${date} ${time}`;
   const mails = buildEmails(type, {
     customerEmail,
     customerName,
     formattedDate: fmt,
     appointmentType,
+    zoomJoinUrl,
     adminEmail: ADMIN_EMAIL,
     from: FROM
   });
@@ -109,7 +116,7 @@ function box(date) {
   return `<div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:14px 20px;margin:16px 0;font-size:15px;font-weight:700;color:#0F172A;text-align:center">📅 ${date}</div>`;
 }
 
-function buildEmails(type, { customerEmail, customerName, formattedDate, appointmentType, adminEmail, from }) {
+function buildEmails(type, { customerEmail, customerName, formattedDate, appointmentType, zoomJoinUrl, adminEmail, from }) {
   const sign     = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
   const h1       = (t) => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
   const p        = (t) => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
@@ -117,7 +124,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, appoint
   const kb       = link('https://tk-webtalent.de/kundenbereich', 'Kundenbereich');
   const adm      = link('https://tk-webtalent.de/admin', 'Admin-Bereich');
   const typeLbl  = apptTypeLabel(appointmentType);
-  const zoomNote = apptZoomNote(appointmentType);
+  const zoomNote = apptZoomNote(appointmentType, zoomJoinUrl);
 
   switch (type) {
 
