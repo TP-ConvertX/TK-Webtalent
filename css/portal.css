@@ -618,19 +618,29 @@
 }
 .cal-btn-nav:hover { border-color: var(--c-accent); color: var(--c-accent); background: var(--c-accent-light); }
 
-.cal-scroll { overflow-x: auto; border-radius: var(--radius-lg); }
+.cal-scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
 .cal-grid {
   display: grid;
   grid-template-columns: 52px repeat(7, minmax(72px, 1fr));
   border: 1px solid var(--c-border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  /* KEIN overflow:hidden hier — als Vorfahre der Sticky-Zeitspalte (.cal-time)
+     würde das position:sticky relativ zu .cal-scroll brechen (gleiche Falle
+     wie beim Hero-Bereich). Rundung übernimmt stattdessen .cal-scroll. */
   background: #fff;
   min-width: 560px;
 }
 .cal-th-time {
   background: var(--c-bg-light);
   border-bottom: 1px solid var(--c-border);
+  position: sticky;
+  left: 0;
+  z-index: 3;
 }
 .cal-th {
   padding: 10px 4px;
@@ -638,6 +648,7 @@
   background: var(--c-bg-light);
   border-bottom: 1px solid var(--c-border);
   border-left: 1px solid var(--c-border);
+  scroll-snap-align: start;
 }
 .cal-th.is-today { background: var(--c-accent-light); }
 .cal-dname { font-size: 10px; font-weight: 700; color: var(--c-text-2); text-transform: uppercase; letter-spacing: 0.06em; }
@@ -656,6 +667,9 @@
   align-items: center;
   justify-content: flex-end;
   min-height: 56px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
 }
 .cal-cell {
   border-top: 1px solid var(--c-border);
@@ -1255,9 +1269,10 @@
   }
 
   /* Calendar navigation – compact on mobile */
-  .cal-nav { gap: 6px; margin-bottom: 10px; }
-  .cal-btn-nav { padding: 6px 10px; font-size: 12px; }
-  .cal-nav-title { font-size: 13px; }
+  .cal-nav { gap: 6px; margin-bottom: 10px; flex-wrap: nowrap; }
+  .cal-btn-nav { padding: 7px 10px; font-size: 13px; flex-shrink: 0; }
+  .cal-nav-label { display: none; }
+  .cal-nav-title { font-size: 12px; flex: 1; }
   .cal-cell { min-height: 52px; font-size: 11px; }
   .cal-th { padding: 8px 2px; }
   .cal-dnum { font-size: 14px; }

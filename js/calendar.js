@@ -63,9 +63,9 @@ function calRender(containerId, { appointments, myId, isAdmin, weekOff }) {
 
   let h = `
     <div class="cal-nav">
-      <button class="cal-btn-nav" onclick="calNav(-1)">‹ Vorherige</button>
+      <button class="cal-btn-nav" onclick="calNav(-1)">‹ <span class="cal-nav-label">Vorherige</span></button>
       <span class="cal-nav-title">${calFmt(mon)} – ${calFmt(sun)} ${sun.getFullYear()}</span>
-      <button class="cal-btn-nav" onclick="calNav(1)">Nächste ›</button>
+      <button class="cal-btn-nav" onclick="calNav(1)"><span class="cal-nav-label">Nächste</span> ›</button>
     </div>
     <div class="cal-scroll">
       <div class="cal-grid">

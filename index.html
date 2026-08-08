@@ -857,6 +857,14 @@
           #guestCalContainer .cal-time { min-height: 68px; font-size: 13px; }
           #guestCalContainer .cal-free { font-size: 13px; }
           #guestCalContainer .cal-dnum { font-size: 19px; }
+          @media (max-width: 480px) {
+            #guestCalContainer .cal-grid { grid-template-columns: 42px repeat(7, 70px); min-width: unset; width: max-content; }
+            #guestCalContainer .cal-cell,
+            #guestCalContainer .cal-time { min-height: 50px; font-size: 11px; padding: 0 3px; }
+            #guestCalContainer .cal-free { font-size: 10px; }
+            #guestCalContainer .cal-dnum { font-size: 14px; }
+            #guestCalContainer .cal-dname { font-size: 9px; }
+          }
         </style>
         <div id="guestCalContainer" style="display:none"></div>
       </div>
