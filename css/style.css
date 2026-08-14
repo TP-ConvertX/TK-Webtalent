@@ -324,9 +324,12 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 .mobile-overlay.open { display: block; }
 
 /* ─── ZUFRIEDENE KUNDEN (Logo-Streifen) ──────────────
-   Direkt unter dem Hero, vor der Trust-Bar. Statische, zentrierte
-   Reihe (kein Marquee) — bei mehreren Kunden bricht die Zeile bei
-   Bedarf einfach um (flex-wrap). */
+   Direkt unter dem Hero, vor der Trust-Bar. Endlos-Marquee: der Track
+   enthält den Satz (echter Kunde + Platzhalter) doppelt, die Animation
+   läuft von 0% bis -50% und springt dann nahtlos zurück auf 0%
+   (= Start des zweiten, identischen Satzes) — sieht aus wie ein
+   endloser Kreislauf. Platzhalter füllen den Streifen, bis mehr echte
+   Kunden-Logos dazukommen. */
 .client-logos-section {
   padding: 28px 0;
   background: #fff;
@@ -341,14 +344,23 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   color: var(--c-text-3);
   margin-bottom: 18px;
 }
+.client-logos-track-wrap {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+}
 .client-logos-track {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 48px;
+  gap: 44px;
+  width: max-content;
+  animation: clientLogosScroll 20s linear infinite;
+}
+.client-logos-track-wrap:hover .client-logos-track {
+  animation-play-state: paused;
 }
 .client-logo-link {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   transition: var(--transition);
@@ -361,6 +373,33 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   height: 34px;
   width: auto;
   display: block;
+}
+.client-logo-placeholder {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  min-width: 84px;
+  padding: 0 16px;
+  border: 1.5px dashed var(--c-border);
+  border-radius: var(--radius-md);
+  color: var(--c-text-3);
+  font-size: 17px;
+  font-weight: 600;
+}
+@keyframes clientLogosScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .client-logos-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
+  .is-duplicate { display: none; }
 }
 
 /* ─── HERO ───────────────────────────────────────── */

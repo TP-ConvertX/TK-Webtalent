@@ -192,12 +192,26 @@
     <!-- ===== ZUFRIEDENE KUNDEN (Logo-Streifen) ===== -->
     <section class="client-logos-section" aria-label="Zufriedene Kunden">
       <p class="client-logos-label">Zufriedene Kunden</p>
-      <div class="client-logos-track">
-        <!-- Neuen Kunden hinzufügen: einfach einen weiteren
-             <a class="client-logo-link"> mit Logo + Ziel-URL einfügen. -->
-        <a href="https://www.optik-sauter.de/" target="_blank" rel="noopener noreferrer" class="client-logo-link" aria-label="Sauter – zur Website">
-          <img src="assets/clients/sauter.png" alt="Sauter" class="client-logo-img" loading="lazy">
-        </a>
+      <div class="client-logos-track-wrap">
+        <div class="client-logos-track">
+          <!-- Ein Satz = 1 echter Kunde + Platzhalter-Slots, wird unten 1x komplett
+               dupliziert (class="is-duplicate") für die nahtlose Endlos-Schleife.
+               Neuen Kunden hinzufügen: einen Platzhalter durch einen echten
+               <a class="client-logo-link"> ersetzen (hier UND im is-duplicate-Satz). -->
+          <a href="https://www.optik-sauter.de/" target="_blank" rel="noopener noreferrer" class="client-logo-link" aria-label="Sauter – zur Website">
+            <img src="assets/clients/sauter.png" alt="Sauter" class="client-logo-img" loading="lazy">
+          </a>
+          <div class="client-logo-placeholder" aria-hidden="true"><span>+</span></div>
+          <div class="client-logo-placeholder" aria-hidden="true"><span>+</span></div>
+          <div class="client-logo-placeholder" aria-hidden="true"><span>+</span></div>
+          <!-- Duplikat für nahtlose Schleife -->
+          <a href="https://www.optik-sauter.de/" class="client-logo-link is-duplicate" aria-hidden="true" tabindex="-1">
+            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy">
+          </a>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+        </div>
       </div>
     </section>
 
