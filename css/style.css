@@ -325,10 +325,14 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 
 /* ─── ZUFRIEDENE KUNDEN (Logo-Streifen) ──────────────
    Direkt unter dem Hero, vor der Trust-Bar. Endlos-Marquee: der Track
-   enthält den Satz (echter Kunde + Platzhalter) doppelt, die Animation
-   läuft von 0% bis -50% und springt dann nahtlos zurück auf 0%
-   (= Start des zweiten, identischen Satzes) — sieht aus wie ein
-   endloser Kreislauf. Platzhalter füllen den Streifen, bis mehr echte
+   enthält den Satz (echter Kunde + Platzhalter) 4x hintereinander, die
+   Animation läuft von 0% bis -25% (= Breite EINES Satzes) und springt
+   dann nahtlos zurück auf 0%. Der sichtbare Bereich (track-wrap) ist
+   bewusst schmaler als der Viewport begrenzt (max-width), damit auch
+   auf breiten Bildschirmen immer mehr Inhalt vorhanden ist als sichtbar
+   ist — sonst wäre alles gleichzeitig im Bild und die Schleife würde
+   wie ein Sprung in der Mitte wirken statt wie echtes Rein-/Rausfahren
+   an den Rändern. Platzhalter füllen den Streifen, bis mehr echte
    Kunden-Logos dazukommen. */
 .client-logos-section {
   padding: 28px 0;
@@ -345,16 +349,18 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   margin-bottom: 18px;
 }
 .client-logos-track-wrap {
+  max-width: 640px;
+  margin: 0 auto;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
 }
 .client-logos-track {
   display: flex;
   align-items: center;
   gap: 44px;
   width: max-content;
-  animation: clientLogosScroll 20s linear infinite;
+  animation: clientLogosScroll 26s linear infinite;
 }
 .client-logos-track-wrap:hover .client-logos-track {
   animation-play-state: paused;
@@ -390,7 +396,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 }
 @keyframes clientLogosScroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-25%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .client-logos-track {

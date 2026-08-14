@@ -194,17 +194,38 @@
       <p class="client-logos-label">Zufriedene Kunden</p>
       <div class="client-logos-track-wrap">
         <div class="client-logos-track">
-          <!-- Ein Satz = 1 echter Kunde + Platzhalter-Slots, wird unten 1x komplett
-               dupliziert (class="is-duplicate") für die nahtlose Endlos-Schleife.
+          <!-- Ein Satz = 1 echter Kunde + Platzhalter-Slots. Der Satz wird unten 3x
+               komplett dupliziert (class="is-duplicate", 4 Sätze insgesamt), damit
+               auch auf breiten Bildschirmen genug Inhalt für ein echtes Rein-/
+               Rausfahren an den Rändern da ist (sonst ist alles gleichzeitig
+               sichtbar und die Schleife wirkt wie ein Sprung in der Mitte).
                Neuen Kunden hinzufügen: einen Platzhalter durch einen echten
-               <a class="client-logo-link"> ersetzen (hier UND im is-duplicate-Satz). -->
+               <a class="client-logo-link"> ersetzen (im ersten Satz UND in
+               jedem is-duplicate-Satz). -->
           <a href="https://www.optik-sauter.de/" target="_blank" rel="noopener noreferrer" class="client-logo-link" aria-label="Sauter – zur Website">
             <img src="assets/clients/sauter.png" alt="Sauter" class="client-logo-img" loading="lazy">
           </a>
           <div class="client-logo-placeholder" aria-hidden="true"><span>+</span></div>
           <div class="client-logo-placeholder" aria-hidden="true"><span>+</span></div>
           <div class="client-logo-placeholder" aria-hidden="true"><span>+</span></div>
-          <!-- Duplikat für nahtlose Schleife -->
+
+          <!-- Satz 2 (Duplikat) -->
+          <a href="https://www.optik-sauter.de/" class="client-logo-link is-duplicate" aria-hidden="true" tabindex="-1">
+            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy">
+          </a>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+
+          <!-- Satz 3 (Duplikat) -->
+          <a href="https://www.optik-sauter.de/" class="client-logo-link is-duplicate" aria-hidden="true" tabindex="-1">
+            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy">
+          </a>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+          <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
+
+          <!-- Satz 4 (Duplikat) -->
           <a href="https://www.optik-sauter.de/" class="client-logo-link is-duplicate" aria-hidden="true" tabindex="-1">
             <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy">
           </a>
