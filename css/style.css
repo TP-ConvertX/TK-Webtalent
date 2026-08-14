@@ -324,16 +324,14 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 .mobile-overlay.open { display: block; }
 
 /* ─── ZUFRIEDENE KUNDEN (Logo-Streifen) ──────────────
-   Direkt unter der fixierten Nav — padding-top schiebt den
-   Inhalt unter die transparente Nav (gleiches Muster wie
-   .hero-pin-inner). Endlos-Marquee: der Track enthält den
-   Logo-Satz doppelt, die Animation läuft von 0% bis -50%
-   und springt dann nahtlos zurück auf 0% (= Start des zweiten,
-   identischen Satzes). */
+   Direkt unter dem Hero, vor der Trust-Bar. Endlos-Marquee:
+   der Track enthält den Logo-Satz doppelt, die Animation läuft
+   von 0% bis -50% und springt dann nahtlos zurück auf 0%
+   (= Start des zweiten, identischen Satzes). */
 .client-logos-section {
-  padding-top: calc(var(--nav-height) + 28px);
-  padding-bottom: 28px;
+  padding: 28px 0;
   background: #fff;
+  border-bottom: 1px solid var(--c-border);
   overflow: hidden;
 }
 .client-logos-label {
@@ -364,14 +362,11 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  opacity: 0.55;
-  filter: grayscale(1);
   transition: var(--transition);
 }
 .client-logo-link:hover,
 .client-logo-link:focus-visible {
-  opacity: 1;
-  filter: grayscale(0);
+  transform: scale(1.06);
 }
 .client-logo-img {
   height: 34px;
