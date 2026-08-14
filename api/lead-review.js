@@ -105,9 +105,15 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).send(page(`
       <h2 style="font-size:18px;color:#0F172A;margin-bottom:4px">Neue Anfrage prüfen</h2>
-      <p style="font-size:13px;color:#94A3B8;margin-bottom:16px">Vorgeschlagenes Angebot vor Versand freigeben oder ablehnen.</p>
-      <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:14px 18px;margin:16px 0;font-size:20px;font-weight:800;color:#0F172A;text-align:center">
-        ${lead.suggested_price_eur} €
+      <p style="font-size:13px;color:#94A3B8;margin-bottom:16px">Preis bei Bedarf anpassen, dann Angebot freigeben oder ablehnen.</p>
+      <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:16px 18px;margin:16px 0;text-align:center">
+        <label for="priceInput" style="display:block;font-size:12px;color:#0369A1;font-weight:600;margin-bottom:8px">Projekt-Preis (anpassbar)</label>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px">
+          <input type="number" id="priceInput" form="approveForm" name="price" value="${lead.suggested_price_eur}" min="1" step="1"
+            style="width:130px;text-align:center;font-size:22px;font-weight:800;color:#0F172A;padding:8px;border:1.5px solid #BAE6FD;border-radius:8px;font-family:inherit">
+          <span style="font-size:22px;font-weight:800;color:#0F172A">€</span>
+        </div>
+        <p style="font-size:12px;color:#0369A1;margin-top:10px">Betreuung/Monat bei Zusage: <strong id="maintenancePreview">${maintenancePriceEur(lead.suggested_price_eur)}</strong> € (${MAINTENANCE_PERCENT}% des Projekt-Preises)</p>
       </div>
       <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 18px;margin:16px 0">
         ${row('Name', lead.name)}
@@ -125,11 +131,11 @@ module.exports = async function handler(req, res) {
         <p style="font-size:13px;color:#5B21B6;margin:0"><strong>🎨 Design-Idee (KI):</strong> ${escapeHtml(lead.design_direction)}</p>
       </div>` : ''}
       ${lead.wants_maintenance ? `<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px 18px;margin:16px 0">
-        <p style="font-size:13px;color:#166534;margin:0"><strong>🔧 Betreuung:</strong> ${escapeHtml(MAINTENANCE_LABELS[lead.wants_maintenance] || lead.wants_maintenance)} — bei Zusage ca. <strong>${maintenancePriceEur(lead.suggested_price_eur)} €/Monat</strong> (${MAINTENANCE_PERCENT}% des Projektpreises)</p>
+        <p style="font-size:13px;color:#166534;margin:0"><strong>🔧 Betreuung:</strong> ${escapeHtml(MAINTENANCE_LABELS[lead.wants_maintenance] || lead.wants_maintenance)}</p>
       </div>` : ''}
       ${renderTranscript(lead.conversation)}
       <div style="display:flex;gap:10px;margin-top:24px">
-        <form method="POST" action="/api/lead-review" style="flex:1">
+        <form method="POST" action="/api/lead-review" id="approveForm" style="flex:1">
           <input type="hidden" name="id" value="${lead.id}">
           <input type="hidden" name="action" value="approve">
           <button type="submit" style="width:100%;padding:13px;background:#0EA5E9;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">✅ Angebot senden</button>
@@ -140,6 +146,12 @@ module.exports = async function handler(req, res) {
           <button type="submit" style="width:100%;padding:13px;background:#fff;color:#64748B;border:1.5px solid #E2E8F0;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">Ablehnen</button>
         </form>
       </div>
+      <script>
+        document.getElementById('priceInput').addEventListener('input', function () {
+          var v = parseFloat(this.value) || 0;
+          document.getElementById('maintenancePreview').textContent = Math.round(v * ${MAINTENANCE_PERCENT} / 100);
+        });
+      </script>
     `));
   }
 
@@ -157,6 +169,14 @@ module.exports = async function handler(req, res) {
   }
 
   if (action === 'approve') {
+    /* Tim kann den KI-vorgeschlagenen Preis vor dem Versand anpassen –
+       fällt bei fehlendem/ungültigem Wert auf den ursprünglichen
+       Vorschlag zurück. Die Betreuungskosten (15%) werden aus diesem
+       finalen Preis neu berechnet, nicht aus dem KI-Vorschlag. */
+    const submittedPrice = Math.round(Number((req.body || {}).price));
+    const finalPriceEur = (Number.isFinite(submittedPrice) && submittedPrice > 0) ? submittedPrice : lead.suggested_price_eur;
+    const finalLead = { ...lead, suggested_price_eur: finalPriceEur };
+
     if (RESEND_KEY) {
       try {
         const r = await fetch('https://api.resend.com/emails', {
@@ -166,7 +186,7 @@ module.exports = async function handler(req, res) {
             from: FROM,
             to: lead.email,
             subject: 'Dein persönliches Angebot – TK Webtalent',
-            html: buildLeadOfferEmail(lead),
+            html: buildLeadOfferEmail(finalLead),
           }),
         });
         if (!r.ok) console.error('[lead-review] Resend (Kunde):', await r.text());
@@ -174,7 +194,7 @@ module.exports = async function handler(req, res) {
         console.error('[lead-review] E-Mail-Fehler (Kunde):', e.message);
       }
     }
-    await sbAdmin.from('leads').update({ status: 'sent', reviewed_at: new Date().toISOString() }).eq('id', id);
+    await sbAdmin.from('leads').update({ status: 'sent', reviewed_at: new Date().toISOString(), suggested_price_eur: finalPriceEur }).eq('id', id);
   } else {
     await sbAdmin.from('leads').update({ status: 'rejected', reviewed_at: new Date().toISOString() }).eq('id', id);
   }
