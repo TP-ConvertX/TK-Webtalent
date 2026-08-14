@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     row.appendChild(input);
     row.appendChild(send);
     chatInputArea.appendChild(row);
-    setTimeout(() => input.focus(), 100);
+    setTimeout(() => input.focus({ preventScroll: true }), 100);
   }
 
   function renderDoneStatus() {
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!res.ok || !data.reply) {
         addMsg('Entschuldige, gerade gibt es ein technisches Problem. Versuch es gleich nochmal oder schreib mir direkt eine E-Mail.', 'bot');
-        if (input) { input.disabled = false; input.focus(); }
+        if (input) { input.disabled = false; input.focus({ preventScroll: true }); }
         chatBusy = false;
         return;
       }
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       removeTyping();
       addMsg('Verbindungsproblem – bitte versuch es gleich nochmal.', 'bot');
-      if (input) { input.disabled = false; input.focus(); }
+      if (input) { input.disabled = false; input.focus({ preventScroll: true }); }
       chatBusy = false;
     }
   }

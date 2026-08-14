@@ -323,6 +323,75 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
 }
 .mobile-overlay.open { display: block; }
 
+/* ─── ZUFRIEDENE KUNDEN (Logo-Streifen) ──────────────
+   Direkt unter der fixierten Nav — padding-top schiebt den
+   Inhalt unter die transparente Nav (gleiches Muster wie
+   .hero-pin-inner). Endlos-Marquee: der Track enthält den
+   Logo-Satz doppelt, die Animation läuft von 0% bis -50%
+   und springt dann nahtlos zurück auf 0% (= Start des zweiten,
+   identischen Satzes). */
+.client-logos-section {
+  padding-top: calc(var(--nav-height) + 28px);
+  padding-bottom: 28px;
+  background: #fff;
+  overflow: hidden;
+}
+.client-logos-label {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  margin-bottom: 18px;
+}
+.client-logos-track-wrap {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+}
+.client-logos-track {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  width: max-content;
+  animation: clientLogosScroll 22s linear infinite;
+}
+.client-logos-track-wrap:hover .client-logos-track {
+  animation-play-state: paused;
+}
+.client-logo-link {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0.55;
+  filter: grayscale(1);
+  transition: var(--transition);
+}
+.client-logo-link:hover,
+.client-logo-link:focus-visible {
+  opacity: 1;
+  filter: grayscale(0);
+}
+.client-logo-img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+@keyframes clientLogosScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .client-logos-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
+  .client-logo-link[aria-hidden="true"] { display: none; }
+}
+
 /* ─── HERO ───────────────────────────────────────── */
 .hero {
   background: linear-gradient(160deg, #fff 0%, #F0F9FF 50%, #EFF6FF 100%);
