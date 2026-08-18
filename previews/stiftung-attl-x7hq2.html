@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stiftung Attl – Design-Vorschau</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #2B1418; background: #FBF8F5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section-pad { padding: 110px 0; }
+    .bg-soft { background: #F5EDE9; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(251,248,245,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(122,27,46,0.1);
+      height: 76px;
+    }
+    .nav-inner { display: flex; align-items: center; height: 76px; gap: 40px; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .logo-mark {
+      width: 42px; height: 42px; flex-shrink: 0;
+      background: linear-gradient(155deg, #8C2438, #5A121F);
+      border-radius: 11px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark::before, .logo-mark::after {
+      content: ''; position: absolute; background: rgba(255,255,255,0.85); border-radius: 2px;
+    }
+    .logo-mark::before { width: 16px; height: 3px; top: 14px; left: 13px; transform: rotate(45deg); }
+    .logo-mark::after { width: 16px; height: 3px; bottom: 14px; left: 13px; transform: rotate(-45deg); }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-text strong { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: #4A0E1A; letter-spacing: -0.01em; }
+    .logo-text span { font-size: 11px; color: #8C2438; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 32px; flex: 1; }
+    .nav-links a { font-size: 14.5px; color: #6B4048; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #8C2438; }
+    .nav-cta {
+      margin-left: auto; background: #8C2438; color: #fff;
+      padding: 11px 24px; border-radius: 100px;
+      font-size: 14px; font-weight: 600; transition: all 0.2s;
+      display: inline-block;
+    }
+    .nav-cta:hover { background: #6B1A2A; }
+    .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; margin-left: auto; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: #4A0E1A; border-radius: 2px; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; overflow: hidden;
+      background: linear-gradient(155deg, #4A0E1A 0%, #6B1A2A 45%, #8C2438 100%);
+      padding: 96px 0 120px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 82% 18%, rgba(255,255,255,0.10) 0%, transparent 45%),
+        radial-gradient(circle at 12% 88%, rgba(212,163,115,0.16) 0%, transparent 50%);
+    }
+    .hero-shapes { position: absolute; inset: 0; opacity: 0.5; pointer-events: none; }
+    .hero-shape { position: absolute; border: 1.5px solid rgba(255,255,255,0.14); border-radius: 24px; }
+    .hero-shape.s1 { width: 220px; height: 220px; top: -60px; right: 8%; transform: rotate(18deg); }
+    .hero-shape.s2 { width: 140px; height: 140px; bottom: 10%; right: 22%; transform: rotate(-12deg); border-color: rgba(212,163,115,0.25); }
+    .hero-shape.s3 { width: 90px; height: 90px; top: 40%; right: 4%; transform: rotate(30deg); }
+    .hero-inner { position: relative; text-align: center; max-width: 760px; margin: 0 auto; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
+      color: #F3D9B1; padding: 8px 18px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 32px;
+    }
+    .hero h1 {
+      font-family: 'Fraunces', serif; font-weight: 500;
+      font-size: clamp(38px, 6vw, 66px);
+      line-height: 1.12; color: #fff; margin-bottom: 26px; letter-spacing: -0.01em;
+    }
+    .hero h1 em { font-style: italic; font-weight: 500; color: #F3D9B1; }
+    .hero p { font-size: 18.5px; color: rgba(255,255,255,0.78); max-width: 560px; margin: 0 auto 44px; line-height: 1.75; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-cream {
+      background: #F3D9B1; color: #4A0E1A;
+      padding: 15px 30px; border-radius: 100px;
+      font-size: 15px; font-weight: 700; transition: all 0.2s;
+    }
+    .btn-cream:hover { background: #EEC896; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.2); }
+    .btn-ghost-white {
+      background: rgba(255,255,255,0.08); color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      padding: 15px 30px; border-radius: 100px;
+      font-size: 15px; font-weight: 500; transition: all 0.2s;
+    }
+    .btn-ghost-white:hover { background: rgba(255,255,255,0.16); }
+    .hero-stats { margin-top: 64px; display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat strong { display: block; font-family: 'Fraunces', serif; font-size: 34px; font-weight: 500; color: #F3D9B1; }
+    .hero-stat span { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; display: block; }
+
+    /* ── SEKTIONS-HEADER ── */
+    .s-eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8C2438; margin-bottom: 16px; display: block; }
+    .s-title { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(28px, 4vw, 44px); margin-bottom: 18px; line-height: 1.2; color: #3A0E17; }
+    .s-sub { font-size: 17px; color: #6B4048; line-height: 1.75; max-width: 600px; }
+    .s-intro { margin-bottom: 60px; }
+    .s-intro.c { text-align: center; max-width: 660px; margin-left: auto; margin-right: auto; }
+
+    /* ── BEREICHE ── */
+    .bereiche-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .bereich-card {
+      background: #fff; border: 1px solid #EBDDD5;
+      border-radius: 20px; padding: 32px 26px;
+      transition: all 0.3s;
+    }
+    .bereich-card:hover { box-shadow: 0 16px 44px rgba(140,36,56,0.1); transform: translateY(-4px); border-color: #E3C4AE; }
+    .bereich-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(155deg, #F5EDE9, #EFDDD2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 22px;
+    }
+    .bereich-card h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 20px; margin-bottom: 12px; color: #3A0E17; }
+    .bereich-card p { font-size: 14.5px; color: #6B4048; line-height: 1.65; margin-bottom: 18px; }
+    .bereich-list { display: flex; flex-direction: column; gap: 8px; }
+    .bereich-list li { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: #5A2E36; line-height: 1.5; }
+    .bereich-list li::before { content: '·'; color: #8C2438; font-weight: 700; flex-shrink: 0; font-size: 18px; line-height: 1.1; }
+
+    /* ── LEITBILD / 150 JAHRE ── */
+    .leitbild-section {
+      background: linear-gradient(155deg, #3A0E17, #5A121F);
+      position: relative; overflow: hidden;
+    }
+    .leitbild-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 15% 20%, rgba(243,217,177,0.08) 0%, transparent 45%);
+    }
+    .leitbild-inner { position: relative; text-align: center; max-width: 780px; margin: 0 auto; }
+    .leitbild-eyebrow { color: #D9A65E; }
+    .leitbild-quote {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
+      font-size: clamp(28px, 4.2vw, 46px); line-height: 1.3; color: #fff;
+      margin: 8px 0 28px;
+    }
+    .leitbild-text { font-size: 16.5px; color: rgba(255,255,255,0.68); line-height: 1.8; max-width: 620px; margin: 0 auto 56px; }
+    .leitbild-stats { display: flex; justify-content: center; gap: 64px; flex-wrap: wrap; padding-top: 44px; border-top: 1px solid rgba(255,255,255,0.12); }
+    .lb-stat strong { display: block; font-family: 'Fraunces', serif; font-size: 40px; font-weight: 500; color: #F3D9B1; }
+    .lb-stat span { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 6px; display: block; letter-spacing: 0.02em; }
+
+    /* ── MITWIRKEN ── */
+    .mitwirken-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .mit-card {
+      background: #fff; border-radius: 22px; padding: 40px 32px;
+      border: 1px solid #EBDDD5; transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .mit-card:hover { border-color: #E3C4AE; box-shadow: 0 16px 44px rgba(140,36,56,0.09); }
+    .mit-tag { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8C2438; background: #F5EDE9; padding: 5px 12px; border-radius: 100px; margin-bottom: 20px; }
+    .mit-card h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 22px; margin-bottom: 12px; color: #3A0E17; }
+    .mit-card p { font-size: 14.5px; color: #6B4048; line-height: 1.7; }
+
+    /* ── ABSCHLUSS ── */
+    .abschluss-section {
+      background: #fff; text-align: center;
+      border-top: 1px solid #EBDDD5;
+    }
+    .abschluss-inner { max-width: 620px; margin: 0 auto; }
+    .abschluss-section h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(28px, 4vw, 40px); color: #3A0E17; margin-bottom: 18px; line-height: 1.25; }
+    .abschluss-section p { font-size: 16.5px; color: #6B4048; line-height: 1.75; }
+
+    /* ── FOOTER ── */
+    .footer { background: #FBF8F5; padding: 48px 0 32px; border-top: 1px solid #EBDDD5; }
+    .footer-inner { display: flex; align-items: center; justify-content: center; gap: 14px; flex-direction: column; text-align: center; }
+    .footer-inner .logo-text strong { color: #4A0E1A; }
+    .footer-tagline { font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; color: #8C2438; }
+    .footer-note { font-size: 12.5px; color: #A88088; margin-top: 8px; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1020px) {
+      .bereiche-grid { grid-template-columns: 1fr 1fr; }
+      .mitwirken-grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
+    }
+    @media (max-width: 880px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+      .hero-stats { gap: 36px; }
+      .leitbild-stats { gap: 36px; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding: 64px 0 80px; }
+      .section-pad { padding: 72px 0; }
+      .bereiche-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 28px; }
+      .leitbild-stats { gap: 28px; }
+    }
+  </style>
+  <!-- Vercel Web Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="logo-mark"></div>
+        <div class="logo-text">
+          <strong>Stiftung Attl</strong>
+          <span>Seit 1876</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#bereiche">Unsere Bereiche</a></li>
+        <li><a href="#leitbild">Leitbild</a></li>
+        <li><a href="#mitwirken">Mitwirken</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <a href="#kontakt" class="nav-cta">Kontakt aufnehmen</a>
+      <button class="nav-burger" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-shapes">
+      <div class="hero-shape s1"></div>
+      <div class="hero-shape s2"></div>
+      <div class="hero-shape s3"></div>
+    </div>
+    <div class="container hero-inner">
+      <div class="hero-eyebrow">✦ 150 Jahre Stiftung Attl</div>
+      <h1>In der Mitte<br><em>der Mensch.</em></h1>
+      <p>Seit 150 Jahren begleiten wir Menschen mit Behinderung und ihre Familien – mit Wohnangeboten, Tagesstrukturen und Förderung, die dort ansetzen, wo Menschen wirklich stehen.</p>
+      <div class="hero-btns">
+        <a href="#bereiche" class="btn-cream">Unsere Angebote entdecken</a>
+        <a href="#leitbild" class="btn-ghost-white">Unser Leitbild</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>150</strong><span>Jahre Erfahrung</span></div>
+        <div class="hero-stat"><strong>12+</strong><span>Bereiche & Angebote</span></div>
+        <div class="hero-stat"><strong>1</strong><span>Leitgedanke: der Mensch</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Unsere Bereiche -->
+  <section class="section-pad" id="bereiche">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Unsere Bereiche</span>
+        <h2 class="s-title">Vielfältige Unterstützung, ein gemeinsamer Gedanke</h2>
+        <p class="s-sub" style="margin:0 auto;">Von Wohnen über Tagesstruktur bis Freizeit – jedes Angebot ist so gestaltet, dass der Mensch im Mittelpunkt steht.</p>
+      </div>
+      <div class="bereiche-grid">
+        <div class="bereich-card reveal">
+          <div class="bereich-icon">🏡</div>
+          <h3>Wohnen</h3>
+          <p>Zuhause sein, wo man gut begleitet ist – in jeder Lebensphase.</p>
+          <ul class="bereich-list">
+            <li>Intensiv-Wohnen</li>
+            <li>Kinder- & Jugendwohnen</li>
+            <li>Wohnen für Erwachsene</li>
+            <li>Ambulant betreutes Wohnen</li>
+          </ul>
+        </div>
+        <div class="bereich-card reveal">
+          <div class="bereich-icon">🌤️</div>
+          <h3>Tagesstrukturen</h3>
+          <p>Sinnvolle Beschäftigung und Förderung für den Alltag.</p>
+          <ul class="bereich-list">
+            <li>Förderstätte & Förderzentrum</li>
+            <li>Heilpädagogische Tagesstätte</li>
+            <li>Inntal-Werkstätten</li>
+          </ul>
+        </div>
+        <div class="bereich-card reveal">
+          <div class="bereich-icon">🌱</div>
+          <h3>Frühförderung & Familie</h3>
+          <p>Begleitung von Anfang an – für Kinder und ihre Familien.</p>
+          <ul class="bereich-list">
+            <li>Frühförderung</li>
+            <li>Familienunterstützender Dienst</li>
+            <li>Therapiezentrum</li>
+            <li>Erwachsenenbildung</li>
+          </ul>
+        </div>
+        <div class="bereich-card reveal">
+          <div class="bereich-icon">🎭</div>
+          <h3>Freizeit & Kultur</h3>
+          <p>Gemeinschaft erleben, Talente entfalten.</p>
+          <ul class="bereich-list">
+            <li>Integrationshorte</li>
+            <li>Offene Betreute Angebote (OBA)</li>
+            <li>ABM-Orchester</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leitbild / 150 Jahre -->
+  <section class="section-pad leitbild-section" id="leitbild">
+    <div class="container leitbild-inner">
+      <span class="s-eyebrow leitbild-eyebrow reveal">Unser Leitbild</span>
+      <p class="leitbild-quote reveal">„In der Mitte der Mensch."</p>
+      <p class="leitbild-text reveal">Dieser Gedanke trägt uns seit 150 Jahren. Er bedeutet: Wir schauen zuerst auf den Menschen – auf seine Stärken, seine Wünsche, sein Recht auf Teilhabe. Erst dann auf die Diagnose, die Einschränkung, den Bedarf. Diese Haltung prägt jeden Bereich unserer Arbeit, von der Frühförderung bis zur Begleitung im Alter.</p>
+      <div class="leitbild-stats reveal">
+        <div class="lb-stat"><strong>1876</strong><span>Gründungsjahr</span></div>
+        <div class="lb-stat"><strong>150</strong><span>Jahre Geschichte</span></div>
+        <div class="lb-stat"><strong>∞</strong><span>Menschen im Mittelpunkt</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mitwirken -->
+  <section class="section-pad bg-soft" id="mitwirken">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Mitwirken</span>
+        <h2 class="s-title">Werden Sie Teil der Stiftung Attl</h2>
+        <p class="s-sub" style="margin:0 auto;">Ob durch eine Spende, ehrenamtliches Engagement oder als neue Kollegin oder neuer Kollege – es gibt viele Wege, mitzuwirken.</p>
+      </div>
+      <div class="mitwirken-grid">
+        <div class="mit-card reveal">
+          <span class="mit-tag">Spenden</span>
+          <h3>Gutes bewirken</h3>
+          <p>Jede Spende hilft, unsere Angebote für Menschen mit Behinderung weiterzuentwickeln und zu erhalten.</p>
+        </div>
+        <div class="mit-card reveal">
+          <span class="mit-tag">Engagement</span>
+          <h3>Ehrenamt & Beirat</h3>
+          <p>Bringen Sie sich ein – als Freiwillige, im Beirat oder bei einem unserer betreuten Angebote.</p>
+        </div>
+        <div class="mit-card reveal">
+          <span class="mit-tag">Karriere</span>
+          <h3>Bei uns arbeiten</h3>
+          <p>Ausbildung, Quereinstieg oder Fachkarriere – wir suchen Menschen, die mit Herz dabei sind.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abschluss -->
+  <section class="section-pad abschluss-section" id="kontakt">
+    <div class="container abschluss-inner reveal">
+      <h2>150 Jahre Erfahrung. Ein Gedanke, der bleibt.</h2>
+      <p>Die Stiftung Attl begleitet Menschen mit Behinderung und ihre Familien – heute genauso wie vor 150 Jahren: mit dem Menschen in der Mitte.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="logo-text">
+        <strong>Stiftung Attl</strong>
+      </div>
+      <div class="footer-tagline">„In der Mitte der Mensch"</div>
+      <div class="footer-note">Design-Konzept · unverbindliche Vorschau</div>
+    </div>
+  </footer>
+
+  <script>
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  </script>
+</body>
+</html>
