@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+  <script>
+    /* Vorschau läuft automatisch ab – 7 Tage nach Erstellung. Sofortige
+       Weiterleitung auf eine separate Ablauf-Seite, so früh im <head> wie
+       möglich, damit vom echten Inhalt nichts sichtbar wird. */
+    if (new Date() > new Date('2026-08-25T23:59:59')) {
+      location.replace('/previews/vorschau-abgelaufen');
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stiftung Attl – Design-Vorschau</title>
