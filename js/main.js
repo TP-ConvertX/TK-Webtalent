@@ -181,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatMessages  = document.getElementById('chatMessages');
   const chatInputArea = document.getElementById('chatInputArea');
   const chatSubtitle  = document.getElementById('chatSubtitle');
-  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 
   if (chatMessages) {
 
@@ -249,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
     row.appendChild(input);
     row.appendChild(send);
     chatInputArea.appendChild(row);
-    if (!isTouchDevice) setTimeout(() => input.focus({ preventScroll: true }), 100);
   }
 
   function renderDoneStatus() {
@@ -282,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!res.ok || !data.reply) {
         addMsg('Entschuldige, gerade gibt es ein technisches Problem. Versuch es gleich nochmal oder schreib mir direkt eine E-Mail.', 'bot');
-        if (input) { input.disabled = false; if (!isTouchDevice) input.focus({ preventScroll: true }); }
+        if (input) { input.disabled = false; }
         chatBusy = false;
         return;
       }
@@ -301,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       removeTyping();
       addMsg('Verbindungsproblem – bitte versuch es gleich nochmal.', 'bot');
-      if (input) { input.disabled = false; input.focus({ preventScroll: true }); }
+      if (input) { input.disabled = false; }
       chatBusy = false;
     }
   }
