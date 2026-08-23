@@ -1707,7 +1707,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   padding: 11px 16px;
   border: 1.5px solid var(--c-border);
   border-radius: var(--radius-md);
-  font-size: 14px;
+  font-size: 16px;
   font-family: inherit;
   outline: none;
   background: #fff;

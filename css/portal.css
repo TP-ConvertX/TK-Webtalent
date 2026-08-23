@@ -78,7 +78,7 @@
   padding: 13px 16px;
   border: 1.5px solid var(--c-border);
   border-radius: var(--radius-md);
-  font-size: 15px;
+  font-size: 16px;
   font-family: inherit;
   color: var(--c-text);
   background: var(--c-bg-light);
@@ -101,7 +101,7 @@
   padding: 13px 40px 13px 16px;
   border: 1.5px solid var(--c-border);
   border-radius: var(--radius-md);
-  font-size: 15px;
+  font-size: 16px;
   font-family: inherit;
   color: var(--c-text);
   background: var(--c-bg-light);
