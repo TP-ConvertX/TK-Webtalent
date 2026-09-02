@@ -73,11 +73,17 @@
       min-height: 100svh; position: relative; overflow: hidden;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 34px 24px 0;
-      background: radial-gradient(circle at 25% 20%, #12233F 0%, var(--ink) 55%, #060A12 100%);
+    }
+    .intro-bg {
+      position: absolute; inset: 0; z-index: -2;
+      background-image: url('https://images.unsplash.com/photo-1540397106260-e24a507a08ea?w=1800&q=80&auto=format&fit=crop');
+      background-size: cover; background-position: center;
     }
     .intro::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: radial-gradient(circle at 82% 75%, rgba(56,189,248,.16) 0%, transparent 45%);
+      content: ''; position: absolute; inset: 0; z-index: -1;
+      background:
+        radial-gradient(circle at 82% 75%, rgba(56,189,248,.20) 0%, transparent 45%),
+        linear-gradient(190deg, rgba(6,10,18,.55) 0%, rgba(6,10,18,.82) 55%, rgba(6,10,18,.94) 100%);
     }
     .intro-inner { position: relative; max-width: 780px; }
     .intro-badge {
@@ -261,6 +267,7 @@
 
   <!-- INTRO / STARTBILDSCHIRM -->
   <section class="intro">
+    <div class="intro-bg"></div>
     <div class="intro-inner">
       <div class="intro-badge">✦ Webdesign für kleine Unternehmen</div>
       <h1>Moderne Webseiten,<br>die <span class="grad">Kunden überzeugen</span><br>und Vertrauen schaffen.</h1>
