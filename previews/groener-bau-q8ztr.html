@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <script>
+    /* Vorschau läuft automatisch ab – 7 Tage nach Erstellung. Sofortige
+       Weiterleitung auf eine separate Ablauf-Seite, so früh im <head> wie
+       möglich, damit vom echten Inhalt nichts sichtbar wird. */
+    if (new Date() > new Date('2026-09-08T23:59:59')) {
+      location.replace('/previews/vorschau-abgelaufen');
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gröner Bau – Design-Vorschau</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #1C2226; background: #F3F2EE; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section-pad { padding: 110px 0; }
+    .bg-soft { background: #EAE7E0; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(243,242,238,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(28,34,38,0.1);
+      height: 76px;
+    }
+    .nav-inner { display: flex; align-items: center; height: 76px; gap: 40px; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .logo-mark {
+      width: 42px; height: 42px; flex-shrink: 0;
+      background: linear-gradient(155deg, #2B343B, #14181B);
+      border-radius: 10px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark::before {
+      content: ''; position: absolute; width: 20px; height: 20px;
+      border: 2.5px solid #F2A93B; border-bottom: none; border-right: none;
+      transform: rotate(45deg); top: 12px; left: 11px;
+    }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-text strong { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #14181B; letter-spacing: -0.01em; }
+    .logo-text span { font-size: 11px; color: #7A6A3F; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 32px; flex: 1; }
+    .nav-links a { font-size: 14.5px; color: #454E54; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #14181B; }
+    .nav-cta {
+      margin-left: auto; background: #F2A93B; color: #1C2226;
+      padding: 11px 24px; border-radius: 100px;
+      font-size: 14px; font-weight: 700; transition: all 0.2s;
+      display: inline-block;
+    }
+    .nav-cta:hover { background: #E29A2C; }
+    .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; margin-left: auto; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: #14181B; border-radius: 2px; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 120px 0 100px;
+      color: #fff;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -2;
+      background-image: url('https://images.unsplash.com/photo-1630288214173-a119cf823388?w=1800&q=80&auto=format&fit=crop');
+      background-size: cover; background-position: center;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(155deg, rgba(15,18,20,0.90) 0%, rgba(20,24,27,0.84) 45%, rgba(15,18,20,0.72) 100%);
+    }
+    .hero-inner { position: relative; text-align: center; max-width: 780px; margin: 0 auto; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22);
+      color: #F2A93B; padding: 8px 18px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 32px;
+    }
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: clamp(38px, 6vw, 62px);
+      line-height: 1.12; color: #fff; margin-bottom: 26px; letter-spacing: -0.02em;
+    }
+    .hero h1 em { font-style: normal; font-weight: 700; color: #F2A93B; }
+    .hero p { font-size: 18.5px; color: rgba(255,255,255,0.8); max-width: 580px; margin: 0 auto 44px; line-height: 1.75; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-amber {
+      background: #F2A93B; color: #1C2226;
+      padding: 15px 30px; border-radius: 100px;
+      font-size: 15px; font-weight: 700; transition: all 0.2s;
+    }
+    .btn-amber:hover { background: #E29A2C; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.25); }
+    .btn-ghost-white {
+      background: rgba(255,255,255,0.08); color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.32);
+      padding: 15px 30px; border-radius: 100px;
+      font-size: 15px; font-weight: 500; transition: all 0.2s;
+    }
+    .btn-ghost-white:hover { background: rgba(255,255,255,0.16); }
+    .hero-stats { margin-top: 64px; display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat strong { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; color: #F2A93B; }
+    .hero-stat span { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 4px; display: block; }
+
+    /* ── SEKTIONS-HEADER ── */
+    .s-eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #C77F0F; margin-bottom: 16px; display: block; }
+    .s-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 42px); margin-bottom: 18px; line-height: 1.2; color: #14181B; letter-spacing: -0.01em; }
+    .s-sub { font-size: 17px; color: #565F65; line-height: 1.75; max-width: 600px; }
+    .s-intro { margin-bottom: 60px; }
+    .s-intro.c { text-align: center; max-width: 660px; margin-left: auto; margin-right: auto; }
+
+    /* ── LEISTUNGEN GRID ── */
+    .leistungen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .leistung-card {
+      background: #fff; border: 1px solid #E2DED3;
+      border-radius: 18px; padding: 30px 26px;
+      transition: all 0.3s;
+    }
+    .leistung-card:hover { box-shadow: 0 16px 44px rgba(20,24,27,0.1); transform: translateY(-4px); border-color: #D6CFBC; }
+    .leistung-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: linear-gradient(155deg, #FBEBCB, #F2D9A0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 20px;
+    }
+    .leistung-card h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 10px; color: #14181B; }
+    .leistung-card p { font-size: 14px; color: #565F65; line-height: 1.65; }
+
+    /* ── FEATURE ROWS (Bild + Text) ── */
+    .feature-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .feature-row.rev .feature-media { order: 2; }
+    .feature-row.rev .feature-text { order: 1; }
+    .feature-media { border-radius: 20px; overflow: hidden; box-shadow: 0 24px 60px rgba(20,24,27,0.18); aspect-ratio: 4/3; position: relative; }
+    .feature-media img { width: 100%; height: 100%; object-fit: cover; }
+    .feature-text h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(24px, 3vw, 30px); color: #14181B; margin-bottom: 18px; line-height: 1.25; letter-spacing: -0.01em; }
+    .feature-text p { font-size: 16px; color: #565F65; line-height: 1.8; margin-bottom: 26px; }
+    .feature-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+    .feature-tags span {
+      font-size: 13px; font-weight: 600; color: #14181B;
+      background: #EFEAE0; border: 1px solid #DED5C0;
+      padding: 7px 14px; border-radius: 100px;
+    }
+    .feature-block + .feature-block { margin-top: 96px; }
+
+    /* ── TERMINKALENDER ── */
+    .termin-card {
+      background: #14181B; border-radius: 28px; padding: 48px;
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px;
+      box-shadow: 0 30px 70px rgba(20,24,27,0.28);
+    }
+    .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .cal-head strong { font-family: 'Space Grotesk', sans-serif; font-size: 19px; color: #fff; font-weight: 700; }
+    .cal-nav { display: flex; gap: 8px; }
+    .cal-nav-btn {
+      width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.6);
+      display: flex; align-items: center; justify-content: center; font-size: 13px;
+    }
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 8px; }
+    .cal-weekdays span { text-align: center; font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.04em; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .cal-day {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      border-radius: 10px; font-size: 13.5px; color: rgba(255,255,255,0.28);
+      background: transparent; border: 1px solid transparent;
+    }
+    .cal-day.avail { color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.15s; }
+    .cal-day.avail:hover { border-color: #F2A93B; }
+    .cal-day.avail.sel { background: #F2A93B; color: #14181B; font-weight: 700; border-color: #F2A93B; }
+    .termin-side { display: flex; flex-direction: column; }
+    .termin-side h4 { font-family: 'Space Grotesk', sans-serif; font-size: 16px; color: #fff; margin-bottom: 16px; font-weight: 700; }
+    .slot-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .slot {
+      padding: 12px 16px; border-radius: 12px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.75);
+      font-size: 14px; cursor: pointer; transition: all 0.15s; display: flex; justify-content: space-between; align-items: center;
+    }
+    .slot:hover { border-color: rgba(242,169,59,0.5); }
+    .slot.sel { background: rgba(242,169,59,0.14); border-color: #F2A93B; color: #fff; }
+    .slot.sel::after { content: '✓'; color: #F2A93B; font-weight: 700; }
+    .termin-btn {
+      margin-top: auto; background: #F2A93B; color: #14181B; border: none;
+      padding: 15px 24px; border-radius: 100px; font-size: 15px; font-weight: 700;
+      transition: all 0.2s;
+    }
+    .termin-btn:hover { background: #E29A2C; }
+    .termin-note { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 14px; line-height: 1.6; }
+
+    /* ── WARUM WIR ── */
+    .warum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .warum-card {
+      background: #fff; border-radius: 20px; padding: 36px 30px;
+      border: 1px solid #E2DED3; transition: all 0.3s;
+    }
+    .warum-card:hover { border-color: #D6CFBC; box-shadow: 0 16px 44px rgba(20,24,27,0.08); }
+    .warum-tag { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #C77F0F; background: #FBEBCB; padding: 5px 12px; border-radius: 100px; margin-bottom: 20px; }
+    .warum-card h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 12px; color: #14181B; }
+    .warum-card p { font-size: 14.5px; color: #565F65; line-height: 1.7; }
+
+    /* ── ABSCHLUSS / KONTAKT ── */
+    .abschluss-section {
+      background: linear-gradient(155deg, #14181B, #1E252B);
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .abschluss-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 18% 20%, rgba(242,169,59,0.08) 0%, transparent 45%);
+    }
+    .abschluss-inner { position: relative; max-width: 620px; margin: 0 auto; }
+    .abschluss-section h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 40px); color: #fff; margin-bottom: 18px; line-height: 1.25; letter-spacing: -0.01em; }
+    .abschluss-section p { font-size: 16.5px; color: rgba(255,255,255,0.7); line-height: 1.75; margin-bottom: 40px; }
+    .kontakt-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; padding-top: 36px; border-top: 1px solid rgba(255,255,255,0.14); }
+    .kontakt-item { text-align: left; font-size: 14.5px; color: rgba(255,255,255,0.85); }
+    .kontakt-item strong { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #F2A93B; margin-bottom: 6px; }
+
+    /* ── FOOTER ── */
+    .footer { background: #F3F2EE; padding: 48px 0 32px; border-top: 1px solid #E2DED3; }
+    .footer-inner { display: flex; align-items: center; justify-content: center; gap: 14px; flex-direction: column; text-align: center; }
+    .footer-inner .logo-text strong { color: #14181B; }
+    .footer-tagline { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: #C77F0F; }
+    .footer-note { font-size: 12.5px; color: #8A8A82; margin-top: 8px; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1020px) {
+      .leistungen-grid { grid-template-columns: 1fr 1fr; }
+      .warum-grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
+      .feature-row { gap: 40px; }
+      .termin-card { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 880px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+      .hero-stats { gap: 36px; }
+      .feature-row, .feature-row.rev { grid-template-columns: 1fr; }
+      .feature-row .feature-media, .feature-row.rev .feature-media { order: 1; }
+      .feature-row .feature-text, .feature-row.rev .feature-text { order: 2; }
+      .kontakt-row { gap: 28px; }
+      .kontakt-item { text-align: center; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding: 88px 0 72px; }
+      .section-pad { padding: 72px 0; }
+      .leistungen-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 26px; }
+      .feature-block + .feature-block { margin-top: 64px; }
+      .termin-card { padding: 28px; border-radius: 20px; }
+    }
+  </style>
+  <!-- Vercel Web Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="logo-mark"></div>
+        <div class="logo-text">
+          <strong>Gröner Bau</strong>
+          <span>Hoch- & Tiefbau</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#termin">Vor-Ort-Termin</a></li>
+        <li><a href="#warum">Über uns</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <a href="#termin" class="nav-cta">Termin anfragen</a>
+      <button class="nav-burger" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-inner">
+      <div class="hero-eyebrow">✦ Gröner Bau · Sigmaringen-Jungnau</div>
+      <h1>Bauen ist unsere<br><em>Leidenschaft.</em></h1>
+      <p>Hoch- und Tiefbau aus einer Hand – seit über 60 Jahren für private und öffentliche Auftraggeber im Zollernalbkreis. Qualität, Zuverlässigkeit und Handwerk auf neuestem Stand der Technik.</p>
+      <div class="hero-btns">
+        <a href="#leistungen" class="btn-amber">Leistungen entdecken</a>
+        <a href="#termin" class="btn-ghost-white">Vor-Ort-Termin anfragen</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>60+</strong><span>Jahre Erfahrung</span></div>
+        <div class="hero-stat"><strong>Zollernalbkreis</strong><span>Einsatzgebiet</span></div>
+        <div class="hero-stat"><strong>Hoch- & Tiefbau</strong><span>Alles aus einer Hand</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leistungen Übersicht -->
+  <section class="section-pad" id="leistungen">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Leistungen</span>
+        <h2 class="s-title">Von der Baugrube bis zum fertigen Bauwerk</h2>
+        <p class="s-sub" style="margin:0 auto;">Ob Neubau, Erdarbeiten oder Straßenbau – wir übernehmen Ihr Bauprojekt fachgerecht, zuverlässig und termintreu.</p>
+      </div>
+      <div class="leistungen-grid">
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🏗️</div>
+          <h3>Hochbau</h3>
+          <p>Neubau und Sanierung – solide Bauwerke nach neuestem Stand der Technik.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🚜</div>
+          <h3>Tiefbau</h3>
+          <p>Erd- und Fundamentarbeiten als tragfähige Basis für jedes Bauvorhaben.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🕳️</div>
+          <h3>Kanalbau</h3>
+          <p>Fachgerechte Verlegung und Instandsetzung von Kanal- und Rohrleitungen.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🛣️</div>
+          <h3>Straßen- & Wegebau</h3>
+          <p>Von der Zufahrt bis zur Erschließungsstraße – tragfähig und langlebig.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">💥</div>
+          <h3>Abbrucharbeiten</h3>
+          <p>Rückbau und Abbruch – kontrolliert, sicher und fachgerecht entsorgt.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🌳</div>
+          <h3>Garten- & Außenanlagen</h3>
+          <p>Gestaltung von Außenbereichen – der letzte Schliff für Ihr Grundstück.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature-Blöcke -->
+  <section class="section-pad bg-soft">
+    <div class="container">
+
+      <div class="feature-block feature-row reveal">
+        <div class="feature-media">
+          <img src="https://images.unsplash.com/photo-1615461476249-718ef8bc369c?w=1200&q=80&auto=format&fit=crop" alt="Rohbau eines mehrstöckigen Gebäudes im Hochbau" loading="lazy">
+        </div>
+        <div class="feature-text">
+          <h3>Hochbau mit Substanz</h3>
+          <p>Vom Rohbau bis zur schlüsselfertigen Übergabe – wir realisieren Ihr Bauvorhaben mit qualifizierten Mitarbeitern und höchstem Anspruch an Qualität und Zuverlässigkeit.</p>
+          <div class="feature-tags">
+            <span>Neubau</span>
+            <span>Sanierung</span>
+            <span>Rohbau</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-block feature-row rev reveal">
+        <div class="feature-media">
+          <img src="https://images.unsplash.com/photo-1610079732288-72a77bd816c9?w=1200&q=80&auto=format&fit=crop" alt="Baugrube mit Fundamentarbeiten aus der Vogelperspektive" loading="lazy">
+        </div>
+        <div class="feature-text">
+          <h3>Tiefbau als tragfähiges Fundament</h3>
+          <p>Erdarbeiten, Fundamente und Kanalbau bilden die Basis jedes Bauwerks. Wir sorgen dafür, dass darauf im wahrsten Sinne Verlass ist.</p>
+          <div class="feature-tags">
+            <span>Erdarbeiten</span>
+            <span>Fundamente</span>
+            <span>Kanalbau</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-block feature-row reveal">
+        <div class="feature-media">
+          <img src="https://images.unsplash.com/photo-1591486085897-f433f05e7aed?w=1200&q=80&auto=format&fit=crop" alt="Straßenbau mit Walze und Fertiger" loading="lazy">
+        </div>
+        <div class="feature-text">
+          <h3>Straßen und Wege, die halten</h3>
+          <p>Ob Erschließungsstraße, Hofeinfahrt oder Wegebau – wir bauen tragfähig und nach den geltenden Normen, für Bauherren genauso wie für öffentliche Auftraggeber.</p>
+          <div class="feature-tags">
+            <span>Straßenbau</span>
+            <span>Wegebau</span>
+            <span>Erschließung</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Terminkalender -->
+  <section class="section-pad" id="termin">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Vor-Ort-Termin</span>
+        <h2 class="s-title">Kostenlosen Besichtigungstermin anfragen</h2>
+        <p class="s-sub" style="margin:0 auto;">Wählen Sie einen passenden Tag und eine Uhrzeit – wir schauen uns Ihr Bauvorhaben unverbindlich vor Ort an.</p>
+      </div>
+      <div class="termin-card reveal">
+        <div class="cal-panel">
+          <div class="cal-head">
+            <strong>September 2026</strong>
+            <div class="cal-nav">
+              <div class="cal-nav-btn">‹</div>
+              <div class="cal-nav-btn">›</div>
+            </div>
+          </div>
+          <div class="cal-weekdays">
+            <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+        <div class="termin-side">
+          <h4>Uhrzeit wählen</h4>
+          <div class="slot-list" id="slotList">
+            <div class="slot">08:00 – 09:00 Uhr</div>
+            <div class="slot sel">10:30 – 11:30 Uhr</div>
+            <div class="slot">13:00 – 14:00 Uhr</div>
+            <div class="slot">15:30 – 16:30 Uhr</div>
+          </div>
+          <button class="termin-btn" type="button">Termin anfragen</button>
+          <p class="termin-note">Beispielhafte Darstellung. Im Echtbetrieb mit einem echten Buchungssystem verknüpft.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Warum wir -->
+  <section class="section-pad bg-soft" id="warum">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Warum Gröner Bau</span>
+        <h2 class="s-title">Handwerk, auf das Verlass ist</h2>
+        <p class="s-sub" style="margin:0 auto;">Seit über 60 Jahren gefragter Ansprechpartner für private und öffentliche Auftraggeber rund ums Bauen.</p>
+      </div>
+      <div class="warum-grid">
+        <div class="warum-card reveal">
+          <span class="warum-tag">Erfahrung</span>
+          <h3>60+ Jahre am Bau</h3>
+          <p>Über sechs Jahrzehnte Erfahrung in Hoch- und Tiefbau – als gefragter Berater für private und öffentliche Auftraggeber.</p>
+        </div>
+        <div class="warum-card reveal">
+          <span class="warum-tag">Qualität</span>
+          <h3>Zuverlässig & präzise</h3>
+          <p>Qualifizierte Mitarbeiter und höchste Qualität sind bei uns Priorität – auf jeder Baustelle, in jedem Projekt.</p>
+        </div>
+        <div class="warum-card reveal">
+          <span class="warum-tag">Betreuung</span>
+          <h3>Persönlich vor Ort</h3>
+          <p>Individuelle Kundenbetreuung nach neuestem Stand der Technik – von der ersten Besichtigung bis zur Übergabe.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abschluss / Kontakt -->
+  <section class="section-pad abschluss-section" id="kontakt">
+    <div class="container abschluss-inner reveal">
+      <h2>Bereit für Ihr nächstes Bauprojekt?</h2>
+      <p>Wir freuen uns, Ihr Vorhaben kennenzulernen – von der ersten Idee bis zur Übergabe.</p>
+      <div class="kontakt-row">
+        <div class="kontakt-item"><strong>Adresse</strong>Bruckstraße 14<br>72488 Sigmaringen-Jungnau</div>
+        <div class="kontakt-item"><strong>Telefon</strong>07577 / 74 24</div>
+        <div class="kontakt-item"><strong>E-Mail</strong>groener-bau@gmx.de</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="logo-text">
+        <strong>Gröner Bau</strong>
+      </div>
+      <div class="footer-tagline">„Bauen ist unsere Leidenschaft"</div>
+      <div class="footer-note">Design-Konzept · unverbindliche Vorschau</div>
+    </div>
+  </footer>
+
+  <script>
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    /* Kalender-Mockup: rein visuelle Tages-/Uhrzeitauswahl, keine echte Buchung */
+    const calGrid = document.getElementById('calGrid');
+    const leadingBlanks = 1; // September 2026 beginnt an einem Dienstag
+    const daysInMonth = 30;
+    const availableDays = [3, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 21, 22, 24, 25, 28, 29];
+    for (let i = 0; i < leadingBlanks; i++) {
+      calGrid.appendChild(document.createElement('div'));
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const cell = document.createElement('div');
+      cell.textContent = d;
+      cell.className = 'cal-day';
+      if (availableDays.includes(d)) {
+        cell.classList.add('avail');
+        if (d === 15) cell.classList.add('sel');
+        cell.addEventListener('click', () => {
+          document.querySelectorAll('.cal-day.sel').forEach(el => el.classList.remove('sel'));
+          cell.classList.add('sel');
+        });
+      }
+      calGrid.appendChild(cell);
+    }
+
+    document.querySelectorAll('.slot').forEach(slot => {
+      slot.addEventListener('click', () => {
+        document.querySelectorAll('.slot.sel').forEach(el => el.classList.remove('sel'));
+        slot.classList.add('sel');
+      });
+    });
+  </script>
+</body>
+</html>
