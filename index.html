@@ -82,9 +82,111 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="dns-prefetch" href="https://formsubmit.co">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/portal.css">
+
+  <!-- ===================================================
+       STARTSEITEN-REDESIGN (dunkles Theme)
+       Bewusst NUR hier in index.html, nicht in css/style.css
+       oder css/portal.css – diese Dateien werden auch von
+       Kundenbereich/Login/Admin genutzt und bleiben dadurch
+       unangetastet in ihrem bisherigen (hellen) Look.
+       CSS-Variablen sind pro Dokument gescoped, überschreiben
+       hier also nur, wie index.html selbst aussieht.
+       =================================================== -->
+  <style>
+    :root {
+      --c-bg: #05070D;
+      --c-bg-light: #0A0E18;
+      --c-bg-dark: #05070D;
+      --c-text: #EAEDF7;
+      --c-text-2: rgba(234,237,247,.68);
+      --c-text-3: rgba(234,237,247,.46);
+      --c-accent: #4F7FFF;
+      --c-accent-dark: #2E5CE0;
+      --c-accent-light: rgba(79,127,255,.14);
+      --c-border: rgba(255,255,255,.1);
+      --c-border-2: rgba(255,255,255,.16);
+      --rd-ink-2: #0A0E18;
+      --rd-ink-3: #10162A;
+      --rd-cyan: #22D3EE;
+      --rd-accent-2: #8B5CF6;
+    }
+    h1, h2, h3, h4, .logo-name, .nav-links a, .chat-name { font-family: 'Space Grotesk', sans-serif; }
+    body { background: var(--c-bg); }
+
+    /* Karten & Flächen, die vorher fest auf Weiß standen */
+    .problem-card, .service-card, .pricing-card, .demo-card, .faq-item,
+    .ai-feature-card, .chat-widget, .cookie-banner, .contact-item,
+    .window-frame, .snippet-ui, .snippet-browser { background: var(--rd-ink-3) !important; border-color: var(--c-border) !important; }
+    .problem-card, .service-card, .pricing-card, .demo-card, .faq-item { box-shadow: none; }
+    .service-card-accent { background: linear-gradient(150deg, rgba(79,127,255,.16), rgba(139,92,246,.12)) !important; }
+
+    /* Sektionen: dunkle Basis, wenige helle Ruhepunkte (Leistungen/Beispiele/FAQ/Pakete) */
+    .bg-light, #angebote { background: var(--rd-ink-2) !important; }
+    .trust-bar { background: var(--c-bg); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
+    .client-logos-section { background: var(--rd-ink-2); border-bottom: 1px solid var(--c-border); }
+    .client-logo-img { filter: brightness(0) invert(1) opacity(.7); }
+    .ai-section { background: var(--rd-ink-2); }
+    .ai-feature-card p { color: var(--c-text-2); }
+
+    /* Nav */
+    .nav.scrolled { background: rgba(5,7,13,.9) !important; }
+    .nav-links a, .nav-client-login { color: var(--c-text-2); }
+    .nav-burger span { background: var(--c-text); }
+    .mobile-menu { background: var(--rd-ink-2); border-left: 1px solid var(--c-border); }
+    .mobile-menu ul li a { color: var(--c-text); border-color: var(--c-border); }
+    .mobile-close { color: var(--c-text-2); }
+
+    /* Hero: Punktraster + Glow-Verläufe hinter der 3D-Karte */
+    .hero-pin-inner::before {
+      background-image: radial-gradient(circle, rgba(255,255,255,.08) 1px, transparent 1px) !important;
+      background-size: 26px 26px !important;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 0%, transparent 100%) !important;
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 0%, transparent 100%) !important;
+    }
+    .hero-bg-blob { background: radial-gradient(circle, rgba(139,92,246,.16) 0%, transparent 70%) !important; width: 900px !important; height: 900px !important; }
+    .hero-badge { background: rgba(255,255,255,.06) !important; border-color: var(--c-border-2) !important; color: var(--rd-cyan) !important; }
+    .badge-dot { background: var(--rd-cyan) !important; }
+    .text-gradient { background: linear-gradient(120deg, var(--rd-cyan), var(--c-accent) 55%, var(--rd-accent-2)) !important; -webkit-background-clip: text !important; background-clip: text !important; }
+
+    /* Laufender Marquee-Streifen unter dem Hero */
+    .rd-marquee { border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); background: var(--rd-ink-2); overflow: hidden; padding: 16px 0; }
+    .rd-marquee-track { display: flex; width: max-content; animation: rdMarqueeScroll 32s linear infinite; }
+    .rd-marquee-track span { display: flex; align-items: center; gap: 24px; padding: 0 24px; font-family: 'Space Grotesk', sans-serif; font-size: 13.5px; font-weight: 600; color: var(--c-text-3); white-space: nowrap; }
+    .rd-marquee-track span::after { content: '✦'; color: var(--c-accent); margin-left: 24px; }
+    @keyframes rdMarqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .rd-marquee-track { animation: none; } }
+
+    /* Pakete: gemeinsamer CTA statt 3 Einzel-Buttons */
+    .rd-pricing-cta { text-align: center; margin-top: 36px; }
+
+    /* Über mich (neue Sektion) */
+    .rd-about-wrap { display: grid; grid-template-columns: 200px 1fr; gap: 44px; align-items: start; max-width: 800px; margin: 0 auto; }
+    .rd-about-photo {
+      width: 200px; height: 200px; border-radius: 20px; flex-shrink: 0;
+      background: linear-gradient(145deg, rgba(79,127,255,.14), rgba(139,92,246,.14));
+      border: 1.5px dashed var(--c-border-2); display: flex; align-items: center; justify-content: center;
+      font-size: 12.5px; color: var(--c-text-3); text-align: center; padding: 18px;
+    }
+    .rd-about-text p { font-size: 15.5px; color: var(--c-text-2); line-height: 1.8; margin-bottom: 16px; }
+    .rd-about-text strong { color: var(--c-text); }
+    .rd-about-note { margin-top: 20px; background: rgba(79,127,255,.08); border: 1px dashed rgba(79,127,255,.35); border-radius: 12px; padding: 14px 18px; font-size: 13px; color: #B9C6F5; line-height: 1.6; }
+    .rd-about-note strong { color: var(--rd-cyan); display: block; margin-bottom: 4px; }
+    @media (max-width: 640px) { .rd-about-wrap { grid-template-columns: 1fr; text-align: center; justify-items: center; } }
+
+    /* Barrierefreiheit */
+    .rd-skip-link {
+      position: fixed; top: -100px; left: 16px; z-index: 300;
+      background: var(--c-accent); color: #fff; padding: 12px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; transition: top .2s ease;
+    }
+    .rd-skip-link:focus { top: 16px; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--rd-cyan); outline-offset: 3px;
+    }
+  </style>
 
   <!-- 3D-Glaskarte im Hero -->
   <script type="importmap">
@@ -103,6 +205,8 @@
 </head>
 <body>
 
+  <a href="#main" class="rd-skip-link">Zum Inhalt springen</a>
+
   <!-- ===== NAVIGATION ===== -->
   <nav class="nav" id="nav">
     <div class="container nav-inner">
@@ -114,6 +218,7 @@
         <li><a href="#leistungen">Leistungen</a></li>
         <li><a href="#beispiele">Beispiele</a></li>
         <li><a href="#ablauf">Ablauf</a></li>
+        <li><a href="#ueber-mich">Über mich</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#kontakt">Kontakt</a></li>
       </ul>
@@ -132,6 +237,7 @@
       <li><a href="#leistungen" class="mobile-link">Leistungen</a></li>
       <li><a href="#beispiele" class="mobile-link">Beispiele</a></li>
       <li><a href="#ablauf" class="mobile-link">Ablauf</a></li>
+      <li><a href="#ueber-mich" class="mobile-link">Über mich</a></li>
       <li><a href="#faq" class="mobile-link">FAQ</a></li>
       <li><a href="#kontakt" class="mobile-link">Kontakt</a></li>
       <li><a href="/kunden-login" class="mobile-link">Kundenlogin →</a></li>
@@ -140,7 +246,7 @@
   </div>
   <div class="mobile-overlay" id="mobileOverlay"></div>
 
-  <main>
+  <main id="main">
 
     <!-- ===== HERO ===== -->
     <section class="hero hero-pin-outer" id="hero">
@@ -194,6 +300,14 @@
       <div class="hero-bg-blob"></div>
       </div><!-- end hero-pin-inner -->
     </section>
+
+    <!-- ===== MARQUEE-STREIFEN ===== -->
+    <div class="rd-marquee" aria-hidden="true">
+      <div class="rd-marquee-track">
+        <span>Handwerker</span><span>Selbstständige</span><span>Dienstleister</span><span>Landingpages</span><span>CMS-Systeme</span><span>Mobile-First</span><span>SEO-Grundlagen</span>
+        <span>Handwerker</span><span>Selbstständige</span><span>Dienstleister</span><span>Landingpages</span><span>CMS-Systeme</span><span>Mobile-First</span><span>SEO-Grundlagen</span>
+      </div>
+    </div>
 
     <!-- ===== ZUFRIEDENE KUNDEN (Logo-Streifen) ===== -->
     <section class="client-logos-section" aria-label="Zufriedene Kunden">
@@ -428,6 +542,11 @@
             <h3>Texte & Struktur</h3>
             <p>Klare, überzeugende Texte und eine Seitenstruktur, die Besucher direkt zur Anfrage führt.</p>
           </div>
+          <div class="service-card reveal">
+            <div class="service-icon">⚙️</div>
+            <h3>CMS-Systeme</h3>
+            <p>Möchten Sie Inhalte nach Fertigstellung selbst pflegen? Ich richte Ihnen ein individuelles CMS ein – kinderleicht bedienbar, auch ohne Programmierkenntnisse.</p>
+          </div>
           <div class="service-card service-card-accent reveal">
             <div class="service-icon">🤖</div>
             <h3>KI-Funktionen</h3>
@@ -459,7 +578,6 @@
               <li><span class="check">✓</span> Modernes, klares Design</li>
               <li><span class="check">✓</span> Schnelle Lieferzeit</li>
             </ul>
-            <a href="#kontakt" class="btn btn-outline btn-full">Anfragen</a>
           </div>
 
           <div class="pricing-card pricing-featured reveal">
@@ -476,7 +594,6 @@
               <li><span class="check">✓</span> SEO-Grundlagen</li>
               <li><span class="check">✓</span> Persönliche Betreuung</li>
             </ul>
-            <a href="#kontakt" class="btn btn-primary btn-full">Anfragen</a>
           </div>
 
           <div class="pricing-card reveal">
@@ -493,8 +610,10 @@
               <li><span class="check">✓</span> Optional: KI-Funktionen</li>
               <li><span class="check">✓</span> Erweiterbar nach Bedarf</li>
             </ul>
-            <a href="#kontakt" class="btn btn-outline btn-full">Anfragen</a>
           </div>
+        </div>
+        <div class="rd-pricing-cta reveal">
+          <a href="#kontakt" class="btn btn-primary btn-large">Passendes Paket anfragen →</a>
         </div>
       </div>
     </section>
@@ -608,6 +727,26 @@
               <h3>Betreuung & Anpassungen</h3>
               <p>Auch nach dem Launch bin ich für Sie da – für Änderungen, Erweiterungen und alle weiteren Fragen.</p>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ÜBER MICH ===== -->
+    <section class="section-padding" id="ueber-mich">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Über mich</div>
+          <h2 class="section-headline">Hallo, ich bin Tim.</h2>
+        </div>
+        <div class="rd-about-wrap reveal">
+          <div class="rd-about-photo">Platz für dein Foto</div>
+          <div class="rd-about-text">
+            <p>Bevor ich Websites gebaut habe, habe ich gemauert: Ich bin <strong>gelernter Maurer</strong> und im Handwerk großgeworden. Irgendwann hat mich das Webdesign gepackt, und ich habe mich umorientiert – die Mischung ist heute mein Vorteil. Ich weiß aus erster Hand, wie viel gute Arbeit hinter einem Handwerksbetrieb steckt, und genau deshalb ärgert es mich, wenn diese Qualität online nicht rüberkommt.</p>
+            <p>Wenn du bei TK Webtalent anfragst, schreibst du nicht mit einem Team oder einem Verkäufer, sondern <strong>direkt mit mir</strong>. Ich kümmere mich persönlich um jedes Projekt – vom ersten Gespräch über das Design bis zur technischen Umsetzung.</p>
+            <p>Mein Fokus liegt auf <strong>Selbstständigen, Handwerksbetrieben und Dienstleistern</strong> – mit modernen, schnellen und mobiloptimierten Websites, ohne komplizierten Technik-Stress für dich. Ich arbeite bewusst <strong>ohne Agentur-Floskeln</strong>: keine Warteschleifen, keine Templates von der Stange, sondern eine feste Ansprechperson von Anfang bis Ende.</p>
+            <p>Standort <strong>Krauchenwies (Baden-Württemberg)</strong> – gearbeitet wird deutschlandweit, remote und unkompliziert. Erreichbar Mo–Fr, 9–18 Uhr, meistens noch am selben Tag.</p>
+            <div class="rd-about-note"><strong>Hinweis für Tim:</strong>Für noch mehr Persönlichkeit fehlt nur noch ein echtes Foto von dir.</div>
           </div>
         </div>
       </div>
@@ -823,6 +962,7 @@
           <a href="#leistungen">Leistungen</a>
           <a href="#beispiele">Beispiele</a>
           <a href="#ablauf">Ablauf</a>
+          <a href="#ueber-mich">Über mich</a>
           <a href="#faq">FAQ</a>
           <a href="#kontakt">Kontakt</a>
         </div>
