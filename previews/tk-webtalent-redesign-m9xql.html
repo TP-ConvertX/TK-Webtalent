@@ -24,7 +24,7 @@
       --ink: #05070D; --ink-2: #090C16; --ink-3: #10162A;
       --line: rgba(255,255,255,.08); --line-2: rgba(255,255,255,.14);
       --accent: #4F7FFF; --accent-2: #8B5CF6; --cyan: #22D3EE;
-      --text-2: rgba(234,237,247,.64); --text-3: rgba(234,237,247,.38);
+      --text-2: rgba(234,237,247,.68); --text-3: rgba(234,237,247,.5);
     }
     .bg-2 { background: var(--ink-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
@@ -65,6 +65,46 @@
     .nav-links a:hover { color: #fff; }
     .nav-cta { margin-left: auto; background: linear-gradient(120deg, var(--accent), var(--accent-2)); color: #fff; padding: 11px 22px; border-radius: 100px; font-size: 13.5px; font-weight: 700; transition: all .2s; }
     .nav-cta:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .nav-ai-link { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* ── BARRIEREFREIHEIT ── */
+    .skip-link {
+      position: fixed; top: -100px; left: 16px; z-index: 300;
+      background: var(--accent); color: #fff; padding: 12px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; transition: top .2s ease;
+    }
+    .skip-link:focus { top: 16px; }
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track { animation: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ── HAMBURGER / MOBILES MENÜ (wie tk-webtalent.de) ── */
+    .nav-burger { display: none; flex-direction: column; gap: 5px; width: 32px; padding: 4px; margin-left: auto; background: none; border: none; }
+    .nav-burger span { display: block; height: 2px; background: #fff; border-radius: 2px; }
+    .mobile-menu {
+      display: none; flex-direction: column; position: fixed; top: 0; right: 0; z-index: 200;
+      width: min(320px, 85vw); height: 100vh; background: var(--ink-2); border-left: 1px solid var(--line);
+      padding: 90px 32px 40px; gap: 8px; box-shadow: -20px 0 60px rgba(0,0,0,.4);
+      transform: translateX(100%); transition: transform .35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-close { position: absolute; top: 20px; right: 24px; font-size: 22px; color: var(--text-2); background: none; border: none; padding: 8px; }
+    .mobile-menu ul { display: flex; flex-direction: column; gap: 4px; }
+    .mobile-menu ul li a { display: block; font-size: 18px; font-weight: 600; padding: 12px 0; color: #fff; border-bottom: 1px solid var(--line); }
+    .mobile-cta { margin-top: 28px; justify-content: center; }
+    .mobile-overlay {
+      display: none; position: fixed; inset: 0; z-index: 190; background: rgba(0,0,0,.6); backdrop-filter: blur(3px);
+      opacity: 0; transition: opacity .3s ease;
+    }
+    .mobile-overlay.open { display: block; opacity: 1; }
+    @media (max-width: 880px) {
+      .nav-burger { display: flex; }
+      .mobile-menu { display: flex; }
+    }
 
     /* ── HERO ── */
     /* Kein Sticky-Pin (230vh-Trick) mehr — hat auf manchen Geräten dazu
@@ -180,12 +220,54 @@
     .faq-a-inner { padding: 0 22px 20px; font-size: 14.5px; color: var(--text-2); line-height: 1.7; }
 
     /* ── KONTAKT ── */
-    .contact-section { position: relative; overflow: hidden; text-align: center; }
-    .contact-inner { position: relative; max-width: 620px; margin: 0 auto; }
-    .contact-section p { color: var(--text-2); font-size: 16px; line-height: 1.7; margin-bottom: 34px; }
-    .contact-facts { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; padding-top: 34px; margin-top: 40px; border-top: 1px solid var(--line); }
+    .contact-section { position: relative; overflow: hidden; }
+    .contact-facts { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
     .contact-fact { text-align: left; font-size: 14px; color: var(--text-2); }
     .contact-fact strong { display: block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--cyan); margin-bottom: 5px; }
+    .contact-note { display: flex; gap: 10px; font-size: 13.5px; color: var(--text-2); background: rgba(79,127,255,.08); border: 1px solid rgba(79,127,255,.24); border-radius: 12px; padding: 14px 16px; margin-top: 24px; }
+
+    /* ── KI-CHAT-WIDGET (wie tk-webtalent.de) ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: start; text-align: left; }
+    .contact-info h3 { font-size: 20px; margin-bottom: 20px; }
+    .contact-items { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+    .contact-item { display: flex; gap: 12px; align-items: flex-start; }
+    .contact-item .ci-icon { font-size: 18px; flex-shrink: 0; }
+    .contact-item strong { display: block; font-size: 13px; color: #fff; margin-bottom: 2px; }
+    .contact-item p { font-size: 14px; color: var(--text-2); }
+    .chat-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .chat-widget { background: var(--ink-3); border: 1px solid var(--line-2); border-radius: 20px; box-shadow: 0 24px 60px rgba(0,0,0,.35); overflow: hidden; display: flex; flex-direction: column; }
+    .chat-header { background: rgba(0,0,0,.25); padding: 16px 20px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); }
+    .chat-avatar-wrap { position: relative; flex-shrink: 0; }
+    .chat-avatar { width: 42px; height: 42px; background: linear-gradient(140deg, var(--accent), var(--accent-2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #fff; }
+    .chat-online-dot { position: absolute; bottom: 1px; right: 1px; width: 10px; height: 10px; background: #22C55E; border-radius: 50%; border: 2px solid var(--ink-3); }
+    .chat-header-info { flex: 1; }
+    .chat-name { font-size: 14.5px; font-weight: 700; color: #fff; }
+    .chat-subtitle { font-size: 12px; color: var(--text-2); }
+    .chat-messages { flex: 1; padding: 22px 20px; display: flex; flex-direction: column; gap: 12px; min-height: 260px; max-height: 380px; overflow-y: auto; scroll-behavior: smooth; }
+    .chat-msg { display: flex; gap: 10px; align-items: flex-end; }
+    .chat-msg.user { flex-direction: row-reverse; }
+    .msg-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .chat-msg.user .msg-avatar { background: var(--ink-2); border: 1px solid var(--line-2); }
+    .msg-bubble { max-width: 78%; padding: 11px 16px; border-radius: 18px; font-size: 14px; line-height: 1.55; color: #fff; background: var(--ink-2); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+    .chat-msg.user .msg-bubble { background: var(--accent); border-color: var(--accent); border-bottom-right-radius: 4px; border-bottom-left-radius: 18px; }
+    .typing-bubble { display: flex; gap: 5px; align-items: center; padding: 14px 18px; }
+    .typing-bubble span { width: 6px; height: 6px; background: var(--text-3); border-radius: 50%; animation: typingDot 1.2s infinite; }
+    .typing-bubble span:nth-child(2) { animation-delay: .2s; }
+    .typing-bubble span:nth-child(3) { animation-delay: .4s; }
+    @keyframes typingDot { 0%,60%,100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-5px); opacity: 1; } }
+    .chat-input-area { padding: 16px 20px; border-top: 1px solid var(--line); background: rgba(0,0,0,.15); }
+    .chat-text-row { display: flex; gap: 10px; }
+    .chat-text-input { flex: 1; padding: 11px 16px; border: 1.5px solid var(--line-2); border-radius: 12px; font-size: 16px; font-family: inherit; outline: none; background: var(--ink-2); color: #fff; }
+    .chat-text-input::placeholder { color: var(--text-3); }
+    .chat-text-input:focus { border-color: var(--accent); }
+    .chat-send-btn { padding: 11px 20px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; white-space: nowrap; }
+    .chat-send-btn:hover { background: var(--accent-2); }
+    .chat-send-btn:disabled { opacity: .5; }
+    .chat-alternative { font-size: 13px; color: var(--text-3); text-align: center; }
+    .chat-alternative a { color: var(--cyan); font-weight: 600; }
+    @media (max-width: 880px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
 
     /* ── FOOTER ── */
     .footer { padding: 44px 0; border-top: 1px solid var(--line); text-align: center; }
@@ -232,6 +314,8 @@
 </head>
 <body>
 
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
   <nav class="nav" id="nav">
     <div class="container nav-inner">
       <a href="#" class="nav-logo">
@@ -244,13 +328,33 @@
         <li><a href="#beispiele">Beispiele</a></li>
         <li><a href="#ueber-mich">Über mich</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kontakt" class="nav-ai-link">🤖 KI fragen</a></li>
       </ul>
       <a href="#kontakt" class="nav-cta">Jetzt anfragen</a>
+      <button type="button" class="nav-burger" id="navBurger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
+  <!-- Mobiles Menü (wie auf tk-webtalent.de) -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button type="button" class="mobile-close" id="mobileClose" aria-label="Menü schließen">✕</button>
+    <ul>
+      <li><a href="#leistungen" class="mobile-link">Leistungen</a></li>
+      <li><a href="#pakete" class="mobile-link">Pakete</a></li>
+      <li><a href="#beispiele" class="mobile-link">Beispiele</a></li>
+      <li><a href="#ueber-mich" class="mobile-link">Über mich</a></li>
+      <li><a href="#faq" class="mobile-link">FAQ</a></li>
+      <li><a href="#kontakt" class="mobile-link">🤖 KI fragen</a></li>
+    </ul>
+    <a href="#kontakt" class="btn btn-grad mobile-cta mobile-link">Jetzt kostenlos anfragen</a>
+  </div>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
   <!-- HERO: Scroll-Pin mit der echten 3D-Glaskarte von tk-webtalent.de -->
   <section class="hero hero-pin-outer" id="heroSection">
+    <span id="main" tabindex="-1"></span>
     <div class="hero-pin-inner">
     <div class="space-bg"></div>
     <div class="glow g1"></div>
@@ -279,7 +383,7 @@
     </div><!-- end hero-pin-inner -->
   </section>
 
-  <div class="marquee-wrap">
+  <div class="marquee-wrap" aria-hidden="true">
     <div class="marquee-track">
       <div class="marquee-item">Handwerker <span class="sep">✦</span></div>
       <div class="marquee-item">Selbstständige <span class="sep">✦</span></div>
@@ -469,13 +573,13 @@
         <p class="s-sub" style="margin:0 auto">Alles Wichtige auf einen Blick – ehrlich und ohne Agentur-Floskeln.</p>
       </div>
       <div class="faq-list" id="faqList">
-        <div class="faq-item"><button class="faq-q"><span>Brauche ich schon Texte und Bilder?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-a-inner">Nicht zwingend. Ich helfe Ihnen, die richtigen Texte zu erarbeiten. Bilder können wir durch hochwertige Stockfotos ersetzen, oder Sie liefern eigene Fotos – beides funktioniert sehr gut.</div></div></div>
-        <div class="faq-item"><button class="faq-q"><span>Wie lange dauert die Erstellung einer Website?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-a-inner">Eine einfache Seite ist oft in 1–2 Wochen fertig. Eine umfangreichere Business-Website kann 2–4 Wochen dauern. In dringenden Fällen lässt sich oft auch schneller liefern.</div></div></div>
-        <div class="faq-item"><button class="faq-q"><span>Ist die Website auch fürs Handy optimiert?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-a-inner">Ja, selbstverständlich. Alle Websites, die ich erstelle, sind vollständig mobiloptimiert und sehen auf Smartphone, Tablet und Desktop einwandfrei aus.</div></div></div>
-        <div class="faq-item"><button class="faq-q"><span>Kann meine alte Website überarbeitet werden?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-a-inner">Ja. Wenn Sie bereits eine Website haben, die modernisiert werden soll, schaue ich sie mir gerne an und mache Ihnen einen konkreten Vorschlag.</div></div></div>
-        <div class="faq-item"><button class="faq-q"><span>Kann ich später Funktionen erweitern lassen?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-a-inner">Ja. Die Websites sind so gebaut, dass sie jederzeit erweitert werden können – z.B. mit einem Online-Shop, einem Buchungssystem oder KI-Funktionen.</div></div></div>
-        <div class="faq-item"><button class="faq-q"><span>Ist die Website suchmaschinenfreundlich aufgebaut?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-a-inner">Ja. Saubere HTML-Struktur, schnelle Ladezeiten, Mobile-First und optimale Seitenstruktur – die Grundlagen für gutes Google-Ranking.</div></div></div>
-        <div class="faq-item"><button class="faq-q"><span>Was brauche ich für den Start?</span><span class="faq-icon">+</span></button><div class="faq-a"><div class="faq-a-inner">Eigentlich nur eine Idee, was Ihre Website leisten soll. Ich führe Sie durch den gesamten Prozess – von der Domain über das Design bis zur Veröffentlichung.</div></div></div>
+        <div class="faq-item"><button class="faq-q"><span>Brauche ich schon Texte und Bilder?</span><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Nicht zwingend. Ich helfe Ihnen, die richtigen Texte zu erarbeiten. Bilder können wir durch hochwertige Stockfotos ersetzen, oder Sie liefern eigene Fotos – beides funktioniert sehr gut.</div></div></div>
+        <div class="faq-item"><button class="faq-q"><span>Wie lange dauert die Erstellung einer Website?</span><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Eine einfache Seite ist oft in 1–2 Wochen fertig. Eine umfangreichere Business-Website kann 2–4 Wochen dauern. In dringenden Fällen lässt sich oft auch schneller liefern.</div></div></div>
+        <div class="faq-item"><button class="faq-q"><span>Ist die Website auch fürs Handy optimiert?</span><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Ja, selbstverständlich. Alle Websites, die ich erstelle, sind vollständig mobiloptimiert und sehen auf Smartphone, Tablet und Desktop einwandfrei aus.</div></div></div>
+        <div class="faq-item"><button class="faq-q"><span>Kann meine alte Website überarbeitet werden?</span><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Ja. Wenn Sie bereits eine Website haben, die modernisiert werden soll, schaue ich sie mir gerne an und mache Ihnen einen konkreten Vorschlag.</div></div></div>
+        <div class="faq-item"><button class="faq-q"><span>Kann ich später Funktionen erweitern lassen?</span><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Ja. Die Websites sind so gebaut, dass sie jederzeit erweitert werden können – z.B. mit einem Online-Shop, einem Buchungssystem oder KI-Funktionen.</div></div></div>
+        <div class="faq-item"><button class="faq-q"><span>Ist die Website suchmaschinenfreundlich aufgebaut?</span><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Ja. Saubere HTML-Struktur, schnelle Ladezeiten, Mobile-First und optimale Seitenstruktur – die Grundlagen für gutes Google-Ranking.</div></div></div>
+        <div class="faq-item"><button class="faq-q"><span>Was brauche ich für den Start?</span><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Eigentlich nur eine Idee, was Ihre Website leisten soll. Ich führe Sie durch den gesamten Prozess – von der Domain über das Design bis zur Veröffentlichung.</div></div></div>
       </div>
     </div>
   </section>
@@ -483,12 +587,45 @@
   <!-- KONTAKT -->
   <section class="section-pad bg-2 contact-section" id="kontakt">
     <div class="glow g1" style="top:0;left:50%;margin-left:-400px;width:420px;height:420px;opacity:.16"></div>
-    <div class="container contact-inner reveal">
-      <span class="s-eyebrow">Kontakt</span>
-      <h2 class="s-title">Ihr persönliches Angebot in 2 Minuten</h2>
-      <p>Keine Agentur-Floskeln. Ich antworte persönlich und direkt – meistens noch am selben Tag.</p>
-      <a href="mailto:kontakt@tp-convertx.de" class="btn btn-grad">Jetzt kostenlos anfragen</a>
-      <div class="contact-facts">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Kontakt</span>
+        <h2 class="s-title">Ihr persönliches Angebot in 2 Minuten</h2>
+        <p class="s-sub" style="margin:0 auto">Erzähl mir kurz von deinem Projekt – der KI-Assistent nimmt deine Anfrage auf, ich melde mich persönlich zurück.</p>
+      </div>
+      <div class="contact-grid reveal">
+
+        <div class="contact-info">
+          <h3>Direkt Kontakt aufnehmen</h3>
+          <div class="contact-items">
+            <div class="contact-item"><span class="ci-icon">📧</span><div><strong>E-Mail</strong><p>kontakt@tp-convertx.de</p></div></div>
+            <div class="contact-item"><span class="ci-icon">📍</span><div><strong>Standort</strong><p>Krauchenwies (BDW) – deutschlandweit tätig</p></div></div>
+            <div class="contact-item"><span class="ci-icon">⏰</span><div><strong>Erreichbar</strong><p>Mo–Fr, 9–18 Uhr</p></div></div>
+            <div class="contact-item"><span class="ci-icon">💬</span><div><strong>Erstes Gespräch</strong><p>Immer kostenlos & unverbindlich</p></div></div>
+          </div>
+          <div class="contact-note"><span>💡</span><p>Keine Agentur-Floskeln. Ich antworte persönlich und direkt – meistens noch am selben Tag.</p></div>
+        </div>
+
+        <div class="chat-wrap">
+          <div class="chat-widget" id="chatWidget">
+            <div class="chat-header">
+              <div class="chat-avatar-wrap">
+                <div class="chat-avatar">TK</div>
+                <span class="chat-online-dot"></span>
+              </div>
+              <div class="chat-header-info">
+                <div class="chat-name">KI-Assistent · TK Webtalent</div>
+                <div class="chat-subtitle" id="chatSubtitle">Online – antwortet sofort</div>
+              </div>
+            </div>
+            <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-label="Chatverlauf"></div>
+            <div class="chat-input-area" id="chatInputArea"></div>
+          </div>
+          <p class="chat-alternative">Lieber klassisch? <a href="mailto:kontakt@tp-convertx.de">E-Mail schreiben →</a></p>
+        </div>
+
+      </div>
+      <div class="contact-facts reveal" style="margin-top:48px;padding-top:40px;border-top:1px solid var(--line)">
         <div class="contact-fact"><strong>Standort</strong>Krauchenwies (BDW) – deutschlandweit</div>
         <div class="contact-fact"><strong>Erreichbar</strong>Mo–Fr, 9–18 Uhr</div>
         <div class="contact-fact"><strong>E-Mail</strong>kontakt@tp-convertx.de</div>
@@ -514,10 +651,15 @@
 
     try {
       document.querySelectorAll('.faq-item').forEach(item => {
-        item.querySelector('.faq-q').addEventListener('click', () => {
+        const q = item.querySelector('.faq-q');
+        q.setAttribute('aria-expanded', 'false');
+        q.addEventListener('click', () => {
           const wasOpen = item.classList.contains('open');
-          document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-          if (!wasOpen) item.classList.add('open');
+          document.querySelectorAll('.faq-item.open').forEach(i => {
+            i.classList.remove('open');
+            i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+          });
+          if (!wasOpen) { item.classList.add('open'); q.setAttribute('aria-expanded', 'true'); }
         });
       });
     } catch (e) { console.error('[faq]', e); }
@@ -528,6 +670,165 @@
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
     } catch (e) { console.error('[nav]', e); }
+
+    /* Hamburger-Menü (wie tk-webtalent.de) */
+    try {
+      const burger   = document.getElementById('navBurger');
+      const menu     = document.getElementById('mobileMenu');
+      const closeBtn = document.getElementById('mobileClose');
+      const overlay  = document.getElementById('mobileOverlay');
+      const links    = document.querySelectorAll('.mobile-link');
+
+      const openMenu = () => {
+        menu.classList.add('open'); overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        burger.setAttribute('aria-expanded', 'true');
+      };
+      const closeMenu = () => {
+        menu.classList.remove('open'); overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        burger.setAttribute('aria-expanded', 'false');
+      };
+      burger?.addEventListener('click', openMenu);
+      closeBtn?.addEventListener('click', closeMenu);
+      overlay?.addEventListener('click', closeMenu);
+      links.forEach(link => link.addEventListener('click', closeMenu));
+    } catch (e) { console.error('[burger]', e); }
+
+    /* KI-Chat: identische Logik wie js/main.js, ruft die echte, bereits
+       live laufende API auf tk-webtalent.de auf. */
+    try {
+      const chatMessages  = document.getElementById('chatMessages');
+      const chatInputArea = document.getElementById('chatInputArea');
+      const chatSubtitle  = document.getElementById('chatSubtitle');
+
+      if (chatMessages) {
+        const OPENING_MESSAGE = '👋 Hallo! Ich bin der digitale Assistent von TK Webtalent. Erzähl mir kurz: worum geht es bei deinem Projekt?';
+        let conversationHistory = [];
+        let chatBusy = false, chatDone = false;
+
+        const scrollChat = () => { chatMessages.scrollTop = chatMessages.scrollHeight; };
+
+        function addMsg(text, who) {
+          const wrap = document.createElement('div');
+          wrap.className = 'chat-msg ' + who;
+          const av = document.createElement('div');
+          av.className = 'msg-avatar';
+          av.textContent = who === 'bot' ? 'TK' : '●';
+          const bubble = document.createElement('div');
+          bubble.className = 'msg-bubble';
+          bubble.textContent = text;
+          wrap.appendChild(av); wrap.appendChild(bubble);
+          chatMessages.appendChild(wrap);
+          scrollChat();
+        }
+
+        function showTyping() {
+          const wrap = document.createElement('div');
+          wrap.className = 'chat-msg bot';
+          wrap.id = 'typingIndicator';
+          const av = document.createElement('div');
+          av.className = 'msg-avatar';
+          av.textContent = 'TK';
+          const bubble = document.createElement('div');
+          bubble.className = 'msg-bubble typing-bubble';
+          bubble.innerHTML = '<span></span><span></span><span></span>';
+          wrap.appendChild(av); wrap.appendChild(bubble);
+          chatMessages.appendChild(wrap);
+          scrollChat();
+        }
+
+        function removeTyping() {
+          const t = document.getElementById('typingIndicator');
+          if (t) t.remove();
+        }
+
+        function renderInputRow() {
+          chatInputArea.innerHTML = '';
+          const row = document.createElement('div');
+          row.className = 'chat-text-row';
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'chat-text-input';
+          input.placeholder = 'Deine Antwort…';
+          input.setAttribute('aria-label', 'Deine Antwort an den KI-Assistenten');
+          const send = document.createElement('button');
+          send.type = 'button';
+          send.className = 'chat-send-btn';
+          send.textContent = 'Senden →';
+          send.disabled = true;
+          input.addEventListener('input', () => { send.disabled = input.value.trim() === '' || chatBusy; });
+          input.addEventListener('keydown', e => { if (e.key === 'Enter' && !send.disabled) sendUserMessage(input.value.trim(), input); });
+          send.addEventListener('click', () => { if (!send.disabled) sendUserMessage(input.value.trim(), input); });
+          row.appendChild(input); row.appendChild(send);
+          chatInputArea.appendChild(row);
+        }
+
+        function renderDoneStatus() {
+          chatInputArea.innerHTML = '';
+          const status = document.createElement('p');
+          status.style.cssText = 'font-size:13px;color:#94A3B8;text-align:center;padding:6px 0';
+          status.textContent = '✓ Tim prüft deine Anfrage und meldet sich per E-Mail bei dir.';
+          chatInputArea.appendChild(status);
+        }
+
+        async function sendUserMessage(value, input) {
+          if (!value || chatBusy || chatDone) return;
+          chatBusy = true;
+          if (input) { input.value = ''; input.disabled = true; }
+          const sendBtn = chatInputArea.querySelector('.chat-send-btn');
+          if (sendBtn) sendBtn.disabled = true;
+
+          addMsg(value, 'user');
+          conversationHistory.push({ role: 'user', content: value });
+          showTyping();
+
+          try {
+            const res = await fetch('https://tk-webtalent.de/api/chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ messages: conversationHistory })
+            });
+            const data = await res.json();
+            removeTyping();
+
+            if (!res.ok || !data.reply) {
+              addMsg('Entschuldige, gerade gibt es ein technisches Problem. Versuch es gleich nochmal oder schreib mir direkt eine E-Mail.', 'bot');
+              if (input) input.disabled = false;
+              chatBusy = false;
+              return;
+            }
+
+            addMsg(data.reply, 'bot');
+            conversationHistory.push({ role: 'assistant', content: data.reply });
+
+            if (data.done) {
+              chatDone = true;
+              if (chatSubtitle) chatSubtitle.textContent = '✓ Anfrage übermittelt';
+              renderDoneStatus();
+            } else {
+              chatBusy = false;
+              renderInputRow();
+            }
+          } catch (e) {
+            removeTyping();
+            addMsg('Verbindungsproblem – bitte versuch es gleich nochmal.', 'bot');
+            if (input) input.disabled = false;
+            chatBusy = false;
+          }
+        }
+
+        setTimeout(() => {
+          showTyping();
+          setTimeout(() => {
+            removeTyping();
+            addMsg(OPENING_MESSAGE, 'bot');
+            conversationHistory.push({ role: 'assistant', content: OPENING_MESSAGE });
+            renderInputRow();
+          }, 1000);
+        }, 500);
+      }
+    } catch (e) { console.error('[chat]', e); }
 
     /* Steuert die 3D-Glaskarte (js/hero-glass-card.js, unten eingebunden):
        dreht sich, während der Hero-Bereich ganz normal wegscrollt. Rein
