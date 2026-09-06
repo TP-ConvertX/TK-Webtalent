@@ -53,7 +53,7 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 800,
+        max_tokens: 1500,
         system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
         tools: [GIVE_ASSESSMENT_TOOL],
         tool_choice: { type: 'tool', name: 'give_assessment' },
