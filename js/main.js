@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (chatMessages) {
 
-  const OPENING_MESSAGE = '👋 Hallo! Ich bin der digitale Assistent von TK Webtalent. Erzähl mir kurz: worum geht es bei deinem Projekt?';
+  const OPENING_MESSAGE = '👋 Hallo! Ich bin der digitale Assistent von TK Webtalent. Möchtest du ein unverbindliches Angebot für dein Projekt, oder hast du erstmal eine Frage?';
 
   let conversationHistory = [];
   let chatBusy  = false;
