@@ -230,8 +230,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (t) t.remove();
   }
 
-  function renderInputRow() {
+  function renderInputRow(choices) {
     chatInputArea.innerHTML = '';
+
+    if (Array.isArray(choices) && choices.length) {
+      const choicesWrap = document.createElement('div');
+      choicesWrap.className = 'chat-choices';
+      choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chat-choice-btn';
+        btn.textContent = choice;
+        btn.addEventListener('click', () => { if (!chatBusy) sendUserMessage(choice, null); });
+        choicesWrap.appendChild(btn);
+      });
+      chatInputArea.appendChild(choicesWrap);
+    }
+
     const row = document.createElement('div');
     row.className = 'chat-text-row';
     const input = document.createElement('input');
@@ -294,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDoneStatus();
       } else {
         chatBusy = false;
-        renderInputRow();
+        renderInputRow(data.choices);
       }
     } catch (e) {
       removeTyping();

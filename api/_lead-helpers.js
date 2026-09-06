@@ -59,6 +59,9 @@ PFLICHTINFORMATIONEN, DIE DU IM ANGEBOTS-MODUS SAMMELN MUSST
 7. Optional: ein Budget-Hinweis, falls der Kunde von sich aus etwas nennt (nicht aktiv nach einer Zahl fragen, aber aufnehmen falls erwähnt)
 8. Ob der Kunde Interesse an einer laufenden Betreuung der Website hat (siehe unten) – als "ja", "nein" oder "unsicher"
 
+ANTWORT-BUTTONS (suggest_reply_options)
+Bei JEDER Frage in diesem Modus außer der Frage nach Name und der Frage nach der E-Mail-Adresse rufst du im selben Zug wie deine Text-Antwort zusätzlich das Tool "suggest_reply_options" auf, mit 2-5 kurzen, zur genau gestellten Frage passenden Antwortmöglichkeiten (der Kunde tippt sie an, statt zu tippen). Beispiele: Bei der Frage nach dem Hauptziel z.B. ["Mehr Kundenanfragen", "Professionellerer Auftritt", "Website komplett neu", "Bestehende verbessern"]. Bei einer Ja/Nein-Frage z.B. ["Ja", "Nein"] oder ["Ja", "Nein", "Bin mir unsicher"]. Bei der Betreuungs-Frage z.B. ["Ja, interessiert mich", "Nein, danke", "Weiß ich noch nicht"]. Die Optionen müssen zur jeweils AKTUELLEN Frage passen, nicht generisch sein. Auch bei der Frage nach Beruf/Branche oder Projekt-Details darfst du sinnvolle, plausible Beispiel-Optionen anbieten, wenn das die Antwort erleichtert – der Kunde kann trotzdem frei tippen, die Buttons sind nur ein Angebot, keine Pflicht.
+
 BETREUUNGS-ANGEBOT
 Bevor du zum Abschluss kommst, erwähnst du aktiv, dass Tim neben der einmaligen Erstellung auch eine laufende monatliche Betreuung der Website anbietet, und fragst, ob das grundsätzlich interessant wäre. Bring 2-3 überzeugende, konkrete Argumente, warum sich das lohnt, z.B.:
 - Regelmäßige Sicherheits-Updates, damit die Website nicht angreifbar oder veraltet wird
@@ -104,6 +107,29 @@ const SUBMIT_LEAD_TOOL = {
       wants_maintenance:   { type: 'string', enum: ['ja', 'nein', 'unsicher'], description: 'Ob der Kunde Interesse an der laufenden monatlichen Betreuung der Website hat' },
     },
     required: ['name', 'email', 'profession', 'main_goal', 'project_details', 'suggested_price_eur', 'price_reasoning', 'design_direction', 'wants_maintenance'],
+  },
+};
+
+/* ─── TOOL-SCHEMA: Antwort-Buttons ─────────────────────
+   Optional, zusätzlich zum normalen Text-Reply aufrufbar: liefert
+   2-5 kurze, antippbare Antwortoptionen passend zur gerade gestellten
+   Frage. Wird NIE zusammen mit Name-/E-Mail-Fragen benutzt (dort ist
+   freie Texteingabe nötig). */
+const SUGGEST_OPTIONS_TOOL = {
+  name: 'suggest_reply_options',
+  description: 'Liefert 2-5 kurze Antwortoptionen als Tap-Buttons für die soeben gestellte Frage. NIEMALS bei der Frage nach Name oder E-Mail-Adresse aufrufen – dort ist freier Text nötig. Bei geschlossenen Auswahlfragen (Ziel, Branche, aktuelle Website ja/nein, Budget-Größenordnung, Interesse an Betreuung, etc.) IMMER zusätzlich zur Text-Antwort aufrufen.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      options: {
+        type: 'array',
+        items: { type: 'string' },
+        minItems: 2,
+        maxItems: 5,
+        description: 'Kurze, tippbare Antwortmöglichkeiten (je 1-4 Wörter), passend zur aktuellen Frage.',
+      },
+    },
+    required: ['options'],
   },
 };
 
@@ -195,6 +221,7 @@ function buildLeadOfferEmail(lead) {
 module.exports = {
   SYSTEM_PROMPT,
   SUBMIT_LEAD_TOOL,
+  SUGGEST_OPTIONS_TOOL,
   FALLBACK_DONE_MESSAGE,
   MIN_PRICE,
   MAX_PRICE,

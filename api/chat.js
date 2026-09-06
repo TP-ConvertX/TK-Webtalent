@@ -13,6 +13,7 @@ const { createClient } = require('@supabase/supabase-js');
 const {
   SYSTEM_PROMPT,
   SUBMIT_LEAD_TOOL,
+  SUGGEST_OPTIONS_TOOL,
   FALLBACK_DONE_MESSAGE,
   MIN_PRICE,
   MAX_PRICE,
@@ -36,7 +37,7 @@ async function callClaude(messages) {
       model: MODEL,
       max_tokens: 1024,
       system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
-      tools: [SUBMIT_LEAD_TOOL],
+      tools: [SUBMIT_LEAD_TOOL, SUGGEST_OPTIONS_TOOL],
       tool_choice: { type: 'auto' },
       output_config: { effort: 'medium' },
       messages,
@@ -100,18 +101,28 @@ module.exports = async function handler(req, res) {
   }
 
   let toolUse = response.content.find(b => b.type === 'tool_use' && b.name === 'submit_lead_summary');
+  let optionsUse = response.content.find(b => b.type === 'tool_use' && b.name === 'suggest_reply_options');
 
   /* Einmaliger interner Retry, falls die Tool-Eingabe offensichtlich
      unplausibel ist (z.B. Preis außerhalb der Spanne, kaputte E-Mail) –
      Claude bekommt die Chance, sich selbst zu korrigieren, ohne dass der
-     Kunde davon etwas mitbekommt. */
+     Kunde davon etwas mitbekommt. Die API verlangt für JEDEN tool_use
+     im vorherigen Assistant-Turn ein passendes tool_result (auch für
+     ein evtl. gleichzeitig aufgerufenes suggest_reply_options) – sonst
+     lehnt Anthropic den Retry-Request als ungültig ab. */
   if (toolUse) {
     const validationError = validateLeadInput(toolUse.input);
     if (validationError) {
+      const toolResults = response.content
+        .filter(b => b.type === 'tool_use')
+        .map(b => b.name === 'submit_lead_summary'
+          ? { type: 'tool_result', tool_use_id: b.id, content: validationError, is_error: true }
+          : { type: 'tool_result', tool_use_id: b.id, content: 'ok' });
+
       convo = [
         ...convo,
         { role: 'assistant', content: response.content },
-        { role: 'user', content: [{ type: 'tool_result', tool_use_id: toolUse.id, content: validationError, is_error: true }] },
+        { role: 'user', content: toolResults },
       ];
       try {
         response = await callClaude(convo);
@@ -120,12 +131,17 @@ module.exports = async function handler(req, res) {
         return res.status(502).json({ error: 'ai_unavailable' });
       }
       toolUse = response.content.find(b => b.type === 'tool_use' && b.name === 'submit_lead_summary');
+      optionsUse = response.content.find(b => b.type === 'tool_use' && b.name === 'suggest_reply_options');
       if (toolUse && validateLeadInput(toolUse.input)) {
         // Zweiter Fehlschlag: nicht endlos weiter versuchen, normal weiterreden lassen
         toolUse = null;
       }
     }
   }
+
+  const choices = (optionsUse && Array.isArray(optionsUse.input?.options))
+    ? optionsUse.input.options.filter(o => typeof o === 'string' && o.trim()).slice(0, 5)
+    : null;
 
   if (toolUse) {
     const lead = toolUse.input;
@@ -207,5 +223,5 @@ module.exports = async function handler(req, res) {
   const textBlock = response.content.find(b => b.type === 'text');
   const reply = textBlock ? textBlock.text : 'Entschuldige, kannst du das nochmal anders formulieren?';
 
-  return res.status(200).json({ reply, done: false });
+  return res.status(200).json({ reply, done: false, choices });
 };
