@@ -67,17 +67,12 @@
     .nav-cta:hover { filter: brightness(1.15); transform: translateY(-1px); }
 
     /* ── HERO ── */
-    /* Position:relative statt overflow:hidden hier — ein Vorfahre mit
-       overflow != visible würde position:sticky auf .hero-pin-inner
-       brechen (gleicher Grund wie in css/style.css). */
+    /* Kein Sticky-Pin (230vh-Trick) mehr — hat auf manchen Geräten dazu
+       geführt, dass nach der Glaskarte scheinbar "kein Inhalt mehr" kam.
+       Stattdessen dreht sich die Karte anhand des ganz normalen
+       Scroll-Fortschritts, während der Hero-Bereich selbst normal
+       wegscrollt – robuster, gleicher visueller Effekt. */
     .hero { position: relative; }
-    /* Scroll-Pin: die echte 3D-Glaskarte dreht sich beim Scrollen, die
-       Seite "pausiert" solange (identischer Mechanismus wie auf
-       tk-webtalent.de: css/style.css .hero-pin-outer / .hero-pin-inner). */
-    @media (prefers-reduced-motion: no-preference) {
-      .hero.hero-pin-outer { height: 230vh; }
-      .hero-pin-inner { position: sticky; top: 0; }
-    }
     .hero-pin-inner { min-height: 100vh; display: flex; align-items: center; padding: 110px 0 40px; position: relative; overflow: hidden; }
     .glow.g1 { width: 520px; height: 520px; top: -160px; left: 50%; margin-left: -600px; background: var(--accent); opacity: .25; }
     .glow.g2 { width: 460px; height: 460px; top: -80px; right: -140px; background: var(--accent-2); opacity: .22; }
@@ -211,8 +206,7 @@
       .hero-actions { justify-content: center; }
       .hero-stats { justify-content: center; }
       .devices-wrap { height: 320px; max-width: 440px; margin: 0 auto; }
-      .hero.hero-pin-outer { height: auto !important; }
-      .hero-pin-inner { position: static !important; padding: 120px 0 40px; }
+      .hero-pin-inner { padding: 120px 0 40px; }
     }
     @media (max-width: 640px) {
       .section-pad { padding: 76px 0; }
@@ -502,9 +496,10 @@
   </footer>
 
   <script>
-    /* Steuert die 3D-Glaskarte (js/hero-glass-card.js, unten eingebunden)
-       je nach Scroll-Fortschritt durch den Pin-Bereich – identische Logik
-       wie in js/main.js auf tk-webtalent.de. */
+    /* Steuert die 3D-Glaskarte (js/hero-glass-card.js, unten eingebunden):
+       dreht sich, während der Hero-Bereich ganz normal wegscrollt (kein
+       künstlich verlängerter/gepinnter Bereich mehr – das führte auf
+       manchen Geräten dazu, dass danach scheinbar "kein Inhalt mehr" kam). */
     const heroPin = document.querySelector('.hero-pin-outer');
     if (heroPin) {
       const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -512,8 +507,9 @@
       const updateHeroProgress = () => {
         ticking = false;
         if (reducedMotionQuery.matches) return;
-        const total = heroPin.offsetHeight - window.innerHeight;
-        const progress = total <= 0 ? 1 : Math.min(Math.max(-heroPin.getBoundingClientRect().top, 0), total) / total;
+        const rect = heroPin.getBoundingClientRect();
+        const total = rect.height || 1;
+        const progress = Math.min(Math.max(-rect.top, 0), total) / total;
         window.heroGlassCard?.setProgress(progress);
       };
       const requestHeroUpdate = () => { if (!ticking) { ticking = true; requestAnimationFrame(updateHeroProgress); } };
