@@ -239,8 +239,10 @@
       --rd-ink-2: #F4F6FB;
       --rd-ink-3: #ffffff;
       --rd-cyan: #2452D9;
+      --c-bg-light: #EAEEF5;
     }
     .bg-light .service-tag, #ueber-mich .rd-about-note strong { color: #2452D9 !important; }
+    #ueber-mich .rd-about-note { color: #3A4A7A !important; }
 
     /* Direkttermin-Box: war eine hart-helle Inline-Box, jetzt dunkel */
     .rd-direct-box { background: var(--rd-ink-2) !important; }
@@ -255,6 +257,16 @@
       border-color: transparent !important;
     }
     .btn-primary:hover { background: linear-gradient(120deg, var(--c-accent), var(--rd-accent-2)) !important; filter: brightness(1.12); border-color: transparent !important; }
+
+    /* Gleiches Bug-Muster wie .btn-primary (Hintergrund = var(--c-text),
+       fest weißer Text) noch an vier weiteren Stellen: "Beliebt"-Badge,
+       Ablauf-Nummern, geöffnetes FAQ-Icon, Chat-Submit-Button. */
+    .pricing-popular-badge, .process-number, .faq-item.open .faq-icon, .chat-submit-btn {
+      background: linear-gradient(120deg, var(--c-accent), var(--rd-accent-2)) !important;
+      color: #fff !important;
+      border-color: transparent !important;
+    }
+    .faq-icon { background: var(--c-bg-light) !important; color: var(--c-text-2) !important; }
 
     /* Fenster-Durchblick: Außenbereich dunkel, das Browser-Mockup selbst
        bleibt bewusst hell (wirkt wie ein Screenshot, der auf dunklem
