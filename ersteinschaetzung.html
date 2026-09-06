@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Kostenlose Ersteinschätzung – TK Webtalent</title>
+  <meta name="description" content="In 1 Minute: Beantworte 5 kurze Fragen und erhalte eine kostenlose, ehrliche Ersteinschätzung zu deiner Website.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://tk-webtalent.de/ersteinschaetzung">
+
+  <link rel="icon" type="image/png" href="/assets/logo-icon.png">
+  <link rel="apple-touch-icon" href="/assets/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* ── Seiten-eigene Styles: nur für die Ersteinschätzung ── */
+    body { background: var(--c-bg-light); min-height: 100vh; }
+    .q-header {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 22px 24px 0;
+    }
+    .q-header img { width: 30px; height: 30px; }
+    .q-header span { font-weight: 800; font-size: 16px; color: var(--c-text); }
+
+    .q-progress-wrap { max-width: 480px; margin: 22px auto 0; padding: 0 24px; }
+    .q-progress-track { height: 6px; background: var(--c-border); border-radius: 100px; overflow: hidden; }
+    .q-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-accent-dark)); border-radius: 100px; transition: width .4s ease; }
+
+    .q-stage {
+      max-width: 560px; margin: 0 auto; padding: 28px 24px 80px;
+      min-height: 60vh; display: flex; align-items: center; justify-content: center;
+    }
+    .q-card {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg); padding: 44px 36px; width: 100%;
+    }
+    .q-step { display: none; animation: qFadeIn .35s ease; }
+    .q-step.active { display: block; }
+    @keyframes qFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    .q-eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-accent); background: var(--c-accent-light); padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .q-counter { display: block; font-size: 13px; font-weight: 700; color: var(--c-text-3); margin-bottom: 10px; }
+    .q-step h1 { font-size: 26px; margin-bottom: 14px; letter-spacing: -0.02em; }
+    .q-step h2 { font-size: 21px; margin-bottom: 22px; letter-spacing: -0.01em; line-height: 1.35; }
+    .q-step p.q-sub { font-size: 15px; color: var(--c-text-2); line-height: 1.65; margin-bottom: 26px; }
+
+    .q-options { display: flex; flex-direction: column; gap: 10px; }
+    .q-option {
+      display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;
+      padding: 16px 18px; border: 1.5px solid var(--c-border); border-radius: var(--radius-md);
+      background: #fff; font-size: 15px; font-weight: 600; color: var(--c-text);
+      transition: var(--transition); cursor: pointer;
+    }
+    .q-option:hover { border-color: var(--c-accent); background: var(--c-accent-light); }
+    .q-option.selected { border-color: var(--c-accent); background: var(--c-accent-light); color: var(--c-accent-dark); }
+    .q-option .ic { font-size: 19px; }
+
+    .q-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+    .q-back { font-size: 13.5px; color: var(--c-text-3); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .q-back:hover { color: var(--c-text); }
+
+    .q-form-field { margin-bottom: 16px; }
+    .q-form-field label { display: block; font-size: 13px; font-weight: 700; color: var(--c-text-2); margin-bottom: 6px; }
+    .q-form-field input {
+      width: 100%; padding: 13px 16px; border: 1.5px solid var(--c-border); border-radius: var(--radius-md);
+      font-size: 15px; outline: none; transition: var(--transition);
+    }
+    .q-form-field input:focus { border-color: var(--c-accent); box-shadow: 0 0 0 3px rgba(14,165,233,.1); }
+
+    .q-success { text-align: center; }
+    .q-success-icon { font-size: 44px; margin-bottom: 14px; }
+    .q-success h2 { font-size: 23px; margin-bottom: 10px; }
+    .q-success p { font-size: 15px; color: var(--c-text-2); line-height: 1.65; }
+
+    .q-error { font-size: 13.5px; color: #EF4444; margin-top: 10px; display: none; }
+    .q-error.show { display: block; }
+
+    @media (max-width: 480px) {
+      .q-card { padding: 32px 22px; }
+    }
+  </style>
+
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+  <a href="/" class="q-header">
+    <img src="assets/logo-icon.png" alt="TK Webtalent">
+    <span>TK Webtalent</span>
+  </a>
+
+  <div class="q-progress-wrap">
+    <div class="q-progress-track"><div class="q-progress-bar" id="qProgress"></div></div>
+  </div>
+
+  <main class="q-stage">
+    <div class="q-card">
+
+      <!-- STEP 0: INTRO -->
+      <div class="q-step active" data-step="0">
+        <span class="q-eyebrow">✦ Kostenlos & unverbindlich</span>
+        <h1>Wie gut ist deine Website wirklich?</h1>
+        <p class="q-sub">Beantworte 5 kurze Fragen (dauert ~1 Minute). Ich schaue mir deine Antworten persönlich an und melde mich innerhalb von 24 Stunden mit einer ehrlichen Ersteinschätzung – per E-Mail.</p>
+        <button type="button" class="btn btn-primary btn-large" data-start>Jetzt starten →</button>
+      </div>
+
+      <!-- STEP 1: BRANCHE -->
+      <div class="q-step" data-step="1">
+        <span class="q-counter">Frage 1 von 5</span>
+        <h2>In welchem Bereich bist du tätig?</h2>
+        <div class="q-options" data-field="branche">
+          <button type="button" class="q-option" data-value="Handwerk"><span class="ic">🔨</span> Handwerk</button>
+          <button type="button" class="q-option" data-value="Dienstleistung"><span class="ic">💼</span> Dienstleistung</button>
+          <button type="button" class="q-option" data-value="Beratung / Coaching"><span class="ic">🎯</span> Beratung / Coaching</button>
+          <button type="button" class="q-option" data-value="Sonstiges"><span class="ic">✨</span> Sonstiges</button>
+        </div>
+        <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+      </div>
+
+      <!-- STEP 2: WEBSITE-STATUS -->
+      <div class="q-step" data-step="2">
+        <span class="q-counter">Frage 2 von 5</span>
+        <h2>Hast du aktuell schon eine Website?</h2>
+        <div class="q-options" data-field="website">
+          <button type="button" class="q-option" data-value="Nein, noch keine"><span class="ic">🚫</span> Nein, noch keine</button>
+          <button type="button" class="q-option" data-value="Ja, aber veraltet"><span class="ic">🕰️</span> Ja, aber veraltet</button>
+          <button type="button" class="q-option" data-value="Ja, ist ganz okay"><span class="ic">🙂</span> Ja, ist ganz okay</button>
+        </div>
+        <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+      </div>
+
+      <!-- STEP 3: ZIEL -->
+      <div class="q-step" data-step="3">
+        <span class="q-counter">Frage 3 von 5</span>
+        <h2>Was ist dein Hauptziel?</h2>
+        <div class="q-options" data-field="ziel">
+          <button type="button" class="q-option" data-value="Mehr Kundenanfragen"><span class="ic">📈</span> Mehr Kundenanfragen</button>
+          <button type="button" class="q-option" data-value="Professionellerer Auftritt"><span class="ic">🏆</span> Professionellerer Auftritt</button>
+          <button type="button" class="q-option" data-value="Website komplett neu"><span class="ic">🆕</span> Website komplett neu</button>
+          <button type="button" class="q-option" data-value="Bestehende verbessern"><span class="ic">🔧</span> Bestehende verbessern</button>
+        </div>
+        <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+      </div>
+
+      <!-- STEP 4: ZEITRAHMEN -->
+      <div class="q-step" data-step="4">
+        <span class="q-counter">Frage 4 von 5</span>
+        <h2>Wie schnell soll es losgehen?</h2>
+        <div class="q-options" data-field="tempo">
+          <button type="button" class="q-option" data-value="Am liebsten sofort"><span class="ic">⚡</span> Am liebsten sofort</button>
+          <button type="button" class="q-option" data-value="In den nächsten Wochen"><span class="ic">📅</span> In den nächsten Wochen</button>
+          <button type="button" class="q-option" data-value="Hab noch Zeit, schaue mich um"><span class="ic">🌱</span> Hab noch Zeit, schaue mich um</button>
+        </div>
+        <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+      </div>
+
+      <!-- STEP 5: BUDGET -->
+      <div class="q-step" data-step="5">
+        <span class="q-counter">Frage 5 von 5</span>
+        <h2>Welches Budget stellst du dir ungefähr vor?</h2>
+        <p class="q-sub" style="margin-bottom:18px">Nur zur groben Einordnung – es gibt keine Standardpreise, jedes Angebot wird individuell erstellt.</p>
+        <div class="q-options" data-field="budget">
+          <button type="button" class="q-option" data-value="Unter 500€">Unter 500€</button>
+          <button type="button" class="q-option" data-value="500–1.500€">500–1.500€</button>
+          <button type="button" class="q-option" data-value="1.500€ +">1.500€ +</button>
+          <button type="button" class="q-option" data-value="Weiß ich noch nicht, gerne beraten">Weiß ich noch nicht – gerne beraten</button>
+        </div>
+        <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+      </div>
+
+      <!-- STEP 6: KONTAKT -->
+      <div class="q-step" data-step="6">
+        <span class="q-counter">Fast geschafft</span>
+        <h2>Wohin soll ich deine Ersteinschätzung schicken?</h2>
+        <div class="q-form-field">
+          <label for="qName">Name *</label>
+          <input type="text" id="qName" placeholder="Max Mustermann" autocomplete="name">
+        </div>
+        <div class="q-form-field">
+          <label for="qEmail">E-Mail *</label>
+          <input type="email" id="qEmail" placeholder="max@beispiel.de" autocomplete="email">
+        </div>
+        <div class="q-form-field">
+          <label for="qPhone">Telefon (optional)</label>
+          <input type="tel" id="qPhone" placeholder="0151 23456789" autocomplete="tel">
+        </div>
+        <div class="q-error" id="qError">Bitte Name und eine gültige E-Mail-Adresse angeben.</div>
+        <div class="q-actions">
+          <span class="q-back" data-back>← Zurück</span>
+          <button type="button" class="btn btn-primary" data-submit>Ersteinschätzung anfordern →</button>
+        </div>
+      </div>
+
+      <!-- STEP 7: ERFOLG -->
+      <div class="q-step" data-step="7">
+        <div class="q-success">
+          <div class="q-success-icon">✅</div>
+          <h2>Danke! Ist unterwegs zu mir.</h2>
+          <p>Ich schaue mir deine Angaben persönlich an und melde mich innerhalb von 24 Stunden per E-Mail mit deiner Ersteinschätzung.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const answers = {};
+    const steps = Array.from(document.querySelectorAll('.q-step'));
+    const totalQuestions = 6; // Schritte 1–6 zählen für den Fortschritt (0 = Intro, 7 = Erfolg)
+    let current = 0;
+
+    function showStep(n) {
+      steps.forEach(s => s.classList.toggle('active', parseInt(s.dataset.step) === n));
+      current = n;
+      const pct = n === 0 ? 0 : n >= 7 ? 100 : Math.round((n / totalQuestions) * 100);
+      document.getElementById('qProgress').style.width = pct + '%';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelector('[data-start]').addEventListener('click', () => showStep(1));
+
+    document.querySelectorAll('[data-back]').forEach(btn => {
+      btn.addEventListener('click', () => showStep(Math.max(0, current - 1)));
+    });
+
+    document.querySelectorAll('.q-options').forEach(group => {
+      const field = group.dataset.field;
+      group.querySelectorAll('.q-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          group.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          answers[field] = opt.dataset.value;
+          setTimeout(() => showStep(current + 1), 280);
+        });
+      });
+    });
+
+    document.querySelector('[data-submit]').addEventListener('click', async () => {
+      const name  = document.getElementById('qName').value.trim();
+      const email = document.getElementById('qEmail').value.trim();
+      const phone = document.getElementById('qPhone').value.trim();
+      const errBox = document.getElementById('qError');
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (!name || !emailOk) {
+        errBox.classList.add('show');
+        return;
+      }
+      errBox.classList.remove('show');
+
+      const submitBtn = document.querySelector('[data-submit]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Wird gesendet …';
+
+      try {
+        const res = await fetch('/api/send-ersteinschaetzung', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, telefon: phone, ...answers })
+        });
+        if (!res.ok) throw new Error('Fehler beim Senden');
+        showStep(7);
+      } catch (e) {
+        errBox.textContent = 'Da ist etwas schiefgelaufen. Bitte versuch es gleich nochmal oder schreib mir direkt an kontakt@tp-convertx.de.';
+        errBox.classList.add('show');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Ersteinschätzung anfordern →';
+      }
+    });
+  </script>
+</body>
+</html>
