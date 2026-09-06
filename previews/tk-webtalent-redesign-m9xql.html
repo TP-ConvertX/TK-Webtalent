@@ -191,8 +191,12 @@
     .footer { padding: 44px 0; border-top: 1px solid var(--line); text-align: center; }
     .footer p { font-size: 13px; color: var(--text-3); }
 
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
+    /* Bewusst KEIN opacity:0-Standard mehr für .reveal-Elemente: wenn das
+       Einblend-Skript aus irgendeinem Grund nicht liefe, bliebe sonst der
+       komplette Inhalt unsichtbar. Inhalt ist immer sofort sichtbar; die
+       Klasse "visible" fügt nur noch eine kleine Zusatz-Animation hinzu. */
+    .reveal.visible { animation: revealIn .6s ease both; }
+    @keyframes revealIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 
     @media (max-width: 1020px) {
       .problem-grid, .services-grid, .pricing-grid, .demos-grid { grid-template-columns: 1fr 1fr; }
@@ -496,50 +500,61 @@
   </footer>
 
   <script>
-    /* Steuert die 3D-Glaskarte (js/hero-glass-card.js, unten eingebunden):
-       dreht sich, während der Hero-Bereich ganz normal wegscrollt (kein
-       künstlich verlängerter/gepinnter Bereich mehr – das führte auf
-       manchen Geräten dazu, dass danach scheinbar "kein Inhalt mehr" kam). */
-    const heroPin = document.querySelector('.hero-pin-outer');
-    if (heroPin) {
-      const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let ticking = false;
-      const updateHeroProgress = () => {
-        ticking = false;
-        if (reducedMotionQuery.matches) return;
-        const rect = heroPin.getBoundingClientRect();
-        const total = rect.height || 1;
-        const progress = Math.min(Math.max(-rect.top, 0), total) / total;
-        window.heroGlassCard?.setProgress(progress);
-      };
-      const requestHeroUpdate = () => { if (!ticking) { ticking = true; requestAnimationFrame(updateHeroProgress); } };
-      const applyHeroModeChange = () => {
-        if (reducedMotionQuery.matches) window.heroGlassCard?.setProgress(1);
-        else updateHeroProgress();
-      };
-      window.addEventListener('scroll', requestHeroUpdate, { passive: true });
-      window.addEventListener('resize', requestHeroUpdate, { passive: true });
-      reducedMotionQuery.addEventListener('change', applyHeroModeChange);
-      applyHeroModeChange();
-    }
+    /* Inhalt zuerst und ungeschützt vor Fehlern in den "Nice-to-have"-Blöcken
+       darunter: Reveal-Animation und FAQ-Akkordeon laufen unabhängig von der
+       3D-Karte/Nav-Logik, damit ein Fehler dort nie die Sichtbarkeit anderer
+       Inhalte blockieren kann (jeder Block einzeln try/catch-abgesichert). */
+    try {
+      const ro = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+    } catch (e) { console.error('[reveal]', e); }
 
-    const navEl = document.getElementById('nav');
-    const onScroll = () => navEl.classList.toggle('scrolled', window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-
-    const ro = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
-
-    document.querySelectorAll('.faq-item').forEach(item => {
-      item.querySelector('.faq-q').addEventListener('click', () => {
-        const wasOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-        if (!wasOpen) item.classList.add('open');
+    try {
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.querySelector('.faq-q').addEventListener('click', () => {
+          const wasOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+          if (!wasOpen) item.classList.add('open');
+        });
       });
-    });
+    } catch (e) { console.error('[faq]', e); }
+
+    try {
+      const navEl = document.getElementById('nav');
+      const onScroll = () => navEl.classList.toggle('scrolled', window.scrollY > 40);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    } catch (e) { console.error('[nav]', e); }
+
+    /* Steuert die 3D-Glaskarte (js/hero-glass-card.js, unten eingebunden):
+       dreht sich, während der Hero-Bereich ganz normal wegscrollt. Rein
+       dekorativ – darf im Fehlerfall nie den Rest der Seite beeinflussen. */
+    try {
+      const heroPin = document.querySelector('.hero-pin-outer');
+      if (heroPin) {
+        const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let ticking = false;
+        const updateHeroProgress = () => {
+          ticking = false;
+          if (reducedMotionQuery.matches) return;
+          const rect = heroPin.getBoundingClientRect();
+          const total = rect.height || 1;
+          const progress = Math.min(Math.max(-rect.top, 0), total) / total;
+          window.heroGlassCard?.setProgress(progress);
+        };
+        const requestHeroUpdate = () => { if (!ticking) { ticking = true; requestAnimationFrame(updateHeroProgress); } };
+        const applyHeroModeChange = () => {
+          if (reducedMotionQuery.matches) window.heroGlassCard?.setProgress(1);
+          else updateHeroProgress();
+        };
+        window.addEventListener('scroll', requestHeroUpdate, { passive: true });
+        window.addEventListener('resize', requestHeroUpdate, { passive: true });
+        reducedMotionQuery.addEventListener('change', applyHeroModeChange);
+        applyHeroModeChange();
+      }
+    } catch (e) { console.error('[hero-3d]', e); }
   </script>
   <script type="module" src="https://tk-webtalent.de/js/hero-glass-card.js"></script>
 </body>
