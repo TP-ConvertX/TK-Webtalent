@@ -114,6 +114,12 @@
       --rd-accent-2: #8B5CF6;
     }
     h1, h2, h3, h4, .logo-name, .nav-links a, .chat-name { font-family: 'Space Grotesk', sans-serif; }
+    /* Wichtig: OHNE das hier würden Überschriften einfach die einmal am
+       body berechnete Farbe erben statt die lokal (in hellen Sektionen)
+       neu definierte Variable erneut aufzulösen – das war der Grund für
+       die "zu hellen" Überschriften auf hellem Grund. */
+    h1, h2, h3, h4 { color: var(--c-text); }
+    strong, b { color: var(--c-text); }
     body { background: var(--c-bg); }
 
     /* Karten & Flächen, die vorher fest auf Weiß standen */
@@ -238,6 +244,17 @@
 
     /* Direkttermin-Box: war eine hart-helle Inline-Box, jetzt dunkel */
     .rd-direct-box { background: var(--rd-ink-2) !important; }
+
+    /* .btn-primary war für ein dunkles Button-auf-hellem-Grund gebaut
+       (Hintergrund = var(--c-text)). Seit --c-text hell ist, wurde daraus
+       ein heller Button mit weißem Text – kaum lesbar. Jetzt: Verlaufs-
+       Button in der Akzentfarbe, in jeder Sektion gleich gut lesbar. */
+    .btn-primary {
+      background: linear-gradient(120deg, var(--c-accent), var(--rd-accent-2)) !important;
+      color: #fff !important;
+      border-color: transparent !important;
+    }
+    .btn-primary:hover { background: linear-gradient(120deg, var(--c-accent), var(--rd-accent-2)) !important; filter: brightness(1.12); border-color: transparent !important; }
 
     /* Fenster-Durchblick: Außenbereich dunkel, das Browser-Mockup selbst
        bleibt bewusst hell (wirkt wie ein Screenshot, der auf dunklem
