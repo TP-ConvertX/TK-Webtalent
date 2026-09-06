@@ -123,8 +123,7 @@
     .problem-card, .service-card, .pricing-card, .demo-card, .faq-item { box-shadow: none; }
     .service-card-accent { background: linear-gradient(150deg, rgba(79,127,255,.16), rgba(139,92,246,.12)) !important; }
 
-    /* Sektionen: dunkle Basis, wenige helle Ruhepunkte (Leistungen/Beispiele/FAQ/Pakete) */
-    .bg-light, #angebote { background: var(--rd-ink-2) !important; }
+    /* Sektionen: helle/dunkle Abwechslung wird weiter unten (FIX 3) final geregelt */
     .trust-bar { background: var(--c-bg); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
     .client-logos-section { background: var(--rd-ink-2); border-bottom: 1px solid var(--c-border); }
     .client-logo-img { filter: brightness(0) invert(1) opacity(.7); }
@@ -205,6 +204,50 @@
     @media (max-width: 900px) {
       .hero-inner, .pricing-grid, .demos-grid, .contact-grid { grid-template-columns: minmax(0,1fr) !important; }
     }
+
+    /* ── NACHTRÄGLICHER FIX 3 (Runde 2): Space-Punktraster durchgängig auf
+       den dunklen Sektionen, echte helle/dunkle Abwechslung statt nur
+       verschiedener Dunkeltöne, und drei übersehene Stellen mit hartem
+       hellem Hintergrund (Direkttermin-Box, Fenster-Sektion, Kundenlogo). ── */
+
+    /* Space-Punktraster: auf allen "reinen" dunklen Sektionen */
+    #problem, #angebote, .window-section, #ablauf, .ai-section, .contact-section,
+    .trust-bar, .client-logos-section, .rd-marquee {
+      background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px) !important;
+      background-size: 22px 22px !important;
+    }
+    .hero { background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px) !important; background-size: 22px 22px !important; }
+
+    /* Echte helle Abwechslung: Leistungen/Beispiele/FAQ/Über-mich bekommen
+       einen wirklich hellen Hintergrund (nicht nur "weniger dunkel") –
+       inkl. eigener Text-/Rahmenfarben nur für diesen Bereich. */
+    .bg-light, #ueber-mich {
+      background: #F4F6FB !important;
+      background-image: none !important;
+      --c-text: #0B1220;
+      --c-text-2: rgba(11,18,32,.64);
+      --c-text-3: rgba(11,18,32,.44);
+      --c-border: rgba(11,18,32,.1);
+      --c-border-2: rgba(11,18,32,.18);
+      --c-accent-light: rgba(37,82,217,.08);
+      --rd-ink-2: #F4F6FB;
+      --rd-ink-3: #ffffff;
+      --rd-cyan: #2452D9;
+    }
+    .bg-light .service-tag, #ueber-mich .rd-about-note strong { color: #2452D9 !important; }
+
+    /* Direkttermin-Box: war eine hart-helle Inline-Box, jetzt dunkel */
+    .rd-direct-box { background: var(--rd-ink-2) !important; }
+
+    /* Fenster-Durchblick: Außenbereich dunkel, das Browser-Mockup selbst
+       bleibt bewusst hell (wirkt wie ein Screenshot, der auf dunklem
+       Grund schwebt). */
+    .window-section { background-color: var(--c-bg) !important; }
+
+    /* Kundenlogo: Filter-Trick sah wie ein grauer Klumpen aus – Logo
+       bleibt in Originalfarben auf einer kleinen weißen Karte. */
+    .client-logo-img { filter: none !important; }
+    .client-logo-link { background: #fff; border-radius: var(--radius-md); padding: 6px 14px; }
   </style>
 
   <!-- 3D-Glaskarte im Hero -->
@@ -932,7 +975,7 @@
               <span>💡</span>
               <p>Keine Agentur-Floskeln. Ich antworte persönlich und direkt – meistens noch am selben Tag.</p>
             </div>
-            <div style="margin-top:28px;padding:22px;background:linear-gradient(135deg,#F0F9FF 0%,#EFF6FF 100%);border:1.5px solid rgba(14,165,233,0.25);border-radius:var(--radius-lg)">
+            <div class="rd-direct-box" style="margin-top:28px;padding:22px;border:1.5px solid rgba(14,165,233,0.25);border-radius:var(--radius-lg)">
               <div style="font-size:13px;font-weight:700;color:var(--c-accent);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Alternativ: Direkttermin</div>
               <p style="font-size:14px;color:var(--c-text-2);margin-bottom:16px;line-height:1.6">Lieber direkt reden? Buche dir einen kostenlosen 60-Minuten-Termin – ohne Wartezeit.</p>
               <button onclick="openGuestBookModal()" class="btn btn-primary" style="width:100%;justify-content:center">📅 Termin vereinbaren</button>
