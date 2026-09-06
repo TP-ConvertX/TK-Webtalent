@@ -78,7 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
     revealObserver.observe(el);
   });
 
-  /* ── HERO 3D-GLASKARTE SCROLL-PIN ───────────────── */
+  /* ── HERO 3D-GLASKARTE: dreht sich beim Scrollen ──
+     Kein Sticky-Pin mehr (führte dazu, dass die Seite beim Scrollen
+     "hängen blieb") – die Karte dreht sich stattdessen anhand des
+     ganz normalen Scroll-Fortschritts, während der Hero-Bereich
+     selbst normal wegscrollt. */
   const heroPin = document.querySelector('.hero-pin-outer');
 
   if (heroPin) {
@@ -88,8 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateProgress = () => {
       ticking = false;
       if (reducedMotionQuery.matches) return;
-      const total = heroPin.offsetHeight - window.innerHeight;
-      const progress = total <= 0 ? 1 : Math.min(Math.max(-heroPin.getBoundingClientRect().top, 0), total) / total;
+      const rect = heroPin.getBoundingClientRect();
+      const total = rect.height || 1;
+      const progress = Math.min(Math.max(-rect.top, 0), total) / total;
       window.heroGlassCard?.setProgress(progress);
     };
 
@@ -136,8 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
         windowCta?.classList.add('visible'); // kein Scroll-Trick, Button gleich zeigen
         return;
       }
-      const total = windowSection.offsetHeight - window.innerHeight;
-      const progress = total <= 0 ? 0 : Math.min(Math.max(-windowSection.getBoundingClientRect().top, 0), total) / total;
+      const rect = windowSection.getBoundingClientRect();
+      const total = rect.height || 1;
+      const progress = Math.min(Math.max(-rect.top, 0), total) / total;
       windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
       windowCta?.classList.toggle('visible', progress >= 0.92);
     };

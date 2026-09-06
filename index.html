@@ -124,10 +124,27 @@
 
     /* Karten & Flächen, die vorher fest auf Weiß standen */
     .problem-card, .service-card, .pricing-card, .demo-card, .faq-item,
-    .ai-feature-card, .chat-widget, .cookie-banner, .contact-item,
-    .window-frame, .snippet-ui, .snippet-browser { background: var(--rd-ink-3) !important; border-color: var(--c-border) !important; }
+    .ai-feature-card, .chat-widget, .cookie-banner, .contact-item {
+      background: var(--rd-ink-3) !important; border-color: var(--c-border) !important;
+    }
     .problem-card, .service-card, .pricing-card, .demo-card, .faq-item { box-shadow: none; }
     .service-card-accent { background: linear-gradient(150deg, rgba(79,127,255,.16), rgba(139,92,246,.12)) !important; }
+
+    /* Fenster-Durchblick-Mockup bleibt bewusst hell (wie ein Screenshot) –
+       aber Labels/Text darin brauchen eigene dunkle Farben, sie hängen
+       nicht am Theme. Die dunklen Folien (Code, Ergebnis) haben schon
+       ihre eigene feste dunkle Farbe und bleiben unangetastet. */
+    .snippet-label { color: #64748B !important; }
+    .snippet-stats .snippet-label { color: rgba(255,255,255,.6) !important; }
+    .palette-type { color: #0F172A !important; }
+    .window-address { color: #94A3B8 !important; }
+
+    /* Kein Sticky-Pin mehr bei Hero-Glaskarte & Fenster-Durchblick –
+       beide bleiben zwar weiterhin scroll-gesteuert (siehe js/main.js),
+       aber ohne künstlich aufgeblasene Höhe/position:sticky, die zum
+       "Hängenbleiben" beim Scrollen geführt hat. */
+    .hero.hero-pin-outer, .window-section { height: auto !important; }
+    .hero-pin-inner, .window-pin-inner { position: relative !important; top: auto !important; }
 
     /* Sektionen: helle/dunkle Abwechslung wird weiter unten (FIX 3) final geregelt */
     .trust-bar { background: var(--c-bg); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
@@ -207,6 +224,12 @@
     .pricing-grid, .demos-grid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
     .hero-content, .hero-visual, .contact-info, .chat-wrap, .chat-widget,
     .chat-input-area, .chat-text-row, .chat-messages, .devices-wrap { min-width: 0; }
+    @media (max-width: 420px) {
+      .chat-input-area { padding: 12px 14px; }
+      .chat-text-row { gap: 8px; }
+      .chat-send-btn { padding: 11px 14px; font-size: 13px; }
+      .chat-text-input { padding: 11px 12px; }
+    }
     @media (max-width: 900px) {
       .hero-inner, .pricing-grid, .demos-grid, .contact-grid { grid-template-columns: minmax(0,1fr) !important; }
     }
@@ -709,8 +732,60 @@
       </div>
     </section>
 
+    <!-- ===== ABLAUF ===== -->
+    <section class="section-padding bg-light" id="ablauf">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Ablauf</div>
+          <h2 class="section-headline">So einfach funktioniert es</h2>
+          <p class="section-sub">Von Ihrer ersten Nachricht bis zur fertigen Website – klar, unkompliziert und persönlich.</p>
+        </div>
+        <div class="process-list">
+          <div class="process-step reveal">
+            <div class="process-number">01</div>
+            <div class="process-content">
+              <h3>Kurzes Gespräch</h3>
+              <p>Wir sprechen kurz darüber, was Sie brauchen, welche Ziele Ihre Website erfüllen soll und wie Ihr Betrieb aufgestellt ist. Kostenlos und unverbindlich.</p>
+            </div>
+            <div class="process-connector"></div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-number">02</div>
+            <div class="process-content">
+              <h3>Design-Vorschlag</h3>
+              <p>Sie bekommen einen ersten Entwurf zu sehen und können Feedback geben. Wir passen solange an, bis es perfekt zu Ihnen passt.</p>
+            </div>
+            <div class="process-connector"></div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-number">03</div>
+            <div class="process-content">
+              <h3>Umsetzung</h3>
+              <p>Ich setze die Website professionell um – responsive, schnell und mit modernem Design, das zu Ihrem Betrieb passt.</p>
+            </div>
+            <div class="process-connector"></div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-number">04</div>
+            <div class="process-content">
+              <h3>Veröffentlichung</h3>
+              <p>Ihre Website geht online – inklusive SSL-Zertifikat, Domain-Einrichtung und finaler Abnahme durch Sie.</p>
+            </div>
+            <div class="process-connector"></div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-number">05</div>
+            <div class="process-content">
+              <h3>Betreuung & Anpassungen</h3>
+              <p>Auch nach dem Launch bin ich für Sie da – für Änderungen, Erweiterungen und alle weiteren Fragen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== DEMO WEBSITES ===== -->
-    <section class="section-padding bg-light" id="beispiele">
+    <section class="section-padding" id="beispiele">
       <div class="container">
         <div class="section-intro reveal">
           <div class="section-label">Beispiele</div>
@@ -767,58 +842,6 @@
             </div>
           </a>
 
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== ABLAUF ===== -->
-    <section class="section-padding" id="ablauf">
-      <div class="container">
-        <div class="section-intro reveal">
-          <div class="section-label">Ablauf</div>
-          <h2 class="section-headline">So einfach funktioniert es</h2>
-          <p class="section-sub">Von Ihrer ersten Nachricht bis zur fertigen Website – klar, unkompliziert und persönlich.</p>
-        </div>
-        <div class="process-list">
-          <div class="process-step reveal">
-            <div class="process-number">01</div>
-            <div class="process-content">
-              <h3>Kurzes Gespräch</h3>
-              <p>Wir sprechen kurz darüber, was Sie brauchen, welche Ziele Ihre Website erfüllen soll und wie Ihr Betrieb aufgestellt ist. Kostenlos und unverbindlich.</p>
-            </div>
-            <div class="process-connector"></div>
-          </div>
-          <div class="process-step reveal">
-            <div class="process-number">02</div>
-            <div class="process-content">
-              <h3>Design-Vorschlag</h3>
-              <p>Sie bekommen einen ersten Entwurf zu sehen und können Feedback geben. Wir passen solange an, bis es perfekt zu Ihnen passt.</p>
-            </div>
-            <div class="process-connector"></div>
-          </div>
-          <div class="process-step reveal">
-            <div class="process-number">03</div>
-            <div class="process-content">
-              <h3>Umsetzung</h3>
-              <p>Ich setze die Website professionell um – responsive, schnell und mit modernem Design, das zu Ihrem Betrieb passt.</p>
-            </div>
-            <div class="process-connector"></div>
-          </div>
-          <div class="process-step reveal">
-            <div class="process-number">04</div>
-            <div class="process-content">
-              <h3>Veröffentlichung</h3>
-              <p>Ihre Website geht online – inklusive SSL-Zertifikat, Domain-Einrichtung und finaler Abnahme durch Sie.</p>
-            </div>
-            <div class="process-connector"></div>
-          </div>
-          <div class="process-step reveal">
-            <div class="process-number">05</div>
-            <div class="process-content">
-              <h3>Betreuung & Anpassungen</h3>
-              <p>Auch nach dem Launch bin ich für Sie da – für Änderungen, Erweiterungen und alle weiteren Fragen.</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
