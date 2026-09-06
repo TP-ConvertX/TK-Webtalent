@@ -29,7 +29,7 @@ function emailTpl(body) {
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { name, email, telefon, branche, website, ziel, tempo, budget } = req.body || {};
+  const { name, email, telefon, branche, website, ziel, tempo, budget, aiAssessment } = req.body || {};
 
   if (!name || !email || !branche || !website || !ziel || !tempo || !budget) {
     return res.status(400).json({ error: 'Fehlende Pflichtfelder' });
@@ -46,6 +46,13 @@ module.exports = async function handler(req, res) {
 
   const row = (label, value) => `<tr><td style="padding:8px 12px 8px 0;font-size:13px;color:#94A3B8;vertical-align:top;white-space:nowrap">${label}</td><td style="padding:8px 0;font-size:14px;color:#0F172A;font-weight:600">${escapeHtml(value)}</td></tr>`;
 
+  const aiBlock = aiAssessment ? `
+    <p style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#94A3B8;margin:24px 0 8px">KI-Entwurf zur Einschätzung (bitte prüfen & anpassen)</p>
+    <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:16px 18px;font-size:14px;color:#0F172A;line-height:1.7">
+      ${String(aiAssessment).split(/\n{2,}/).map(p => `<p style="margin:0 0 10px">${escapeHtml(p)}</p>`).join('')}
+    </div>
+  ` : '';
+
   const adminHtml = emailTpl(`
     <p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">📋 Neue Ersteinschätzung angefragt</p>
     <p style="font-size:14px;color:#475569;margin-bottom:20px">Von <strong>${escapeHtml(name)}</strong> (<a href="mailto:${escapeHtml(email)}" style="color:#0EA5E9">${escapeHtml(email)}</a>)${telefon ? ' · ' + escapeHtml(telefon) : ''}</p>
@@ -56,6 +63,7 @@ module.exports = async function handler(req, res) {
       ${row('Zeitrahmen', tempo)}
       ${row('Budget-Vorstellung', budget)}
     </table>
+    ${aiBlock}
   `);
 
   const leadHtml = emailTpl(`

@@ -80,6 +80,19 @@
     .q-error { font-size: 13.5px; color: #EF4444; margin-top: 10px; display: none; }
     .q-error.show { display: block; }
 
+    .q-ai-spinner {
+      width: 40px; height: 40px; margin: 0 auto 22px; border-radius: 50%;
+      border: 3px solid var(--c-accent-light); border-top-color: var(--c-accent);
+      animation: qSpin .8s linear infinite;
+    }
+    @keyframes qSpin { to { transform: rotate(360deg); } }
+    .q-ai-locked {
+      display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 600; color: var(--c-text-2);
+      background: var(--c-bg-light); border: 1px dashed var(--c-border-2); border-radius: var(--radius-md);
+      padding: 12px 16px; margin-top: 22px;
+    }
+    .q-ai-locked .ic { font-size: 16px; }
+
     @media (max-width: 480px) {
       .q-card { padding: 32px 22px; }
     }
@@ -176,8 +189,31 @@
         <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
       </div>
 
-      <!-- STEP 6: KONTAKT -->
+      <!-- STEP 6: KI-ANALYSE -->
       <div class="q-step" data-step="6">
+        <div id="aiLoading">
+          <div class="q-ai-spinner" aria-hidden="true"></div>
+          <h2 style="text-align:center">Ich analysiere deine Antworten …</h2>
+          <p class="q-sub" style="text-align:center">Einen Moment, das dauert nur ein paar Sekunden.</p>
+        </div>
+        <div id="aiResult" style="display:none">
+          <span class="q-eyebrow">✦ Erster Eindruck</span>
+          <h2>Das sehe ich schon jetzt:</h2>
+          <p class="q-sub" id="aiTeaser" style="font-size:16px;color:var(--c-text);"></p>
+          <div class="q-ai-locked">
+            <span class="ic">🔒</span> Die vollständige, persönliche Einschätzung gibt's per E-Mail
+          </div>
+          <button type="button" class="btn btn-primary btn-large" data-unlock style="width:100%;justify-content:center;margin-top:18px">Jetzt vollständige Einschätzung von mir persönlich anfordern →</button>
+        </div>
+        <div id="aiError" style="display:none">
+          <h2>Kleiner technischer Hänger</h2>
+          <p class="q-sub">Kein Problem – schick mir einfach deine Kontaktdaten, ich schaue mir deine Antworten trotzdem persönlich an.</p>
+          <button type="button" class="btn btn-primary btn-large" data-unlock style="width:100%;justify-content:center">Weiter →</button>
+        </div>
+      </div>
+
+      <!-- STEP 7: KONTAKT -->
+      <div class="q-step" data-step="7">
         <span class="q-counter">Fast geschafft</span>
         <h2>Wohin soll ich deine Ersteinschätzung schicken?</h2>
         <div class="q-form-field">
@@ -199,12 +235,12 @@
         </div>
       </div>
 
-      <!-- STEP 7: ERFOLG -->
-      <div class="q-step" data-step="7">
+      <!-- STEP 8: ERFOLG -->
+      <div class="q-step" data-step="8">
         <div class="q-success">
           <div class="q-success-icon">✅</div>
           <h2>Danke! Ist unterwegs zu mir.</h2>
-          <p>Ich schaue mir deine Angaben persönlich an und melde mich innerhalb von 24 Stunden per E-Mail mit deiner Ersteinschätzung.</p>
+          <p>Ich schaue mir deine Angaben persönlich an und melde mich innerhalb von 24 Stunden per E-Mail mit deiner vollständigen Ersteinschätzung.</p>
         </div>
       </div>
 
@@ -213,15 +249,15 @@
 
   <script>
     const answers = {};
+    let aiFullAssessment = '';
     const steps = Array.from(document.querySelectorAll('.q-step'));
-    const totalQuestions = 6; // Schritte 1–6 zählen für den Fortschritt (0 = Intro, 7 = Erfolg)
+    const stepPercents = { 0: 0, 1: 12, 2: 26, 3: 40, 4: 54, 5: 68, 6: 82, 7: 92, 8: 100 };
     let current = 0;
 
     function showStep(n) {
       steps.forEach(s => s.classList.toggle('active', parseInt(s.dataset.step) === n));
       current = n;
-      const pct = n === 0 ? 0 : n >= 7 ? 100 : Math.round((n / totalQuestions) * 100);
-      document.getElementById('qProgress').style.width = pct + '%';
+      document.getElementById('qProgress').style.width = (stepPercents[n] ?? 100) + '%';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -238,9 +274,46 @@
           group.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
           opt.classList.add('selected');
           answers[field] = opt.dataset.value;
-          setTimeout(() => showStep(current + 1), 280);
+          if (field === 'budget') {
+            setTimeout(runAiAnalysis, 280);
+          } else {
+            setTimeout(() => showStep(current + 1), 280);
+          }
         });
       });
+    });
+
+    /* KI-Teaser: zeigt sofort einen kurzen, kostenlosen Ausschnitt.
+       Die vollständige Einschätzung gibt's erst nach Kontaktdaten,
+       und geht dann auch nur an Tim persönlich (kein Auto-Versand
+       der vollen KI-Antwort an den Lead) – die KI liefert ihm nur
+       einen Entwurf, den er prüft/anpasst, bevor er selbst antwortet. */
+    async function runAiAnalysis() {
+      showStep(6);
+      document.getElementById('aiLoading').style.display = '';
+      document.getElementById('aiResult').style.display = 'none';
+      document.getElementById('aiError').style.display = 'none';
+
+      try {
+        const res = await fetch('/api/generate-assessment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(answers)
+        });
+        if (!res.ok) throw new Error('ai_failed');
+        const data = await res.json();
+        aiFullAssessment = data.full || '';
+        document.getElementById('aiTeaser').textContent = data.teaser || '';
+        document.getElementById('aiLoading').style.display = 'none';
+        document.getElementById('aiResult').style.display = '';
+      } catch (e) {
+        document.getElementById('aiLoading').style.display = 'none';
+        document.getElementById('aiError').style.display = '';
+      }
+    }
+
+    document.querySelectorAll('[data-unlock]').forEach(btn => {
+      btn.addEventListener('click', () => showStep(7));
     });
 
     document.querySelector('[data-submit]').addEventListener('click', async () => {
@@ -264,10 +337,10 @@
         const res = await fetch('/api/send-ersteinschaetzung', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, telefon: phone, ...answers })
+          body: JSON.stringify({ name, email, telefon: phone, ...answers, aiAssessment: aiFullAssessment })
         });
         if (!res.ok) throw new Error('Fehler beim Senden');
-        showStep(7);
+        showStep(8);
       } catch (e) {
         errBox.textContent = 'Da ist etwas schiefgelaufen. Bitte versuch es gleich nochmal oder schreib mir direkt an kontakt@tp-convertx.de.';
         errBox.classList.add('show');
