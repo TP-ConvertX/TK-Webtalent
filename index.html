@@ -186,6 +186,25 @@
     a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
       outline: 2px solid var(--rd-cyan); outline-offset: 3px;
     }
+
+    /* ── NACHTRÄGLICHER FIX 1: Zwei Sektionen hatten einen fest einprogrammierten
+       hellen Hintergrund, der von den neuen Variablen NICHT erfasst wurde –
+       dadurch stand heller Text auf hellem Grund (fast unsichtbar). ── */
+    .hero, .contact-section { background: var(--c-bg) !important; }
+
+    /* ── NACHTRÄGLICHER FIX 2: Grid-Spalten schrumpfen per CSS-Spezifikation
+       standardmäßig nicht unter die Breite ihres Inhalts (min-width:auto pro
+       Spur) – dadurch wurde z.B. die Chat-Karte breiter als der Bildschirm
+       und riss die ganze Seite seitlich auf. minmax(0, ...) erlaubt echtes
+       Schrumpfen, wie schon in der Redesign-Vorschau gefixt. ── */
+    .hero-inner { grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important; }
+    .contact-grid { grid-template-columns: minmax(0,1fr) minmax(0,1.4fr) !important; }
+    .pricing-grid, .demos-grid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+    .hero-content, .hero-visual, .contact-info, .chat-wrap, .chat-widget,
+    .chat-input-area, .chat-text-row, .chat-messages, .devices-wrap { min-width: 0; }
+    @media (max-width: 900px) {
+      .hero-inner, .pricing-grid, .demos-grid, .contact-grid { grid-template-columns: minmax(0,1fr) !important; }
+    }
   </style>
 
   <!-- 3D-Glaskarte im Hero -->
