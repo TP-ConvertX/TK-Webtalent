@@ -224,6 +224,14 @@
     .pricing-grid, .demos-grid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
     .hero-content, .hero-visual, .contact-info, .chat-wrap, .chat-widget,
     .chat-input-area, .chat-text-row, .chat-messages, .devices-wrap { min-width: 0; }
+    /* ── NACHTRÄGLICHER FIX (Runde 6): Der eigentliche Übeltäter beim
+       abgeschnittenen Chat-Button war das <input>-Feld selbst – Text-Inputs
+       haben browserintern eine feste Mindestbreite, die min-width:0 auf dem
+       umgebenden Flex-Container NICHT überschreibt. Dadurch blieb die ganze
+       Chat-Karte breiter als der Bildschirm, ihr eigener Rand landete
+       außerhalb des sichtbaren Viewports und wurde von overflow-x:hidden
+       auf body abgeschnitten. ── */
+    .chat-text-input { min-width: 0; }
     @media (max-width: 420px) {
       .chat-input-area { padding: 12px 14px; }
       .chat-text-row { gap: 8px; }
