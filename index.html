@@ -188,9 +188,9 @@
     .rd-about-wrap { display: grid; grid-template-columns: 200px 1fr; gap: 44px; align-items: start; max-width: 800px; margin: 0 auto; }
     .rd-about-photo {
       width: 200px; height: 200px; border-radius: 20px; flex-shrink: 0;
-      background: linear-gradient(145deg, rgba(79,127,255,.14), rgba(139,92,246,.14));
-      border: 1.5px dashed var(--c-border-2); display: flex; align-items: center; justify-content: center;
-      font-size: 12.5px; color: var(--c-text-3); text-align: center; padding: 18px;
+      object-fit: cover; object-position: 50% 20%;
+      border: 1.5px solid var(--c-border-2); box-shadow: 0 12px 32px rgba(0,0,0,.1);
+      background: #fff;
     }
     .rd-about-text p { font-size: 15.5px; color: var(--c-text-2); line-height: 1.8; margin-bottom: 16px; }
     .rd-about-text strong { color: var(--c-text); }
@@ -862,7 +862,7 @@
           <h2 class="section-headline">Hallo, ich bin Tim.</h2>
         </div>
         <div class="rd-about-wrap reveal">
-          <div class="rd-about-photo">Platz für dein Foto</div>
+          <img src="assets/PodasTim.png" alt="Tim Kunzelmann, Gründer von TK Webtalent" class="rd-about-photo" loading="lazy" width="200" height="200">
           <div class="rd-about-text">
             <p>Bevor ich Websites gebaut habe, habe ich gemauert: Ich bin <strong>gelernter Maurer</strong> und im Handwerk großgeworden. Irgendwann hat mich das Webdesign gepackt, und ich habe mich umorientiert – die Mischung ist heute mein Vorteil. Ich weiß aus erster Hand, wie viel gute Arbeit hinter einem Handwerksbetrieb steckt, und genau deshalb ärgert es mich, wenn diese Qualität online nicht rüberkommt.</p>
             <p>Wenn du bei TK Webtalent anfragst, schreibst du nicht mit einem Team oder einem Verkäufer, sondern <strong>direkt mit mir</strong>. Ich kümmere mich persönlich um jedes Projekt – vom ersten Gespräch über das Design bis zur technischen Umsetzung.</p>
