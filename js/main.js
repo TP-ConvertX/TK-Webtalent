@@ -93,7 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ticking = false;
       if (reducedMotionQuery.matches) return;
       const rect = heroPin.getBoundingClientRect();
-      const total = rect.height || 1;
+      /* Nicht über die komplette Hero-Höhe strecken, sonst verteilt sich die
+         Drehung über eine so lange Scrollstrecke, dass man beim normalen
+         Scrollen kaum eine Veränderung wahrnimmt. Stattdessen reicht ein
+         kurzer Scroll (max. 420px) bis zum "Endanschlag". */
+      const total = Math.min(rect.height || 1, 420);
       const progress = Math.min(Math.max(-rect.top, 0), total) / total;
       window.heroGlassCard?.setProgress(progress);
     };

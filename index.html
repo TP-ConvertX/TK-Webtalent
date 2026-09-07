@@ -272,6 +272,21 @@
       --c-bg-light: #EAEEF5;
     }
     .bg-light .service-tag, #ueber-mich .rd-about-note strong { color: #2452D9 !important; }
+
+    /* ── NACHTRÄGLICHER FIX (Runde 7): Das Termin-Buchen-Modal (Kalender +
+       Formular) ist eine eigenständige weiße Karte außerhalb aller
+       Sektionen – ohne eigenes Scoping haben seine Texte (Titel, Labels,
+       Kalender-Zahlen) die GLOBALEN (jetzt hellen) Textfarben geerbt und
+       waren auf dem weißen Modal-Hintergrund quasi unsichtbar. ── */
+    .modal-overlay {
+      --c-text: #0B1220;
+      --c-text-2: rgba(11,18,32,.64);
+      --c-text-3: rgba(11,18,32,.44);
+      --c-border: rgba(11,18,32,.1);
+      --c-border-2: rgba(11,18,32,.18);
+      --c-accent-light: rgba(37,82,217,.08);
+      --c-bg-light: #EAEEF5;
+    }
     #ueber-mich .rd-about-note { color: #3A4A7A !important; }
 
     /* Direkttermin-Box: war eine hart-helle Inline-Box, jetzt dunkel */

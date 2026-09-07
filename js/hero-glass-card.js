@@ -96,7 +96,7 @@ function init() {
   const ro = new ResizeObserver(fitRenderer);
   ro.observe(canvas.parentElement);
 
-  const ORBIT_START = -1.5;  // weggedreht (Kante zugewandt)
+  const ORBIT_START = -0.55; // schon leicht dem Nutzer zugewandt, nicht komplett auf Kante
   const ORBIT_END    = -0.16; // zugewandt, leichte 3/4-Perspektive
   const lerp = (a, b, t) => a + (b - a) * t;
 
