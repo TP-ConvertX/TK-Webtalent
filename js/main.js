@@ -145,8 +145,11 @@ document.addEventListener('DOMContentLoaded', () => {
         windowCta?.classList.add('visible'); // kein Scroll-Trick, Button gleich zeigen
         return;
       }
+      /* Bleibt sticky (gewünscht) – die Pin-Dauer ist die Sektionshöhe
+         MINUS eine Viewport-Höhe (die Zeit, während .window-pin-inner
+         fixiert steht), nicht die volle Sektionshöhe. */
       const rect = windowSection.getBoundingClientRect();
-      const total = rect.height || 1;
+      const total = Math.max(rect.height - window.innerHeight, 1);
       const progress = Math.min(Math.max(-rect.top, 0), total) / total;
       windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
       windowCta?.classList.toggle('visible', progress >= 0.92);
