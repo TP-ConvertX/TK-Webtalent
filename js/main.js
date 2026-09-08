@@ -123,14 +123,24 @@ document.addEventListener('DOMContentLoaded', () => {
     applyModeChange();
   }
 
-  /* ── FENSTER-DURCHBLICK SCROLL-PIN ───────────────── */
+  /* ── FENSTER-DURCHBLICK SCROLL-PIN (+ integriertes Bild 1) ──────
+     EIN durchgehender Sticky-Pin über die ganze Sektion. Die Sektion
+     wurde per CSS auf 400vh verlängert (war 200vh) – die ERSTEN 100vh
+     Scrollstrecke steuern exakt wie vorher das Karussell (unverändert),
+     die ZUSÄTZLICHEN 200vh danach steuern Bild 1: es öffnet sich als
+     kleines Fenster, wächst randlos auf 100vw×100vh und hält dort, bis
+     der Pin ganz normal endet. Beides läuft aus DERSELBEN rect-Messung,
+     damit es sich wie eine einzige zusammenhängende Sequenz anfühlt. */
   const windowSection = document.querySelector('.window-section');
   const windowTrack   = document.getElementById('windowTrack');
+  const imgwin1        = document.getElementById('imgwin1Frame');
 
   const windowCta = document.getElementById('windowCta');
 
   if (windowSection && windowTrack) {
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
     let maxTranslate = 0;
 
     const measure = () => {
@@ -145,14 +155,34 @@ document.addEventListener('DOMContentLoaded', () => {
         windowCta?.classList.add('visible'); // kein Scroll-Trick, Button gleich zeigen
         return;
       }
-      /* Bleibt sticky (gewünscht) – die Pin-Dauer ist die Sektionshöhe
-         MINUS eine Viewport-Höhe (die Zeit, während .window-pin-inner
-         fixiert steht), nicht die volle Sektionshöhe. */
       const rect = windowSection.getBoundingClientRect();
-      const total = Math.max(rect.height - window.innerHeight, 1);
-      const progress = Math.min(Math.max(-rect.top, 0), total) / total;
-      windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
-      windowCta?.classList.toggle('visible', progress >= 0.92);
+      const vh = window.innerHeight;
+      const scrolled = Math.max(-rect.top, 0);
+
+      /* Karussell-Phase: exakt die gleiche Scrollstrecke (1 Viewport-
+         Höhe) wie vor der Bild-Integration – unverändertes Verhalten. */
+      const carouselTotal = vh;
+      const carouselProgress = Math.min(scrolled, carouselTotal) / carouselTotal;
+      windowTrack.style.transform = `translateX(-${carouselProgress * maxTranslate}px)`;
+      windowCta?.classList.toggle('visible', carouselProgress >= 0.92);
+
+      /* Bild-1-Phase: die komplette REST-Scrollstrecke der Sektion,
+         erst NACHDEM die Karussell-Phase durchgescrollt ist. */
+      if (imgwin1) {
+        const imgPhaseTotal = Math.max(rect.height - vh - carouselTotal, 1);
+        const imgProgress = Math.min(Math.max(scrolled - carouselTotal, 0), imgPhaseTotal) / imgPhaseTotal;
+
+        const appearP = Math.min(imgProgress / 0.3, 1);            // 0–30%: Fenster blendet ein
+        const growP = Math.min(Math.max((imgProgress - 0.3) / 0.25, 0), 1); // 30–55%: wächst zu Fullscreen
+        const eased = easeOutCubic(growP);
+
+        imgwin1.style.opacity = appearP;
+        imgwin1.style.top = `${lerp(26, 0, eased)}vh`;
+        imgwin1.style.bottom = `${lerp(26, 0, eased)}vh`;
+        imgwin1.style.left = `${lerp(22, 0, eased)}vw`;
+        imgwin1.style.right = `${lerp(22, 0, eased)}vw`;
+        imgwin1.style.borderRadius = `${lerp(28, 0, eased)}px`;
+      }
     };
 
     const requestUpdate = () => {
@@ -168,45 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', remeasureAndUpdate, { passive: true });
     reducedMotionQuery.addEventListener('change', remeasureAndUpdate);
     remeasureAndUpdate();
-  }
-
-  /* ── BILDFENSTER 1: sticky, wächst beim Scrollen zu Fullscreen ──
-     Eigener 220vh-Scroll-Container mit sticky Fenster darin (siehe CSS).
-     Erste 45% des Pin-Fortschritts: Fenster wächst von einem kleineren,
-     abgerundeten Ausschnitt auf echtes Fullscreen. Restliche 55%: bleibt
-     fullscreen "stehen", bis der Pin beim Weiterscrollen ganz normal
-     endet. Bild 2 (weiter unten) bekommt bewusst KEINE Scroll-Logik –
-     es soll ganz normal mit der Seite mitscrollen. */
-  const imgwin1Outer = document.querySelector('.rd-imgwin-outer');
-  const imgwin1Frame = document.getElementById('imgwin1Frame');
-  if (imgwin1Outer && imgwin1Frame) {
-    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const lerp = (a, b, t) => a + (b - a) * t;
-    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
-    const GROW_PHASE = 0.45; // Anteil des Pin-Fortschritts, der fürs Wachsen genutzt wird
-
-    let ticking = false;
-    const updateImgwin1 = () => {
-      ticking = false;
-      if (reducedMotionQuery.matches) return;
-      const rect = imgwin1Outer.getBoundingClientRect();
-      const total = Math.max(rect.height - window.innerHeight, 1);
-      const progress = Math.min(Math.max(-rect.top, 0), total) / total;
-      const growP = Math.min(progress / GROW_PHASE, 1);
-      const eased = easeOutCubic(growP);
-      imgwin1Frame.style.width = `${lerp(88, 100, eased)}vw`;
-      imgwin1Frame.style.height = `${lerp(70, 100, eased)}vh`;
-      imgwin1Frame.style.borderRadius = `${lerp(28, 0, eased)}px`;
-    };
-
-    const requestImgwin1Update = () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(updateImgwin1); }
-    };
-
-    window.addEventListener('scroll', requestImgwin1Update, { passive: true });
-    window.addEventListener('resize', requestImgwin1Update, { passive: true });
-    reducedMotionQuery.addEventListener('change', updateImgwin1);
-    updateImgwin1();
   }
 
   /* ── FAQ ACCORDION ──────────────────────────────── */

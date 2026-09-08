@@ -322,60 +322,37 @@
     .client-logo-img { filter: none !important; }
     .client-logo-link { background: #fff; border-radius: var(--radius-md); padding: 6px 14px; }
 
-    /* ── NACHTRÄGLICHER FIX (Runde 9): zwei große Bild-Inszenierungen ──
-       BILD 1 (nach „Ein Blick genügt…“): eigener Scroll-Container mit
-       mehr Höhe als der Viewport (220vh). Darin ein sticky Fenster, das
-       beim Scrollen von einem kleineren, abgerundeten Bildausschnitt zu
-       echtem Fullscreen wächst (JS in js/main.js, anhand Scroll-
-       Fortschritt), dann kurz fullscreen "hängen bleibt" und beim
-       Weiterscrollen ganz normal freigegeben wird.
-       BILD 2 (zwischen Pakete & Ablauf): bewusst KEIN Sticky/Fixed/
-       künstlicher Scroll-Container – ein normales, großzügig großes
-       Bild im Textfluss, das wie jeder andere Block rein-/rausscrollt,
-       nur mit sanfter Eintritts-Animation über das vorhandene
-       .reveal-System. ── */
-    .rd-imgwin-outer {
-      position: relative; height: 220vh; background: var(--c-bg);
-      background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
-      background-size: 22px 22px;
+    /* ── NACHTRÄGLICHER FIX (Runde 10): Bild 1 komplett in die
+       bestehende Fenster-Durchblick-Sticky-Sequenz integriert (keine
+       eigene Section mehr). Die Sektion bekommt zusätzliche Scroll-Höhe
+       NACH der unveränderten Karussell-Phase; in diesem zusätzlichen
+       Abschnitt öffnet sich ein kleines Bildfenster, wächst randlos auf
+       echtes 100vw×100vh und hält dort, bis der Pin (wie vorher schon)
+       ganz normal endet. Siehe js/main.js für die Scroll-Fortschritts-
+       Aufteilung (Karussell-Anteil unverändert, Bild-Anteil neu). */
+    @media (prefers-reduced-motion: no-preference) {
+      .window-section { height: 400vh !important; }
     }
-    .rd-imgwin-sticky {
-      position: sticky; top: 0; height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .rd-imgwin-frame {
-      position: relative; width: 88vw; height: 70vh; max-width: 1400px;
-      border-radius: 28px; overflow: hidden;
+    .rd-imgwin1 {
+      position: absolute; z-index: 5; overflow: hidden;
+      top: 26vh; bottom: 26vh; left: 22vw; right: 22vw;
+      border-radius: 28px; opacity: 0;
       box-shadow: 0 40px 100px rgba(0,0,0,.4);
+      pointer-events: none;
     }
-    .rd-imgwin-frame img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.72) saturate(1.1); display: block; }
-    .rd-imgwin-frame::after {
+    .rd-imgwin1 img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.72) saturate(1.1); }
+    .rd-imgwin1::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(5,7,13,.1) 0%, rgba(5,7,13,.4) 100%);
+      background: linear-gradient(180deg, rgba(5,7,13,.08) 0%, rgba(5,7,13,.38) 100%);
     }
-    @media (prefers-reduced-motion: reduce) {
-      .rd-imgwin-outer { height: auto; }
-      .rd-imgwin-sticky { position: relative; height: 70vh; }
-      .rd-imgwin-frame { width: 100% !important; height: 100% !important; border-radius: 20px !important; }
-    }
+    @media (prefers-reduced-motion: reduce) { .rd-imgwin1 { display: none; } }
 
-    .rd-imgwin2 {
-      padding: 100px 24px; background: var(--c-bg);
-      background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
-      background-size: 22px 22px;
-    }
-    .rd-imgwin2-frame {
-      position: relative; max-width: 1400px; margin: 0 auto;
-      height: 60vh; min-height: 340px; max-height: 620px;
-      border-radius: 28px; overflow: hidden;
-      box-shadow: 0 40px 100px rgba(0,0,0,.35);
-    }
-    .rd-imgwin2-frame img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.78) saturate(1.1); display: block; }
-    @media (max-width: 640px) {
-      .rd-imgwin2 { padding: 64px 16px; }
-      .rd-imgwin2-frame { height: 42vh; min-height: 260px; border-radius: 18px; }
-    }
+    /* BILD 2: bewusst KEIN Sticky/Fixed/künstlicher Scroll-Container –
+       ein randloses 100vw-Bild, ganz normaler Bestandteil des Dokument-
+       flusses, das wie jeder andere Block herein-/herausscrollt. */
+    .rd-imgwin2 { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    .rd-imgwin2 img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.78) saturate(1.1); }
+    @media (max-width: 640px) { .rd-imgwin2 { height: 70vh; } }
   </style>
 
   <!-- 3D-Glaskarte im Hero -->
@@ -685,13 +662,11 @@
         <button type="button" class="window-cta" id="windowCta" onclick="openGuestBookModal()">
           📅 Vereinbare jetzt deinen unverbindlichen Termin
         </button>
-      </div>
-    </section>
 
-    <!-- ===== BILDFENSTER 1: sticky, wächst beim Scrollen zu Fullscreen ===== -->
-    <section class="rd-imgwin-outer" id="bildfenster1" aria-hidden="true">
-      <div class="rd-imgwin-sticky">
-        <div class="rd-imgwin-frame" id="imgwin1Frame">
+        <!-- Bild 1: erscheint als kleines Fenster und wächst, während der
+             Nutzer INNERHALB derselben Sticky-Sequenz weiterscrollt, zu
+             echtem 100vw×100vh Fullscreen (siehe js/main.js). -->
+        <div class="rd-imgwin1" id="imgwin1Frame" aria-hidden="true">
           <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&q=80" alt="" loading="lazy">
         </div>
       </div>
@@ -817,11 +792,11 @@
       </div>
     </section>
 
-    <!-- ===== BILDFENSTER 2: großer Bild-Break, ganz normal im Textfluss (nicht sticky) ===== -->
-    <section class="rd-imgwin2" aria-hidden="true">
-      <div class="rd-imgwin2-frame reveal">
-        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1920&q=80" alt="" loading="lazy">
-      </div>
+    <!-- ===== BILDFENSTER 2: randloses Fullscreen-Bild, ganz normal im
+         Textfluss – kein sticky, kein fixed, kein künstlicher Scroll-
+         Container. Scrollt wie jeder andere Block herein und heraus. ===== -->
+    <section class="rd-imgwin2 reveal" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1920&q=80" alt="" loading="lazy">
     </section>
 
     <!-- ===== ABLAUF ===== -->
