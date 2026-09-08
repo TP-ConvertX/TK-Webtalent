@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beispiel: Hintergrundbild im Fenster-Durchblick</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/portal.css">
+
+  <!-- Identisches Redesign-Theme wie index.html, 1:1 kopiert, damit das
+       Beispiel farblich exakt zur echten Seite passt. -->
+  <style>
+    :root {
+      --c-bg: #05070D;
+      --c-bg-light: #0A0E18;
+      --c-bg-dark: #05070D;
+      --c-text: #EAEDF7;
+      --c-text-2: rgba(234,237,247,.68);
+      --c-text-3: rgba(234,237,247,.46);
+      --c-accent: #4F7FFF;
+      --c-accent-dark: #2E5CE0;
+      --c-accent-light: rgba(79,127,255,.14);
+      --c-border: rgba(255,255,255,.1);
+      --c-border-2: rgba(255,255,255,.16);
+      --rd-ink-2: #0A0E18;
+      --rd-ink-3: #10162A;
+      --rd-cyan: #22D3EE;
+      --rd-accent-2: #8B5CF6;
+    }
+    h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; color: var(--c-text); }
+    body { background: var(--c-bg); font-family: 'Inter', sans-serif; }
+    .snippet-label { color: #64748B !important; }
+    .snippet-stats .snippet-label { color: rgba(255,255,255,.6) !important; }
+    .palette-type { color: #0F172A !important; }
+    .window-address { color: #94A3B8 !important; }
+    .ui-btn-ghost { color: #0F172A !important; border-color: rgba(15,23,42,.16) !important; }
+    .window-section { background-color: var(--c-bg) !important; }
+    #problem, .window-section {
+      background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px) !important;
+      background-size: 22px 22px !important;
+    }
+    .btn-primary {
+      background: linear-gradient(120deg, var(--c-accent), var(--rd-accent-2)) !important;
+      color: #fff !important; border-color: transparent !important;
+    }
+
+    /* ── DEMO-GERÜST (nur für diese Vorschau-Seite) ───────────── */
+    .demo-banner {
+      position: sticky; top: 0; z-index: 50;
+      background: #FDE047; color: #422006;
+      text-align: center; font-weight: 700; font-size: 13.5px;
+      padding: 10px 16px; letter-spacing: -0.01em;
+    }
+    .demo-filler {
+      min-height: 90vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 40px 24px; gap: 14px;
+    }
+    .demo-filler h1 { font-size: clamp(26px, 4vw, 40px); max-width: 700px; }
+    .demo-filler p { color: var(--c-text-2); max-width: 560px; font-size: 15.5px; line-height: 1.7; }
+    .demo-filler .demo-arrow { margin-top: 18px; font-size: 26px; color: var(--rd-cyan); animation: demoBounce 1.6s ease-in-out infinite; }
+    @keyframes demoBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+    /* ── NEU: Parallax-Hintergrundbild im Fenster-Durchblick ──────
+       Liegt INNERHALB von .window-pin-inner (das sticky steht, während
+       gescrollt wird) und wird per JS anhand des gleichen Scroll-
+       Fortschritts wie das Karussell selbst vertikal verschoben – dadurch
+       "fährt" das Bild im Hintergrund sichtbar vorbei, während man in der
+       Sektion "hängenbleibt". */
+    .window-parallax-bg {
+      position: absolute;
+      inset: -18% 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .window-parallax-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.5) saturate(1.15);
+      will-change: transform;
+    }
+    .window-parallax-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(5,7,13,.85) 0%, rgba(5,7,13,.35) 35%, rgba(5,7,13,.35) 65%, rgba(5,7,13,.85) 100%);
+    }
+    /* Bestehende Inhalte der Sektion müssen über dem neuen Bild schweben */
+    .window-section { position: relative; }
+    .window-quote, .window-frame, .window-cta { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="demo-banner">🧪 BEISPIEL – noch nicht live. Nur zur Ansicht für Tim.</div>
+
+  <div class="demo-filler">
+    <h1>Beispiel: Hintergrundbild im Fenster-Durchblick</h1>
+    <p>Scroll runter. Der Fenster-Durchblick-Bereich bleibt wie gewohnt sticky/fixiert – aber jetzt fährt im Hintergrund ein thematisch passendes Foto (Webdesign/Code, dunkel abgedunkelt) vorbei, während du „hängenbleibst" und weiterscrollst.</p>
+    <div class="demo-arrow">↓</div>
+  </div>
+
+  <!-- ===== FENSTER-DURCHBLICK (1:1 aus index.html, + Parallax-Bild) ===== -->
+  <section class="window-section" id="einblick">
+    <div class="window-pin-inner">
+
+      <div class="window-parallax-bg" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1600&q=80" alt="">
+      </div>
+
+      <p class="window-quote">„Ein Blick genügt, um zu überzeugen.“</p>
+      <div class="window-frame">
+        <div class="window-chrome">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <div class="window-address">Einblick in gutes Webdesign</div>
+        </div>
+        <div class="window-viewport">
+          <div class="window-track" id="windowTrack">
+
+            <div class="window-snippet snippet-code">
+              <div class="snippet-line"><span class="tok-tag">&lt;section</span> <span class="tok-attr">class</span>=<span class="tok-str">"hero"</span><span class="tok-tag">&gt;</span></div>
+              <div class="snippet-line snippet-indent"><span class="tok-tag">&lt;h1&gt;</span>Mehr Anfragen<span class="tok-tag">&lt;/h1&gt;</span></div>
+              <div class="snippet-line snippet-indent"><span class="tok-prop">color</span>: <span class="tok-val">#0EA5E9</span>;</div>
+              <div class="snippet-line snippet-indent"><span class="tok-prop">border-radius</span>: <span class="tok-val">14px</span>;</div>
+              <div class="snippet-line"><span class="tok-tag">&lt;/section&gt;</span></div>
+            </div>
+
+            <div class="window-snippet snippet-palette">
+              <div class="snippet-label">Farben</div>
+              <div class="palette-row">
+                <span class="swatch" style="background:#0F172A"></span>
+                <span class="swatch" style="background:#0EA5E9"></span>
+                <span class="swatch" style="background:#38BDF8"></span>
+                <span class="swatch" style="background:#F0F9FF"></span>
+              </div>
+              <div class="snippet-label" style="margin-top:14px">Typografie</div>
+              <div class="palette-type">Aa</div>
+            </div>
+
+            <div class="window-snippet snippet-mobile">
+              <div class="mini-phone">
+                <div class="mini-phone-bar"></div>
+                <div class="mini-phone-line" style="width:60%"></div>
+                <div class="mini-phone-line" style="width:80%"></div>
+                <div class="mini-phone-btn"></div>
+              </div>
+              <div class="snippet-label" style="margin-top:10px">Mobiloptimiert</div>
+            </div>
+
+            <div class="window-snippet snippet-ui">
+              <div class="snippet-label">UI-Elemente</div>
+              <div class="ui-btn ui-btn-primary">Jetzt anfragen</div>
+              <div class="ui-btn ui-btn-ghost">Mehr erfahren</div>
+              <div class="ui-chip">✓ Kostenlos & unverbindlich</div>
+            </div>
+
+            <div class="window-snippet snippet-browser">
+              <div class="mini-browser-bar"><span></span><span></span><span></span></div>
+              <div class="mini-browser-content">
+                <div class="mini-browser-line" style="width:70%"></div>
+                <div class="mini-browser-line" style="width:45%"></div>
+                <div class="mini-browser-card"></div>
+              </div>
+            </div>
+
+            <div class="window-snippet snippet-stats">
+              <div class="snippet-label">Ergebnis</div>
+              <div class="stat-big">+38%</div>
+              <div class="snippet-label">mehr Kundenanfragen</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <button type="button" class="window-cta" id="windowCta" disabled style="cursor:default">
+        📅 Vereinbare jetzt deinen unverbindlichen Termin
+      </button>
+    </div>
+  </section>
+
+  <div class="demo-filler">
+    <h1>Und so löst sich der Bereich wieder</h1>
+    <p>Sobald der Fenster-Durchblick-Bereich durchgescrollt ist, gibt er die Seite ganz normal wieder frei. Wenn dir das Bild so gefällt: Bescheid geben, dann übernehme ich es 1:1 in die echte Seite.</p>
+  </div>
+
+  <script>
+    /* Identische Sticky-Pin-Fortschritts-Formel wie in js/main.js:
+       Pin-Dauer = Sektionshöhe minus eine Viewport-Höhe. */
+    const windowSection = document.querySelector('.window-section');
+    const windowTrack   = document.getElementById('windowTrack');
+    const parallaxImg    = document.querySelector('.window-parallax-bg img');
+
+    if (windowSection && windowTrack) {
+      const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let maxTranslate = 0;
+
+      const measure = () => {
+        maxTranslate = Math.max(0, windowTrack.scrollWidth - windowTrack.parentElement.clientWidth);
+      };
+
+      let ticking = false;
+      const updateProgress = () => {
+        ticking = false;
+        if (reducedMotionQuery.matches) {
+          windowTrack.style.transform = '';
+          return;
+        }
+        const rect = windowSection.getBoundingClientRect();
+        const total = Math.max(rect.height - window.innerHeight, 1);
+        const progress = Math.min(Math.max(-rect.top, 0), total) / total;
+        windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
+        if (parallaxImg) {
+          // Bild driftet über den gesamten Pin-Verlauf sichtbar nach oben
+          parallaxImg.style.transform = `translateY(${(progress - 0.5) * -26}%)`;
+        }
+      };
+
+      const requestUpdate = () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(updateProgress); }
+      };
+
+      const remeasureAndUpdate = () => { measure(); updateProgress(); };
+
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', remeasureAndUpdate, { passive: true });
+      reducedMotionQuery.addEventListener('change', remeasureAndUpdate);
+      remeasureAndUpdate();
+    }
+  </script>
+</body>
+</html>
