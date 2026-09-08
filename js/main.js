@@ -124,14 +124,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── FENSTER-DURCHBLICK SCROLL-PIN ─────────────────
-     Zurück auf die ursprüngliche Sektionshöhe (200vh) – das Laptop-Foto
-     ist jetzt einfach das Hintergrundbild dieser Section (siehe CSS),
-     kein separates wachsendes/aufblendendes Element mehr. Damit es
-     beim Scrollen wie ein FESTSTEHENDES Bild wirkt, durch das man wie
-     durch ein Fenster hindurchscrollt (statt dass es mit der Section
-     mitwandert), wird background-position-y jeden Frame so nachgeführt,
-     dass die Bildposition im Viewport konstant bleibt – ein robuster,
-     mobile-tauglicher Ersatz für background-attachment:fixed. */
+     Ursprüngliche Sektionshöhe (200vh) – das Laptop-Foto ist einfach
+     das Hintergrundbild dieser Section mit background-attachment:fixed
+     (siehe CSS), bleibt dadurch nativ/ruckelfrei im Viewport stehen,
+     während Zitat + Mockup-Karussell normal davor weiterlaufen. Hier
+     geht es nur noch um die Karussell-Scroll-Logik selbst. */
   const windowSection = document.querySelector('.window-section');
   const windowTrack   = document.getElementById('windowTrack');
 
@@ -156,8 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const rect = windowSection.getBoundingClientRect();
       const vh = window.innerHeight;
 
-      windowSection.style.backgroundPositionY = `${-rect.top}px`;
-
       const total = Math.max(rect.height - vh, 1);
       const progress = Math.min(Math.max(-rect.top, 0), total) / total;
       windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
@@ -177,30 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', remeasureAndUpdate, { passive: true });
     reducedMotionQuery.addEventListener('change', remeasureAndUpdate);
     remeasureAndUpdate();
-  }
-
-  /* ── BILD 2: Handschlag-Foto als feststehender Hintergrund ──────
-     Kein Sticky, kein Pin, kein künstlicher Scroll-Container – die
-     Section scrollt ganz normal mit. Nur das Hintergrundbild selbst
-     wird (wie bei Bild 1) per background-position-y so nachgeführt,
-     dass es visuell fest im Viewport steht, während man wie durch ein
-     Fenster daran vorbeischrollt. */
-  const imgwin2El = document.getElementById('imgwin2');
-  if (imgwin2El) {
-    const reducedMotionQuery2 = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let ticking2 = false;
-    const updateImgwin2 = () => {
-      ticking2 = false;
-      if (reducedMotionQuery2.matches) return;
-      const rect = imgwin2El.getBoundingClientRect();
-      imgwin2El.style.backgroundPositionY = `${-rect.top}px`;
-    };
-    const requestImgwin2Update = () => {
-      if (!ticking2) { ticking2 = true; requestAnimationFrame(updateImgwin2); }
-    };
-    window.addEventListener('scroll', requestImgwin2Update, { passive: true });
-    window.addEventListener('resize', requestImgwin2Update, { passive: true });
-    updateImgwin2();
   }
 
   /* ── FAQ ACCORDION ──────────────────────────────── */

@@ -322,23 +322,19 @@
     .client-logo-img { filter: none !important; }
     .client-logo-link { background: #fff; border-radius: var(--radius-md); padding: 6px 14px; }
 
-    /* ── NACHTRÄGLICHER FIX (Runde 11): beide Bilder als "Fenster auf
-       ein feststehendes Hintergrundbild" statt als eigene wachsende/
-       hervortretende Elemente. Prinzip: das Foto liegt als BACKGROUND-
-       IMAGE auf der jeweiligen Section (hinterste Ebene), der bisherige
-       Inhalt (Zitat+Mockup bei Bild 1, einfach der Rahmen bei Bild 2)
-       bleibt die Ebene davor. Per JS wird background-position-y jeden
-       Frame so nachgeführt, dass das Bild visuell FEST im Viewport
-       stehen bleibt, während die Section ganz normal darüber hinweg-
-       scrollt – klassischer "fixed background", nur robust per JS
-       simuliert statt background-attachment:fixed (das auf Mobile
-       unzuverlässig ist). Kein Wachsen, kein Öffnen, kein Zoom – das
-       Bild hebt sich bewusst NICHT vom übrigen Scroll-Erlebnis ab. */
+    /* ── NACHTRÄGLICHER FIX (Runde 12): "Fenster auf ein feststehendes
+       Hintergrundbild" jetzt mit ECHTEM background-attachment:fixed
+       statt der JS-Simulation (background-position-y pro Scroll-Frame).
+       Die JS-Variante hinkte dem nativen, kompositor-gesteuerten
+       Scrollen minimal hinterher und wirkte dadurch zitterig/ruckelig.
+       Ein natives fixed-Background wird direkt vom Browser gerendert,
+       exakt synchron zum Scrollen, ganz ohne JS. */
     .window-section {
       background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&q=80') !important;
       background-repeat: no-repeat !important;
       background-size: cover !important;
-      background-position-x: center !important;
+      background-position: center !important;
+      background-attachment: fixed !important;
     }
     .window-section::after {
       content: ''; position: absolute; inset: 0; pointer-events: none;
@@ -348,13 +344,20 @@
     .rd-imgwin2 {
       position: relative; width: 100%; height: 100vh; overflow: hidden;
       background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80');
-      background-repeat: no-repeat; background-size: cover; background-position-x: center;
+      background-repeat: no-repeat; background-size: cover; background-position: center;
+      background-attachment: fixed;
     }
     .rd-imgwin2::after {
       content: ''; position: absolute; inset: 0; pointer-events: none;
       background: linear-gradient(180deg, rgba(5,7,13,.35) 0%, rgba(5,7,13,.1) 30%, rgba(5,7,13,.1) 70%, rgba(5,7,13,.4) 100%);
     }
     @media (max-width: 640px) { .rd-imgwin2 { height: 70vh; } }
+    /* background-attachment:fixed ist auf iOS Safari historisch
+       unzuverlässig – dort fällt es sauber auf normales Mitscrollen
+       zurück (kein Fenster-Effekt, aber auch kein Zittern/Bug). */
+    @supports (-webkit-touch-callout: none) {
+      .window-section, .rd-imgwin2 { background-attachment: scroll !important; }
+    }
   </style>
 
   <!-- 3D-Glaskarte im Hero -->
