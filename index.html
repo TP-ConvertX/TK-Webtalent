@@ -247,7 +247,7 @@
        hellem Hintergrund (Direkttermin-Box, Fenster-Sektion, Kundenlogo). ── */
 
     /* Space-Punktraster: auf allen "reinen" dunklen Sektionen */
-    #problem, #angebote, .window-section, #ablauf, .ai-section, .contact-section,
+    #problem, #angebote, #ablauf, .ai-section, .contact-section,
     .trust-bar, .client-logos-section, .rd-marquee {
       background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px) !important;
       background-size: 22px 22px !important;
@@ -322,63 +322,37 @@
     .client-logo-img { filter: none !important; }
     .client-logo-link { background: #fff; border-radius: var(--radius-md); padding: 6px 14px; }
 
-    /* ── NACHTRÄGLICHER FIX (Runde 10): Bild 1 komplett in die
-       bestehende Fenster-Durchblick-Sticky-Sequenz integriert (keine
-       eigene Section mehr). Die Sektion bekommt zusätzliche Scroll-Höhe
-       NACH der unveränderten Karussell-Phase; in diesem zusätzlichen
-       Abschnitt öffnet sich ein kleines Bildfenster, wächst randlos auf
-       echtes 100vw×100vh und hält dort, bis der Pin (wie vorher schon)
-       ganz normal endet. Siehe js/main.js für die Scroll-Fortschritts-
-       Aufteilung (Karussell-Anteil unverändert, Bild-Anteil neu). */
-    @media (prefers-reduced-motion: no-preference) {
-      .window-section { height: 400vh !important; }
+    /* ── NACHTRÄGLICHER FIX (Runde 11): beide Bilder als "Fenster auf
+       ein feststehendes Hintergrundbild" statt als eigene wachsende/
+       hervortretende Elemente. Prinzip: das Foto liegt als BACKGROUND-
+       IMAGE auf der jeweiligen Section (hinterste Ebene), der bisherige
+       Inhalt (Zitat+Mockup bei Bild 1, einfach der Rahmen bei Bild 2)
+       bleibt die Ebene davor. Per JS wird background-position-y jeden
+       Frame so nachgeführt, dass das Bild visuell FEST im Viewport
+       stehen bleibt, während die Section ganz normal darüber hinweg-
+       scrollt – klassischer "fixed background", nur robust per JS
+       simuliert statt background-attachment:fixed (das auf Mobile
+       unzuverlässig ist). Kein Wachsen, kein Öffnen, kein Zoom – das
+       Bild hebt sich bewusst NICHT vom übrigen Scroll-Erlebnis ab. */
+    .window-section {
+      background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&q=80') !important;
+      background-repeat: no-repeat !important;
+      background-size: cover !important;
+      background-position-x: center !important;
     }
-    /* BILD 1: kein Kartenlook mehr – volle Breite von Anfang an, nur die
-       Höhe (eine Blende/Aperture) öffnet sich beim Scrollen von komplett
-       geschlossen (0px sichtbar) zu echtem Fullscreen. Kein Rahmen, keine
-       Ecken, kein Schatten, kein Opacity-Fade – wirkt dadurch wie ein sich
-       öffnendes Hintergrundfenster statt wie eine eingeblendete Bildkarte.
-       Zusätzlich ein durchgehender, langsamer Zoom übers Bild selbst
-       (Ken-Burns), damit es sich wie eine lebendige Bildsequenz anfühlt
-       und nicht wie ein eingefrorenes Standbild. */
-    .rd-imgwin1 {
-      position: absolute; z-index: 5; overflow: hidden;
-      top: 50vh; bottom: 50vh; left: 0; right: 0;
-      pointer-events: none;
+    .window-section::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(5,7,13,.55) 0%, rgba(5,7,13,.3) 25%, rgba(5,7,13,.3) 75%, rgba(5,7,13,.6) 100%);
     }
-    .rd-imgwin1 img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      filter: brightness(.7) saturate(1.12);
-      will-change: transform;
-    }
-    .rd-imgwin1::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(5,7,13,.18) 0%, rgba(5,7,13,.04) 30%, rgba(5,7,13,.04) 70%, rgba(5,7,13,.42) 100%);
-    }
-    @media (prefers-reduced-motion: reduce) { .rd-imgwin1 { display: none; } }
 
-    /* BILD 2: bewusst KEIN Sticky/Fixed/künstlicher Scroll-Container –
-       randlos, volle Breite, ganz normaler Bestandteil des Dokumentflusses.
-       Damit es trotzdem wie eine Hintergrund-Bildsequenz statt wie ein
-       statisches Foto wirkt, driftet das Bild INNERHALB seines Rahmens
-       leicht parallaxartig mit (js/main.js) – der Rahmen selbst bewegt
-       sich nie, nur das Bild darin, klassischer Tiefeneffekt. */
     .rd-imgwin2 {
       position: relative; width: 100%; height: 100vh; overflow: hidden;
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+      background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80');
+      background-repeat: no-repeat; background-size: cover; background-position-x: center;
     }
-    /* Eigene, unabhängige Reveal-Animation statt der geteilten .reveal-Klasse:
-       das site-weite Stagger-System berechnet die Verzögerung anhand ALLER
-       Geschwister im selben Elternelement – bei einer Section, die (wie diese)
-       direkt in <main> hängt statt in einem .container, sind das plötzlich
-       ALLE 45 .reveal-Elemente der ganzen Seite, was zu absurd langen
-       Verzögerungen von >1.5s führte, bevor das Bild überhaupt einblendete. */
-    .rd-imgwin2.visible { opacity: 1; transform: translateY(0); }
-    .rd-imgwin2 img {
-      position: absolute; left: 0; top: -20%; width: 100%; height: 140%;
-      object-fit: cover; display: block; filter: brightness(.78) saturate(1.1);
-      will-change: transform;
+    .rd-imgwin2::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(5,7,13,.35) 0%, rgba(5,7,13,.1) 30%, rgba(5,7,13,.1) 70%, rgba(5,7,13,.4) 100%);
     }
     @media (max-width: 640px) { .rd-imgwin2 { height: 70vh; } }
   </style>
@@ -690,13 +664,6 @@
         <button type="button" class="window-cta" id="windowCta" onclick="openGuestBookModal()">
           📅 Vereinbare jetzt deinen unverbindlichen Termin
         </button>
-
-        <!-- Bild 1: erscheint als kleines Fenster und wächst, während der
-             Nutzer INNERHALB derselben Sticky-Sequenz weiterscrollt, zu
-             echtem 100vw×100vh Fullscreen (siehe js/main.js). -->
-        <div class="rd-imgwin1" id="imgwin1Frame" aria-hidden="true">
-          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&q=80" alt="" loading="lazy">
-        </div>
       </div>
     </section>
 
@@ -820,12 +787,10 @@
       </div>
     </section>
 
-    <!-- ===== BILDFENSTER 2: randloses Fullscreen-Bild, ganz normal im
-         Textfluss – kein sticky, kein fixed, kein künstlicher Scroll-
-         Container. Scrollt wie jeder andere Block herein und heraus. ===== -->
-    <section class="rd-imgwin2" id="imgwin2" aria-hidden="true">
-      <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80" alt="" loading="lazy">
-    </section>
+    <!-- ===== BILDFENSTER 2: Handschlag-Foto als feststehender Hintergrund,
+         die Section scrollt ganz normal darüber hinweg – kein sticky,
+         kein fixed, kein künstlicher Scroll-Container. ===== -->
+    <section class="rd-imgwin2" id="imgwin2" aria-hidden="true"></section>
 
     <!-- ===== ABLAUF ===== -->
     <section class="section-padding bg-light" id="ablauf">

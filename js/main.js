@@ -78,26 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
     revealObserver.observe(el);
   });
 
-  /* Bild 2 (Fullscreen-Break zwischen Pakete & Ablauf): eigener, kleiner
-     Observer ohne Stagger-Verzögerung, weil die Section direkt in <main>
-     hängt und sonst fälschlich mit ALLEN .reveal-Elementen der Seite
-     "gruppiert" würde (siehe Kommentar im CSS). */
-  const imgwin2 = document.getElementById('imgwin2');
-  if (imgwin2) {
-    const imgwin2Observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            imgwin2.classList.add('visible');
-            imgwin2Observer.unobserve(imgwin2);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    );
-    imgwin2Observer.observe(imgwin2);
-  }
-
   /* ── HERO 3D-GLASKARTE: dreht sich beim Scrollen ──
      Kein Sticky-Pin mehr (führte dazu, dass die Seite beim Scrollen
      "hängen blieb") – die Karte dreht sich stattdessen anhand des
@@ -143,25 +123,22 @@ document.addEventListener('DOMContentLoaded', () => {
     applyModeChange();
   }
 
-  /* ── FENSTER-DURCHBLICK SCROLL-PIN (+ integriertes Bild 1) ──────
-     EIN durchgehender Sticky-Pin über die ganze Sektion. Die Sektion
-     wurde per CSS auf 400vh verlängert (war 200vh) – die ERSTEN 100vh
-     Scrollstrecke steuern exakt wie vorher das Karussell (unverändert),
-     die ZUSÄTZLICHEN 200vh danach steuern Bild 1: es öffnet sich als
-     kleines Fenster, wächst randlos auf 100vw×100vh und hält dort, bis
-     der Pin ganz normal endet. Beides läuft aus DERSELBEN rect-Messung,
-     damit es sich wie eine einzige zusammenhängende Sequenz anfühlt. */
+  /* ── FENSTER-DURCHBLICK SCROLL-PIN ─────────────────
+     Zurück auf die ursprüngliche Sektionshöhe (200vh) – das Laptop-Foto
+     ist jetzt einfach das Hintergrundbild dieser Section (siehe CSS),
+     kein separates wachsendes/aufblendendes Element mehr. Damit es
+     beim Scrollen wie ein FESTSTEHENDES Bild wirkt, durch das man wie
+     durch ein Fenster hindurchscrollt (statt dass es mit der Section
+     mitwandert), wird background-position-y jeden Frame so nachgeführt,
+     dass die Bildposition im Viewport konstant bleibt – ein robuster,
+     mobile-tauglicher Ersatz für background-attachment:fixed. */
   const windowSection = document.querySelector('.window-section');
   const windowTrack   = document.getElementById('windowTrack');
-  const imgwin1        = document.getElementById('imgwin1Frame');
-  const imgwin1Img     = imgwin1?.querySelector('img');
 
   const windowCta = document.getElementById('windowCta');
 
   if (windowSection && windowTrack) {
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const lerp = (a, b, t) => a + (b - a) * t;
-    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
     let maxTranslate = 0;
 
     const measure = () => {
@@ -178,36 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const rect = windowSection.getBoundingClientRect();
       const vh = window.innerHeight;
-      const scrolled = Math.max(-rect.top, 0);
 
-      /* Karussell-Phase: exakt die gleiche Scrollstrecke (1 Viewport-
-         Höhe) wie vor der Bild-Integration – unverändertes Verhalten. */
-      const carouselTotal = vh;
-      const carouselProgress = Math.min(scrolled, carouselTotal) / carouselTotal;
-      windowTrack.style.transform = `translateX(-${carouselProgress * maxTranslate}px)`;
-      windowCta?.classList.toggle('visible', carouselProgress >= 0.92);
+      windowSection.style.backgroundPositionY = `${-rect.top}px`;
 
-      /* Bild-1-Phase: die komplette REST-Scrollstrecke der Sektion,
-         erst NACHDEM die Karussell-Phase durchgescrollt ist. Kein
-         Opacity-Fade mehr, kein Rahmen/Ecken – nur eine horizontale
-         Blende, die sich von komplett geschlossen (0px) auf echtes
-         Fullscreen öffnet, plus ein durchgehender langsamer Zoom auf
-         dem Bild selbst für den "lebendige Bildsequenz"-Eindruck. */
-      if (imgwin1) {
-        const imgPhaseTotal = Math.max(rect.height - vh - carouselTotal, 1);
-        const imgProgress = Math.min(Math.max(scrolled - carouselTotal, 0), imgPhaseTotal) / imgPhaseTotal;
-
-        const growP = Math.min(imgProgress / 0.5, 1); // 0–50%: Blende öffnet sich zu Fullscreen
-        const eased = easeOutCubic(growP);
-        const band = lerp(50, 0, eased); // vh Abstand oben/unten
-
-        imgwin1.style.top = `${band}vh`;
-        imgwin1.style.bottom = `${band}vh`;
-        if (imgwin1Img) {
-          const zoom = lerp(1, 1.14, imgProgress); // durchgehend über die ganze Bildphase
-          imgwin1Img.style.transform = `scale(${zoom})`;
-        }
-      }
+      const total = Math.max(rect.height - vh, 1);
+      const progress = Math.min(Math.max(-rect.top, 0), total) / total;
+      windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
+      windowCta?.classList.toggle('visible', progress >= 0.92);
     };
 
     const requestUpdate = () => {
@@ -225,32 +179,28 @@ document.addEventListener('DOMContentLoaded', () => {
     remeasureAndUpdate();
   }
 
-  /* ── BILD 2: leichter Parallax-Drift statt statischem Foto ──────
-     Kein Sticky, kein Pin – die Section scrollt ganz normal mit. Nur
-     das <img> darin (per CSS überdimensioniert: 140% Höhe) verschiebt
-     sich leicht abhängig davon, wie nah die Sektionsmitte an der
-     Viewport-Mitte ist, damit es sich wie eine Hintergrund-Bildebene
-     mit Tiefe anfühlt statt wie ein flach eingesetztes Standbild. */
+  /* ── BILD 2: Handschlag-Foto als feststehender Hintergrund ──────
+     Kein Sticky, kein Pin, kein künstlicher Scroll-Container – die
+     Section scrollt ganz normal mit. Nur das Hintergrundbild selbst
+     wird (wie bei Bild 1) per background-position-y so nachgeführt,
+     dass es visuell fest im Viewport steht, während man wie durch ein
+     Fenster daran vorbeischrollt. */
   const imgwin2El = document.getElementById('imgwin2');
   if (imgwin2El) {
-    const img2 = imgwin2El.querySelector('img');
     const reducedMotionQuery2 = window.matchMedia('(prefers-reduced-motion: reduce)');
     let ticking2 = false;
-    const updateImgwin2Parallax = () => {
+    const updateImgwin2 = () => {
       ticking2 = false;
-      if (reducedMotionQuery2.matches || !img2) return;
+      if (reducedMotionQuery2.matches) return;
       const rect = imgwin2El.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const center = rect.top + rect.height / 2;
-      const offset = (center - vh / 2) * -0.15;
-      img2.style.transform = `translateY(${offset}px)`;
+      imgwin2El.style.backgroundPositionY = `${-rect.top}px`;
     };
-    const requestImgwin2Parallax = () => {
-      if (!ticking2) { ticking2 = true; requestAnimationFrame(updateImgwin2Parallax); }
+    const requestImgwin2Update = () => {
+      if (!ticking2) { ticking2 = true; requestAnimationFrame(updateImgwin2); }
     };
-    window.addEventListener('scroll', requestImgwin2Parallax, { passive: true });
-    window.addEventListener('resize', requestImgwin2Parallax, { passive: true });
-    updateImgwin2Parallax();
+    window.addEventListener('scroll', requestImgwin2Update, { passive: true });
+    window.addEventListener('resize', requestImgwin2Update, { passive: true });
+    updateImgwin2();
   }
 
   /* ── FAQ ACCORDION ──────────────────────────────── */
