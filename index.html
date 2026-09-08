@@ -312,11 +312,6 @@
     }
     .faq-icon { background: var(--c-bg-light) !important; color: var(--c-text-2) !important; }
 
-    /* Fenster-Durchblick: Außenbereich dunkel, das Browser-Mockup selbst
-       bleibt bewusst hell (wirkt wie ein Screenshot, der auf dunklem
-       Grund schwebt). */
-    .window-section { background-color: var(--c-bg) !important; }
-
     /* Kundenlogo: Filter-Trick sah wie ein grauer Klumpen aus – Logo
        bleibt in Originalfarben auf einer kleinen weißen Karte. */
     .client-logo-img { filter: none !important; }
@@ -348,7 +343,9 @@
     }
     @media (prefers-reduced-motion: reduce) { .rd-fixed-bg { display: none; } }
 
-    .window-section { background: var(--c-bg) !important; }
+    /* Muss transparent sein, sonst verdeckt die eigene Hintergrundfarbe
+       das dahinterliegende #fixedBg-Bild komplett. */
+    .window-section { background: transparent !important; }
     .rd-imgwin2 { position: relative; width: 100%; height: 100vh; }
     @media (max-width: 640px) { .rd-imgwin2 { height: 70vh; } }
   </style>
