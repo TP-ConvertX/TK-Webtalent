@@ -126,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── FENSTER-DURCHBLICK SCROLL-PIN ───────────────── */
   const windowSection = document.querySelector('.window-section');
   const windowTrack   = document.getElementById('windowTrack');
-  const windowParallaxImg = document.querySelector('.window-parallax-bg img');
 
   const windowCta = document.getElementById('windowCta');
 
@@ -154,11 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const progress = Math.min(Math.max(-rect.top, 0), total) / total;
       windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
       windowCta?.classList.toggle('visible', progress >= 0.92);
-      /* Hintergrundbild driftet sichtbar vorbei, während die Sektion
-         gepinnt ist – gleicher Fortschrittswert wie das Karussell. */
-      if (windowParallaxImg) {
-        windowParallaxImg.style.transform = `translateY(${(progress - 0.5) * -26}%)`;
-      }
     };
 
     const requestUpdate = () => {
@@ -176,33 +170,43 @@ document.addEventListener('DOMContentLoaded', () => {
     remeasureAndUpdate();
   }
 
-  /* ── PARALLAX-HINTERGRUNDBILDER (nicht sticky) ─────
-     Anders als beim Fenster-Durchblick: kein Pin, die Sektion scrollt
-     ganz normal mit – nur das Bild darin driftet etwas langsamer als
-     der Rest, abhängig davon, wie nah die Sektionsmitte an der
-     Viewport-Mitte ist. */
-  const parallaxImgs = document.querySelectorAll('.rd-parallax-bg img');
-  if (parallaxImgs.length) {
+  /* ── BILDFENSTER 1: sticky, wächst beim Scrollen zu Fullscreen ──
+     Eigener 220vh-Scroll-Container mit sticky Fenster darin (siehe CSS).
+     Erste 45% des Pin-Fortschritts: Fenster wächst von einem kleineren,
+     abgerundeten Ausschnitt auf echtes Fullscreen. Restliche 55%: bleibt
+     fullscreen "stehen", bis der Pin beim Weiterscrollen ganz normal
+     endet. Bild 2 (weiter unten) bekommt bewusst KEINE Scroll-Logik –
+     es soll ganz normal mit der Seite mitscrollen. */
+  const imgwin1Outer = document.querySelector('.rd-imgwin-outer');
+  const imgwin1Frame = document.getElementById('imgwin1Frame');
+  if (imgwin1Outer && imgwin1Frame) {
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+    const GROW_PHASE = 0.45; // Anteil des Pin-Fortschritts, der fürs Wachsen genutzt wird
+
     let ticking = false;
-    const updateParallax = () => {
+    const updateImgwin1 = () => {
       ticking = false;
       if (reducedMotionQuery.matches) return;
-      const vh = window.innerHeight;
-      parallaxImgs.forEach(img => {
-        const wrap = img.closest('.rd-parallax-bg');
-        const rect = wrap.parentElement.getBoundingClientRect();
-        const center = rect.top + rect.height / 2;
-        const offset = (center - vh / 2) * -0.12;
-        img.style.transform = `translateY(${offset}px)`;
-      });
+      const rect = imgwin1Outer.getBoundingClientRect();
+      const total = Math.max(rect.height - window.innerHeight, 1);
+      const progress = Math.min(Math.max(-rect.top, 0), total) / total;
+      const growP = Math.min(progress / GROW_PHASE, 1);
+      const eased = easeOutCubic(growP);
+      imgwin1Frame.style.width = `${lerp(88, 100, eased)}vw`;
+      imgwin1Frame.style.height = `${lerp(70, 100, eased)}vh`;
+      imgwin1Frame.style.borderRadius = `${lerp(28, 0, eased)}px`;
     };
-    const requestParallax = () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(updateParallax); }
+
+    const requestImgwin1Update = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(updateImgwin1); }
     };
-    window.addEventListener('scroll', requestParallax, { passive: true });
-    window.addEventListener('resize', requestParallax, { passive: true });
-    updateParallax();
+
+    window.addEventListener('scroll', requestImgwin1Update, { passive: true });
+    window.addEventListener('resize', requestImgwin1Update, { passive: true });
+    reducedMotionQuery.addEventListener('change', updateImgwin1);
+    updateImgwin1();
   }
 
   /* ── FAQ ACCORDION ──────────────────────────────── */
