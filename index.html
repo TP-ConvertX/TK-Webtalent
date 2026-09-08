@@ -322,42 +322,35 @@
     .client-logo-img { filter: none !important; }
     .client-logo-link { background: #fff; border-radius: var(--radius-md); padding: 6px 14px; }
 
-    /* ── NACHTRÄGLICHER FIX (Runde 12): "Fenster auf ein feststehendes
-       Hintergrundbild" jetzt mit ECHTEM background-attachment:fixed
-       statt der JS-Simulation (background-position-y pro Scroll-Frame).
-       Die JS-Variante hinkte dem nativen, kompositor-gesteuerten
-       Scrollen minimal hinterher und wirkte dadurch zitterig/ruckelig.
-       Ein natives fixed-Background wird direkt vom Browser gerendert,
-       exakt synchron zum Scrollen, ganz ohne JS. */
-    .window-section {
-      background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&q=80') !important;
-      background-repeat: no-repeat !important;
-      background-size: cover !important;
-      background-position: center !important;
-      background-attachment: fixed !important;
+    /* ── NACHTRÄGLICHER FIX (Runde 13): "Fenster auf ein feststehendes
+       Hintergrundbild" jetzt über ein ECHTES position:fixed-Element
+       (#fixedBg, ganz oben im <body>, z-index:-1 hinter dem gesamten
+       Seiteninhalt) statt background-attachment:fixed. Letzteres
+       flackerte beim Ein-/Austreten aus dem Viewport in Kombination mit
+       den anderen gestapelten/positionierten Elementen der Seite – ein
+       bekanntes Cross-Browser-Problem dieser CSS-Eigenschaft. Ein
+       echtes position:fixed-Element wird vom Compositor wie jedes
+       andere fixe Element behandelt (wie z.B. die Sticky-Nav) und hat
+       dieses Problem nicht. js/main.js schaltet Sichtbarkeit + Bild
+       um, je nachdem welche der beiden Sections gerade im Viewport ist;
+       alle anderen Sections haben weiterhin ihren normalen, blickdichten
+       Hintergrund und verdecken #fixedBg dadurch automatisch. */
+    .rd-fixed-bg {
+      position: fixed; inset: 0; z-index: -1;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
     }
-    .window-section::after {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(180deg, rgba(5,7,13,.55) 0%, rgba(5,7,13,.3) 25%, rgba(5,7,13,.3) 75%, rgba(5,7,13,.6) 100%);
+    .rd-fixed-bg.active { opacity: 1; }
+    .rd-fixed-bg img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.7) saturate(1.1); }
+    .rd-fixed-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(5,7,13,.5) 0%, rgba(5,7,13,.25) 25%, rgba(5,7,13,.25) 75%, rgba(5,7,13,.55) 100%);
     }
+    @media (prefers-reduced-motion: reduce) { .rd-fixed-bg { display: none; } }
 
-    .rd-imgwin2 {
-      position: relative; width: 100%; height: 100vh; overflow: hidden;
-      background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80');
-      background-repeat: no-repeat; background-size: cover; background-position: center;
-      background-attachment: fixed;
-    }
-    .rd-imgwin2::after {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(180deg, rgba(5,7,13,.35) 0%, rgba(5,7,13,.1) 30%, rgba(5,7,13,.1) 70%, rgba(5,7,13,.4) 100%);
-    }
+    .window-section { background: var(--c-bg) !important; }
+    .rd-imgwin2 { position: relative; width: 100%; height: 100vh; }
     @media (max-width: 640px) { .rd-imgwin2 { height: 70vh; } }
-    /* background-attachment:fixed ist auf iOS Safari historisch
-       unzuverlässig – dort fällt es sauber auf normales Mitscrollen
-       zurück (kein Fenster-Effekt, aber auch kein Zittern/Bug). */
-    @supports (-webkit-touch-callout: none) {
-      .window-section, .rd-imgwin2 { background-attachment: scroll !important; }
-    }
   </style>
 
   <!-- 3D-Glaskarte im Hero -->
@@ -376,6 +369,10 @@
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+
+  <div class="rd-fixed-bg" id="fixedBg" aria-hidden="true">
+    <img id="fixedBgImg" src="" alt="" loading="eager">
+  </div>
 
   <a href="#main" class="rd-skip-link">Zum Inhalt springen</a>
 

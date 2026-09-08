@@ -123,12 +123,53 @@ document.addEventListener('DOMContentLoaded', () => {
     applyModeChange();
   }
 
+  /* ── FESTSTEHENDE HINTERGRUNDBILDER (echtes position:fixed) ──────
+     Ein gemeinsames position:fixed-Element (#fixedBg, z-index:-1 hinter
+     dem gesamten Seiteninhalt) statt background-attachment:fixed, das
+     beim Ein-/Austreten aus dem Viewport flackerte. Sichtbarkeit + Bild
+     werden per Scroll umgeschaltet, je nachdem ob gerade die Fenster-
+     Durchblick-Section oder die Handschlag-Section im Viewport ist –
+     alle anderen Sections haben ihren normalen blickdichten Hintergrund
+     und verdecken #fixedBg dadurch automatisch. */
+  const fixedBg = document.getElementById('fixedBg');
+  const fixedBgImg = document.getElementById('fixedBgImg');
+  if (fixedBg && fixedBgImg) {
+    const targets = [
+      { el: document.querySelector('.window-section'), src: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&q=80' },
+      { el: document.getElementById('imgwin2'), src: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80' },
+    ].filter(t => t.el);
+
+    let currentSrc = '';
+    let tickingBg = false;
+    const updateFixedBg = () => {
+      tickingBg = false;
+      const vh = window.innerHeight;
+      const match = targets.find(t => {
+        const rect = t.el.getBoundingClientRect();
+        return rect.bottom > 0 && rect.top < vh;
+      });
+      if (match) {
+        if (currentSrc !== match.src) {
+          fixedBgImg.src = match.src;
+          currentSrc = match.src;
+        }
+        fixedBg.classList.add('active');
+      } else {
+        fixedBg.classList.remove('active');
+      }
+    };
+    const requestFixedBgUpdate = () => {
+      if (!tickingBg) { tickingBg = true; requestAnimationFrame(updateFixedBg); }
+    };
+    window.addEventListener('scroll', requestFixedBgUpdate, { passive: true });
+    window.addEventListener('resize', requestFixedBgUpdate, { passive: true });
+    updateFixedBg();
+  }
+
   /* ── FENSTER-DURCHBLICK SCROLL-PIN ─────────────────
-     Ursprüngliche Sektionshöhe (200vh) – das Laptop-Foto ist einfach
-     das Hintergrundbild dieser Section mit background-attachment:fixed
-     (siehe CSS), bleibt dadurch nativ/ruckelfrei im Viewport stehen,
-     während Zitat + Mockup-Karussell normal davor weiterlaufen. Hier
-     geht es nur noch um die Karussell-Scroll-Logik selbst. */
+     Ursprüngliche Sektionshöhe (200vh) – nur noch die Karussell-Scroll-
+     Logik selbst, das Hintergrundbild läuft jetzt komplett über
+     #fixedBg oben. */
   const windowSection = document.querySelector('.window-section');
   const windowTrack   = document.getElementById('windowTrack');
 
