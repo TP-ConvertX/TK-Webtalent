@@ -154,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const windowSection = document.querySelector('.window-section');
   const windowTrack   = document.getElementById('windowTrack');
   const imgwin1        = document.getElementById('imgwin1Frame');
+  const imgwin1Img     = imgwin1?.querySelector('img');
 
   const windowCta = document.getElementById('windowCta');
 
@@ -187,21 +188,25 @@ document.addEventListener('DOMContentLoaded', () => {
       windowCta?.classList.toggle('visible', carouselProgress >= 0.92);
 
       /* Bild-1-Phase: die komplette REST-Scrollstrecke der Sektion,
-         erst NACHDEM die Karussell-Phase durchgescrollt ist. */
+         erst NACHDEM die Karussell-Phase durchgescrollt ist. Kein
+         Opacity-Fade mehr, kein Rahmen/Ecken – nur eine horizontale
+         Blende, die sich von komplett geschlossen (0px) auf echtes
+         Fullscreen öffnet, plus ein durchgehender langsamer Zoom auf
+         dem Bild selbst für den "lebendige Bildsequenz"-Eindruck. */
       if (imgwin1) {
         const imgPhaseTotal = Math.max(rect.height - vh - carouselTotal, 1);
         const imgProgress = Math.min(Math.max(scrolled - carouselTotal, 0), imgPhaseTotal) / imgPhaseTotal;
 
-        const appearP = Math.min(imgProgress / 0.3, 1);            // 0–30%: Fenster blendet ein
-        const growP = Math.min(Math.max((imgProgress - 0.3) / 0.25, 0), 1); // 30–55%: wächst zu Fullscreen
+        const growP = Math.min(imgProgress / 0.5, 1); // 0–50%: Blende öffnet sich zu Fullscreen
         const eased = easeOutCubic(growP);
+        const band = lerp(50, 0, eased); // vh Abstand oben/unten
 
-        imgwin1.style.opacity = appearP;
-        imgwin1.style.top = `${lerp(26, 0, eased)}vh`;
-        imgwin1.style.bottom = `${lerp(26, 0, eased)}vh`;
-        imgwin1.style.left = `${lerp(22, 0, eased)}vw`;
-        imgwin1.style.right = `${lerp(22, 0, eased)}vw`;
-        imgwin1.style.borderRadius = `${lerp(28, 0, eased)}px`;
+        imgwin1.style.top = `${band}vh`;
+        imgwin1.style.bottom = `${band}vh`;
+        if (imgwin1Img) {
+          const zoom = lerp(1, 1.14, imgProgress); // durchgehend über die ganze Bildphase
+          imgwin1Img.style.transform = `scale(${zoom})`;
+        }
       }
     };
 
@@ -218,6 +223,34 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', remeasureAndUpdate, { passive: true });
     reducedMotionQuery.addEventListener('change', remeasureAndUpdate);
     remeasureAndUpdate();
+  }
+
+  /* ── BILD 2: leichter Parallax-Drift statt statischem Foto ──────
+     Kein Sticky, kein Pin – die Section scrollt ganz normal mit. Nur
+     das <img> darin (per CSS überdimensioniert: 140% Höhe) verschiebt
+     sich leicht abhängig davon, wie nah die Sektionsmitte an der
+     Viewport-Mitte ist, damit es sich wie eine Hintergrund-Bildebene
+     mit Tiefe anfühlt statt wie ein flach eingesetztes Standbild. */
+  const imgwin2El = document.getElementById('imgwin2');
+  if (imgwin2El) {
+    const img2 = imgwin2El.querySelector('img');
+    const reducedMotionQuery2 = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let ticking2 = false;
+    const updateImgwin2Parallax = () => {
+      ticking2 = false;
+      if (reducedMotionQuery2.matches || !img2) return;
+      const rect = imgwin2El.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const center = rect.top + rect.height / 2;
+      const offset = (center - vh / 2) * -0.15;
+      img2.style.transform = `translateY(${offset}px)`;
+    };
+    const requestImgwin2Parallax = () => {
+      if (!ticking2) { ticking2 = true; requestAnimationFrame(updateImgwin2Parallax); }
+    };
+    window.addEventListener('scroll', requestImgwin2Parallax, { passive: true });
+    window.addEventListener('resize', requestImgwin2Parallax, { passive: true });
+    updateImgwin2Parallax();
   }
 
   /* ── FAQ ACCORDION ──────────────────────────────── */
