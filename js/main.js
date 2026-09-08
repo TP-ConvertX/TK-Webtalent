@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── FENSTER-DURCHBLICK SCROLL-PIN ───────────────── */
   const windowSection = document.querySelector('.window-section');
   const windowTrack   = document.getElementById('windowTrack');
+  const windowParallaxImg = document.querySelector('.window-parallax-bg img');
 
   const windowCta = document.getElementById('windowCta');
 
@@ -153,6 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const progress = Math.min(Math.max(-rect.top, 0), total) / total;
       windowTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
       windowCta?.classList.toggle('visible', progress >= 0.92);
+      /* Hintergrundbild driftet sichtbar vorbei, während die Sektion
+         gepinnt ist – gleicher Fortschrittswert wie das Karussell. */
+      if (windowParallaxImg) {
+        windowParallaxImg.style.transform = `translateY(${(progress - 0.5) * -26}%)`;
+      }
     };
 
     const requestUpdate = () => {
@@ -168,6 +174,35 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', remeasureAndUpdate, { passive: true });
     reducedMotionQuery.addEventListener('change', remeasureAndUpdate);
     remeasureAndUpdate();
+  }
+
+  /* ── PARALLAX-HINTERGRUNDBILDER (nicht sticky) ─────
+     Anders als beim Fenster-Durchblick: kein Pin, die Sektion scrollt
+     ganz normal mit – nur das Bild darin driftet etwas langsamer als
+     der Rest, abhängig davon, wie nah die Sektionsmitte an der
+     Viewport-Mitte ist. */
+  const parallaxImgs = document.querySelectorAll('.rd-parallax-bg img');
+  if (parallaxImgs.length) {
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let ticking = false;
+    const updateParallax = () => {
+      ticking = false;
+      if (reducedMotionQuery.matches) return;
+      const vh = window.innerHeight;
+      parallaxImgs.forEach(img => {
+        const wrap = img.closest('.rd-parallax-bg');
+        const rect = wrap.parentElement.getBoundingClientRect();
+        const center = rect.top + rect.height / 2;
+        const offset = (center - vh / 2) * -0.12;
+        img.style.transform = `translateY(${offset}px)`;
+      });
+    };
+    const requestParallax = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(updateParallax); }
+    };
+    window.addEventListener('scroll', requestParallax, { passive: true });
+    window.addEventListener('resize', requestParallax, { passive: true });
+    updateParallax();
   }
 
   /* ── FAQ ACCORDION ──────────────────────────────── */

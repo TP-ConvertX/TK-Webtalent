@@ -321,6 +321,34 @@
        bleibt in Originalfarben auf einer kleinen weißen Karte. */
     .client-logo-img { filter: none !important; }
     .client-logo-link { background: #fff; border-radius: var(--radius-md); padding: 6px 14px; }
+
+    /* ── NACHTRÄGLICHER FIX (Runde 8): Parallax-Hintergrundbilder ──────
+       1) Fenster-Durchblick: Bild liegt HINTER dem sticky-fixierten Inhalt
+          und wird per JS anhand des gleichen Scroll-Fortschritts wie das
+          Karussell selbst verschoben – "fährt vorbei", während man in der
+          Sektion hängenbleibt (siehe js/main.js).
+       2) KI-Zukunft-Sektion: gleiche Optik, aber NICHT sticky – das Bild
+          driftet nur ganz normal beim Scrollen mit (eigener, unabhängiger
+          Scroll-Handler ohne Pin). ── */
+    .window-parallax-bg, .rd-parallax-bg {
+      position: absolute; inset: -18% 0; z-index: 0; overflow: hidden; pointer-events: none;
+    }
+    .window-parallax-bg img, .rd-parallax-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.5) saturate(1.15); will-change: transform;
+    }
+    .window-parallax-bg::after, .rd-parallax-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(5,7,13,.85) 0%, rgba(5,7,13,.35) 35%, rgba(5,7,13,.35) 65%, rgba(5,7,13,.85) 100%);
+    }
+    .window-pin-inner { position: relative; }
+    .window-quote, .window-frame, .window-cta { position: relative; z-index: 1; }
+
+    .rd-parallax-bg::after {
+      background: linear-gradient(180deg, rgba(10,14,24,.88) 0%, rgba(20,12,40,.5) 40%, rgba(20,12,40,.5) 60%, rgba(10,14,24,.88) 100%);
+    }
+    .ai-section { position: relative; overflow: hidden; }
+    .ai-section > .container { position: relative; z-index: 1; }
   </style>
 
   <!-- 3D-Glaskarte im Hero -->
@@ -563,6 +591,9 @@
     <!-- ===== FENSTER-DURCHBLICK ===== -->
     <section class="window-section" id="einblick">
       <div class="window-pin-inner">
+        <div class="window-parallax-bg" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1600&q=80" alt="" loading="lazy">
+        </div>
         <p class="window-quote">„Ein Blick genügt, um zu überzeugen.“</p>
         <div class="window-frame">
           <div class="window-chrome">
@@ -888,6 +919,9 @@
 
     <!-- ===== KI-ZUKUNFT ===== -->
     <section class="ai-section">
+      <div class="rd-parallax-bg" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=80" alt="" loading="lazy">
+      </div>
       <div class="container">
         <div class="ai-inner reveal">
           <div class="ai-left">
