@@ -78,6 +78,26 @@ document.addEventListener('DOMContentLoaded', () => {
     revealObserver.observe(el);
   });
 
+  /* Bild 2 (Fullscreen-Break zwischen Pakete & Ablauf): eigener, kleiner
+     Observer ohne Stagger-Verzögerung, weil die Section direkt in <main>
+     hängt und sonst fälschlich mit ALLEN .reveal-Elementen der Seite
+     "gruppiert" würde (siehe Kommentar im CSS). */
+  const imgwin2 = document.getElementById('imgwin2');
+  if (imgwin2) {
+    const imgwin2Observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            imgwin2.classList.add('visible');
+            imgwin2Observer.unobserve(imgwin2);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+    imgwin2Observer.observe(imgwin2);
+  }
+
   /* ── HERO 3D-GLASKARTE: dreht sich beim Scrollen ──
      Kein Sticky-Pin mehr (führte dazu, dass die Seite beim Scrollen
      "hängen blieb") – die Karte dreht sich stattdessen anhand des
