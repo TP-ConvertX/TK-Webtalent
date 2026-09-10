@@ -14,18 +14,8 @@ const {
   createZoomMeeting,
   emailTpl,
   emailBox,
+  formatAppt,
 } = require('./_appointment-helpers');
-
-const CAL_DAYS   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-const CAL_MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
-
-function formatAppt(dateStr, timeStr) {
-  const d    = new Date(dateStr + 'T12:00:00');
-  const endH = parseInt(timeStr) + 1;
-  return CAL_DAYS[d.getDay()] + ', ' + d.getDate() + '. ' + CAL_MONTHS[d.getMonth()] + ' '
-    + d.getFullYear() + ' · ' + timeStr.slice(0,5) + ' – '
-    + String(endH).padStart(2,'0') + ':00 Uhr';
-}
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();

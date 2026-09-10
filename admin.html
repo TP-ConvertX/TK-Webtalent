@@ -168,6 +168,9 @@
     <div class="admin-panel" id="panelAppointments">
       <div class="admin-panel-header">
         <h2 class="admin-panel-title">Termine</h2>
+        <button class="btn btn-primary" onclick="openAdminBookModal()" style="font-size:14px;padding:10px 20px">
+          + Neuer Termin
+        </button>
       </div>
       <div id="adminApptList" style="margin-bottom:24px"></div>
       <div id="adminCalContainer"></div>
@@ -427,12 +430,36 @@
     </div>
     <div class="modal-error" id="adminBookError"></div>
     <form class="modal-form" id="adminBookForm" novalidate>
-      <div style="background:var(--c-bg-light);border-radius:12px;padding:14px;font-size:15px;font-weight:600;color:var(--c-text);text-align:center;margin-bottom:16px" id="adminBookDateDisplay">—</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label">Datum *</label>
+          <input type="date" class="form-input" id="adminBookDate" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Uhrzeit *</label>
+          <input type="time" class="form-input" id="adminBookTime" step="1800" required>
+        </div>
+      </div>
       <div class="form-group">
+        <label class="form-label">Für wen? *</label>
+        <div style="display:flex;gap:8px">
+          <button type="button" class="btn btn-outline admin-mode-btn active" id="adminModeCustomerBtn" onclick="setAdminBookMode('customer')" style="flex:1;font-size:13px;padding:9px 8px">Bestehender Kunde</button>
+          <button type="button" class="btn btn-outline admin-mode-btn" id="adminModeGuestBtn" onclick="setAdminBookMode('guest')" style="flex:1;font-size:13px;padding:9px 8px">Sonstige Person</button>
+        </div>
+      </div>
+      <div class="form-group" id="adminCustomerGroup">
         <label class="form-label">Kunde *</label>
-        <select class="form-select" id="adminBookCustomer" required>
+        <select class="form-select" id="adminBookCustomer">
           <option value="">Kunden auswählen …</option>
         </select>
+      </div>
+      <div class="form-group" id="adminGuestGroup" style="display:none">
+        <label class="form-label">Name *</label>
+        <input type="text" class="form-input" id="adminBookGuestName" placeholder="Max Mustermann">
+      </div>
+      <div class="form-group" id="adminGuestEmailGroup" style="display:none">
+        <label class="form-label">E-Mail (optional)</label>
+        <input type="email" class="form-input" id="adminBookGuestEmail" placeholder="max@beispiel.de">
       </div>
       <div class="form-group">
         <label class="form-label">Terminart *</label>
@@ -853,15 +880,19 @@ function isValidUrl(url) {
 <script>
 /* ── TERMINKALENDER (Admin) ── */
 let _adminAllAppts = [];
-let _adminPendingDate, _adminPendingTime;
 
-function sendApptEmail(type, customerId, date, time, appointmentType, appointmentId, address) {
+function sendApptEmail(type, customerId, date, time, appointmentType, appointmentId, address, guestName, guestEmail) {
   const token = currentSession?.access_token;
   if (!token) return;
   fetch('/api/send-appointment-email', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-    body: JSON.stringify({ type, customerId, date, time, appointmentType, appointmentId, address, formattedDate: calFormatAppt(date, time) })
+    body: JSON.stringify({
+      type, customerId, date, time, appointmentType, appointmentId, address,
+      formattedDate: calFormatAppt(date, time),
+      customerName: guestName || undefined,
+      customerEmail: guestEmail || undefined,
+    })
   }).catch(() => {});
 }
 
@@ -902,11 +933,21 @@ function renderAdminAppts(appts) {
       </div>`).join('');
 }
 
+/* Wird sowohl vom Klick auf eine freie Kalenderzelle (date/time schon
+   bekannt) als auch vom "+ Neuer Termin"-Button (frei wählbar, Admin
+   trägt Datum/Uhrzeit selbst ein) aufgerufen. Datum/Uhrzeit sind immer
+   editierbare Felder – die Vorauswahl aus dem Kalender ist nur ein
+   Startwert, kein fixer Wert. */
 function calOnBook(date, time) {
-  _adminPendingDate = date;
-  _adminPendingTime = time;
-  document.getElementById('adminBookDateDisplay').textContent = calFormatAppt(date, time);
+  openAdminBookModal(date, time);
+}
+
+function openAdminBookModal(date, time) {
+  const todayISO = new Date().toISOString().slice(0, 10);
+  document.getElementById('adminBookDate').value = date || todayISO;
+  document.getElementById('adminBookTime').value = time || '';
   document.getElementById('adminBookError').classList.remove('visible');
+
   const sel = document.getElementById('adminBookCustomer');
   sel.innerHTML = '<option value="">Kunden auswählen …</option>';
   allCustomers.filter(c => c.active).forEach(c => {
@@ -915,11 +956,33 @@ function calOnBook(date, time) {
     opt.textContent = c.full_name + (c.company_name ? ' – ' + c.company_name : '');
     sel.appendChild(opt);
   });
+
+  document.getElementById('adminBookGuestName').value = '';
+  document.getElementById('adminBookGuestEmail').value = '';
   document.getElementById('adminBookNotes').value = '';
   document.getElementById('adminBookApptType').value = '';
   document.getElementById('adminBookAddress').value = '';
   document.getElementById('adminAddressGroup').style.display = 'none';
+  setAdminBookMode('customer');
   openModal('modalAdminBook');
+}
+
+/* "Bestehender Kunde" (Dropdown, wie bisher) vs. "Sonstige Person"
+   (freier Name + optionale E-Mail, landet wie bei einer Gast-Buchung
+   über die Website in guest_name/guest_email statt customer_id) –
+   damit lassen sich Termine für wirklich jeden anlegen, nicht nur für
+   bereits angelegte Kunden. */
+let _adminBookMode = 'customer';
+function setAdminBookMode(mode) {
+  _adminBookMode = mode;
+  const customerBtn = document.getElementById('adminModeCustomerBtn');
+  const guestBtn     = document.getElementById('adminModeGuestBtn');
+  const activeStyle   = 'background:var(--c-accent);color:#fff;border-color:var(--c-accent)';
+  customerBtn.setAttribute('style', 'flex:1;font-size:13px;padding:9px 8px' + (mode === 'customer' ? ';' + activeStyle : ''));
+  guestBtn.setAttribute('style', 'flex:1;font-size:13px;padding:9px 8px' + (mode === 'guest' ? ';' + activeStyle : ''));
+  document.getElementById('adminCustomerGroup').style.display   = mode === 'customer' ? '' : 'none';
+  document.getElementById('adminGuestGroup').style.display      = mode === 'guest' ? '' : 'none';
+  document.getElementById('adminGuestEmailGroup').style.display = mode === 'guest' ? '' : 'none';
 }
 
 function toggleAdminAddressField() {
@@ -1225,37 +1288,57 @@ document.getElementById('adminBookForm').addEventListener('submit', async (e) =>
   e.preventDefault();
   const btn   = document.getElementById('adminBookBtn');
   const err   = document.getElementById('adminBookError');
+  const date     = document.getElementById('adminBookDate').value;
+  const time     = document.getElementById('adminBookTime').value;
   const cust     = document.getElementById('adminBookCustomer').value;
+  const guestName  = document.getElementById('adminBookGuestName').value.trim();
+  const guestEmail = document.getElementById('adminBookGuestEmail').value.trim();
   const apptType = document.getElementById('adminBookApptType').value;
   const address  = document.getElementById('adminBookAddress').value.trim();
   const notes    = document.getElementById('adminBookNotes').value.trim();
 
-  if (!cust) { showModalErr(err, 'Bitte einen Kunden auswählen.'); return; }
+  if (!date || !time) { showModalErr(err, 'Bitte Datum und Uhrzeit angeben.'); return; }
+  if (_adminBookMode === 'customer' && !cust) { showModalErr(err, 'Bitte einen Kunden auswählen.'); return; }
+  if (_adminBookMode === 'guest' && !guestName) { showModalErr(err, 'Bitte einen Namen angeben.'); return; }
   if (!apptType) { showModalErr(err, 'Bitte eine Terminart auswählen.'); return; }
 
   setLoading(btn, true);
   err.classList.remove('visible');
 
-  const { data, error } = await sb.from('appointments').insert({
-    customer_id:      cust,
-    appointment_date: _adminPendingDate,
-    appointment_time: _adminPendingTime + ':00',
-    status:           'confirmed',
-    notes:            notes || null,
-    appointment_type: apptType,
-    appointment_address: apptType === 'persoenlich' ? (address || null) : null
-  }).select('id').single();
-
-  setLoading(btn, false);
-
-  if (error) {
-    showModalErr(err, error.code === '23505' ? 'Dieser Termin ist bereits vergeben.' : 'Fehler beim Speichern.');
+  let result;
+  try {
+    const r = await fetch('/api/admin-book-appointment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentSession?.access_token },
+      body: JSON.stringify({
+        date, time,
+        appointmentType: apptType,
+        address: address || null,
+        notes: notes || null,
+        customerId: _adminBookMode === 'customer' ? cust : null,
+        guestName:  _adminBookMode === 'guest' ? guestName : null,
+        guestEmail: _adminBookMode === 'guest' ? (guestEmail || null) : null,
+      })
+    });
+    result = await r.json();
+    setLoading(btn, false);
+    if (!r.ok) {
+      showModalErr(err, result.error === 'slot_taken' ? 'Dieser Termin ist bereits vergeben.' : (result.error || 'Fehler beim Speichern.'));
+      return;
+    }
+  } catch (e) {
+    setLoading(btn, false);
+    showModalErr(err, 'Fehler beim Speichern.');
     return;
   }
 
   showToast('Termin wurde angelegt.', 'success');
   closeModal('modalAdminBook');
-  sendApptEmail('admin_booked', cust, _adminPendingDate, _adminPendingTime, apptType, data.id, address);
+  if (_adminBookMode === 'customer') {
+    sendApptEmail('admin_booked', cust, date, time, apptType, result.id, address);
+  } else {
+    sendApptEmail('admin_booked', null, date, time, apptType, result.id, address, guestName, guestEmail);
+  }
   await loadAppointments();
 });
 </script>

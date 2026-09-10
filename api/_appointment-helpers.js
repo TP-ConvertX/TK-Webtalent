@@ -119,6 +119,26 @@ function isTuesday(dateStr) {
   return new Date(dateStr + 'T00:00:00').getDay() === 2;
 }
 
+/* ─── GETEILTE TERMIN-FORMATIERUNG ─────────────────────
+   War bisher in book-guest.js, cancel-appointment.js und
+   send-appointment-reminders.js dreifach dupliziert – und dabei mit
+   einem Bug: die Endzeit wurde per "Stunde + 1" berechnet statt mit
+   echter Minuten-Arithmetik. Bei vollen Stunden (17:00 → 18:00) fiel
+   das nicht auf, bei halbstündigen Terminen (17:30) kam aber fälsch-
+   licherweise "18:00" statt "18:30" raus. */
+const APPT_CAL_DAYS   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+const APPT_CAL_MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+function formatAppt(dateStr, timeStr, durationMinutes = 60) {
+  const d = new Date(dateStr + 'T12:00:00');
+  const [h, m] = timeStr.split(':').map(Number);
+  const startMin = h * 60 + m;
+  const endMin   = startMin + durationMinutes;
+  const endStr   = String(Math.floor(endMin / 60) % 24).padStart(2, '0') + ':' + String(endMin % 60).padStart(2, '0');
+  return APPT_CAL_DAYS[d.getDay()] + ', ' + d.getDate() + '. ' + APPT_CAL_MONTHS[d.getMonth()] + ' '
+    + d.getFullYear() + ' · ' + timeStr.slice(0, 5) + ' – ' + endStr + ' Uhr';
+}
+
 /* ─── GETEILTES E-MAIL-TEMPLATE ───────────────────────── */
 function emailTpl(body) {
   return `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
@@ -173,4 +193,5 @@ module.exports = {
   emailTpl,
   emailBox,
   escapeHtml,
+  formatAppt,
 };

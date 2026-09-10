@@ -18,18 +18,8 @@ const {
   deleteZoomMeeting,
   emailTpl,
   emailBox,
+  formatAppt,
 } = require('./_appointment-helpers');
-
-const CAL_DAYS   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-const CAL_MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
-
-function formatAppt(dateStr, timeStr) {
-  const d    = new Date(dateStr + 'T12:00:00');
-  const endH = parseInt(timeStr) + 1;
-  return CAL_DAYS[d.getDay()] + ', ' + d.getDate() + '. ' + CAL_MONTHS[d.getMonth()] + ' '
-    + d.getFullYear() + ' · ' + timeStr.slice(0,5) + ' – '
-    + String(endH).padStart(2,'0') + ':00 Uhr';
-}
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
