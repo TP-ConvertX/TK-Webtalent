@@ -209,7 +209,7 @@ function buildLeadOfferEmail(lead) {
     ${h1('Dein persönliches Angebot')}
     ${p('vielen Dank für deine Anfrage! Basierend auf dem, was du mir erzählt hast, habe ich dir folgendes Angebot zusammengestellt:')}
     ${emailBox(`${lead.suggested_price_eur} €`)}
-    ${p('Das ist ein erster Richtwert – gerne besprechen wir die Details in einem kurzen, kostenlosen und unverbindlichen Gespräch, damit ich dir ein maßgeschneidertes Angebot machen kann.')}
+    ${p('Das ist ein erster Richtwert – gerne bespreche ich die Details mit dir in einem kurzen, kostenlosen und unverbindlichen Gespräch, damit ich dir ein maßgeschneidertes Angebot machen kann.')}
     <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px 18px;margin:16px 0">
       <p style="font-size:14px;color:#166534;margin:0"><strong>🔧 Optional: Laufende Betreuung</strong><br>Damit deine Website auch nach dem Launch aktuell, sicher und gepflegt bleibt, biete ich eine laufende Betreuung für <strong>${maintenancePriceEur(lead.suggested_price_eur)} € im Monat</strong> an – inklusive Sicherheits-Updates, unkomplizierten kleinen Änderungen und technischem Support. Völlig unverbindlich, du entscheidest.</p>
     </div>

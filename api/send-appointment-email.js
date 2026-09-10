@@ -142,7 +142,7 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, appoint
           ${emailBox(formattedDate)}
           ${zoomNote}
           ${addressNote}
-          ${p('Der Termin dauert <strong>60 Minuten</strong>. Wir besprechen dabei den Stand deines Projekts und die nächsten Schritte.')}
+          ${p('Der Termin dauert <strong>60 Minuten</strong>. Dabei bespreche ich mit dir den Stand deines Projekts und die nächsten Schritte.')}
           ${p(`Musst du absagen? Kein Problem – einfach im ${kb} stornieren.`)}
           ${sign}
           ${cancelNote}
@@ -175,8 +175,8 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, appoint
           ${zoomNote}
           ${addressNote}
           ${p(isGuest
-            ? 'Falls der Termin nicht passt, kannst du ihn über den Link unten direkt stornieren oder uns kontaktieren.'
-            : `Falls der Termin nicht passt, kannst du ihn im ${kb} absagen oder uns direkt kontaktieren.`)}
+            ? 'Falls der Termin nicht passt, kannst du ihn über den Link unten direkt stornieren oder mich kontaktieren.'
+            : `Falls der Termin nicht passt, kannst du ihn im ${kb} absagen oder mich direkt kontaktieren.`)}
           ${sign}
           ${cancelNote}
         `)
