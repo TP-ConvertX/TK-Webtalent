@@ -87,7 +87,11 @@ module.exports = async function handler(req, res) {
     zoomJoinUrl,
     appointmentId,
     adminEmail: ADMIN_EMAIL,
-    from: FROM
+    from: FROM,
+    /* Vom Admin für eine "Sonstige Person" angelegte Termine haben
+       keinen customerId – die Person ist kein Kunde, hat also auch
+       keinen Zugang zum Kundenbereich (siehe buildEmails unten). */
+    isGuest: !customerId
   });
 
   for (const mail of mails) {
@@ -113,7 +117,7 @@ module.exports = async function handler(req, res) {
 /* customer_cancelled/admin_cancelled gibt's hier nicht mehr – Stornierungen
    (inkl. E-Mail-Benachrichtigung an Kunde + Admin, Zoom-Löschung) laufen
    zentral über api/cancel-appointment.js, egal von wo sie ausgelöst werden. */
-function buildEmails(type, { customerEmail, customerName, formattedDate, appointmentType, address, zoomJoinUrl, appointmentId, adminEmail, from }) {
+function buildEmails(type, { customerEmail, customerName, formattedDate, appointmentType, address, zoomJoinUrl, appointmentId, adminEmail, from, isGuest }) {
   const sign       = `<p style="font-size:13px;color:#94A3B8;margin-top:24px;border-top:1px solid #F1F5F9;padding-top:16px">Viele Grüße,<br><strong style="color:#0F172A">Tim · TK Webtalent</strong></p>`;
   const h1         = (t) => `<p style="font-size:22px;font-weight:800;color:#0F172A;margin-bottom:6px">${t}</p>`;
   const p          = (t) => `<p style="font-size:14px;color:#475569;line-height:1.6;margin-top:8px">${t}</p>`;
@@ -170,7 +174,9 @@ function buildEmails(type, { customerEmail, customerName, formattedDate, appoint
           ${emailBox(formattedDate)}
           ${zoomNote}
           ${addressNote}
-          ${p(`Falls der Termin nicht passt, kannst du ihn im ${kb} absagen oder uns direkt kontaktieren.`)}
+          ${p(isGuest
+            ? 'Falls der Termin nicht passt, kannst du ihn über den Link unten direkt stornieren oder uns kontaktieren.'
+            : `Falls der Termin nicht passt, kannst du ihn im ${kb} absagen oder uns direkt kontaktieren.`)}
           ${sign}
           ${cancelNote}
         `)
