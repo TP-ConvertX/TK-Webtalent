@@ -38,11 +38,8 @@
       height: 76px;
     }
     .nav-inner { display: flex; align-items: center; height: 76px; gap: 36px; }
-    .nav-logo { display: flex; align-items: center; gap: 12px; }
-    .logo-mark { flex-shrink: 0; }
-    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
-    .logo-text strong { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: #241C17; letter-spacing: -0.01em; }
-    .logo-text span { font-size: 10.5px; color: #E2231A; font-weight: 600; letter-spacing: 0.02em; font-style: italic; font-family: 'Fraunces', serif; text-transform: none; }
+    .nav-logo { display: flex; align-items: center; }
+    .logo-img { height: 52px; width: auto; flex-shrink: 0; }
     .nav-links { display: flex; gap: 30px; flex: 1; }
     .nav-links a { font-size: 14.5px; color: #4A423A; font-weight: 500; transition: color 0.2s; }
     .nav-links a:hover { color: #241C17; }
@@ -231,7 +228,7 @@
     /* ── FOOTER ── */
     .footer { background: #FAF6F0; padding: 44px 0 30px; border-top: 1px solid #E9DFCF; }
     .footer-inner { display: flex; align-items: center; justify-content: center; gap: 12px; flex-direction: column; text-align: center; }
-    .footer-inner .logo-text strong { color: #241C17; }
+    .footer-inner .logo-img { height: 64px; }
     .footer-tagline { font-family: 'Fraunces', serif; font-style: italic; font-size: 14.5px; color: #E2231A; }
     .footer-note { font-size: 12px; color: #9C9186; margin-top: 6px; }
 
@@ -275,15 +272,7 @@
   <nav class="nav">
     <div class="container nav-inner">
       <a href="#" class="nav-logo">
-        <svg class="logo-mark" width="40" height="40" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <polyline points="2,23 9,18 16,12 22,16 28,9 36,14 40,21" stroke="#241C17" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="2,26 9,23 16,25 22,20 28,24 36,19 40,26" stroke="#E2231A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="28" y1="24" x2="28" y2="35" stroke="#241C17" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-        <div class="logo-text">
-          <strong>Schwarzbach</strong>
-          <span>Ihr Dach – mein Fach</span>
-        </div>
+        <img src="schwarzbach-logo.png" alt="Schwarzbach Dachdecker – Ihr Dach, mein Fach" class="logo-img">
       </a>
       <ul class="nav-links">
         <li><a href="#leistungen">Leistungen</a></li>
@@ -517,15 +506,7 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div class="nav-logo">
-        <svg class="logo-mark" width="40" height="40" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <polyline points="2,23 9,18 16,12 22,16 28,9 36,14 40,21" stroke="#241C17" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="2,26 9,23 16,25 22,20 28,24 36,19 40,26" stroke="#E2231A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="28" y1="24" x2="28" y2="35" stroke="#241C17" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-        <div class="logo-text">
-          <strong>Schwarzbach</strong>
-          <span>Ihr Dach – mein Fach</span>
-        </div>
+        <img src="schwarzbach-logo.png" alt="Schwarzbach Dachdecker – Ihr Dach, mein Fach" class="logo-img">
       </div>
       <div class="footer-tagline">„Ein Dach sollte langlebig sein.“</div>
       <div class="footer-note">Design-Konzept · unverbindliche Vorschau · basiert auf echten Inhalten von schwarzbach-dach.de</div>
