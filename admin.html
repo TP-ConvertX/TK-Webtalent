@@ -597,6 +597,9 @@ async function loadCustomers() {
             onclick="toggleCustomer('${c.id}', ${c.active})">
             ${c.active ? 'Deaktivieren' : 'Aktivieren'}
           </button>
+          <button class="action-btn action-btn-danger" onclick="deleteCustomer('${c.id}', '${esc(c.full_name).replace(/'/g,"\\'")}')">
+            Löschen
+          </button>
         </div>
       </td>
     </tr>
@@ -741,6 +744,38 @@ async function toggleCustomer(id, currentlyActive) {
   if (error) { showToast('Fehler beim Ändern.', 'error'); return; }
   showToast(currentlyActive ? 'Kunde deaktiviert.' : 'Kunde aktiviert.', 'success');
   await Promise.all([loadCustomers(), loadStats()]);
+}
+
+/* ── KUNDEN LÖSCHEN ── */
+async function deleteCustomer(id, name) {
+  const step1 = window.confirm(
+    'Kunde "' + name + '" wirklich unwiderruflich löschen?\n\n' +
+    'Dabei werden Login-Konto, Profil sowie alle Projekte, Nachrichten und Termine dieses Kunden dauerhaft entfernt.'
+  );
+  if (!step1) return;
+
+  const step2 = window.prompt('Zur Bestätigung bitte "LÖSCHEN" eingeben:');
+  if (step2 !== 'LÖSCHEN') return;
+
+  const token = currentSession?.access_token;
+  const res = await fetch(API_DELETE_CUSTOMER, {
+    method: 'POST',
+    headers: {
+      'Content-Type':  'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({ customerId: id })
+  });
+
+  const json = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    showToast(json.error || 'Fehler beim Löschen des Kunden.', 'error');
+    return;
+  }
+
+  showToast('Kunde "' + name + '" wurde gelöscht.', 'success');
+  await Promise.all([loadCustomers(), loadProjects(), loadStats()]);
 }
 
 /* ── PROJEKT ANLEGEN ── */

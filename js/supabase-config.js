@@ -9,4 +9,5 @@ const SUPABASE_URL      = 'https://dwcmmghuaswwmsojitls.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_hKg2lc-bdM87f5EXjsEqcQ_RArHVqi_';
 
 // Interner API-Endpunkt (Vercel Serverless Function)
-const API_CREATE_USER = '/api/create-user';
+const API_CREATE_USER     = '/api/create-user';
+const API_DELETE_CUSTOMER = '/api/delete-customer';
