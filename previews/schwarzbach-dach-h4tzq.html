@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <script>
+    /* Vorschau läuft automatisch ab – 7 Tage nach Erstellung. Sofortige
+       Weiterleitung auf eine separate Ablauf-Seite, so früh im <head> wie
+       möglich, damit vom echten Inhalt nichts sichtbar wird. */
+    if (new Date() > new Date('2026-09-18T23:59:59')) {
+      location.replace('/previews/vorschau-abgelaufen');
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schwarzbach Dachdecker – Design-Vorschau</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #2A2420; background: #FAF6F0; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section-pad { padding: 110px 0; }
+    .bg-soft { background: #F1E9DD; }
+    .bg-dark { background: #241C17; color: #fff; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(250,246,240,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(42,36,32,0.1);
+      height: 76px;
+    }
+    .nav-inner { display: flex; align-items: center; height: 76px; gap: 36px; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .logo-mark {
+      width: 42px; height: 42px; flex-shrink: 0;
+      background: linear-gradient(155deg, #B8452A, #8C3A22);
+      border-radius: 10px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark::before {
+      content: ''; position: absolute; width: 20px; height: 14px;
+      border-top: 3px solid #fff; top: 13px; left: 11px;
+      clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-text strong { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: #241C17; letter-spacing: -0.01em; }
+    .logo-text span { font-size: 10.5px; color: #8C6A4A; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 30px; flex: 1; }
+    .nav-links a { font-size: 14.5px; color: #4A423A; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #241C17; }
+    .nav-phone { margin-left: auto; font-size: 14px; font-weight: 600; color: #4A423A; display: flex; align-items: center; gap: 7px; }
+    .nav-cta {
+      background: #B8452A; color: #fff;
+      padding: 11px 24px; border-radius: 100px;
+      font-size: 14px; font-weight: 700; transition: all 0.2s;
+      display: inline-block; white-space: nowrap;
+    }
+    .nav-cta:hover { background: #9C3A22; }
+    .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; margin-left: auto; z-index: 210; position: relative; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: #241C17; border-radius: 2px; transition: all 0.25s; }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; inset: 76px 0 0 0; z-index: 199;
+      background: #FAF6F0; padding: 32px 24px; flex-direction: column; gap: 4px;
+      transform: translateY(-12px); opacity: 0; pointer-events: none; transition: all 0.25s;
+    }
+    .mobile-menu.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .mobile-menu a { padding: 16px 4px; font-size: 17px; font-weight: 600; color: #241C17; border-bottom: 1px solid rgba(42,36,32,0.08); }
+    .mobile-menu .nav-cta { margin-top: 20px; text-align: center; }
+
+    /* ── HERO ── */
+    .hero { position: relative; overflow: hidden; padding: 100px 0 90px; color: #fff; }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -2;
+      background-image: url('https://images.unsplash.com/photo-1632759145351-1d592919f522?w=1800&q=80&auto=format&fit=crop');
+      background-size: cover; background-position: center 30%;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(160deg, rgba(24,18,15,0.92) 0%, rgba(36,28,23,0.86) 45%, rgba(24,18,15,0.75) 100%);
+    }
+    .hero-inner { position: relative; text-align: center; max-width: 780px; margin: 0 auto; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22);
+      color: #E8A46E; padding: 8px 18px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 30px;
+    }
+    .hero h1 {
+      font-family: 'Fraunces', serif; font-weight: 600;
+      font-size: clamp(36px, 6vw, 60px);
+      line-height: 1.14; color: #fff; margin-bottom: 24px; letter-spacing: -0.01em;
+    }
+    .hero h1 em { font-style: italic; font-weight: 500; color: #E8A46E; }
+    .hero p { font-size: 18px; color: rgba(255,255,255,0.82); max-width: 580px; margin: 0 auto 40px; line-height: 1.75; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-rust {
+      background: #B8452A; color: #fff;
+      padding: 15px 30px; border-radius: 100px;
+      font-size: 15px; font-weight: 700; transition: all 0.2s;
+    }
+    .btn-rust:hover { background: #9C3A22; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.3); }
+    .btn-ghost-white {
+      background: rgba(255,255,255,0.08); color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.32);
+      padding: 15px 30px; border-radius: 100px;
+      font-size: 15px; font-weight: 500; transition: all 0.2s;
+    }
+    .btn-ghost-white:hover { background: rgba(255,255,255,0.16); }
+    .hero-stats { margin-top: 60px; display: flex; justify-content: center; gap: 52px; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat strong { display: block; font-family: 'Fraunces', serif; font-size: 25px; font-weight: 600; color: #E8A46E; }
+    .hero-stat span { font-size: 12.5px; color: rgba(255,255,255,0.65); margin-top: 4px; display: block; }
+
+    /* ── AWARDS-LEISTE ── */
+    .awards-bar { background: #241C17; padding: 26px 0; border-top: 1px solid rgba(255,255,255,0.08); }
+    .awards-row { display: flex; justify-content: center; align-items: center; gap: 44px; flex-wrap: wrap; }
+    .award-item { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.82); font-size: 13.5px; font-weight: 600; }
+    .award-item .ai { font-size: 18px; }
+
+    /* ── SEKTIONS-HEADER ── */
+    .s-eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B8452A; margin-bottom: 16px; display: block; }
+    .s-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(27px, 4vw, 40px); margin-bottom: 18px; line-height: 1.22; color: #241C17; letter-spacing: -0.01em; }
+    .s-sub { font-size: 16.5px; color: #5C534A; line-height: 1.75; max-width: 600px; }
+    .s-intro { margin-bottom: 56px; }
+    .s-intro.c { text-align: center; max-width: 660px; margin-left: auto; margin-right: auto; }
+
+    /* ── LEISTUNGEN GRID ── */
+    .leistungen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .leistung-card {
+      background: #fff; border: 1px solid #E9DFCF;
+      border-radius: 18px; padding: 28px 24px;
+      transition: all 0.3s;
+    }
+    .leistung-card:hover { box-shadow: 0 16px 44px rgba(36,28,23,0.09); transform: translateY(-4px); border-color: #DCCEB4; }
+    .leistung-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      background: linear-gradient(155deg, #FBE4D3, #F2C4A3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 21px; margin-bottom: 18px;
+    }
+    .leistung-card h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 17.5px; margin-bottom: 9px; color: #241C17; }
+    .leistung-card p { font-size: 13.8px; color: #5C534A; line-height: 1.62; }
+
+    /* ── FEATURE ROWS ── */
+    .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .feature-row.rev .feature-media { order: 2; }
+    .feature-row.rev .feature-text { order: 1; }
+    .feature-media { border-radius: 20px; overflow: hidden; box-shadow: 0 24px 60px rgba(36,28,23,0.18); aspect-ratio: 4/3; position: relative; }
+    .feature-media img { width: 100%; height: 100%; object-fit: cover; }
+    .feature-text .s-eyebrow { margin-bottom: 14px; }
+    .feature-text h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(23px, 3vw, 29px); color: #241C17; margin-bottom: 18px; line-height: 1.28; letter-spacing: -0.01em; }
+    .feature-text p { font-size: 15.5px; color: #5C534A; line-height: 1.8; margin-bottom: 20px; }
+    .feature-quote {
+      border-left: 3px solid #B8452A; padding: 4px 0 4px 18px; margin: 22px 0;
+      font-family: 'Fraunces', serif; font-style: italic; font-size: 16.5px; color: #3A322B; line-height: 1.55;
+    }
+    .feature-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+    .feature-tags span {
+      font-size: 12.5px; font-weight: 600; color: #241C17;
+      background: #F1E9DD; border: 1px solid #E0D2B8;
+      padding: 7px 14px; border-radius: 100px;
+    }
+    .feature-block + .feature-block { margin-top: 96px; }
+
+    /* ── TEAM ── */
+    .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .team-card { background: #fff; border: 1px solid #E9DFCF; border-radius: 16px; padding: 22px 18px; text-align: center; }
+    .team-avatar {
+      width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 14px;
+      background: linear-gradient(155deg, #E8A46E, #B8452A);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif; font-weight: 600; font-size: 19px; color: #fff;
+    }
+    .team-card strong { display: block; font-size: 14.5px; font-weight: 700; color: #241C17; margin-bottom: 4px; }
+    .team-card span { font-size: 12.5px; color: #8C6A4A; line-height: 1.5; display: block; }
+
+    /* ── WARUM WIR ── */
+    .warum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .warum-card { background: #fff; border-radius: 20px; padding: 34px 28px; border: 1px solid #E9DFCF; transition: all 0.3s; }
+    .warum-card:hover { border-color: #DCCEB4; box-shadow: 0 16px 44px rgba(36,28,23,0.07); }
+    .warum-tag { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #B8452A; background: #FBE4D3; padding: 5px 12px; border-radius: 100px; margin-bottom: 18px; }
+    .warum-card h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 18.5px; margin-bottom: 11px; color: #241C17; }
+    .warum-card p { font-size: 14.2px; color: #5C534A; line-height: 1.68; }
+
+    /* ── KUNDENSTIMME ── */
+    .testimonial-section { background: #F1E9DD; text-align: center; }
+    .testimonial-inner { max-width: 700px; margin: 0 auto; }
+    .testimonial-mark { font-family: 'Fraunces', serif; font-size: 54px; color: #B8452A; line-height: 1; margin-bottom: 6px; }
+    .testimonial-text { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(19px, 2.4vw, 25px); color: #2A2420; line-height: 1.55; margin-bottom: 22px; }
+    .testimonial-author { font-size: 14px; font-weight: 700; color: #8C6A4A; }
+
+    /* ── ABSCHLUSS / KONTAKT ── */
+    .abschluss-section { background: linear-gradient(160deg, #241C17, #2E241D); position: relative; overflow: hidden; text-align: center; }
+    .abschluss-section::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 18% 20%, rgba(184,69,42,0.16) 0%, transparent 45%);
+    }
+    .abschluss-inner { position: relative; max-width: 620px; margin: 0 auto; }
+    .abschluss-section h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(27px, 4vw, 39px); color: #fff; margin-bottom: 18px; line-height: 1.28; letter-spacing: -0.01em; }
+    .abschluss-section p { font-size: 16px; color: rgba(255,255,255,0.72); line-height: 1.75; margin-bottom: 36px; }
+    .kontakt-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; padding-top: 34px; border-top: 1px solid rgba(255,255,255,0.14); }
+    .kontakt-item { text-align: left; font-size: 14.5px; color: rgba(255,255,255,0.85); }
+    .kontakt-item strong { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #E8A46E; margin-bottom: 6px; }
+    .kontakt-item a { color: rgba(255,255,255,0.85); }
+    .kontakt-item a:hover { color: #E8A46E; }
+
+    /* ── FOOTER ── */
+    .footer { background: #FAF6F0; padding: 44px 0 30px; border-top: 1px solid #E9DFCF; }
+    .footer-inner { display: flex; align-items: center; justify-content: center; gap: 12px; flex-direction: column; text-align: center; }
+    .footer-inner .logo-text strong { color: #241C17; }
+    .footer-tagline { font-family: 'Fraunces', serif; font-style: italic; font-size: 14.5px; color: #B8452A; }
+    .footer-note { font-size: 12px; color: #9C9186; margin-top: 6px; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1020px) {
+      .leistungen-grid { grid-template-columns: 1fr 1fr; }
+      .warum-grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .feature-row { gap: 40px; }
+    }
+    @media (max-width: 880px) {
+      .nav-links, .nav-cta, .nav-phone { display: none; }
+      .nav-burger { display: flex; }
+      .mobile-menu { display: flex; }
+      .hero-stats { gap: 34px; }
+      .feature-row, .feature-row.rev { grid-template-columns: 1fr; }
+      .feature-row .feature-media, .feature-row.rev .feature-media { order: 1; }
+      .feature-row .feature-text, .feature-row.rev .feature-text { order: 2; }
+      .kontakt-row { gap: 26px; }
+      .kontakt-item { text-align: center; }
+      .awards-row { gap: 24px; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding: 84px 0 68px; }
+      .section-pad { padding: 68px 0; }
+      .leistungen-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { gap: 24px; }
+      .feature-block + .feature-block { margin-top: 60px; }
+      .award-item { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="logo-mark"></div>
+        <div class="logo-text">
+          <strong>Schwarzbach</strong>
+          <span>Dachdeckermeister</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#ueber-uns">Über uns</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <span class="nav-phone">📞 07121 47 06 45</span>
+      <a href="#kontakt" class="nav-cta">Angebot anfragen</a>
+      <button class="nav-burger" id="navBurger" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#leistungen">Leistungen</a>
+    <a href="#ueber-uns">Über uns</a>
+    <a href="#team">Team</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href="#kontakt" class="nav-cta">Angebot anfragen</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-inner">
+      <div class="hero-eyebrow reveal">✦ Schwarzbach Dachdecker · Reutlingen · Innungsbetrieb</div>
+      <h1 class="reveal">Handwerk, das<br><em>wirklich hält.</em></h1>
+      <p class="reveal">Seit 1983 als Familienbetrieb in Reutlingen für Sie auf dem Dach – von der Flachdachsanierung bis zur PV-Anlage. Präzise Arbeit statt Kompromisse, digital organisiert und mit ehrlicher Beratung.</p>
+      <div class="hero-btns reveal">
+        <a href="#leistungen" class="btn-rust">Leistungen entdecken</a>
+        <a href="#kontakt" class="btn-ghost-white">Kostenlose Beratung anfragen</a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="hero-stat"><strong>seit 1983</strong><span>Familienbetrieb</span></div>
+        <div class="hero-stat"><strong>TOP 100</strong><span>Dachdeckerbetriebe 2026</span></div>
+        <div class="hero-stat"><strong>Reutlingen</strong><span>& Umgebung</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Auszeichnungen -->
+  <div class="awards-bar">
+    <div class="container awards-row">
+      <div class="award-item"><span class="ai">🏆</span> TOP 100 Dachdeckerbetriebe 2026</div>
+      <div class="award-item"><span class="ai">🥇</span> Deutscher Handwerkspreis 2026</div>
+      <div class="award-item"><span class="ai">🌱</span> Deutscher Dachpreis 2022 · Nachhaltigstes Konzept</div>
+      <div class="award-item"><span class="ai">🎓</span> Kammersieger 2024</div>
+    </div>
+  </div>
+
+  <!-- Leistungen -->
+  <section class="section-pad" id="leistungen">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Leistungen</span>
+        <h2 class="s-title">Alles rund ums Dach – aus einer Hand</h2>
+        <p class="s-sub" style="margin:0 auto;">Von der klassischen Dacheindeckung bis zur energetischen Sanierung: wir planen, beraten und setzen fachgerecht um.</p>
+      </div>
+      <div class="leistungen-grid">
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🏠</div>
+          <h3>Flachdach</h3>
+          <p>Abdichtung mit Bitumen-Bahnen und Flüssigkunststoff, Lichtkuppeln, Wärmedämmung und Dachbegrünung inklusive jährlicher Wartung.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🧱</div>
+          <h3>Steildach</h3>
+          <p>Dachziegel, Dachsteine und Welleternit-Platten, Reparaturen, Zimmererarbeiten wie Gaubeneinbau sowie Wärmedämmung und Fassadenbekleidung.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🪟</div>
+          <h3>Dachfenster</h3>
+          <p>Einbau von Dachfenstern, Antennendurchführungen, Laufanlagen, Schneefang und individuelle Speziallösungen.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🔧</div>
+          <h3>Flaschnerarbeiten</h3>
+          <p>Dacheindeckungen aus Metall, Dachrinnen aus Zink, Kupfer, Aluminium oder Edelstahl sowie Metallbekleidungen und Sonderteile.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🌡️</div>
+          <h3>Energetische Sanierung & KfW</h3>
+          <p>Beratung zu den Anforderungen des Gebäudeenergiegesetzes (GEG) sowie Auswahl und Dimensionierung geeigneter Dämmmaßnahmen.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">☀️</div>
+          <h3>PV-Anlagen</h3>
+          <p>Komplette Planung und professionelle Montage von Photovoltaik-Anlagen – für Ihr eigenes Dach als Kraftwerk.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <div class="leistung-icon">🚁</div>
+          <h3>Dachchecker mit Drohne</h3>
+          <p>Inspektionen mittels Drohneneinsatz – schnell, sicher und ohne aufwendiges Gerüst.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Über uns -->
+  <section class="section-pad bg-soft" id="ueber-uns">
+    <div class="container">
+      <div class="feature-block">
+        <div class="feature-row">
+          <div class="feature-media reveal">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80&auto=format&fit=crop" alt="Modernes Wohnhaus mit gepflegtem Dach">
+          </div>
+          <div class="feature-text reveal">
+            <span class="s-eyebrow">Über uns</span>
+            <h3>Ein Familienbetrieb mit Tradition und Weitblick</h3>
+            <p>1983 von Dachdeckermeister Karl-Heinz Schwarzbach Senior gegründet, führt heute sein Sohn Karl-Heinz Schwarzbach Junior den Betrieb als Geschäftsinhaber und Fachleiter. Was geblieben ist: der Anspruch an präzise Arbeit und hochwertige Materialien.</p>
+            <div class="feature-quote">„Ein Dach sollte langlebig sein. Hierfür bedarf es, neben hochwertigen Produkten, auch einer präzisen Arbeitsweise. Hier werden bei uns keine Kompromisse gemacht.“</div>
+            <p>Detailliertes Kundenvorgespräch, individuell zugeschnittene Angebote mit transparenter Kostenaufstellung – Digitalisierung und Tradition bilden bei uns eine Symbiose.</p>
+            <div class="feature-tags">
+              <span>Innungsbetrieb</span>
+              <span>Ausbildungsbetrieb</span>
+              <span>Notfalleinsätze</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section-pad" id="team">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Team</span>
+        <h2 class="s-title">Die Menschen hinter Ihrem Dach</h2>
+        <p class="s-sub" style="margin:0 auto;">In unserem Team zeigen sogar die Mundwinkel nach oben.</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-card reveal">
+          <div class="team-avatar">KS</div>
+          <strong>Karl-Heinz Schwarzbach</strong>
+          <span>Geschäftsinhaber, Dachdeckermeister, Fachleiter</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">T</div>
+          <strong>Tobias</strong>
+          <span>Dachdecker, Projektleiter</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">R</div>
+          <strong>Robin</strong>
+          <span>Dachdecker</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">F</div>
+          <strong>Felix</strong>
+          <span>Dachdecker</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">M</div>
+          <strong>Max</strong>
+          <span>Zimmerer</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">E</div>
+          <strong>Edi</strong>
+          <span>Fachhelfer</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">A</div>
+          <strong>Andrea Schwarzbach</strong>
+          <span>Büromanagement, Buchhaltung, Projektsachbearbeitung</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Warum wir -->
+  <section class="section-pad bg-soft" id="warum">
+    <div class="container">
+      <div class="s-intro c reveal">
+        <span class="s-eyebrow">Warum Schwarzbach</span>
+        <h2 class="s-title">Ausgezeichnetes Handwerk, spürbar in jedem Projekt</h2>
+      </div>
+      <div class="warum-grid">
+        <div class="warum-card reveal">
+          <span class="warum-tag">Ausbildung</span>
+          <h3>Kammersieger &amp; Lehrling des Monats</h3>
+          <p>Als Ausbildungsbetrieb legen wir großen Wert auf Nachwuchsförderung – mit eigenen Auszeichnungen der Handwerkskammer Reutlingen, zuletzt Kammersieger 2024.</p>
+        </div>
+        <div class="warum-card reveal">
+          <span class="warum-tag">Nachhaltigkeit</span>
+          <h3>Gewinner Deutscher Dachpreis 2022</h3>
+          <p>Ausgezeichnet für das nachhaltigste Konzept – eine energetische Dachsanierung mit 126 PV-Modulen. Nachhaltige Lösungen sind bei uns kein Zusatz, sondern Standard.</p>
+        </div>
+        <div class="warum-card reveal">
+          <span class="warum-tag">Erreichbarkeit</span>
+          <h3>Schnelle Hilfe im Notfall</h3>
+          <p>In akuten Notfällen versuchen wir, unseren Kunden zeitnah zu helfen – als Innungsbetrieb mit kurzen Wegen in und um Reutlingen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kundenstimme -->
+  <section class="section-pad testimonial-section">
+    <div class="container testimonial-inner reveal">
+      <div class="testimonial-mark">„</div>
+      <p class="testimonial-text">Ich bin sehr zufrieden über Ihre Planung der Arbeiten, die gute zügige Ausführung von Moosentfernung, Reparatur und Einsetzung eines neuen Dachfensters.</p>
+      <div class="testimonial-author">— E. Hildebrandt</div>
+    </div>
+  </section>
+
+  <!-- Kontakt -->
+  <section class="section-pad abschluss-section" id="kontakt">
+    <div class="container abschluss-inner reveal">
+      <h2>Lassen Sie uns über Ihr Dach sprechen</h2>
+      <p>Kostenlose Erstberatung, transparente Kostenaufstellung – melden Sie sich einfach direkt bei uns.</p>
+      <a href="tel:+497121470645" class="btn-rust" style="display:inline-block;margin-bottom:8px">📞 07121 47 06 45 anrufen</a>
+      <div class="kontakt-row">
+        <div class="kontakt-item"><strong>Telefon</strong><a href="tel:+497121470645">07121 47 06 45</a></div>
+        <div class="kontakt-item"><strong>E-Mail</strong><a href="mailto:info@schwarzbach-dach.de">info@schwarzbach-dach.de</a></div>
+        <div class="kontakt-item"><strong>Adresse</strong>Lembergstraße 25<br>72766 Reutlingen</div>
+        <div class="kontakt-item"><strong>Instagram</strong><a href="#">@dachdecker_schwarzbach</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="nav-logo">
+        <div class="logo-mark"></div>
+        <div class="logo-text">
+          <strong>Schwarzbach</strong>
+          <span>Dachdeckermeister</span>
+        </div>
+      </div>
+      <div class="footer-tagline">„Ein Dach sollte langlebig sein.“</div>
+      <div class="footer-note">Design-Konzept · unverbindliche Vorschau · basiert auf echten Inhalten von schwarzbach-dach.de</div>
+    </div>
+  </footer>
+
+  <script>
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    const burger = document.getElementById('navBurger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }));
+  </script>
+</body>
+</html>
