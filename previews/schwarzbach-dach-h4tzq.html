@@ -39,31 +39,21 @@
     }
     .nav-inner { display: flex; align-items: center; height: 76px; gap: 36px; }
     .nav-logo { display: flex; align-items: center; gap: 12px; }
-    .logo-mark {
-      width: 42px; height: 42px; flex-shrink: 0;
-      background: linear-gradient(155deg, #B8452A, #8C3A22);
-      border-radius: 10px; position: relative;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .logo-mark::before {
-      content: ''; position: absolute; width: 20px; height: 14px;
-      border-top: 3px solid #fff; top: 13px; left: 11px;
-      clip-path: polygon(0 100%, 50% 0, 100% 100%);
-    }
+    .logo-mark { flex-shrink: 0; }
     .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
     .logo-text strong { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: #241C17; letter-spacing: -0.01em; }
-    .logo-text span { font-size: 10.5px; color: #8C6A4A; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .logo-text span { font-size: 10.5px; color: #E2231A; font-weight: 600; letter-spacing: 0.02em; font-style: italic; font-family: 'Fraunces', serif; text-transform: none; }
     .nav-links { display: flex; gap: 30px; flex: 1; }
     .nav-links a { font-size: 14.5px; color: #4A423A; font-weight: 500; transition: color 0.2s; }
     .nav-links a:hover { color: #241C17; }
     .nav-phone { margin-left: auto; font-size: 14px; font-weight: 600; color: #4A423A; display: flex; align-items: center; gap: 7px; }
     .nav-cta {
-      background: #B8452A; color: #fff;
+      background: #E2231A; color: #fff;
       padding: 11px 24px; border-radius: 100px;
       font-size: 14px; font-weight: 700; transition: all 0.2s;
       display: inline-block; white-space: nowrap;
     }
-    .nav-cta:hover { background: #9C3A22; }
+    .nav-cta:hover { background: #B81710; }
     .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; margin-left: auto; z-index: 210; position: relative; }
     .nav-burger span { display: block; width: 24px; height: 2px; background: #241C17; border-radius: 2px; transition: all 0.25s; }
     .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -94,7 +84,7 @@
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
       background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22);
-      color: #E8A46E; padding: 8px 18px; border-radius: 100px;
+      color: #FF6355; padding: 8px 18px; border-radius: 100px;
       font-size: 13px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 30px;
     }
     .hero h1 {
@@ -102,15 +92,15 @@
       font-size: clamp(36px, 6vw, 60px);
       line-height: 1.14; color: #fff; margin-bottom: 24px; letter-spacing: -0.01em;
     }
-    .hero h1 em { font-style: italic; font-weight: 500; color: #E8A46E; }
+    .hero h1 em { font-style: italic; font-weight: 500; color: #FF6355; }
     .hero p { font-size: 18px; color: rgba(255,255,255,0.82); max-width: 580px; margin: 0 auto 40px; line-height: 1.75; }
     .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
     .btn-rust {
-      background: #B8452A; color: #fff;
+      background: #E2231A; color: #fff;
       padding: 15px 30px; border-radius: 100px;
       font-size: 15px; font-weight: 700; transition: all 0.2s;
     }
-    .btn-rust:hover { background: #9C3A22; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.3); }
+    .btn-rust:hover { background: #B81710; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.3); }
     .btn-ghost-white {
       background: rgba(255,255,255,0.08); color: #fff;
       border: 1.5px solid rgba(255,255,255,0.32);
@@ -120,8 +110,12 @@
     .btn-ghost-white:hover { background: rgba(255,255,255,0.16); }
     .hero-stats { margin-top: 60px; display: flex; justify-content: center; gap: 52px; flex-wrap: wrap; }
     .hero-stat { text-align: center; }
-    .hero-stat strong { display: block; font-family: 'Fraunces', serif; font-size: 25px; font-weight: 600; color: #E8A46E; }
+    .hero-stat strong { display: block; font-family: 'Fraunces', serif; font-size: 25px; font-weight: 600; color: #FF6355; }
     .hero-stat span { font-size: 12.5px; color: rgba(255,255,255,0.65); margin-top: 4px; display: block; }
+
+    /* ── DACH-SILHOUETTE (Linien-Motiv) ── */
+    .roofline-divider { background: #241C17; line-height: 0; }
+    .roofline-divider svg { width: 100%; height: 30px; display: block; }
 
     /* ── AWARDS-LEISTE ── */
     .awards-bar { background: #241C17; padding: 26px 0; border-top: 1px solid rgba(255,255,255,0.08); }
@@ -130,23 +124,27 @@
     .award-item .ai { font-size: 18px; }
 
     /* ── SEKTIONS-HEADER ── */
-    .s-eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B8452A; margin-bottom: 16px; display: block; }
+    .s-eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #E2231A; margin-bottom: 16px; display: block; }
     .s-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(27px, 4vw, 40px); margin-bottom: 18px; line-height: 1.22; color: #241C17; letter-spacing: -0.01em; }
     .s-sub { font-size: 16.5px; color: #5C534A; line-height: 1.75; max-width: 600px; }
     .s-intro { margin-bottom: 56px; }
     .s-intro.c { text-align: center; max-width: 660px; margin-left: auto; margin-right: auto; }
 
     /* ── LEISTUNGEN GRID ── */
-    .leistungen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .leistungen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; perspective: 1000px; }
     .leistung-card {
       background: #fff; border: 1px solid #E9DFCF;
       border-radius: 18px; padding: 28px 24px;
-      transition: all 0.3s;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
     }
-    .leistung-card:hover { box-shadow: 0 16px 44px rgba(36,28,23,0.09); transform: translateY(-4px); border-color: #DCCEB4; }
+    .leistung-card:hover {
+      box-shadow: 0 20px 46px rgba(36,28,23,0.12), 0 6px 16px rgba(226,35,26,0.12);
+      transform: translateY(-6px) rotateX(4deg);
+      border-color: #F0BAB2;
+    }
     .leistung-icon {
       width: 46px; height: 46px; border-radius: 12px;
-      background: linear-gradient(155deg, #FBE4D3, #F2C4A3);
+      background: linear-gradient(155deg, #FBD9D6, #F5A99E);
       display: flex; align-items: center; justify-content: center;
       font-size: 21px; margin-bottom: 18px;
     }
@@ -154,16 +152,25 @@
     .leistung-card p { font-size: 13.8px; color: #5C534A; line-height: 1.62; }
 
     /* ── FEATURE ROWS ── */
-    .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; perspective: 1400px; }
     .feature-row.rev .feature-media { order: 2; }
     .feature-row.rev .feature-text { order: 1; }
-    .feature-media { border-radius: 20px; overflow: hidden; box-shadow: 0 24px 60px rgba(36,28,23,0.18); aspect-ratio: 4/3; position: relative; }
+    /* Leichte 3D-Neigung wie ein angelehntes Foto – richtet sich beim
+       Hover auf, angelehnt an die Linienführung des Firmenlogos. */
+    .feature-media {
+      border-radius: 20px; overflow: hidden; aspect-ratio: 4/3; position: relative;
+      transform: rotateY(-7deg) rotateX(2deg);
+      box-shadow: 0 30px 64px rgba(36,28,23,0.3), 10px 24px 44px rgba(226,35,26,0.1);
+      transition: transform 0.5s cubic-bezier(0.22,1,0.36,1), box-shadow 0.5s ease;
+    }
+    .feature-row.rev .feature-media { transform: rotateY(7deg) rotateX(2deg); }
+    .feature-media:hover { transform: rotateY(0deg) rotateX(0deg); box-shadow: 0 20px 46px rgba(36,28,23,0.22); }
     .feature-media img { width: 100%; height: 100%; object-fit: cover; }
     .feature-text .s-eyebrow { margin-bottom: 14px; }
     .feature-text h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(23px, 3vw, 29px); color: #241C17; margin-bottom: 18px; line-height: 1.28; letter-spacing: -0.01em; }
     .feature-text p { font-size: 15.5px; color: #5C534A; line-height: 1.8; margin-bottom: 20px; }
     .feature-quote {
-      border-left: 3px solid #B8452A; padding: 4px 0 4px 18px; margin: 22px 0;
+      border-left: 3px solid #E2231A; padding: 4px 0 4px 18px; margin: 22px 0;
       font-family: 'Fraunces', serif; font-style: italic; font-size: 16.5px; color: #3A322B; line-height: 1.55;
     }
     .feature-tags { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -179,7 +186,7 @@
     .team-card { background: #fff; border: 1px solid #E9DFCF; border-radius: 16px; padding: 22px 18px; text-align: center; }
     .team-avatar {
       width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 14px;
-      background: linear-gradient(155deg, #E8A46E, #B8452A);
+      background: linear-gradient(155deg, #FF6355, #E2231A);
       display: flex; align-items: center; justify-content: center;
       font-family: 'Fraunces', serif; font-weight: 600; font-size: 19px; color: #fff;
     }
@@ -190,14 +197,14 @@
     .warum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
     .warum-card { background: #fff; border-radius: 20px; padding: 34px 28px; border: 1px solid #E9DFCF; transition: all 0.3s; }
     .warum-card:hover { border-color: #DCCEB4; box-shadow: 0 16px 44px rgba(36,28,23,0.07); }
-    .warum-tag { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #B8452A; background: #FBE4D3; padding: 5px 12px; border-radius: 100px; margin-bottom: 18px; }
+    .warum-tag { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #E2231A; background: #FBD9D6; padding: 5px 12px; border-radius: 100px; margin-bottom: 18px; }
     .warum-card h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 18.5px; margin-bottom: 11px; color: #241C17; }
     .warum-card p { font-size: 14.2px; color: #5C534A; line-height: 1.68; }
 
     /* ── KUNDENSTIMME ── */
     .testimonial-section { background: #F1E9DD; text-align: center; }
     .testimonial-inner { max-width: 700px; margin: 0 auto; }
-    .testimonial-mark { font-family: 'Fraunces', serif; font-size: 54px; color: #B8452A; line-height: 1; margin-bottom: 6px; }
+    .testimonial-mark { font-family: 'Fraunces', serif; font-size: 54px; color: #E2231A; line-height: 1; margin-bottom: 6px; }
     .testimonial-text { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(19px, 2.4vw, 25px); color: #2A2420; line-height: 1.55; margin-bottom: 22px; }
     .testimonial-author { font-size: 14px; font-weight: 700; color: #8C6A4A; }
 
@@ -212,15 +219,15 @@
     .abschluss-section p { font-size: 16px; color: rgba(255,255,255,0.72); line-height: 1.75; margin-bottom: 36px; }
     .kontakt-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; padding-top: 34px; border-top: 1px solid rgba(255,255,255,0.14); }
     .kontakt-item { text-align: left; font-size: 14.5px; color: rgba(255,255,255,0.85); }
-    .kontakt-item strong { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #E8A46E; margin-bottom: 6px; }
+    .kontakt-item strong { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #FF6355; margin-bottom: 6px; }
     .kontakt-item a { color: rgba(255,255,255,0.85); }
-    .kontakt-item a:hover { color: #E8A46E; }
+    .kontakt-item a:hover { color: #FF6355; }
 
     /* ── FOOTER ── */
     .footer { background: #FAF6F0; padding: 44px 0 30px; border-top: 1px solid #E9DFCF; }
     .footer-inner { display: flex; align-items: center; justify-content: center; gap: 12px; flex-direction: column; text-align: center; }
     .footer-inner .logo-text strong { color: #241C17; }
-    .footer-tagline { font-family: 'Fraunces', serif; font-style: italic; font-size: 14.5px; color: #B8452A; }
+    .footer-tagline { font-family: 'Fraunces', serif; font-style: italic; font-size: 14.5px; color: #E2231A; }
     .footer-note { font-size: 12px; color: #9C9186; margin-top: 6px; }
 
     /* ── REVEAL ── */
@@ -263,10 +270,14 @@
   <nav class="nav">
     <div class="container nav-inner">
       <a href="#" class="nav-logo">
-        <div class="logo-mark"></div>
+        <svg class="logo-mark" width="40" height="40" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polyline points="2,23 9,18 16,12 22,16 28,9 36,14 40,21" stroke="#241C17" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="2,26 9,23 16,25 22,20 28,24 36,19 40,26" stroke="#E2231A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="28" y1="24" x2="28" y2="35" stroke="#241C17" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
         <div class="logo-text">
           <strong>Schwarzbach</strong>
-          <span>Dachdeckermeister</span>
+          <span>Ihr Dach – mein Fach</span>
         </div>
       </a>
       <ul class="nav-links">
@@ -306,6 +317,14 @@
       </div>
     </div>
   </section>
+
+  <!-- Dach-Silhouette als Linien-Motiv, angelehnt an das Firmenlogo -->
+  <div class="roofline-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="0,30 60,14 130,26 200,10 280,22 360,8 440,24 520,12 600,26 680,10 760,24 840,12 920,26 1000,10 1080,24 1150,14 1200,28" fill="none" stroke="#3A322B" stroke-width="2" vector-effect="non-scaling-stroke"/>
+      <polyline points="0,34 60,26 130,32 200,22 280,30 360,20 440,32 520,24 600,32 680,22 760,32 840,24 920,32 1000,22 1080,32 1150,26 1200,34" fill="none" stroke="#E2231A" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
 
   <!-- Auszeichnungen -->
   <div class="awards-bar">
@@ -493,10 +512,14 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div class="nav-logo">
-        <div class="logo-mark"></div>
+        <svg class="logo-mark" width="40" height="40" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polyline points="2,23 9,18 16,12 22,16 28,9 36,14 40,21" stroke="#241C17" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="2,26 9,23 16,25 22,20 28,24 36,19 40,26" stroke="#E2231A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="28" y1="24" x2="28" y2="35" stroke="#241C17" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
         <div class="logo-text">
           <strong>Schwarzbach</strong>
-          <span>Dachdeckermeister</span>
+          <span>Ihr Dach – mein Fach</span>
         </div>
       </div>
       <div class="footer-tagline">„Ein Dach sollte langlebig sein.“</div>
