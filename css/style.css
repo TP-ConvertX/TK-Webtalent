@@ -1959,7 +1959,7 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
   color: var(--c-text-3);
 }
 .cookie-footer-links a {
-  color: inherit;
+  color: var(--c-text-2);
   text-decoration: underline;
   text-underline-offset: 2px;
 }

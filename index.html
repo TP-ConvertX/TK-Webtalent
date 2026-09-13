@@ -80,11 +80,13 @@
   <!-- Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="dns-prefetch" href="https://images.unsplash.com">
   <link rel="dns-prefetch" href="https://formsubmit.co">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/portal.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="css/style.min.css">
+  <link rel="preload" href="css/portal.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="css/portal.min.css"></noscript>
 
   <!-- ===================================================
        STARTSEITEN-REDESIGN (dunkles Theme)
@@ -137,7 +139,7 @@
     .snippet-label { color: #64748B !important; }
     .snippet-stats .snippet-label { color: rgba(255,255,255,.6) !important; }
     .palette-type { color: #0F172A !important; }
-    .window-address { color: #94A3B8 !important; }
+    .window-address { color: #475569 !important; }
     .ui-btn-ghost { color: #0F172A !important; border-color: rgba(15,23,42,.16) !important; }
 
     /* Kein Sticky-Pin mehr bei der Hero-Glaskarte – künstlich aufgeblasene
@@ -350,15 +352,6 @@
     @media (max-width: 640px) { .rd-imgwin2 { height: 70vh; } }
   </style>
 
-  <!-- 3D-Glaskarte im Hero -->
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.184.0/examples/jsm/"
-    }
-  }
-  </script>
   <!-- Vercel Web Analytics -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -368,7 +361,7 @@
 <body>
 
   <div class="rd-fixed-bg" id="fixedBg" aria-hidden="true">
-    <img id="fixedBgImg" src="" alt="" loading="eager">
+    <img id="fixedBgImg" alt="">
   </div>
 
   <a href="#main" class="rd-skip-link">Zum Inhalt springen</a>
@@ -489,7 +482,7 @@
                <a class="client-logo-link"> ersetzen (im ersten Satz UND in
                jedem is-duplicate-Satz). -->
           <a href="https://www.optik-sauter.de/" target="_blank" rel="noopener noreferrer" class="client-logo-link" aria-label="Sauter – zur Website">
-            <img src="assets/clients/sauter.png" alt="Sauter" class="client-logo-img" loading="lazy">
+            <img src="assets/clients/sauter.png" alt="Sauter" class="client-logo-img" loading="lazy" width="170" height="79">
           </a>
           <div class="client-logo-placeholder" aria-hidden="true"><span>+</span></div>
           <div class="client-logo-placeholder" aria-hidden="true"><span>+</span></div>
@@ -497,7 +490,7 @@
 
           <!-- Satz 2 (Duplikat) -->
           <a href="https://www.optik-sauter.de/" class="client-logo-link is-duplicate" aria-hidden="true" tabindex="-1">
-            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy">
+            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy" width="170" height="79">
           </a>
           <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
           <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
@@ -505,7 +498,7 @@
 
           <!-- Satz 3 (Duplikat) -->
           <a href="https://www.optik-sauter.de/" class="client-logo-link is-duplicate" aria-hidden="true" tabindex="-1">
-            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy">
+            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy" width="170" height="79">
           </a>
           <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
           <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
@@ -513,7 +506,7 @@
 
           <!-- Satz 4 (Duplikat) -->
           <a href="https://www.optik-sauter.de/" class="client-logo-link is-duplicate" aria-hidden="true" tabindex="-1">
-            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy">
+            <img src="assets/clients/sauter.png" alt="" class="client-logo-img" loading="lazy" width="170" height="79">
           </a>
           <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
           <div class="client-logo-placeholder is-duplicate" aria-hidden="true"><span>+</span></div>
@@ -1150,7 +1143,7 @@
       </div>
       <div class="footer-bottom">
         <p>© 2025 TK Webtalent. Alle Rechte vorbehalten.</p>
-        <p><a href="/impressum" style="color:inherit;opacity:0.6;">Impressum</a> · <a href="/datenschutz" style="color:inherit;opacity:0.6;">Datenschutz</a></p>
+        <p><a href="/impressum" style="color:inherit;">Impressum</a> · <a href="/datenschutz" style="color:inherit;">Datenschutz</a></p>
       </div>
     </div>
   </footer>
@@ -1171,7 +1164,22 @@
     </div>
   </div>
 
-  <script type="module" src="js/hero-glass-card.js"></script>
+  <script>
+    /* Lädt die 3D-Glaskarte (tree-geshaktes Three.js-Bundle) erst wenn der
+       Browser Zeit hat, statt direkt beim Seitenaufbau – die Karte ist
+       rein dekorativ und main.js ruft window.heroGlassCard
+       optional-chained auf, kommt also klar, falls das noch nicht geladen
+       ist. Quelle ist js/hero-glass-card.js – nach Änderungen daran neu
+       bauen mit:
+       npx esbuild js/hero-glass-card.js --bundle --minify --format=esm
+         --target=es2020 --outfile=js/hero-glass-card.bundle.js */
+    const loadHeroGlassCard = () => import('./js/hero-glass-card.bundle.js');
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadHeroGlassCard, { timeout: 2000 });
+    } else {
+      window.addEventListener('load', loadHeroGlassCard);
+    }
+  </script>
   <script src="js/main.js"></script>
 
   <!-- ===== TELEFONTERMIN-MODAL ===== -->

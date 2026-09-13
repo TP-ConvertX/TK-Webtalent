@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Über mich – Tim Kunzelmann | TK Webtalent</title>
+  <meta name="description" content="Hinter TK Webtalent steckt kein Agentur-Team, sondern Tim Kunzelmann persönlich. Lerne den Menschen hinter deiner künftigen Website kennen.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://tk-webtalent.de/ueber-mich">
+
+  <link rel="icon" type="image/png" href="/assets/logo-icon.png">
+  <link rel="apple-touch-icon" href="/assets/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.min.css">
+  <link rel="stylesheet" href="css/portal.min.css">
+
+  <style>
+    /* ── Seiten-eigene Styles: nur für "Über mich", nichts an style.css geändert ── */
+    .ueber-hero {
+      padding: calc(var(--nav-height) + 72px) 0 80px;
+      background: var(--c-bg-light);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .ueber-hero-inner {
+      display: grid; grid-template-columns: 220px 1fr; gap: 48px; align-items: center;
+      max-width: 880px; margin: 0 auto;
+    }
+    .ueber-photo {
+      width: 220px; height: 220px; border-radius: 50%;
+      background: linear-gradient(155deg, var(--c-accent-light), #fff);
+      border: 2px dashed var(--c-border-2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: var(--c-text-3); text-align: center; padding: 20px;
+      flex-shrink: 0;
+    }
+    .ueber-eyebrow { display: inline-block; font-size: 12.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-accent); background: var(--c-accent-light); padding: 5px 14px; border-radius: 100px; margin-bottom: 16px; }
+    .ueber-hero h1 { font-size: clamp(30px, 4vw, 42px); margin-bottom: 12px; letter-spacing: -0.02em; }
+    .ueber-hero-role { font-size: 16px; color: var(--c-text-2); font-weight: 500; }
+
+    .ueber-body { max-width: 720px; margin: 0 auto; padding: 90px var(--container-pad); }
+    .ueber-body p { font-size: 17px; color: var(--c-text-2); line-height: 1.85; margin-bottom: 22px; }
+    .ueber-body p strong { color: var(--c-text); }
+
+    .ueber-facts {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+      max-width: 880px; margin: 0 auto 90px; padding: 0 var(--container-pad);
+    }
+    .ueber-fact { background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 26px 24px; }
+    .ueber-fact-icon { font-size: 22px; margin-bottom: 12px; }
+    .ueber-fact h3 { font-size: 15px; margin-bottom: 6px; }
+    .ueber-fact p { font-size: 14px; color: var(--c-text-2); line-height: 1.6; margin: 0; }
+
+    .ueber-note {
+      max-width: 720px; margin: 0 auto 90px; padding: 0 var(--container-pad);
+    }
+    .ueber-note-box {
+      background: #FFFBEB; border: 1.5px dashed #F59E0B; border-radius: var(--radius-md);
+      padding: 16px 20px; font-size: 14px; color: #92400E; line-height: 1.6;
+    }
+    .ueber-note-box strong { display: block; margin-bottom: 4px; }
+
+    .ueber-cta { text-align: center; padding: 0 var(--container-pad) 100px; }
+    .ueber-cta h2 { font-size: clamp(24px, 3vw, 32px); margin-bottom: 14px; }
+    .ueber-cta p { color: var(--c-text-2); margin-bottom: 28px; }
+
+    @media (max-width: 640px) {
+      .ueber-hero-inner { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+      .ueber-facts { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="assets/logo-icon.png" alt="TK Webtalent" class="logo-mark">
+        <span class="logo-name">Webtalent</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#leistungen">Leistungen</a></li>
+        <li><a href="/#beispiele">Beispiele</a></li>
+        <li><a href="/#ablauf">Ablauf</a></li>
+        <li><a href="/ueber-mich">Über mich</a></li>
+        <li><a href="/#kontakt">Kontakt</a></li>
+      </ul>
+      <a href="/kunden-login" class="nav-client-login">Kundenlogin</a>
+      <a href="/#kontakt" class="btn btn-primary nav-cta">Jetzt anfragen</a>
+      <button class="nav-burger" id="navBurger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose" aria-label="Menü schließen">✕</button>
+    <ul>
+      <li><a href="/#leistungen" class="mobile-link">Leistungen</a></li>
+      <li><a href="/#beispiele" class="mobile-link">Beispiele</a></li>
+      <li><a href="/#ablauf" class="mobile-link">Ablauf</a></li>
+      <li><a href="/ueber-mich" class="mobile-link">Über mich</a></li>
+      <li><a href="/#kontakt" class="mobile-link">Kontakt</a></li>
+      <li><a href="/kunden-login" class="mobile-link">Kundenlogin →</a></li>
+    </ul>
+    <a href="/#kontakt" class="btn btn-primary mobile-cta mobile-link">Jetzt kostenlos anfragen</a>
+  </div>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section class="ueber-hero">
+      <div class="container">
+        <div class="ueber-hero-inner">
+          <div class="ueber-photo">Platz für dein Foto</div>
+          <div>
+            <span class="ueber-eyebrow">Über mich</span>
+            <h1>Hallo, ich bin Tim.</h1>
+            <p class="ueber-hero-role">Gründer von TK Webtalent – ich baue jede Website selbst, von der ersten Idee bis zum Livegang.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TEXT ===== -->
+    <section class="ueber-body">
+      <p>Wenn du bei TK Webtalent anfragst, schreibst du nicht mit einem Team oder einem Verkäufer, sondern <strong>direkt mit mir</strong>. Ich kümmere mich persönlich um jedes Projekt – vom ersten Gespräch über das Design bis zur technischen Umsetzung.</p>
+      <p>Mein Fokus liegt auf <strong>Selbstständigen, Handwerksbetrieben und Dienstleistern</strong>: Betriebe, die gute Arbeit leisten, aber online oft noch nicht so wirken, wie sie es verdient hätten. Genau da setze ich an – mit modernen, schnellen und mobiloptimierten Websites, ohne komplizierten Technik-Stress für dich.</p>
+      <p>Ich arbeite bewusst <strong>ohne Agentur-Floskeln</strong>: kein Callcenter, keine langen Warteschleifen, keine Standard-Templates von der Stange. Stattdessen bekommst du eine individuell entwickelte Website und eine Ansprechperson, die von Anfang bis Ende dieselbe bleibt – erreichbar Mo–Fr, 9–18 Uhr, meistens noch am selben Tag.</p>
+      <p>Mein Standort ist <strong>Krauchenwies (Baden-Württemberg)</strong> – gearbeitet wird aber deutschlandweit, komplett remote und unkompliziert.</p>
+    </section>
+
+    <!-- ===== FAKTEN ===== -->
+    <div class="ueber-facts">
+      <div class="ueber-fact">
+        <div class="ueber-fact-icon">🎯</div>
+        <h3>Fokus</h3>
+        <p>Selbstständige, Handwerker & Dienstleister</p>
+      </div>
+      <div class="ueber-fact">
+        <div class="ueber-fact-icon">📍</div>
+        <h3>Standort</h3>
+        <p>Krauchenwies (BDW) – deutschlandweit tätig</p>
+      </div>
+      <div class="ueber-fact">
+        <div class="ueber-fact-icon">💬</div>
+        <h3>Erreichbar</h3>
+        <p>Mo–Fr, 9–18 Uhr – persönlich & direkt</p>
+      </div>
+    </div>
+
+    <div class="ueber-note">
+      <div class="ueber-note-box">
+        <strong>Hinweis für Tim:</strong>
+        Diese Seite nutzt bewusst nur Angaben, die schon auf tk-webtalent.de stehen – kein erfundener Werdegang, keine erfundenen Jahre Erfahrung. Für mehr Persönlichkeit fehlen noch: ein echtes Foto von dir, ein bis zwei Sätze zu deinem Werdegang (z.B. wie du zum Webdesign gekommen bist) und optional ein, zwei private Details (Hobbys o.Ä.). Schick mir die Stichpunkte, dann baue ich sie ein.
+      </div>
+    </div>
+
+    <!-- ===== CTA ===== -->
+    <div class="ueber-cta">
+      <h2>Lust, dein Projekt zu besprechen?</h2>
+      <p>Schreib mir kurz, worum es geht – ich melde mich meistens noch am selben Tag zurück.</p>
+      <a href="/#kontakt" class="btn btn-primary btn-large">Kostenlos anfragen</a>
+    </div>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo footer-logo">
+            <img src="assets/logo-icon.png" alt="TK Webtalent" class="logo-mark">
+            <span>TK Webtalent</span>
+          </a>
+          <p>Moderne Webseiten für kleine Unternehmen, Handwerker und Dienstleister – persönlich, klar, professionell.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="/#leistungen">Leistungen</a>
+          <a href="/#beispiele">Beispiele</a>
+          <a href="/#ablauf">Ablauf</a>
+          <a href="/ueber-mich">Über mich</a>
+          <a href="/#kontakt">Kontakt</a>
+        </div>
+        <div class="footer-col">
+          <h4>Demo-Websites</h4>
+          <a href="/demos/handwerker.html" target="_blank">Handwerker-Website</a>
+          <a href="/demos/restaurant.html" target="_blank">Restaurant-Website</a>
+          <a href="/demos/coach.html" target="_blank">Coach-Website</a>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <a href="/impressum">Impressum</a>
+          <a href="/datenschutz">Datenschutz</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 TK Webtalent. Alle Rechte vorbehalten.</p>
+        <p><a href="/impressum" style="color:inherit;">Impressum</a> · <a href="/datenschutz" style="color:inherit;">Datenschutz</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- COOKIE BANNER -->
+  <div class="cookie-overlay" id="cookieOverlay">
+    <div class="cookie-banner" id="cookieBanner">
+      <div class="cookie-icon-wrap">🍪</div>
+      <h3>Diese Website verwendet Cookies</h3>
+      <p>Wir nutzen Cookies, um Ihnen das beste Erlebnis auf unserer Website zu bieten und unsere Inhalte zu verbessern. Sie können selbst entscheiden, welche Cookies Sie zulassen möchten.</p>
+      <div class="cookie-actions">
+        <button class="btn btn-ghost cookie-btn" id="cookieDecline">Nur notwendige</button>
+        <button class="btn btn-primary cookie-btn" id="cookieAccept">Alle akzeptieren</button>
+      </div>
+      <div class="cookie-footer-links">
+        <a href="/datenschutz">Datenschutz</a> · <a href="/impressum">Impressum</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

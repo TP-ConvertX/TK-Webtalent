@@ -99,7 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
          kurzer Scroll (max. 420px) bis zum "Endanschlag". */
       const total = Math.min(rect.height || 1, 420);
       const progress = Math.min(Math.max(-rect.top, 0), total) / total;
-      window.heroGlassCard?.setProgress(progress);
+      if (typeof window.heroGlassCard?.setProgress === 'function') {
+        window.heroGlassCard.setProgress(progress);
+      }
     };
 
     const requestUpdate = () => {
@@ -111,7 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const applyModeChange = () => {
       if (reducedMotionQuery.matches) {
-        window.heroGlassCard?.setProgress(1); // direkt zugewandt zeigen, keine Scroll-Animation
+        if (typeof window.heroGlassCard?.setProgress === 'function') {
+          window.heroGlassCard.setProgress(1); // direkt zugewandt zeigen, keine Scroll-Animation
+        }
       } else {
         updateProgress();
       }

@@ -92,8 +92,10 @@ function init() {
   );
   group.add(rim);
 
-  fitRenderer();
-  const ro = new ResizeObserver(fitRenderer);
+  const ro = new ResizeObserver(([entry]) => {
+    const { width, height } = entry.contentRect;
+    fitRenderer(width, height);
+  });
   ro.observe(canvas.parentElement);
 
   const ORBIT_START = -0.55; // schon leicht dem Nutzer zugewandt, nicht komplett auf Kante
@@ -104,7 +106,14 @@ function init() {
     group.rotation.y = lerp(ORBIT_START, ORBIT_END, p);
     if (reduceMotion) renderer.render(scene, camera);
   };
-  applyFn(progress);
+
+  /* Erste Größenanpassung & erstes Rendern erst im nächsten Frame, damit
+     das clientWidth/clientHeight-Auslesen keinen erzwungenen synchronen
+     Reflow mitten im Ladevorgang verursacht. */
+  requestAnimationFrame(() => {
+    fitRenderer();
+    applyFn(progress);
+  });
 
   /* Idle-Schweben, solange Reduced-Motion nicht gewünscht ist */
   const clock = new THREE.Clock();
@@ -113,8 +122,15 @@ function init() {
   io.observe(canvas);
 
   if (!reduceMotion) {
-    renderer.setAnimationLoop(() => {
+    /* Nur ~24fps statt 60fps: die Transmission-Material-Pass (Glas-
+       Refraktion) rendert die Szene pro Frame zweimal, das idle-Schweben
+       ist aber so langsam/subtil, dass der Unterschied unsichtbar bleibt –
+       spart deutlich Hauptthread-Zeit über die gesamte Verweildauer. */
+    let lastRender = 0;
+    renderer.setAnimationLoop((now) => {
       if (!visible) return;
+      if (now - lastRender < 40) return;
+      lastRender = now;
       const t = clock.getElapsedTime();
       group.position.y = Math.sin(t * 0.6) * 0.06;
       group.rotation.z = Math.sin(t * 0.4) * 0.015;
@@ -123,9 +139,12 @@ function init() {
     });
   }
 
-  function fitRenderer() {
-    const el = canvas.parentElement;
-    const w = el.clientWidth, h = el.clientHeight;
+  function fitRenderer(w, h) {
+    if (w == null || h == null) {
+      const el = canvas.parentElement;
+      w = el.clientWidth;
+      h = el.clientHeight;
+    }
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
