@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Referenzen & Projekte – TK Webtalent</title>
+  <meta name="description" content="Ausgewählte Projekte von TK Webtalent: moderne, individuell gestaltete Websites für kleine Unternehmen – zum Beispiel der Website-Relaunch für Optik Sauter.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://tk-webtalent.de/referenzen">
+
+  <meta property="og:title" content="Referenzen & Projekte – TK Webtalent">
+  <meta property="og:description" content="Ausgewählte Projekte von TK Webtalent: moderne, individuell gestaltete Websites für kleine Unternehmen.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tk-webtalent.de/referenzen">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:site_name" content="TK Webtalent">
+
+  <link rel="icon" type="image/png" href="/assets/logo-icon.png">
+  <link rel="apple-touch-icon" href="/assets/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.min.css">
+
+  <style>
+    /* ── Seiten-eigene Styles: nur für "Referenzen", nichts an style.css geändert ── */
+    h1, h2, h3 { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    .nav-links li a[aria-current="page"] { color: var(--c-text); }
+    .nav-links li a[aria-current="page"]::after { transform: scaleX(1); }
+
+    /* HERO */
+    .ref-hero {
+      padding: calc(var(--nav-height) + 72px) 0 72px;
+      background: linear-gradient(180deg, #F3F9FF 0%, #fff 100%);
+      text-align: center;
+    }
+    .ref-hero-inner { max-width: 720px; margin: 0 auto; }
+    .ref-eyebrow { display: inline-block; font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-accent); background: var(--c-accent-light); padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .ref-hero h1 { font-size: clamp(32px, 5vw, 48px); letter-spacing: -0.02em; margin-bottom: 16px; }
+    .ref-hero p { font-size: 18px; color: var(--c-text-2); line-height: 1.7; }
+
+    /* PROJEKT (wiederverwendbarer Block: <article class="ref-project">) */
+    .ref-list { padding: 24px 0 40px; }
+    .ref-project { padding: 56px 0 72px; border-top: 1px solid var(--c-border); }
+    .ref-project:first-child { border-top: none; padding-top: 24px; }
+
+    .ref-head { display: grid; grid-template-columns: 1.4fr 1fr; gap: 56px; align-items: start; margin-bottom: 44px; }
+    .ref-tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-accent-dark); background: var(--c-accent-light); padding: 4px 12px; border-radius: 100px; margin-bottom: 14px; }
+    .ref-head h2 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.02em; margin-bottom: 16px; }
+    .ref-lead { font-size: 17px; color: var(--c-text-2); line-height: 1.8; }
+
+    .ref-meta { background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow-xs); }
+    .ref-meta dl { display: grid; gap: 18px; margin: 0; }
+    .ref-meta dt { font-size: 11.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--c-text-3); margin-bottom: 3px; }
+    .ref-meta dd { margin: 0; font-size: 15px; font-weight: 600; color: var(--c-text); line-height: 1.5; }
+
+    /* BILD-SLOTS (Platzhalter ODER <img> – siehe HTML-Kommentare) */
+    .ref-shot { margin: 0; }
+    .ref-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ref-slot { position: relative; overflow: hidden; background: var(--c-bg-light); }
+    .ref-placeholder {
+      width: 100%; height: 100%; min-height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      padding: 20px; text-align: center;
+      background: repeating-linear-gradient(135deg, #F8FAFC 0 14px, #F1F5F9 14px 28px);
+      border: 2px dashed var(--c-border-2); border-radius: inherit;
+      color: var(--c-text-3);
+    }
+    .ref-placeholder .ph-icon { font-size: 30px; line-height: 1; }
+    .ref-placeholder strong { font-size: 14px; color: var(--c-text-2); }
+    .ref-placeholder span { font-size: 12.5px; line-height: 1.5; }
+    .ref-shot figcaption { font-size: 14px; color: var(--c-text-2); margin-top: 12px; line-height: 1.5; }
+    .ref-shot figcaption b { color: var(--c-text); font-weight: 600; }
+
+    /* Browser-Fenster um das Hauptbild */
+    .ref-browser { background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius-xl); box-shadow: var(--shadow-xl); overflow: hidden; margin-bottom: 28px; }
+    .ref-browser-bar { display: flex; align-items: center; gap: 14px; padding: 12px 18px; background: #F1F5F9; border-bottom: 1px solid var(--c-border); }
+    .ref-dots { display: flex; gap: 6px; }
+    .ref-dots span { width: 10px; height: 10px; border-radius: 50%; display: block; }
+    .ref-dots span:nth-child(1) { background: #FF5F57; }
+    .ref-dots span:nth-child(2) { background: #FFBD2E; }
+    .ref-dots span:nth-child(3) { background: #28C840; }
+    .ref-bar-label { flex: 1; text-align: center; font-size: 12px; font-weight: 600; color: var(--c-text-3); background: #fff; border: 1px solid var(--c-border); border-radius: 8px; padding: 4px 12px; max-width: 320px; margin: 0 auto; }
+    .ref-browser .ref-slot { aspect-ratio: 16 / 9; }
+
+    /* Galerie */
+    .ref-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 56px; }
+    .ref-gallery .ref-slot { aspect-ratio: 4 / 3; border-radius: var(--radius-lg); border: 1px solid var(--c-border); }
+    .ref-gallery .ref-wide { grid-column: span 2; }
+    .ref-gallery .ref-wide .ref-slot { aspect-ratio: 16 / 9; }
+    .ref-phone .ref-slot { aspect-ratio: 9 / 16; max-width: 220px; margin: 0 auto; border-radius: 30px; border: 6px solid var(--c-text); box-shadow: var(--shadow-md); }
+    .ref-phone figcaption { text-align: center; }
+
+    /* Umsetzung */
+    .ref-features-head { font-size: 22px; margin-bottom: 22px; letter-spacing: -0.01em; }
+    .ref-features { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 0 0 44px; padding: 0; }
+    .ref-features li { display: flex; align-items: flex-start; gap: 12px; background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius-md); padding: 16px 18px; font-size: 15px; color: var(--c-text); line-height: 1.55; font-weight: 500; }
+    .ref-features li::before { content: '✓'; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--c-accent-light); color: var(--c-accent-dark); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+
+    .ref-project-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; background: var(--c-bg-light); border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 28px 32px; }
+    .ref-project-cta p { font-size: 16px; color: var(--c-text-2); margin: 0; max-width: 520px; line-height: 1.6; }
+    .ref-project-cta p strong { color: var(--c-text); }
+
+    /* Abschluss-CTA */
+    .ref-more { text-align: center; padding: 72px var(--container-pad) 100px; border-top: 1px solid var(--c-border); }
+    .ref-more h2 { font-size: clamp(24px, 3.5vw, 34px); margin-bottom: 14px; letter-spacing: -0.02em; }
+    .ref-more p { color: var(--c-text-2); max-width: 520px; margin: 0 auto 28px; line-height: 1.7; }
+
+    @media (max-width: 900px) {
+      .ref-head { grid-template-columns: 1fr; gap: 32px; }
+      .ref-gallery { grid-template-columns: repeat(2, 1fr); }
+      .ref-gallery .ref-wide { grid-column: span 2; }
+    }
+    @media (max-width: 600px) {
+      .ref-hero { padding-bottom: 48px; }
+      .ref-project { padding: 44px 0 56px; }
+      .ref-gallery { grid-template-columns: 1fr; gap: 28px; }
+      .ref-gallery .ref-wide { grid-column: auto; }
+      .ref-features { grid-template-columns: 1fr; }
+      .ref-project-cta { padding: 24px 22px; }
+      .ref-project-cta .btn { width: 100%; justify-content: center; }
+      .ref-browser-bar { padding: 10px 14px; }
+      .ref-browser .ref-slot { aspect-ratio: 4 / 3; }
+      .ref-placeholder { padding: 14px; }
+    }
+  </style>
+
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="assets/logo-icon.png" alt="TK Webtalent" class="logo-mark" width="32" height="32">
+        <span class="logo-name">Webtalent</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#leistungen">Leistungen</a></li>
+        <li><a href="/referenzen" aria-current="page">Referenzen</a></li>
+        <li><a href="/#beispiele">Beispiele</a></li>
+        <li><a href="/#ablauf">Ablauf</a></li>
+        <li><a href="/ueber-mich">Über mich</a></li>
+        <li><a href="/#kontakt">Kontakt</a></li>
+      </ul>
+      <a href="/kunden-login" class="nav-client-login">Kundenlogin</a>
+      <a href="/#kontakt" class="btn btn-primary nav-cta">Jetzt anfragen</a>
+      <button class="nav-burger" id="navBurger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose" aria-label="Menü schließen">✕</button>
+    <ul>
+      <li><a href="/#leistungen" class="mobile-link">Leistungen</a></li>
+      <li><a href="/referenzen" class="mobile-link">Referenzen</a></li>
+      <li><a href="/#beispiele" class="mobile-link">Beispiele</a></li>
+      <li><a href="/#ablauf" class="mobile-link">Ablauf</a></li>
+      <li><a href="/ueber-mich" class="mobile-link">Über mich</a></li>
+      <li><a href="/#kontakt" class="mobile-link">Kontakt</a></li>
+      <li><a href="/kunden-login" class="mobile-link">Kundenlogin →</a></li>
+    </ul>
+    <a href="/#kontakt" class="btn btn-primary mobile-cta mobile-link">Jetzt kostenlos anfragen</a>
+  </div>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section class="ref-hero">
+      <div class="container">
+        <div class="ref-hero-inner">
+          <span class="ref-eyebrow">Referenzen & Projekte</span>
+          <h1>Ausgewählte Projekte</h1>
+          <p>So sieht es aus, wenn eine Website modern, hochwertig und individuell gestaltet wird – umgesetzt für echte Unternehmen.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJEKTE =====
+         Weitere Projekte ergänzen: den kompletten <article class="ref-project">-Block
+         unten kopieren, direkt darunter einfügen und Texte + Bilder anpassen. -->
+    <div class="ref-list">
+      <div class="container">
+
+        <!-- ─────────── PROJEKT: OPTIK SAUTER ─────────── -->
+        <article class="ref-project" id="optik-sauter">
+
+          <header class="ref-head">
+            <div>
+              <span class="ref-tag">Website-Relaunch</span>
+              <h2>Optik Sauter</h2>
+              <p class="ref-lead">Für Optik Sauter wurde ein moderner, hochwertiger und übersichtlicher Webauftritt entwickelt. Ziel war es, das Unternehmen digital zeitgemäßer zu präsentieren, wichtige Leistungen klar hervorzuheben und gleichzeitig eine hochwertige Optik zu schaffen, die zum Unternehmen passt.</p>
+            </div>
+            <aside class="ref-meta" aria-label="Projektdaten">
+              <dl>
+                <div><dt>Projekt</dt><dd>Optik Sauter</dd></div>
+                <div><dt>Projektart</dt><dd>Website-Relaunch / moderner Webauftritt</dd></div>
+                <div><dt>Umsetzung</dt><dd>Optimiert für Smartphone und Desktop</dd></div>
+                <div><dt>Schwerpunkte</dt><dd>Leistungen · Trauringe · Goldankauf · Ohrenstechen · Aktionen</dd></div>
+              </dl>
+            </aside>
+          </header>
+
+          <!-- Hauptbild: Startseite (Desktop)
+               BILD EINSETZEN: den <div class="ref-placeholder">…</div> unten durch
+               <img src="assets/referenzen/optik-sauter/01-startseite-desktop.jpg" alt="Optik Sauter – Startseite der neuen Website (Desktop)" width="1600" height="900" loading="lazy">
+               ersetzen. Empfohlen: 16:9, ca. 1600 × 900 px, .jpg oder .webp. -->
+          <figure class="ref-shot ref-browser">
+            <div class="ref-browser-bar">
+              <div class="ref-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+              <div class="ref-bar-label">Optik Sauter</div>
+            </div>
+            <div class="ref-slot">
+              <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Startseite Optik Sauter (Desktop)">
+                <span class="ph-icon" aria-hidden="true">🖼️</span>
+                <strong>Hauptbild: Startseite (Desktop)</strong>
+                <span>Screenshot hier einsetzen · 16:9, ca. 1600 × 900 px<br>assets/referenzen/optik-sauter/01-startseite-desktop.jpg</span>
+              </div>
+            </div>
+          </figure>
+
+          <!-- Weitere Screenshots. Jeweils den <div class="ref-placeholder"> durch ein <img …> ersetzen
+               (gleiche Vorgehensweise wie beim Hauptbild, Dateien in assets/referenzen/optik-sauter/). -->
+          <div class="ref-gallery">
+            <figure class="ref-shot">
+              <div class="ref-slot">
+                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Bereich Trauringe">
+                  <span class="ph-icon" aria-hidden="true">💍</span>
+                  <strong>Bereich Trauringe</strong>
+                  <span>4:3 · 02-trauringe.jpg</span>
+                </div>
+              </div>
+              <figcaption><b>Eigener Bereich für Trauringe</b> – übersichtlich und hochwertig präsentiert.</figcaption>
+            </figure>
+
+            <figure class="ref-shot">
+              <div class="ref-slot">
+                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Bereich Goldankauf">
+                  <span class="ph-icon" aria-hidden="true">✨</span>
+                  <strong>Bereich Goldankauf</strong>
+                  <span>4:3 · 03-goldankauf.jpg</span>
+                </div>
+              </div>
+              <figcaption><b>Goldankauf</b> – deutlich hervorgehoben.</figcaption>
+            </figure>
+
+            <figure class="ref-shot">
+              <div class="ref-slot">
+                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Bereich Ohrenstechen">
+                  <span class="ph-icon" aria-hidden="true">💎</span>
+                  <strong>Bereich Ohrenstechen</strong>
+                  <span>4:3 · 04-ohrenstechen.jpg</span>
+                </div>
+              </div>
+              <figcaption><b>Ohrenstechen</b> – klar und übersichtlich dargestellt.</figcaption>
+            </figure>
+
+            <figure class="ref-shot ref-wide">
+              <div class="ref-slot">
+                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Aktionen und Angebote">
+                  <span class="ph-icon" aria-hidden="true">🏷️</span>
+                  <strong>Aktionen & Angebote</strong>
+                  <span>16:9 · 05-aktionen.jpg</span>
+                </div>
+              </div>
+              <figcaption><b>Aktionen und Angebote</b> – klar in den Auftritt integriert.</figcaption>
+            </figure>
+
+            <figure class="ref-shot ref-phone">
+              <div class="ref-slot">
+                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Smartphone-Ansicht">
+                  <span class="ph-icon" aria-hidden="true">📱</span>
+                  <strong>Smartphone</strong>
+                  <span>9:16 · 06-smartphone.jpg</span>
+                </div>
+              </div>
+              <figcaption><b>Mobile Ansicht</b> – optimiert für das Smartphone.</figcaption>
+            </figure>
+          </div>
+
+          <h3 class="ref-features-head">Was umgesetzt wurde</h3>
+          <ul class="ref-features">
+            <li>Moderner und hochwertiger Gesamtauftritt</li>
+            <li>Optimierte Darstellung für Smartphone und Desktop</li>
+            <li>Übersichtliche Präsentation der Leistungen</li>
+            <li>Eigener Bereich für Trauringe</li>
+            <li>Goldankauf deutlich hervorgehoben</li>
+            <li>Ohrenstechen übersichtlich dargestellt</li>
+            <li>Aktionen und Angebote klar integriert</li>
+            <li>Strukturierte Navigation und bessere Nutzerführung</li>
+          </ul>
+
+          <div class="ref-project-cta">
+            <p><strong>Du planst einen ähnlichen Webauftritt?</strong> Schreib mir kurz, worum es geht – ich melde mich meistens noch am selben Tag.</p>
+            <a href="/#kontakt" class="btn btn-primary btn-large">Ähnliches Projekt anfragen</a>
+          </div>
+
+        </article>
+        <!-- ─────────── ENDE PROJEKT: OPTIK SAUTER ─────────── -->
+
+      </div>
+    </div>
+
+    <!-- ===== ABSCHLUSS ===== -->
+    <section class="ref-more">
+      <h2>Weitere Projekte folgen</h2>
+      <p>Diese Seite wächst mit jedem umgesetzten Projekt. Wenn du wissen willst, wie deine Website aussehen könnte, besprechen wir das gerne unverbindlich.</p>
+      <a href="/#kontakt" class="btn btn-primary btn-large">Kostenlos anfragen</a>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo footer-logo">
+            <img src="assets/logo-icon.png" alt="TK Webtalent" class="logo-mark" width="32" height="32">
+            <span>TK Webtalent</span>
+          </a>
+          <p>Moderne Webseiten für kleine Unternehmen, Handwerker und Dienstleister – persönlich, klar, professionell.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="/#leistungen">Leistungen</a>
+          <a href="/referenzen">Referenzen</a>
+          <a href="/#beispiele">Beispiele</a>
+          <a href="/#ablauf">Ablauf</a>
+          <a href="/ueber-mich">Über mich</a>
+          <a href="/#kontakt">Kontakt</a>
+        </div>
+        <div class="footer-col">
+          <h4>Demo-Websites</h4>
+          <a href="/demos/handwerker.html" target="_blank">Handwerker-Website</a>
+          <a href="/demos/restaurant.html" target="_blank">Restaurant-Website</a>
+          <a href="/demos/coach.html" target="_blank">Coach-Website</a>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <a href="/impressum">Impressum</a>
+          <a href="/datenschutz">Datenschutz</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 TK Webtalent. Alle Rechte vorbehalten.</p>
+        <p><a href="/impressum" style="color:inherit;">Impressum</a> · <a href="/datenschutz" style="color:inherit;">Datenschutz</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- COOKIE BANNER -->
+  <div class="cookie-overlay" id="cookieOverlay">
+    <div class="cookie-banner" id="cookieBanner">
+      <div class="cookie-icon-wrap">🍪</div>
+      <h3>Diese Website verwendet Cookies</h3>
+      <p>Wir nutzen Cookies, um Ihnen das beste Erlebnis auf unserer Website zu bieten und unsere Inhalte zu verbessern. Sie können selbst entscheiden, welche Cookies Sie zulassen möchten.</p>
+      <div class="cookie-actions">
+        <button class="btn btn-ghost cookie-btn" id="cookieDecline">Nur notwendige</button>
+        <button class="btn btn-primary cookie-btn" id="cookieAccept">Alle akzeptieren</button>
+      </div>
+      <div class="cookie-footer-links">
+        <a href="/datenschutz">Datenschutz</a> · <a href="/impressum">Impressum</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
