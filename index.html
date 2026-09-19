@@ -353,14 +353,15 @@
 
     /* ── VERTRIEBSPARTNER-BADGE ──────────────────────────
        Frei verschiebbarer runder CTA-Button (Pointer-Events, siehe
-       Script unten). Startet unten rechts; die Position wird als
+       Script unten). Startet oben rechts neben der Hero-Headline; die
+       Position wird als
        transform:translate3d()-Offset von diesem Anker aus bewegt statt
        über left/top – das läuft rein über den Compositor (GPU) statt
        bei jeder Mausbewegung ein Browser-Layout auszulösen, und fühlt
        sich dadurch spürbar flüssiger an. Position wird pro Gerät in
        localStorage gemerkt, falls der Nutzer ihn woanders hinzieht. */
     .sales-fab {
-      position: fixed; right: 26px; bottom: 26px; z-index: 998;
+      position: fixed; right: 26px; top: 88px; z-index: 998;
       width: 128px; height: 128px; border-radius: 50%;
       background: linear-gradient(135deg, var(--c-accent), var(--rd-accent-2));
       color: #fff; display: flex; align-items: center; justify-content: center;
@@ -383,8 +384,8 @@
     }
     @media (prefers-reduced-motion: reduce) { .sales-fab { animation: none; } }
     @media (max-width: 480px) {
-      .sales-fab { width: 102px; height: 102px; right: 16px; bottom: 16px; font-size: 12.5px; }
-      .sales-fab-icon { font-size: 27px; }
+      .sales-fab { width: 88px; height: 88px; right: 14px; top: 66px; font-size: 11px; }
+      .sales-fab-icon { font-size: 23px; }
     }
   </style>
 
