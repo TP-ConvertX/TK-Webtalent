@@ -89,7 +89,7 @@
     <div class="page-header">
       <div class="page-label">Rechtliches</div>
       <h1>Datenschutzerklärung</h1>
-      <p>Stand: Juli 2026 | Gemäß DSGVO, BDSG und DDG</p>
+      <p>Stand: September 2026 | Gemäß DSGVO, BDSG und DDG</p>
     </div>
 
     <div class="toc">
@@ -101,6 +101,7 @@
         <li><a href="#google-fonts">Google Fonts</a></li>
         <li><a href="#kontaktformular">Kontaktformular (Formsubmit)</a></li>
         <li><a href="#terminbuchung">Öffentliche Terminbuchung</a></li>
+        <li><a href="#vertriebspartner">Vertriebspartner-Bewerbungsfunnel</a></li>
         <li><a href="#kundenbereich">Kundenbereich & Authentifizierung (Supabase)</a></li>
         <li><a href="#nachrichten">Nachrichten & Dateiuploads</a></li>
         <li><a href="#email">E-Mail-Benachrichtigungen (Resend)</a></li>
@@ -156,12 +157,12 @@
           <tr>
             <td>Supabase</td>
             <td>Authentifizierung, Datenbank, Dateispeicherung, Echtzeit-Verbindungen</td>
-            <td>E-Mail, Name, Unternehmen, Projektdaten, Termine, Nachrichten, Dateianhänge, Session-Token, Online-Status (temporär)</td>
+            <td>E-Mail, Name, Unternehmen, Projektdaten, Termine, Nachrichten, Dateianhänge, Session-Token, Online-Status (temporär), Vertriebspartner-Bewerbungsdaten</td>
           </tr>
           <tr>
             <td>Resend</td>
             <td>Versand von Transaktions-E-Mails</td>
-            <td>E-Mail-Adresse, Name, Nachrichteninhalt (Vorschau)</td>
+            <td>E-Mail-Adresse, Name, Nachrichteninhalt (Vorschau), Bewerbungsangaben (bei Vertriebspartner-Bewerbungen)</td>
           </tr>
         </table>
       </div>
@@ -239,9 +240,42 @@
         <p>Termindaten werden gelöscht, sobald sie für die Geschäftsbeziehung nicht mehr benötigt werden, spätestens jedoch nach Ablauf gesetzlicher Aufbewahrungsfristen.</p>
       </div>
 
-      <!-- 7. Kundenbereich -->
+      <!-- 7. Vertriebspartner-Bewerbungsfunnel -->
+      <div class="ds-section" id="vertriebspartner">
+        <h2>7. Vertriebspartner-Bewerbungsfunnel</h2>
+        <p>Unter <strong>tk-webtalent.de/vertriebspartner</strong> besteht die Möglichkeit, sich als selbstständiger Vertriebspartner zu bewerben. Interessierte durchlaufen dabei einen mehrstufigen Fragebogen zu ihrer Vertriebserfahrung und Verfügbarkeit.</p>
+
+        <h3>Automatischer Ausstieg ohne Datenerhebung</h3>
+        <p>Erfüllt eine Bewerbung bestimmte Mindestvoraussetzungen nicht, endet der Fragebogen an dieser Stelle freundlich. In diesem Fall werden <strong>keinerlei personenbezogenen Daten</strong> abgefragt oder gespeichert – weder Name noch Kontaktdaten. Gespeichert wird lediglich ein anonymes, nicht personenbeziehbares Ereignis (welche Frage-Nummer zum Ausstieg geführt hat), damit wir den Fragebogen als Ganzes verbessern können. Ein Rückschluss auf eine bestimmte Person ist daraus nicht möglich.</p>
+
+        <h3>Verarbeitete Daten bei vollständiger Bewerbung</h3>
+        <p>Nur wenn eine Bewerbung alle Vorqualifikationsfragen durchläuft und das Kontaktformular ausgefüllt wird, verarbeiten wir:</p>
+        <ul>
+          <li>Vorname, Nachname</li>
+          <li>E-Mail-Adresse und Telefonnummer</li>
+          <li>LinkedIn-Profil und Website (jeweils freiwillig)</li>
+          <li>Antworten aus dem Fragebogen: Vertriebserfahrung und deren Herkunft/Dauer, Erfahrung mit Kaltakquise und höherpreisigen Produkten, bevorzugte Akquiseformen, zeitliche Verfügbarkeit, Selbstständigkeitsstatus, selbsteingeschätzte Stärken sowie ein frei formulierter Motivationstext</li>
+        </ul>
+
+        <h3>Interne Einstufung</h3>
+        <p>Anhand der Antworten wird automatisiert eine interne Einstufung ("Sehr interessant", "Interessant" oder "Prüfen") berechnet und gespeichert. Diese Einstufung dient ausschließlich der internen Priorisierung bei der Sichtung eingehender Bewerbungen und wird Bewerbern nicht angezeigt.</p>
+
+        <h3>Zweck der Verarbeitung</h3>
+        <p>Die Daten dienen der Vorauswahl geeigneter Bewerber für eine mögliche Zusammenarbeit als selbstständiger, erfolgsabhängig vergüteter Vertriebspartner sowie der anschließenden Kontaktaufnahme zu einem Kennenlerngespräch.</p>
+
+        <h3>Datenspeicherung & Benachrichtigung</h3>
+        <p>Vollständige Bewerbungen werden in der Datenbank von Supabase gespeichert (siehe Abschnitt 8) und lösen eine interne E-Mail-Benachrichtigung über Resend aus (siehe Abschnitt 10), damit die Bewerbung persönlich geprüft werden kann.</p>
+
+        <h3>Rechtsgrundlage</h3>
+        <p>Für die Bewerbungsdaten ist die Rechtsgrundlage Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen zur Anbahnung einer möglichen Vertriebspartnerschaft). Für die anonymen Funnel-Statistiken bei automatischem Ausstieg ist die Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Optimierung des Bewerbungsprozesses) – hier liegt mangels Personenbezugs bereits kein Anwendungsfall der DSGVO im engeren Sinne vor.</p>
+
+        <h3>Speicherdauer</h3>
+        <p>Vollständige Bewerbungsdaten werden gespeichert, bis über eine mögliche Zusammenarbeit entschieden wurde, längstens jedoch 12 Monate nach Eingang, sofern keine Zusammenarbeit oder weitere Kommunikation vereinbart wird. Eine frühere Löschung auf Wunsch ist jederzeit möglich.</p>
+      </div>
+
+      <!-- 8. Kundenbereich -->
       <div class="ds-section" id="kundenbereich">
-        <h2>7. Kundenbereich & Authentifizierung (Supabase)</h2>
+        <h2>8. Kundenbereich & Authentifizierung (Supabase)</h2>
         <p>Aktive Kunden erhalten Zugang zu einem passwortgeschützten Kundenbereich unter <strong>tk-webtalent.de/kundenbereich</strong>. Die technische Infrastruktur für Authentifizierung und Datenbankbetrieb wird durch <strong>Supabase Inc.</strong> (San Francisco, USA) bereitgestellt.</p>
 
         <h3>Verarbeitete Daten im Kundenbereich</h3>
@@ -271,7 +305,7 @@
 
       <!-- 8. Nachrichten -->
       <div class="ds-section" id="nachrichten">
-        <h2>8. Nachrichten & Dateiuploads</h2>
+        <h2>9. Nachrichten & Dateiuploads</h2>
         <p>Innerhalb des Kundenbereichs steht eine Nachrichtenfunktion zur Verfügung, über die Kunden direkt mit TK Webtalent kommunizieren können.</p>
 
         <h3>Verarbeitete Daten</h3>
@@ -292,13 +326,14 @@
 
       <!-- 9. E-Mail -->
       <div class="ds-section" id="email">
-        <h2>9. E-Mail-Benachrichtigungen (Resend)</h2>
+        <h2>10. E-Mail-Benachrichtigungen (Resend)</h2>
         <p>Für den Versand von Transaktions-E-Mails (Terminbestätigungen, Nachrichten-Benachrichtigungen) wird der Dienst <strong>Resend</strong> von Resend Inc. (548 Market St, PMB 72878, San Francisco, CA 94104, USA) eingesetzt.</p>
 
         <h3>Anlässe für automatische E-Mails</h3>
         <ul>
           <li>Bestätigung einer Terminbuchung (an Kunden und intern)</li>
           <li>Benachrichtigung bei neuen Nachrichten im Kundenbereich (sofern der Empfänger gerade nicht online ist)</li>
+          <li>Interne Benachrichtigung bei vollständig eingegangenen Vertriebspartner-Bewerbungen (siehe Abschnitt 7)</li>
         </ul>
 
         <div class="info-box">
@@ -319,7 +354,7 @@
 
       <!-- 10. Realtime -->
       <div class="ds-section" id="realtime">
-        <h2>10. Echtzeit-Funktionen (Online-Status & Tipp-Anzeige)</h2>
+        <h2>11. Echtzeit-Funktionen (Online-Status & Tipp-Anzeige)</h2>
         <p>Im Nachrichten-Bereich werden zwei Echtzeit-Funktionen eingesetzt, die über Supabase Realtime (WebSocket-Verbindungen) realisiert werden:</p>
 
         <h3>Online-Status-Anzeige</h3>
@@ -334,22 +369,29 @@
 
       <!-- 11. LocalStorage -->
       <div class="ds-section" id="localstorage">
-        <h2>11. Lokale Datenspeicherung (LocalStorage)</h2>
+        <h2>12. Lokale Datenspeicherung (LocalStorage)</h2>
         <p>Für die Authentifizierung im Kunden- und Admin-Bereich speichert Supabase einen verschlüsselten <strong>Session-Token</strong> im LocalStorage Ihres Browsers. Dieser Token dient ausschließlich dazu, Sie nach dem Schließen des Tabs weiterhin als eingeloggt zu erkennen, ohne dass Sie sich erneut anmelden müssen.</p>
         <p>Der Token enthält keine Klardaten (keine Passwörter, keine Nachrichten). Er wird automatisch gelöscht, wenn Sie sich abmelden, oder nach Ablauf der Sitzungsgültigkeitsdauer.</p>
-        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (technisch notwendig für den Betrieb des Kundenbereichs).</p>
+
+        <h3>Position des Vertriebspartner-Buttons</h3>
+        <p>Auf der Startseite kann der frei schwebende "Partner werden"-Button per Ziehen verschoben werden. Die von Ihnen gewählte Position wird ausschließlich lokal in Ihrem Browser (LocalStorage) gespeichert, damit der Button beim nächsten Besuch an der gewählten Stelle bleibt. Diese Information wird nicht an unsere Server übertragen.</p>
+
+        <h3>Anonyme Sitzungs-ID im Bewerbungsfunnel</h3>
+        <p>Beim Ausfüllen des Vertriebspartner-Fragebogens (siehe Abschnitt 7) wird in Ihrem Browser (SessionStorage) eine zufällig erzeugte, nicht personenbeziehbare Kennung erzeugt. Sie dient ausschließlich dazu, die anonymen Funnel-Statistiken einer zusammenhängenden Sitzung zuzuordnen, und wird gelöscht, sobald Sie den Tab schließen.</p>
+
+        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (technisch notwendig für den Betrieb des Kundenbereichs) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an nutzerfreundlicher Darstellung und Funnel-Optimierung).</p>
       </div>
 
       <!-- 12. Cookies -->
       <div class="ds-section" id="cookies">
-        <h2>12. Cookies</h2>
+        <h2>13. Cookies</h2>
         <p>Diese Website setzt keine Tracking-Cookies, Analyse-Cookies oder Marketing-Cookies ein. Im Kundenbereich wird der Supabase-Session-Token im LocalStorage des Browsers abgelegt (kein Cookie im technischen Sinne). Ein Cookie-Banner ist daher nicht erforderlich.</p>
         <p>Sollten in Zukunft Analyse- oder Marketing-Dienste hinzugefügt werden, wird diese Datenschutzerklärung aktualisiert und ein Cookie-Consent-Tool eingebunden.</p>
       </div>
 
       <!-- 13. Rechte -->
       <div class="ds-section" id="rechte">
-        <h2>13. Ihre Rechte als betroffene Person</h2>
+        <h2>14. Ihre Rechte als betroffene Person</h2>
         <p>Sie haben nach der DSGVO folgende Rechte gegenüber uns:</p>
         <ul>
           <li><strong>Auskunftsrecht</strong> (Art. 15 DSGVO): Sie können Auskunft über Ihre gespeicherten Daten verlangen.</li>
@@ -368,9 +410,9 @@
 
       <!-- 14. Änderungen -->
       <div class="ds-section" id="aenderungen">
-        <h2>14. Änderungen dieser Datenschutzerklärung</h2>
+        <h2>15. Änderungen dieser Datenschutzerklärung</h2>
         <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie stets den aktuellen rechtlichen Anforderungen anzupassen oder um Änderungen unserer Leistungen umzusetzen. Die neue Datenschutzerklärung gilt dann für Ihren nächsten Besuch.</p>
-        <p>Stand dieser Erklärung: Juli 2026</p>
+        <p>Stand dieser Erklärung: September 2026</p>
       </div>
 
     </div>

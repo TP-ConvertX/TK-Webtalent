@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Vertriebspartner werden – TK Webtalent</title>
+  <meta name="description" content="Werde selbstständiger Vertriebspartner von TK Webtalent und verdiene an jedem erfolgreich vermittelten Webdesign-Auftrag. Komplett remote, freie Zeiteinteilung, 10% Start-Provision.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://tk-webtalent.de/vertriebspartner">
+
+  <meta property="og:title" content="Vertriebspartner werden – TK Webtalent">
+  <meta property="og:description" content="Verdiene mit dem Verkauf hochwertiger Websites. Werde selbstständiger Vertriebspartner von TK Webtalent.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tk-webtalent.de/vertriebspartner">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:site_name" content="TK Webtalent">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Vertriebspartner werden – TK Webtalent">
+  <meta name="twitter:description" content="Verdiene mit dem Verkauf hochwertiger Websites. Werde selbstständiger Vertriebspartner von TK Webtalent.">
+
+  <link rel="icon" type="image/png" href="/assets/logo-icon.png">
+  <link rel="apple-touch-icon" href="/assets/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.min.css">
+
+  <style>
+    h1, h2, .vp-logo span { font-family: 'Space Grotesk', sans-serif; }
+
+    /* ── HEADER ── */
+    .vp-header {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 22px 24px;
+    }
+    .vp-logo { display: flex; align-items: center; gap: 10px; }
+    .vp-logo img { width: 30px; height: 30px; }
+    .vp-logo span { font-weight: 700; font-size: 16px; color: var(--c-text); }
+
+    /* ── HERO ── */
+    .vp-hero {
+      background: linear-gradient(180deg, #F3F9FF 0%, #fff 60%);
+      padding: 20px 24px 72px; text-align: center;
+    }
+    .vp-hero-inner { max-width: 700px; margin: 0 auto; }
+    .vp-hero h1 {
+      font-size: clamp(30px, 5vw, 48px); line-height: 1.15; letter-spacing: -0.02em;
+      margin-bottom: 18px; color: var(--c-text);
+    }
+    .vp-hero .vp-sub {
+      font-size: 18px; color: var(--c-text-2); line-height: 1.6;
+      max-width: 560px; margin: 0 auto 32px;
+    }
+    .vp-benefits {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 20px;
+      list-style: none; margin: 0 0 36px; padding: 0;
+    }
+    .vp-benefits li {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14.5px; font-weight: 600; color: var(--c-text);
+      background: #fff; border: 1px solid var(--c-border); border-radius: 100px;
+      padding: 9px 16px; box-shadow: var(--shadow-xs);
+    }
+    .vp-benefits .ic { color: var(--c-green); font-weight: 800; }
+    .vp-hero-cta-note { font-size: 13px; color: var(--c-text-3); margin-top: 12px; }
+
+    /* ── SO FUNKTIONIERT ES ── */
+    .vp-highlight {
+      margin-top: 40px; text-align: center; background: var(--c-bg-light);
+      border-radius: var(--radius-xl); border: 1px solid var(--c-border);
+      padding: 36px 32px;
+    }
+    .vp-highlight h3 { font-size: 21px; margin-bottom: 10px; color: var(--c-text); }
+    .vp-highlight p { font-size: 15.5px; color: var(--c-text-2); max-width: 560px; margin: 0 auto; line-height: 1.65; }
+
+    /* ── BEISPIELPROVISION ── */
+    .vp-comm-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;
+    }
+    .vp-comm-card {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius-lg);
+      padding: 22px 16px; text-align: center;
+    }
+    .vp-comm-order { font-size: 13.5px; color: var(--c-text-3); margin-bottom: 6px; }
+    .vp-comm-arrow { font-size: 13px; color: var(--c-text-3); margin: 4px 0; }
+    .vp-comm-payout { font-size: 22px; font-weight: 800; color: var(--c-accent-dark); }
+    .vp-comm-note { text-align: center; font-size: 13.5px; color: var(--c-text-3); }
+    @media (max-width: 640px) {
+      .vp-comm-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── QUIZ / FUNNEL ── */
+    .vp-funnel-section { background: var(--c-bg-light); padding: 90px 0; }
+    .q-progress-wrap { max-width: 480px; margin: 0 auto 22px; padding: 0 24px; }
+    .q-progress-track { height: 6px; background: #fff; border-radius: 100px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--c-border); }
+    .q-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-accent-dark)); border-radius: 100px; transition: width .4s ease; }
+
+    .q-stage { max-width: 560px; margin: 0 auto; padding: 0 24px; }
+    .q-card {
+      background: #fff; border: 1.5px solid var(--c-border); border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl); padding: 44px 36px; width: 100%; position: relative;
+    }
+    .q-step { display: none; animation: qFadeIn .35s ease; }
+    .q-step.active { display: block; }
+    @keyframes qFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    .q-eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-accent); background: var(--c-accent-light); padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .q-counter { display: block; font-size: 13px; font-weight: 700; color: var(--c-text-3); margin-bottom: 10px; }
+    .q-step h2 { font-size: 21px; margin-bottom: 8px; letter-spacing: -0.01em; line-height: 1.35; color: var(--c-text); }
+    .q-step p.q-sub { font-size: 14.5px; color: var(--c-text-2); line-height: 1.6; margin-bottom: 22px; }
+
+    .q-options { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+    .q-option {
+      display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;
+      padding: 16px 18px; border: 1.5px solid var(--c-border); border-radius: var(--radius-md);
+      background: #fff; font-size: 15px; font-weight: 600; color: var(--c-text);
+      transition: var(--transition); cursor: pointer;
+    }
+    .q-option:hover { border-color: var(--c-accent); background: var(--c-accent-light); }
+    .q-option.selected { border-color: var(--c-accent); background: var(--c-accent-light); color: var(--c-accent-dark); }
+    .q-option .chk {
+      width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--c-border-2);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: #fff; transition: var(--transition);
+    }
+    .q-option.selected .chk { background: var(--c-accent); border-color: var(--c-accent); }
+    .q-option.selected .chk::after { content: '✓'; }
+
+    .q-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; }
+    .q-back { font-size: 13.5px; color: var(--c-text-3); font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .q-back:hover { color: var(--c-text); }
+
+    .q-textarea, .q-form-field input {
+      width: 100%; padding: 13px 16px; border: 1.5px solid var(--c-border); border-radius: var(--radius-md);
+      font-size: 15px; outline: none; transition: var(--transition); font-family: inherit;
+    }
+    .q-textarea { resize: vertical; min-height: 96px; margin-top: 18px; }
+    .q-textarea:focus, .q-form-field input:focus { border-color: var(--c-accent); box-shadow: 0 0 0 3px rgba(14,165,233,.1); }
+
+    .q-form-field { margin-bottom: 16px; }
+    .q-form-field label { display: block; font-size: 13px; font-weight: 700; color: var(--c-text-2); margin-bottom: 6px; }
+    .q-consent { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0 6px; }
+    .q-consent input { margin-top: 3px; flex-shrink: 0; width: 17px; height: 17px; accent-color: var(--c-accent); }
+    .q-consent label { font-size: 13px; color: var(--c-text-2); line-height: 1.55; }
+    .q-consent a { color: var(--c-accent-dark); text-decoration: underline; }
+
+    .q-success, .q-exit { text-align: center; }
+    .q-success-icon, .q-exit-icon { font-size: 44px; margin-bottom: 14px; }
+    .q-success h2, .q-exit h2 { font-size: 23px; margin-bottom: 10px; }
+    .q-success p, .q-exit p { font-size: 15px; color: var(--c-text-2); line-height: 1.65; }
+    .q-success .q-sign { display: block; margin-top: 18px; font-size: 14px; font-weight: 700; color: var(--c-text); }
+
+    .q-error { font-size: 13.5px; color: #EF4444; margin-top: 12px; display: none; }
+    .q-error.show { display: block; }
+
+    @media (max-width: 480px) {
+      .q-card { padding: 32px 22px; }
+      .vp-comm-grid { gap: 10px; }
+      .vp-highlight { padding: 28px 22px; }
+    }
+  </style>
+
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+  <a href="/" class="vp-header">
+    <span class="vp-logo"><img src="assets/logo-icon.png" alt="TK Webtalent"><span>TK Webtalent</span></span>
+  </a>
+
+  <!-- ===== HERO ===== -->
+  <section class="vp-hero">
+    <div class="vp-hero-inner">
+      <span class="q-eyebrow">✦ Selbstständige Vertriebspartner gesucht</span>
+      <h1>Verdiene mit dem Verkauf hochwertiger Websites.</h1>
+      <p class="vp-sub">Werde selbstständiger Vertriebspartner von TK Webtalent und verdiene an jedem erfolgreich vermittelten Auftrag.</p>
+
+      <ul class="vp-benefits">
+        <li><span class="ic">✓</span> Komplett remote</li>
+        <li><span class="ic">✓</span> Freie Zeiteinteilung</li>
+        <li><span class="ic">✓</span> 10% Start-Provision</li>
+        <li><span class="ic">✓</span> Provision kann bei guter Performance steigen</li>
+        <li><span class="ic">✓</span> Auftragswerte von ca. 2.000–8.000 €</li>
+      </ul>
+
+      <button type="button" class="btn btn-primary btn-large" id="vpStartBtn">Prüfen, ob wir zusammenpassen →</button>
+      <p class="vp-hero-cta-note">Dauert ca. 2–3 Minuten.</p>
+    </div>
+  </section>
+
+  <!-- ===== SO FUNKTIONIERT ES ===== -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="section-intro">
+        <span class="section-label">Ablauf</span>
+        <h2 class="section-headline">So funktioniert es</h2>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon-wrap">🔍</div>
+          <h3>1. Kunden finden</h3>
+          <p>Du sprichst eigenständig interessante Unternehmen an und weckst Interesse an einem neuen Webauftritt.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon-wrap">🤝</div>
+          <h3>2. Auftrag abschließen</h3>
+          <p>Du führst Gespräche und begleitest potenzielle Kunden idealerweise bis zum Vertragsabschluss.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon-wrap">💰</div>
+          <h3>3. Provision erhalten</h3>
+          <p>Für erfolgreich vermittelte Aufträge erhältst du zunächst 10% Provision.</p>
+        </div>
+      </div>
+
+      <div class="vp-highlight">
+        <h3>Gute Leistung soll sich lohnen.</h3>
+        <p>Wenn du regelmäßig gute Ergebnisse erzielst, kann deine Provision entsprechend steigen. Wir möchten langfristig mit guten Vertriebspartnern wachsen.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BEISPIELPROVISION ===== -->
+  <section class="section-padding bg-light">
+    <div class="container">
+      <div class="section-intro">
+        <span class="section-label">Beispielrechnung</span>
+        <h2 class="section-headline">Was du verdienen kannst</h2>
+      </div>
+      <div class="vp-comm-grid">
+        <div class="vp-comm-card">
+          <div class="vp-comm-order">2.000 € Auftrag</div>
+          <div class="vp-comm-arrow">↓</div>
+          <div class="vp-comm-payout">200 €</div>
+        </div>
+        <div class="vp-comm-card">
+          <div class="vp-comm-order">4.000 € Auftrag</div>
+          <div class="vp-comm-arrow">↓</div>
+          <div class="vp-comm-payout">400 €</div>
+        </div>
+        <div class="vp-comm-card">
+          <div class="vp-comm-order">6.000 € Auftrag</div>
+          <div class="vp-comm-arrow">↓</div>
+          <div class="vp-comm-payout">600 €</div>
+        </div>
+        <div class="vp-comm-card">
+          <div class="vp-comm-order">8.000 € Auftrag</div>
+          <div class="vp-comm-arrow">↓</div>
+          <div class="vp-comm-payout">800 €</div>
+        </div>
+      </div>
+      <p class="vp-comm-note">Berechnung bei 10% Start-Provision.</p>
+    </div>
+  </section>
+
+  <!-- ===== FUNNEL / QUIZ ===== -->
+  <section class="vp-funnel-section" id="funnel">
+    <div class="q-progress-wrap">
+      <div class="q-progress-track"><div class="q-progress-bar" id="qProgress"></div></div>
+    </div>
+
+    <div class="q-stage">
+      <div class="q-card">
+
+        <!-- Q1 -->
+        <div class="q-step" data-step="q1">
+          <span class="q-counter">Frage 1 von 10</span>
+          <h2>Hast du bereits Erfahrung im Vertrieb?</h2>
+          <div class="q-options" data-field="vertriebserfahrung" data-mode="single-auto">
+            <button type="button" class="q-option" data-value="Noch keine">Noch keine</button>
+            <button type="button" class="q-option" data-value="Etwas Erfahrung">Etwas Erfahrung</button>
+            <button type="button" class="q-option" data-value="Mehrere Jahre Erfahrung">Mehrere Jahre Erfahrung</button>
+          </div>
+        </div>
+
+        <!-- Q1A -->
+        <div class="q-step" data-step="q1a">
+          <span class="q-counter">Frage 1 von 10</span>
+          <h2>Woher kommt deine bisherige Vertriebserfahrung?</h2>
+          <p class="q-sub">Mehrfachauswahl möglich.</p>
+          <div class="q-options" data-field="vertriebserfahrung_details" data-mode="multi">
+            <button type="button" class="q-option" data-value="Telefonische Akquise"><span class="chk"></span>Telefonische Akquise</button>
+            <button type="button" class="q-option" data-value="Persönlicher Verkauf"><span class="chk"></span>Persönlicher Verkauf</button>
+            <button type="button" class="q-option" data-value="B2B-Vertrieb"><span class="chk"></span>B2B-Vertrieb</button>
+            <button type="button" class="q-option" data-value="B2C-Vertrieb"><span class="chk"></span>B2C-Vertrieb</button>
+            <button type="button" class="q-option" data-value="Terminvereinbarung / Setting"><span class="chk"></span>Terminvereinbarung / Setting</button>
+            <button type="button" class="q-option" data-value="Abschlussgespräche / Closing"><span class="chk"></span>Abschlussgespräche / Closing</button>
+            <button type="button" class="q-option" data-value="Selbstständigkeit"><span class="chk"></span>Selbstständigkeit</button>
+            <button type="button" class="q-option" data-value="Sonstiges"><span class="chk"></span>Sonstiges</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><button type="button" class="btn btn-primary" data-next>Weiter →</button></div>
+        </div>
+
+        <!-- Q1B -->
+        <div class="q-step" data-step="q1b">
+          <span class="q-counter">Frage 1 von 10</span>
+          <h2>Wie lange hast du ungefähr im Vertrieb gearbeitet?</h2>
+          <div class="q-options" data-field="vertriebsdauer" data-mode="single-auto">
+            <button type="button" class="q-option" data-value="Weniger als 3 Monate">Weniger als 3 Monate</button>
+            <button type="button" class="q-option" data-value="3–6 Monate">3–6 Monate</button>
+            <button type="button" class="q-option" data-value="6–12 Monate">6–12 Monate</button>
+            <button type="button" class="q-option" data-value="Mehr als 12 Monate">Mehr als 12 Monate</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+        </div>
+
+        <!-- Q1C -->
+        <div class="q-step" data-step="q1c">
+          <span class="q-counter">Frage 1 von 10</span>
+          <h2>Was hast du bisher hauptsächlich verkauft?</h2>
+          <textarea class="q-textarea" data-field="bisherige_produkte" placeholder="z. B. Versicherungen, Software-Abos, Handwerksleistungen …"></textarea>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><button type="button" class="btn btn-primary" data-next>Weiter →</button></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-step" data-step="q2">
+          <span class="q-counter">Frage 2 von 10</span>
+          <h2>Wie wohl fühlst du dich bei der aktiven Kaltakquise?</h2>
+          <div class="q-options" data-field="kaltakquise" data-mode="single-auto">
+            <button type="button" class="q-option" data-value="Gar nicht wohl">Gar nicht wohl</button>
+            <button type="button" class="q-option" data-value="Grundsätzlich okay">Grundsätzlich okay</button>
+            <button type="button" class="q-option" data-value="Wohl">Wohl</button>
+            <button type="button" class="q-option" data-value="Sehr wohl">Sehr wohl</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q-step" data-step="q3">
+          <span class="q-counter">Frage 3 von 10</span>
+          <h2>Welche Form der Akquise liegt dir am meisten?</h2>
+          <p class="q-sub">Mehrfachauswahl möglich.</p>
+          <div class="q-options" data-field="akquiseart" data-mode="multi">
+            <button type="button" class="q-option" data-value="Telefon"><span class="chk"></span>Telefon</button>
+            <button type="button" class="q-option" data-value="E-Mail"><span class="chk"></span>E-Mail</button>
+            <button type="button" class="q-option" data-value="Social Media"><span class="chk"></span>Social Media</button>
+            <button type="button" class="q-option" data-value="Persönliche Kontakte"><span class="chk"></span>Persönliche Kontakte</button>
+            <button type="button" class="q-option" data-value="LinkedIn"><span class="chk"></span>LinkedIn</button>
+            <button type="button" class="q-option" data-value="Mehrere davon"><span class="chk"></span>Mehrere davon</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><button type="button" class="btn btn-primary" data-next>Weiter →</button></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q-step" data-step="q4">
+          <span class="q-counter">Frage 4 von 10</span>
+          <h2>Hast du bereits Dienstleistungen oder höherpreisige Produkte verkauft?</h2>
+          <div class="q-options" data-field="high_ticket_erfahrung" data-mode="single-auto">
+            <button type="button" class="q-option" data-value="Ja">Ja</button>
+            <button type="button" class="q-option" data-value="Nein">Nein</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+        </div>
+
+        <!-- Q4A -->
+        <div class="q-step" data-step="q4a">
+          <span class="q-counter">Frage 4 von 10</span>
+          <h2>Was hast du bisher verkauft und in welchem ungefähren Preisbereich?</h2>
+          <textarea class="q-textarea" data-field="high_ticket_details" placeholder="z. B. Coaching-Pakete ab 2.000 €"></textarea>
+          <p class="q-sub" style="margin-top:26px;margin-bottom:12px">Optional: Wie hoch war der höchste Auftrag oder Verkauf, an dem du beteiligt warst?</p>
+          <div class="q-options" data-field="hoechster_verkaufswert" data-mode="single">
+            <button type="button" class="q-option" data-value="Unter 1.000 €">Unter 1.000 €</button>
+            <button type="button" class="q-option" data-value="1.000–3.000 €">1.000–3.000 €</button>
+            <button type="button" class="q-option" data-value="3.000–5.000 €">3.000–5.000 €</button>
+            <button type="button" class="q-option" data-value="5.000–10.000 €">5.000–10.000 €</button>
+            <button type="button" class="q-option" data-value="Über 10.000 €">Über 10.000 €</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><button type="button" class="btn btn-primary" data-next>Weiter →</button></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-step" data-step="q5">
+          <span class="q-counter">Frage 5 von 10</span>
+          <h2>Würdest du aktiv potenzielle Unternehmen telefonisch kontaktieren?</h2>
+          <div class="q-options" data-field="telefonakquise_bereit" data-mode="single-auto">
+            <button type="button" class="q-option" data-value="Ja">Ja</button>
+            <button type="button" class="q-option" data-value="Nein">Nein</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="q-step" data-step="q6">
+          <span class="q-counter">Frage 6 von 10</span>
+          <h2>Wie viel Zeit möchtest du ungefähr pro Woche investieren?</h2>
+          <div class="q-options" data-field="zeit_pro_woche" data-mode="single-auto">
+            <button type="button" class="q-option" data-value="Weniger als 5 Stunden">Weniger als 5 Stunden</button>
+            <button type="button" class="q-option" data-value="5–10 Stunden">5–10 Stunden</button>
+            <button type="button" class="q-option" data-value="10–20 Stunden">10–20 Stunden</button>
+            <button type="button" class="q-option" data-value="Mehr als 20 Stunden">Mehr als 20 Stunden</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="q-step" data-step="q7">
+          <span class="q-counter">Frage 7 von 10</span>
+          <h2>Die Zusammenarbeit erfolgt selbstständig und ausschließlich erfolgsabhängig auf Provisionsbasis. Es gibt kein fixes Gehalt.</h2>
+          <p class="q-sub">Ist dieses Modell für dich grundsätzlich interessant?</p>
+          <div class="q-options" data-field="provisionsmodell_akzeptiert" data-mode="single-auto">
+            <button type="button" class="q-option" data-value="Ja">Ja</button>
+            <button type="button" class="q-option" data-value="Nein">Nein</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="q-step" data-step="q8">
+          <span class="q-counter">Frage 8 von 10</span>
+          <h2>Arbeitest du bereits selbstständig bzw. besitzt du ein Gewerbe?</h2>
+          <div class="q-options" data-field="selbststaendig" data-mode="single-auto">
+            <button type="button" class="q-option" data-value="Ja">Ja</button>
+            <button type="button" class="q-option" data-value="Nein">Nein</button>
+            <button type="button" class="q-option" data-value="Noch nicht, wäre aber möglich">Noch nicht, wäre aber möglich</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><span></span></div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="q-step" data-step="q9">
+          <span class="q-counter">Frage 9 von 10</span>
+          <h2>Wie würdest du dich selbst im Vertrieb einschätzen?</h2>
+          <p class="q-sub">Mehrfachauswahl möglich.</p>
+          <div class="q-options" data-field="vertriebsstaerken" data-mode="multi">
+            <button type="button" class="q-option" data-value="Ich bin gut darin, Gespräche zu eröffnen"><span class="chk"></span>Ich bin gut darin, Gespräche zu eröffnen</button>
+            <button type="button" class="q-option" data-value="Ich kann gut Vertrauen aufbauen"><span class="chk"></span>Ich kann gut Vertrauen aufbauen</button>
+            <button type="button" class="q-option" data-value="Ich bin gut im Nachfassen"><span class="chk"></span>Ich bin gut im Nachfassen</button>
+            <button type="button" class="q-option" data-value="Ich bin stark im Abschluss"><span class="chk"></span>Ich bin stark im Abschluss</button>
+            <button type="button" class="q-option" data-value="Mehrere Punkte treffen auf mich zu"><span class="chk"></span>Mehrere Punkte treffen auf mich zu</button>
+          </div>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><button type="button" class="btn btn-primary" data-next>Weiter →</button></div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="q-step" data-step="q10">
+          <span class="q-counter">Frage 10 von 10</span>
+          <h2>Warum glaubst du, dass du gut zu TK Webtalent passen könntest?</h2>
+          <textarea class="q-textarea" data-field="motivation" placeholder="Erzähl uns kurz von dir …"></textarea>
+          <div class="q-actions"><span class="q-back" data-back>← Zurück</span><button type="button" class="btn btn-primary" data-next>Weiter →</button></div>
+        </div>
+
+        <!-- KONTAKT -->
+        <div class="q-step" data-step="contact">
+          <span class="q-counter">Fast geschafft</span>
+          <h2>Deine Kontaktdaten</h2>
+          <div class="q-form-field">
+            <label for="vpVorname">Vorname *</label>
+            <input type="text" id="vpVorname" autocomplete="given-name">
+          </div>
+          <div class="q-form-field">
+            <label for="vpNachname">Nachname *</label>
+            <input type="text" id="vpNachname" autocomplete="family-name">
+          </div>
+          <div class="q-form-field">
+            <label for="vpEmail">E-Mail *</label>
+            <input type="email" id="vpEmail" autocomplete="email">
+          </div>
+          <div class="q-form-field">
+            <label for="vpTelefon">Telefonnummer *</label>
+            <input type="tel" id="vpTelefon" autocomplete="tel">
+          </div>
+          <div class="q-form-field">
+            <label for="vpLinkedin">LinkedIn-Profil (optional)</label>
+            <input type="url" id="vpLinkedin" placeholder="https://linkedin.com/in/…">
+          </div>
+          <div class="q-form-field">
+            <label for="vpWebsite">Website / Unternehmensseite (optional)</label>
+            <input type="url" id="vpWebsite" placeholder="https://…">
+          </div>
+          <div class="q-consent">
+            <input type="checkbox" id="vpConsent">
+            <label for="vpConsent">Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten im Rahmen meiner Bewerbung als selbstständiger Vertriebspartner zu.</label>
+          </div>
+          <div class="q-error" id="vpError">Bitte alle Pflichtfelder korrekt ausfüllen.</div>
+          <div class="q-actions">
+            <span class="q-back" data-back>← Zurück</span>
+            <button type="button" class="btn btn-primary" id="vpSubmitBtn">Bewerbung absenden</button>
+          </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="q-step" data-step="success">
+          <div class="q-success">
+            <div class="q-success-icon">👋</div>
+            <h2>Danke für deine Bewerbung!</h2>
+            <p>Ich schaue mir deine Antworten persönlich an. Wenn ich Potenzial für eine Zusammenarbeit sehe, melde ich mich bei dir für ein kurzes Kennenlerngespräch.</p>
+            <span class="q-sign">Tim von TK Webtalent</span>
+          </div>
+        </div>
+
+        <!-- EXIT -->
+        <div class="q-step" data-step="exit">
+          <div class="q-exit">
+            <div class="q-exit-icon">🙏</div>
+            <h2>Vielen Dank für dein Interesse.</h2>
+            <p>Aktuell suchen wir Vertriebspartner, die bereits bestimmte Voraussetzungen für die Zusammenarbeit mitbringen.<br><br>Sollte sich daran zukünftig etwas ändern, freuen wir uns, wieder von dir zu hören.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding:32px 24px;text-align:center;font-size:13px;color:var(--c-text-3)">
+    <a href="/impressum" style="color:inherit;">Impressum</a> · <a href="/datenschutz" style="color:inherit;">Datenschutz</a>
+  </footer>
+
+  <script>
+    (function () {
+      const answers = {};
+      const steps = Array.from(document.querySelectorAll('.q-step'));
+      const stepByKey = {};
+      steps.forEach(s => { stepByKey[s.dataset.step] = s; });
+
+      const progressByKey = {
+        q1: 6, q1a: 12, q1b: 16, q1c: 20, q2: 26, q3: 34, q4: 42, q4a: 48,
+        q5: 56, q6: 64, q7: 72, q8: 80, q9: 88, q10: 94, contact: 97, success: 100, exit: 100,
+      };
+
+      let current = null;
+      const history = [];
+      let started = false;
+      let submitting = false;
+
+      const sessionId = (() => {
+        try {
+          let id = sessionStorage.getItem('vpSessionId');
+          if (!id) {
+            id = (crypto.randomUUID ? crypto.randomUUID() : 'vp-' + Math.random().toString(36).slice(2));
+            sessionStorage.setItem('vpSessionId', id);
+          }
+          return id;
+        } catch (e) { return null; }
+      })();
+
+      function track(event, questionNumber) {
+        try {
+          fetch('/api/track-funnel-event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event, questionNumber: questionNumber ?? null, sessionId }),
+            keepalive: true,
+          }).catch(() => {});
+        } catch (e) {}
+      }
+
+      const trackedQuestions = { q1: 1, q2: 2, q4: 4, q7: 7 };
+
+      function showStep(key) {
+        steps.forEach(s => s.classList.toggle('active', s.dataset.step === key));
+        current = key;
+        document.getElementById('qProgress').style.width = (progressByKey[key] ?? 0) + '%';
+        document.getElementById('funnel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (!started) { started = true; track('started'); }
+        if (trackedQuestions[key]) track('question_reached', trackedQuestions[key]);
+        if (key === 'contact') track('contact_reached');
+      }
+
+      function goTo(key) {
+        if (current) history.push(current);
+        showStep(key);
+      }
+
+      function exitAt(questionNumber) {
+        track('exited', questionNumber);
+        if (current) history.push(current);
+        showStep('exit');
+      }
+
+      document.getElementById('vpStartBtn').addEventListener('click', () => goTo('q1'));
+
+      document.querySelectorAll('[data-back]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const prev = history.pop();
+          if (prev) showStep(prev);
+        });
+      });
+
+      /* ── ROUTING: welche Antwort führt wohin ── */
+      function nextAfter(step, value) {
+        switch (step) {
+          case 'q1':
+            if (value === 'Noch keine') return { exit: 1 };
+            if (value === 'Mehrere Jahre Erfahrung') return { go: 'q2' };
+            return { go: 'q1a' }; // Etwas Erfahrung
+          case 'q1a': return { go: 'q1b' };
+          case 'q1b': return { go: 'q1c' };
+          case 'q1c': return { go: 'q2' };
+          case 'q2':
+            if (value === 'Gar nicht wohl') return { exit: 2 };
+            return { go: 'q3' };
+          case 'q3': return { go: 'q4' };
+          case 'q4':
+            if (value === 'Nein') return { exit: 4 };
+            return { go: 'q4a' };
+          case 'q4a': return { go: 'q5' };
+          case 'q5':
+            if (value === 'Nein') return { exit: 5 };
+            return { go: 'q6' };
+          case 'q6': return { go: 'q7' };
+          case 'q7':
+            if (value === 'Nein') return { exit: 7 };
+            return { go: 'q8' };
+          case 'q8':
+            if (value === 'Nein') return { exit: 8 };
+            return { go: 'q9' };
+          case 'q9': return { go: 'q10' };
+          case 'q10': return { go: 'contact' };
+        }
+        return { go: 'contact' };
+      }
+
+      function advance(step, value) {
+        const r = nextAfter(step, value);
+        if (r.exit) exitAt(r.exit); else goTo(r.go);
+      }
+
+      /* ── OPTION-GRUPPEN (single-auto / single / multi) ── */
+      document.querySelectorAll('.q-options').forEach(group => {
+        const field = group.dataset.field;
+        const mode = group.dataset.mode;
+        const step = group.closest('.q-step').dataset.step;
+
+        group.querySelectorAll('.q-option').forEach(opt => {
+          opt.addEventListener('click', () => {
+            if (mode === 'multi') {
+              opt.classList.toggle('selected');
+              const values = Array.from(group.querySelectorAll('.q-option.selected')).map(o => o.dataset.value);
+              answers[field] = values;
+            } else {
+              group.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
+              opt.classList.add('selected');
+              answers[field] = opt.dataset.value;
+              if (mode === 'single-auto') {
+                setTimeout(() => advance(step, opt.dataset.value), 250);
+              }
+            }
+          });
+        });
+      });
+
+      /* ── "WEITER"-BUTTONS (multi-select-Schritte, Freitext-Schritte, q4a) ── */
+      document.querySelectorAll('[data-next]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const stepEl = btn.closest('.q-step');
+          const step = stepEl.dataset.step;
+
+          const multiGroup = stepEl.querySelector('.q-options[data-mode="multi"]');
+          if (multiGroup && !(answers[multiGroup.dataset.field] || []).length) return;
+
+          const textarea = stepEl.querySelector('.q-textarea');
+          if (textarea) {
+            const val = textarea.value.trim();
+            if (!val) { textarea.focus(); return; }
+            answers[textarea.dataset.field] = val;
+          }
+
+          const singleGroup = stepEl.querySelector('.q-options[data-mode="single"]');
+          if (singleGroup) {
+            const sel = singleGroup.querySelector('.q-option.selected');
+            if (sel) answers[singleGroup.dataset.field] = sel.dataset.value;
+          }
+
+          advance(step, answers[stepEl.querySelector('.q-options')?.dataset.field]);
+        });
+      });
+
+      /* ── KONTAKTFORMULAR ABSENDEN ── */
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const PHONE_RE = /^[0-9+()\-\s/]{6,}$/;
+
+      document.getElementById('vpSubmitBtn').addEventListener('click', async () => {
+        if (submitting) return;
+
+        const vorname  = document.getElementById('vpVorname').value.trim();
+        const nachname = document.getElementById('vpNachname').value.trim();
+        const email    = document.getElementById('vpEmail').value.trim();
+        const telefon  = document.getElementById('vpTelefon').value.trim();
+        const linkedin = document.getElementById('vpLinkedin').value.trim();
+        const website  = document.getElementById('vpWebsite').value.trim();
+        const consent  = document.getElementById('vpConsent').checked;
+        const errBox   = document.getElementById('vpError');
+
+        if (!vorname || !nachname || !EMAIL_RE.test(email) || !PHONE_RE.test(telefon) || !consent) {
+          errBox.classList.add('show');
+          return;
+        }
+        errBox.classList.remove('show');
+
+        submitting = true;
+        const btn = document.getElementById('vpSubmitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Wird gesendet …';
+
+        try {
+          const res = await fetch('/api/submit-sales-application', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ...answers,
+              vorname, nachname, email, telefon,
+              linkedin: linkedin || null,
+              website: website || null,
+              einwilligung: consent,
+            }),
+          });
+          if (!res.ok) throw new Error('submit_failed');
+          track('submitted');
+          goTo('success');
+        } catch (e) {
+          errBox.textContent = 'Da ist etwas schiefgelaufen. Bitte versuch es gleich nochmal oder schreib uns direkt an kontakt@tp-convertx.de.';
+          errBox.classList.add('show');
+          submitting = false;
+          btn.disabled = false;
+          btn.textContent = 'Bewerbung absenden';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

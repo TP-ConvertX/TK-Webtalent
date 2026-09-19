@@ -350,6 +350,34 @@
     .window-section { background: transparent !important; }
     .rd-imgwin2 { position: relative; width: 100%; height: 100vh; }
     @media (max-width: 640px) { .rd-imgwin2 { height: 70vh; } }
+
+    /* ── VERTRIEBSPARTNER-BADGE ──────────────────────────
+       Frei verschiebbarer runder CTA-Button (Pointer-Events, siehe
+       js/main.js). Startet unten rechts, Position wird pro Gerät in
+       localStorage gemerkt, falls der Nutzer ihn woanders hinzieht. */
+    .sales-fab {
+      position: fixed; right: 22px; bottom: 22px; z-index: 998;
+      width: 76px; height: 76px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-accent), var(--rd-accent-2));
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 2px; text-align: center;
+      font-size: 11px; font-weight: 700; line-height: 1.25;
+      box-shadow: 0 14px 36px rgba(79,127,255,.4), 0 4px 14px rgba(0,0,0,.35);
+      cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+      border: 2px solid rgba(255,255,255,.25);
+      animation: salesFabPulse 2.6s ease-in-out infinite;
+    }
+    .sales-fab:active { cursor: grabbing; animation: none; }
+    .sales-fab-icon { font-size: 21px; }
+    @keyframes salesFabPulse {
+      0%, 100% { box-shadow: 0 14px 36px rgba(79,127,255,.4), 0 4px 14px rgba(0,0,0,.35), 0 0 0 0 rgba(79,127,255,.45); }
+      50%      { box-shadow: 0 14px 36px rgba(79,127,255,.4), 0 4px 14px rgba(0,0,0,.35), 0 0 0 14px rgba(79,127,255,0); }
+    }
+    @media (prefers-reduced-motion: reduce) { .sales-fab { animation: none; } }
+    @media (max-width: 480px) {
+      .sales-fab { width: 64px; height: 64px; right: 14px; bottom: 14px; font-size: 9.5px; }
+      .sales-fab-icon { font-size: 18px; }
+    }
   </style>
 
   <!-- Vercel Web Analytics -->
@@ -365,6 +393,72 @@
   </div>
 
   <a href="#main" class="rd-skip-link">Zum Inhalt springen</a>
+
+  <!-- ===== VERTRIEBSPARTNER-BADGE (frei verschiebbar) ===== -->
+  <a href="/vertriebspartner" class="sales-fab" id="salesFab" aria-label="Vertriebspartner werden – mehr erfahren">
+    <span class="sales-fab-icon" aria-hidden="true">🤝</span>
+    <span>Partner<br>werden</span>
+  </a>
+  <script>
+    /* Frei verschiebbarer Kreis-Button: normaler Klick navigiert, Ziehen
+       (Maus oder Touch) verschiebt ihn stattdessen und merkt sich die
+       Position pro Gerät in localStorage. */
+    (function () {
+      const fab = document.getElementById('salesFab');
+      if (!fab) return;
+      const STORAGE_KEY = 'salesFabPos';
+      let dragging = false, moved = false, startX, startY, origX, origY;
+
+      function clamp(x, y) {
+        const r = fab.getBoundingClientRect();
+        const maxX = window.innerWidth - r.width - 8;
+        const maxY = window.innerHeight - r.height - 8;
+        return { x: Math.min(Math.max(8, x), Math.max(8, maxX)), y: Math.min(Math.max(8, y), Math.max(8, maxY)) };
+      }
+      function place(x, y) {
+        const p = clamp(x, y);
+        fab.style.left = p.x + 'px';
+        fab.style.top = p.y + 'px';
+        fab.style.right = 'auto';
+        fab.style.bottom = 'auto';
+      }
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved && typeof saved.x === 'number') place(saved.x, saved.y);
+      } catch (e) {}
+
+      fab.addEventListener('pointerdown', (e) => {
+        dragging = true; moved = false;
+        const r = fab.getBoundingClientRect();
+        startX = e.clientX; startY = e.clientY; origX = r.left; origY = r.top;
+        fab.setPointerCapture(e.pointerId);
+        fab.style.transition = 'none';
+      });
+      fab.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX, dy = e.clientY - startY;
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+        if (moved) { e.preventDefault(); place(origX + dx, origY + dy); }
+      });
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        fab.style.transition = '';
+        if (moved) {
+          const r = fab.getBoundingClientRect();
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ x: r.left, y: r.top })); } catch (e) {}
+        }
+      }
+      fab.addEventListener('pointerup', endDrag);
+      fab.addEventListener('pointercancel', endDrag);
+      fab.addEventListener('click', (e) => { if (moved) { e.preventDefault(); moved = false; } });
+      window.addEventListener('resize', () => {
+        const r = fab.getBoundingClientRect();
+        if (fab.style.left) place(r.left, r.top);
+      });
+    })();
+  </script>
 
   <!-- ===== NAVIGATION ===== -->
   <nav class="nav" id="nav">
