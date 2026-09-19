@@ -447,6 +447,35 @@
         fab.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       }
 
+      /* Startposition auf Desktop: in der Lücke über der Browser-Mockup-
+         Karte im Hero, statt an einem fest verdrahteten Pixel-Wert vom
+         Bildschirmrand – das hält bei jeder Fensterbreite exakt an der
+         Karte, statt bei anderen Auflösungen zu verrutschen. Auf
+         schmalen Bildschirmen (Karte steht dort untereinander, nicht
+         daneben) bleibt es bei der einfachen "oben in der Ecke"-Position
+         aus der Media Query in <style>. */
+      function positionNearHeroCard() {
+        if (window.innerWidth <= 480) { fab.style.left = ''; fab.style.top = ''; return; }
+        const card = document.querySelector('.hero-visual');
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        const fabRect = fab.getBoundingClientRect();
+        const left = r.left - fabRect.width * 0.35;
+        const top  = r.top - fabRect.height - 12;
+        fab.style.left = `${Math.max(8, left)}px`;
+        fab.style.top = `${Math.max(8, top)}px`;
+        fab.style.right = 'auto';
+      }
+      /* Dieses Skript steht im HTML VOR dem Hero-Bereich – .hero-visual
+         existiert beim direkten Ausführen also noch nicht im DOM. Bis
+         DOMContentLoaded gilt daher die CSS-Fallback-Position aus
+         <style> (right/top), danach wird exakt an die Karte angedockt. */
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', positionNearHeroCard);
+      } else {
+        positionNearHeroCard();
+      }
+
       /* Erzwingt, dass die aktuell gültige Position innerhalb des
          sichtbaren Bereichs liegt (z.B. nach einer Bildschirmdrehung auf
          Mobile, während der Button gerade verschoben wurde). */
@@ -508,9 +537,16 @@
       fab.addEventListener('pointercancel', endDrag);
       fab.addEventListener('click', (e) => { if (moved) { e.preventDefault(); moved = false; } });
 
-      /* Bei Fenster-Resize sicherstellen, dass der Button nicht außerhalb
-         des sichtbaren Bereichs landet (z.B. Rotation auf Mobile). */
-      window.addEventListener('resize', clampToViewport);
+      /* Bei Fenster-Resize (z.B. Bildschirmdrehung auf Mobile, Fenster
+         verkleinert) die Ankerposition neu berechnen und einen laufenden
+         Zieh-Offset zurücksetzen – sonst würde die alte Karten-relative
+         Position bei der neuen Fenstergröße nicht mehr stimmen. */
+      window.addEventListener('resize', () => {
+        posX = 0; posY = 0;
+        apply(0, 0);
+        positionNearHeroCard();
+        clampToViewport();
+      });
     })();
   </script>
 
