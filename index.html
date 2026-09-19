@@ -353,30 +353,38 @@
 
     /* ── VERTRIEBSPARTNER-BADGE ──────────────────────────
        Frei verschiebbarer runder CTA-Button (Pointer-Events, siehe
-       js/main.js). Startet unten rechts, Position wird pro Gerät in
+       Script unten). Startet unten rechts; die Position wird als
+       transform:translate3d()-Offset von diesem Anker aus bewegt statt
+       über left/top – das läuft rein über den Compositor (GPU) statt
+       bei jeder Mausbewegung ein Browser-Layout auszulösen, und fühlt
+       sich dadurch spürbar flüssiger an. Position wird pro Gerät in
        localStorage gemerkt, falls der Nutzer ihn woanders hinzieht. */
     .sales-fab {
-      position: fixed; right: 22px; bottom: 22px; z-index: 998;
-      width: 76px; height: 76px; border-radius: 50%;
+      position: fixed; right: 26px; bottom: 26px; z-index: 998;
+      width: 128px; height: 128px; border-radius: 50%;
       background: linear-gradient(135deg, var(--c-accent), var(--rd-accent-2));
       color: #fff; display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 2px; text-align: center;
-      font-size: 11px; font-weight: 700; line-height: 1.25;
-      box-shadow: 0 14px 36px rgba(79,127,255,.4), 0 4px 14px rgba(0,0,0,.35);
+      flex-direction: column; gap: 4px; text-align: center;
+      font-size: 15px; font-weight: 800; line-height: 1.2; letter-spacing: -0.01em;
+      box-shadow: 0 20px 50px rgba(79,127,255,.5), 0 6px 18px rgba(0,0,0,.4);
       cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
-      border: 2px solid rgba(255,255,255,.25);
-      animation: salesFabPulse 2.6s ease-in-out infinite;
+      border: 3px solid rgba(255,255,255,.3);
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+      animation: salesFabPulse 2.2s ease-in-out infinite;
     }
-    .sales-fab:active { cursor: grabbing; animation: none; }
-    .sales-fab-icon { font-size: 21px; }
+    .sales-fab.dragging { cursor: grabbing; animation: none; transition: none !important; }
+    .sales-fab:not(.dragging) { transition: transform .18s cubic-bezier(.34,1.56,.64,1); }
+    .sales-fab:hover { filter: brightness(1.08); }
+    .sales-fab-icon { font-size: 34px; line-height: 1; }
     @keyframes salesFabPulse {
-      0%, 100% { box-shadow: 0 14px 36px rgba(79,127,255,.4), 0 4px 14px rgba(0,0,0,.35), 0 0 0 0 rgba(79,127,255,.45); }
-      50%      { box-shadow: 0 14px 36px rgba(79,127,255,.4), 0 4px 14px rgba(0,0,0,.35), 0 0 0 14px rgba(79,127,255,0); }
+      0%, 100% { box-shadow: 0 20px 50px rgba(79,127,255,.5), 0 6px 18px rgba(0,0,0,.4), 0 0 0 0 rgba(79,127,255,.55); }
+      50%      { box-shadow: 0 20px 50px rgba(79,127,255,.5), 0 6px 18px rgba(0,0,0,.4), 0 0 0 22px rgba(79,127,255,0); }
     }
     @media (prefers-reduced-motion: reduce) { .sales-fab { animation: none; } }
     @media (max-width: 480px) {
-      .sales-fab { width: 64px; height: 64px; right: 14px; bottom: 14px; font-size: 9.5px; }
-      .sales-fab-icon { font-size: 18px; }
+      .sales-fab { width: 102px; height: 102px; right: 16px; bottom: 16px; font-size: 12.5px; }
+      .sales-fab-icon { font-size: 27px; }
     }
   </style>
 
@@ -401,61 +409,105 @@
   </a>
   <script>
     /* Frei verschiebbarer Kreis-Button: normaler Klick navigiert, Ziehen
-       (Maus oder Touch) verschiebt ihn stattdessen und merkt sich die
-       Position pro Gerät in localStorage. */
+       (Maus oder Touch) verschiebt ihn stattdessen. Bewegt wird per
+       transform:translate3d() statt left/top – das läuft komplett über
+       den Compositor (GPU), ohne bei jeder Mausbewegung ein Browser-
+       Layout/Reflow auszulösen, und fühlt sich dadurch flüssig an statt
+       ruckelig. Zusätzlich werden mehrere pointermove-Events pro Frame
+       per requestAnimationFrame gebündelt (High-Hz-Mäuse/Trackpads
+       können deutlich öfter feuern als der Bildschirm Frames zeichnet). */
     (function () {
       const fab = document.getElementById('salesFab');
       if (!fab) return;
       const STORAGE_KEY = 'salesFabPos';
-      let dragging = false, moved = false, startX, startY, origX, origY;
 
-      function clamp(x, y) {
-        const r = fab.getBoundingClientRect();
-        const maxX = window.innerWidth - r.width - 8;
-        const maxY = window.innerHeight - r.height - 8;
-        return { x: Math.min(Math.max(8, x), Math.max(8, maxX)), y: Math.min(Math.max(8, y), Math.max(8, maxY)) };
-      }
-      function place(x, y) {
-        const p = clamp(x, y);
-        fab.style.left = p.x + 'px';
-        fab.style.top = p.y + 'px';
-        fab.style.right = 'auto';
-        fab.style.bottom = 'auto';
+      let posX = 0, posY = 0;              // aktuell angewendeter Transform-Offset
+      let dragStartPointerX = 0, dragStartPointerY = 0;
+      let dragStartPosX = 0, dragStartPosY = 0;
+      let dragStartRect = null;             // einmalig pro Drag gelesen, nie in pointermove
+      let dragging = false, moved = false;
+      let pendingFrame = null, pendingX = 0, pendingY = 0;
+
+      /* <a>-Elemente sind im Browser von Haus aus per natives HTML5-
+         Drag&Drop verschiebbar (z.B. Link in die Adressleiste ziehen).
+         Sobald der Browser das erkennt, bricht er unsere eigene
+         Pointer-Drag-Geste per pointercancel ab – der Button "hängt"
+         dann nach dem ersten Mini-Ruck fest. Nativen Drag komplett
+         deaktivieren, damit ausschließlich unsere eigene Logik greift. */
+      fab.setAttribute('draggable', 'false');
+      fab.addEventListener('dragstart', (e) => e.preventDefault());
+
+      function apply(x, y) {
+        fab.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       }
 
       try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-        if (saved && typeof saved.x === 'number') place(saved.x, saved.y);
+        if (saved && typeof saved.x === 'number') { posX = saved.x; posY = saved.y; apply(posX, posY); }
       } catch (e) {}
 
       fab.addEventListener('pointerdown', (e) => {
         dragging = true; moved = false;
-        const r = fab.getBoundingClientRect();
-        startX = e.clientX; startY = e.clientY; origX = r.left; origY = r.top;
+        dragStartPointerX = e.clientX; dragStartPointerY = e.clientY;
+        dragStartPosX = posX; dragStartPosY = posY;
+        dragStartRect = fab.getBoundingClientRect();
         fab.setPointerCapture(e.pointerId);
-        fab.style.transition = 'none';
+        fab.classList.add('dragging');
       });
+
       fab.addEventListener('pointermove', (e) => {
         if (!dragging) return;
-        const dx = e.clientX - startX, dy = e.clientY - startY;
+        const dx = e.clientX - dragStartPointerX;
+        const dy = e.clientY - dragStartPointerY;
         if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
-        if (moved) { e.preventDefault(); place(origX + dx, origY + dy); }
+        if (!moved) return;
+        e.preventDefault();
+
+        /* Zielposition der Box clampen, daraus den tatsächlich
+           erlaubten dx/dy ableiten (statt live neu zu vermessen). */
+        const margin = 8;
+        const maxLeft = window.innerWidth  - dragStartRect.width  - margin;
+        const maxTop  = window.innerHeight - dragStartRect.height - margin;
+        const clampedLeft = Math.min(Math.max(margin, dragStartRect.left + dx), Math.max(margin, maxLeft));
+        const clampedTop  = Math.min(Math.max(margin, dragStartRect.top  + dy), Math.max(margin, maxTop));
+
+        pendingX = dragStartPosX + (clampedLeft - dragStartRect.left);
+        pendingY = dragStartPosY + (clampedTop  - dragStartRect.top);
+
+        if (pendingFrame === null) {
+          pendingFrame = requestAnimationFrame(() => {
+            pendingFrame = null;
+            posX = pendingX; posY = pendingY;
+            apply(posX, posY);
+          });
+        }
       });
+
       function endDrag() {
         if (!dragging) return;
         dragging = false;
-        fab.style.transition = '';
+        fab.classList.remove('dragging');
         if (moved) {
-          const r = fab.getBoundingClientRect();
-          try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ x: r.left, y: r.top })); } catch (e) {}
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ x: posX, y: posY })); } catch (e) {}
         }
       }
       fab.addEventListener('pointerup', endDrag);
       fab.addEventListener('pointercancel', endDrag);
       fab.addEventListener('click', (e) => { if (moved) { e.preventDefault(); moved = false; } });
+
+      /* Bei Fenster-Resize sicherstellen, dass der Button nicht außerhalb
+         des sichtbaren Bereichs landet (z.B. Rotation auf Mobile). */
       window.addEventListener('resize', () => {
+        if (!posX && !posY) return;
         const r = fab.getBoundingClientRect();
-        if (fab.style.left) place(r.left, r.top);
+        const margin = 8;
+        const maxLeft = window.innerWidth  - r.width  - margin;
+        const maxTop  = window.innerHeight - r.height - margin;
+        const clampedLeft = Math.min(Math.max(margin, r.left), Math.max(margin, maxLeft));
+        const clampedTop  = Math.min(Math.max(margin, r.top),  Math.max(margin, maxTop));
+        posX += clampedLeft - r.left;
+        posY += clampedTop  - r.top;
+        apply(posX, posY);
       });
     })();
   </script>
