@@ -87,7 +87,7 @@
 
     /* Galerie */
     .ref-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 56px; }
-    .ref-gallery .ref-slot { aspect-ratio: 4 / 3; border-radius: var(--radius-lg); border: 1px solid var(--c-border); }
+    .ref-gallery .ref-slot { aspect-ratio: 16 / 10; border-radius: var(--radius-lg); border: 1px solid var(--c-border); }
     .ref-gallery .ref-wide { grid-column: span 2; }
     .ref-gallery .ref-wide .ref-slot { aspect-ratio: 16 / 9; }
     .ref-phone .ref-slot { aspect-ratio: 9 / 16; max-width: 220px; margin: 0 auto; border-radius: 30px; border: 6px solid var(--c-text); box-shadow: var(--shadow-md); }
@@ -122,8 +122,6 @@
       .ref-project-cta { padding: 24px 22px; }
       .ref-project-cta .btn { width: 100%; justify-content: center; }
       .ref-browser-bar { padding: 10px 14px; }
-      .ref-browser .ref-slot { aspect-ratio: 4 / 3; }
-      .ref-placeholder { padding: 14px; }
     }
   </style>
 
@@ -211,78 +209,50 @@
             </aside>
           </header>
 
-          <!-- Hauptbild: Startseite (Desktop)
-               BILD EINSETZEN: den <div class="ref-placeholder">…</div> unten durch
-               <img src="assets/referenzen/optik-sauter/01-startseite-desktop.jpg" alt="Optik Sauter – Startseite der neuen Website (Desktop)" width="1600" height="900" loading="lazy">
-               ersetzen. Empfohlen: 16:9, ca. 1600 × 900 px, .jpg oder .webp. -->
+          <!-- Hauptbild: Startseite (Desktop). Austauschen: Datei assets/referenzen/optik-sauter/01-startseite-desktop.jpg ersetzen (16:9, ca. 1600 × 900 px). -->
           <figure class="ref-shot ref-browser">
             <div class="ref-browser-bar">
               <div class="ref-dots" aria-hidden="true"><span></span><span></span><span></span></div>
               <div class="ref-bar-label">Optik Sauter</div>
             </div>
             <div class="ref-slot">
-              <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Startseite Optik Sauter (Desktop)">
-                <span class="ph-icon" aria-hidden="true">🖼️</span>
-                <strong>Hauptbild: Startseite (Desktop)</strong>
-                <span>Screenshot hier einsetzen · 16:9, ca. 1600 × 900 px<br>assets/referenzen/optik-sauter/01-startseite-desktop.jpg</span>
-              </div>
+              <img src="assets/referenzen/optik-sauter/01-startseite-desktop.jpg" alt="Optik Sauter – Startseite der neuen Website im Desktop-Layout" width="1600" height="900" loading="lazy">
             </div>
           </figure>
 
-          <!-- Weitere Screenshots. Jeweils den <div class="ref-placeholder"> durch ein <img …> ersetzen
-               (gleiche Vorgehensweise wie beim Hauptbild, Dateien in assets/referenzen/optik-sauter/). -->
+          <!-- Weitere Screenshots: jeweils die gleichnamige Datei in assets/referenzen/optik-sauter/ ersetzen (02–04: 16:10, 05: 16:9, 06: 9:16). -->
           <div class="ref-gallery">
             <figure class="ref-shot">
               <div class="ref-slot">
-                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Bereich Trauringe">
-                  <span class="ph-icon" aria-hidden="true">💍</span>
-                  <strong>Bereich Trauringe</strong>
-                  <span>4:3 · 02-trauringe.jpg</span>
-                </div>
+                <img src="assets/referenzen/optik-sauter/02-trauringe.jpg" alt="Optik Sauter – Bereich Trauringe" width="960" height="600" loading="lazy">
               </div>
               <figcaption><b>Eigener Bereich für Trauringe</b> – übersichtlich und hochwertig präsentiert.</figcaption>
             </figure>
 
             <figure class="ref-shot">
               <div class="ref-slot">
-                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Bereich Goldankauf">
-                  <span class="ph-icon" aria-hidden="true">✨</span>
-                  <strong>Bereich Goldankauf</strong>
-                  <span>4:3 · 03-goldankauf.jpg</span>
-                </div>
+                <img src="assets/referenzen/optik-sauter/03-goldankauf.jpg" alt="Optik Sauter – Bereich Goldankauf" width="960" height="600" loading="lazy">
               </div>
               <figcaption><b>Goldankauf</b> – deutlich hervorgehoben.</figcaption>
             </figure>
 
             <figure class="ref-shot">
               <div class="ref-slot">
-                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Bereich Ohrenstechen">
-                  <span class="ph-icon" aria-hidden="true">💎</span>
-                  <strong>Bereich Ohrenstechen</strong>
-                  <span>4:3 · 04-ohrenstechen.jpg</span>
-                </div>
+                <img src="assets/referenzen/optik-sauter/04-ohrenstechen.jpg" alt="Optik Sauter – Bereich Ohrenstechen" width="960" height="600" loading="lazy">
               </div>
               <figcaption><b>Ohrenstechen</b> – klar und übersichtlich dargestellt.</figcaption>
             </figure>
 
             <figure class="ref-shot ref-wide">
               <div class="ref-slot">
-                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Aktionen und Angebote">
-                  <span class="ph-icon" aria-hidden="true">🏷️</span>
-                  <strong>Aktionen & Angebote</strong>
-                  <span>16:9 · 05-aktionen.jpg</span>
-                </div>
+                <img src="assets/referenzen/optik-sauter/05-aktionen.jpg" alt="Optik Sauter – Seite Aktionen und Angebote" width="1280" height="720" loading="lazy">
               </div>
               <figcaption><b>Aktionen und Angebote</b> – klar in den Auftritt integriert.</figcaption>
             </figure>
 
             <figure class="ref-shot ref-phone">
               <div class="ref-slot">
-                <div class="ref-placeholder" role="img" aria-label="Platzhalter für Screenshot: Smartphone-Ansicht">
-                  <span class="ph-icon" aria-hidden="true">📱</span>
-                  <strong>Smartphone</strong>
-                  <span>9:16 · 06-smartphone.jpg</span>
-                </div>
+                <img src="assets/referenzen/optik-sauter/06-smartphone.jpg" alt="Optik Sauter – Startseite in der Smartphone-Ansicht" width="540" height="960" loading="lazy">
               </div>
               <figcaption><b>Mobile Ansicht</b> – optimiert für das Smartphone.</figcaption>
             </figure>
