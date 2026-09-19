@@ -416,11 +416,14 @@
        Layout/Reflow auszulösen, und fühlt sich dadurch flüssig an statt
        ruckelig. Zusätzlich werden mehrere pointermove-Events pro Frame
        per requestAnimationFrame gebündelt (High-Hz-Mäuse/Trackpads
-       können deutlich öfter feuern als der Bildschirm Frames zeichnet). */
+       können deutlich öfter feuern als der Bildschirm Frames zeichnet).
+       Die Position wird bewusst NICHT gespeichert – bei jedem Neuladen
+       der Seite soll der Button wieder an seinem Startplatz neben der
+       Hero-Headline erscheinen; Ziehen gilt nur für den aktuellen Besuch,
+       falls er gerade im Weg ist. */
     (function () {
       const fab = document.getElementById('salesFab');
       if (!fab) return;
-      const STORAGE_KEY = 'salesFabPos';
 
       let posX = 0, posY = 0;              // aktuell angewendeter Transform-Offset
       let dragStartPointerX = 0, dragStartPointerY = 0;
@@ -443,11 +446,8 @@
       }
 
       /* Erzwingt, dass die aktuell gültige Position innerhalb des
-         sichtbaren Bereichs liegt. Wichtig beim initialen Laden: eine
-         gespeicherte Position stammt evtl. noch von einer älteren,
-         kleineren Button-Größe oder einem anderen Bildschirm (z.B.
-         Rotation) und würde sonst ungeprüft übernommen – im schlimmsten
-         Fall komplett außerhalb des Viewports. */
+         sichtbaren Bereichs liegt (z.B. nach einer Bildschirmdrehung auf
+         Mobile, während der Button gerade verschoben wurde). */
       function clampToViewport() {
         const r = fab.getBoundingClientRect();
         const margin = 8;
@@ -459,15 +459,6 @@
         posY += clampedTop  - r.top;
         apply(posX, posY);
       }
-
-      try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-        if (saved && typeof saved.x === 'number' && typeof saved.y === 'number' && isFinite(saved.x) && isFinite(saved.y)) {
-          posX = saved.x; posY = saved.y;
-        }
-      } catch (e) {}
-      apply(posX, posY);
-      clampToViewport();
 
       fab.addEventListener('pointerdown', (e) => {
         dragging = true; moved = false;
@@ -510,9 +501,6 @@
         if (!dragging) return;
         dragging = false;
         fab.classList.remove('dragging');
-        if (moved) {
-          try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ x: posX, y: posY })); } catch (e) {}
-        }
       }
       fab.addEventListener('pointerup', endDrag);
       fab.addEventListener('pointercancel', endDrag);
