@@ -441,10 +441,32 @@
         fab.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       }
 
+      /* Erzwingt, dass die aktuell gültige Position innerhalb des
+         sichtbaren Bereichs liegt. Wichtig beim initialen Laden: eine
+         gespeicherte Position stammt evtl. noch von einer älteren,
+         kleineren Button-Größe oder einem anderen Bildschirm (z.B.
+         Rotation) und würde sonst ungeprüft übernommen – im schlimmsten
+         Fall komplett außerhalb des Viewports. */
+      function clampToViewport() {
+        const r = fab.getBoundingClientRect();
+        const margin = 8;
+        const maxLeft = window.innerWidth  - r.width  - margin;
+        const maxTop  = window.innerHeight - r.height - margin;
+        const clampedLeft = Math.min(Math.max(margin, r.left), Math.max(margin, maxLeft));
+        const clampedTop  = Math.min(Math.max(margin, r.top),  Math.max(margin, maxTop));
+        posX += clampedLeft - r.left;
+        posY += clampedTop  - r.top;
+        apply(posX, posY);
+      }
+
       try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-        if (saved && typeof saved.x === 'number') { posX = saved.x; posY = saved.y; apply(posX, posY); }
+        if (saved && typeof saved.x === 'number' && typeof saved.y === 'number' && isFinite(saved.x) && isFinite(saved.y)) {
+          posX = saved.x; posY = saved.y;
+        }
       } catch (e) {}
+      apply(posX, posY);
+      clampToViewport();
 
       fab.addEventListener('pointerdown', (e) => {
         dragging = true; moved = false;
@@ -497,18 +519,7 @@
 
       /* Bei Fenster-Resize sicherstellen, dass der Button nicht außerhalb
          des sichtbaren Bereichs landet (z.B. Rotation auf Mobile). */
-      window.addEventListener('resize', () => {
-        if (!posX && !posY) return;
-        const r = fab.getBoundingClientRect();
-        const margin = 8;
-        const maxLeft = window.innerWidth  - r.width  - margin;
-        const maxTop  = window.innerHeight - r.height - margin;
-        const clampedLeft = Math.min(Math.max(margin, r.left), Math.max(margin, maxLeft));
-        const clampedTop  = Math.min(Math.max(margin, r.top),  Math.max(margin, maxTop));
-        posX += clampedLeft - r.left;
-        posY += clampedTop  - r.top;
-        apply(posX, posY);
-      });
+      window.addEventListener('resize', clampToViewport);
     })();
   </script>
 
