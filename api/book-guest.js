@@ -16,6 +16,7 @@ const {
   emailBox,
   formatAppt,
 } = require('./_appointment-helpers');
+const { SERVICE_RADIUS_KM, checkServiceArea, areaErrorCode } = require('./_service-area');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -33,6 +34,15 @@ module.exports = async function handler(req, res) {
   }
   if (isTuesday(date)) {
     return res.status(400).json({ error: 'tuesday_blocked' });
+  }
+
+  /* Vor-Ort-Termine nur im Einsatzgebiet (Umkreis um Krauchenwies) –
+     alle anderen werden im Frontend auf Zoom umgelenkt. */
+  if (appointmentType === 'persoenlich') {
+    const area = await checkServiceArea(address);
+    if (!area.ok) {
+      return res.status(422).json({ error: areaErrorCode(area.status), radiusKm: SERVICE_RADIUS_KM });
+    }
   }
 
   const sbAdmin = createClient(

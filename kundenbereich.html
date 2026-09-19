@@ -489,13 +489,14 @@ function showFallback() {
         <select class="form-select" id="bookApptType" onchange="toggleBookAddressField()">
           <option value="">Bitte wählen …</option>
           <option value="telefon">📞 Telefonisch</option>
-          <option value="persoenlich">🤝 Persönlich vor Ort</option>
+          <option value="persoenlich">🤝 Persönlich vor Ort (Raum Sigmaringen)</option>
           <option value="zoom">💻 Per Zoom</option>
         </select>
       </div>
       <div class="form-group" id="bookAddressGroup" style="display:none">
         <label class="form-label" for="bookAddress">Deine Adresse *</label>
         <input type="text" class="form-input" id="bookAddress" placeholder="Straße, Hausnummer, PLZ, Ort" autocomplete="street-address">
+        <p style="font-size:12.5px;color:var(--c-text-3);margin-top:6px;line-height:1.5">Vor-Ort-Termine sind nur im Umkreis von ca. 40 km um Krauchenwies möglich (Landkreis Sigmaringen und Umgebung, bis etwa Ravensburg). Alle anderen beraten wir gern per Zoom.</p>
       </div>
       <div class="modal-actions" style="margin-top:24px">
         <button class="btn btn-outline" onclick="closeBookModal()" style="font-size:14px">Abbrechen</button>
@@ -616,6 +617,37 @@ async function confirmBook() {
   btn.classList.add('loading');
   btn.disabled = true;
   err.classList.remove('visible');
+
+  /* Vor-Ort-Termine nur im Einsatzgebiet (Umkreis um Krauchenwies) –
+     außerhalb wird automatisch auf Zoom umgestellt. */
+  if (apptType === 'persoenlich') {
+    let area;
+    try {
+      const ar = await fetch('/api/check-address', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address })
+      });
+      area = await ar.json();
+    } catch (e) {
+      area = { ok: false, error: 'address_check_unavailable' };
+    }
+    if (!area.ok) {
+      err.textContent = area.error === 'out_of_area'
+        ? 'Vor-Ort-Termine sind nur im Umkreis von ' + (area.radiusKm || 40) + ' km um Krauchenwies möglich (Landkreis Sigmaringen und Umgebung, bis etwa Ravensburg). Deine Adresse liegt außerhalb – ich habe die Terminart auf „Per Zoom“ umgestellt. Bitte klicke nochmal auf „Jetzt buchen“.'
+        : area.error === 'address_not_found'
+        ? 'Deine Adresse konnte nicht gefunden werden. Bitte prüfe Straße, Hausnummer, PLZ und Ort – oder wähle „Per Zoom“.'
+        : 'Die Adresse konnte gerade nicht geprüft werden. Bitte versuche es gleich noch einmal oder wähle „Per Zoom“.';
+      if (area.error === 'out_of_area') {
+        document.getElementById('bookApptType').value = 'zoom';
+        toggleBookAddressField();
+      }
+      err.classList.add('visible');
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      return;
+    }
+  }
 
   const { data, error } = await getSB().from('appointments').insert({
     customer_id:      _apptUserId,

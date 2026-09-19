@@ -363,7 +363,7 @@
        NICHT gespeichert, damit der Button bei jedem Neuladen wieder an
        seinem festen Startplatz erscheint. */
     .sales-fab {
-      position: fixed; right: 420px; top: 90px; z-index: 998;
+      position: fixed; right: 420px; top: 90px; z-index: 150; /* über der Nav (100), unter Mobile-Menü (200) und Modals (500) */
       width: 128px; height: 128px; border-radius: 50%;
       background: linear-gradient(135deg, var(--c-accent), var(--rd-accent-2));
       color: #fff; display: flex; align-items: center; justify-content: center;
@@ -1417,13 +1417,14 @@
             <select class="form-select" id="guestApptType" onchange="toggleGuestAddressField()">
               <option value="">Bitte wählen …</option>
               <option value="telefon">📞 Telefonisch</option>
-              <option value="persoenlich">🤝 Persönlich vor Ort</option>
+              <option value="persoenlich">🤝 Persönlich vor Ort (Raum Sigmaringen)</option>
               <option value="zoom">💻 Per Zoom</option>
             </select>
           </div>
           <div class="form-group" id="guestAddressGroup" style="display:none">
             <label class="form-label" for="guestAddress">Ihre Adresse *</label>
             <input type="text" class="form-input" id="guestAddress" placeholder="Straße, Hausnummer, PLZ, Ort" autocomplete="street-address">
+            <p style="font-size:12.5px;color:var(--c-text-3);margin-top:6px;line-height:1.5">Vor-Ort-Termine sind nur im Umkreis von ca. 40 km um Krauchenwies möglich (Landkreis Sigmaringen und Umgebung, bis etwa Ravensburg). Alle anderen beraten wir gern per Zoom.</p>
           </div>
           <div class="form-group">
             <label class="form-label" for="guestName">Ihr Name *</label>
@@ -1586,7 +1587,17 @@
           ? 'Dieser Termin ist leider bereits vergeben. Bitte wähle einen anderen.'
           : d.error === 'tuesday_blocked'
           ? 'Dienstags sind leider keine Termine möglich. Bitte wähle einen anderen Tag.'
+          : d.error === 'out_of_area'
+          ? 'Vor-Ort-Termine sind nur im Umkreis von ' + (d.radiusKm || 40) + ' km um Krauchenwies möglich (Landkreis Sigmaringen und Umgebung, bis etwa Ravensburg). Ihre Adresse liegt außerhalb – ich habe die Terminart auf „Per Zoom“ umgestellt. Bitte senden Sie die Buchung noch einmal ab.'
+          : d.error === 'address_not_found'
+          ? 'Ihre Adresse konnte nicht gefunden werden. Bitte prüfen Sie Straße, Hausnummer, PLZ und Ort – oder wählen Sie „Per Zoom“.'
+          : d.error === 'address_check_unavailable'
+          ? 'Die Adresse konnte gerade nicht geprüft werden. Bitte versuchen Sie es gleich noch einmal oder wählen Sie „Per Zoom“.'
           : (d.error || 'Fehler beim Buchen. Bitte erneut versuchen.');
+        if (d.error === 'out_of_area') {
+          document.getElementById('guestApptType').value = 'zoom';
+          toggleGuestAddressField();
+        }
         err.classList.add('visible');
         return;
       }

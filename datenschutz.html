@@ -160,6 +160,11 @@
             <td>E-Mail, Name, Unternehmen, Projektdaten, Termine, Nachrichten, Dateianhänge, Session-Token, Online-Status (temporär), Vertriebspartner-Bewerbungsdaten</td>
           </tr>
           <tr>
+            <td>OpenStreetMap Nominatim</td>
+            <td>Prüfung, ob die Adresse eines Vor-Ort-Termins im Einsatzgebiet liegt</td>
+            <td>Eingegebene Adresse (nur Adresstext, serverseitig übermittelt)</td>
+          </tr>
+          <tr>
             <td>Resend</td>
             <td>Versand von Transaktions-E-Mails</td>
             <td>E-Mail-Adresse, Name, Nachrichteninhalt (Vorschau), Bewerbungsangaben (bei Vertriebspartner-Bewerbungen)</td>
@@ -233,8 +238,11 @@
         <h3>Zoom (bei Terminart "Per Zoom")</h3>
         <p>Wählen Sie als Terminart "Per Zoom", wird für den Termin automatisiert ein Meeting über die Zoom-API angelegt. Dabei werden Datum, Uhrzeit und ein Gesprächstitel an Zoom Video Communications, Inc. übermittelt. Es gelten die Datenschutzbestimmungen von Zoom.</p>
 
+        <h3>Prüfung des Einsatzgebiets (OpenStreetMap Nominatim)</h3>
+        <p>Persönliche Termine vor Ort sind nur im Umkreis von ca. 40 km um Krauchenwies möglich. Wählen Sie diese Terminart, wird die von Ihnen eingegebene Adresse zur Entfernungsprüfung an den Geokodierungsdienst <strong>Nominatim</strong> der OpenStreetMap Foundation (St John's Innovation Centre, Cowley Road, Cambridge, CB4 0WS, Vereinigtes Königreich) übermittelt. Dabei wird ausschließlich der Adresstext übertragen – keine Namen oder E-Mail-Adressen. Die Anfrage erfolgt serverseitig über unsere Serverless-Funktion; Ihre IP-Adresse wird daher nicht an Nominatim weitergegeben. Liegt die Adresse außerhalb des Einsatzgebiets, wird stattdessen ein Zoom-Termin angeboten. Weitere Informationen: <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">osmfoundation.org/wiki/Privacy_Policy</a></p>
+
         <h3>Rechtsgrundlage</h3>
-        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen auf Anfrage der betroffenen Person).</p>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen auf Anfrage der betroffenen Person). Die Entfernungsprüfung beruht zusätzlich auf Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer wirtschaftlich sinnvollen Terminplanung).</p>
 
         <h3>Speicherdauer</h3>
         <p>Termindaten werden gelöscht, sobald sie für die Geschäftsbeziehung nicht mehr benötigt werden, spätestens jedoch nach Ablauf gesetzlicher Aufbewahrungsfristen.</p>
