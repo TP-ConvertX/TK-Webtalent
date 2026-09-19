@@ -494,7 +494,7 @@
 <script src="js/auth.js"></script>
 <script src="js/calendar.js"></script>
 <script>
-let sb, currentSession;
+let sb;
 let allCustomers = []; // Cache für Kunden-Dropdown
 
 (async () => {
@@ -503,12 +503,6 @@ let allCustomers = []; // Cache für Kunden-Dropdown
   const auth = await requireAdmin();
   if (!auth) return;
 
-  currentSession = auth.session;
-
-  /* Session bei automatischer Token-Erneuerung aktuell halten */
-  sb.auth.onAuthStateChange((_event, newSession) => {
-    if (newSession) currentSession = newSession;
-  });
   document.getElementById('adminLoading').style.display = 'none';
   document.getElementById('adminPage').style.display    = 'grid';
   document.getElementById('adminGreeting').textContent  =
@@ -670,7 +664,7 @@ document.getElementById('addCustomerForm').addEventListener('submit', async (e) 
   }
 
   setLoading(btn, true);
-  const token = currentSession?.access_token;
+  const token = (await sb.auth.getSession()).data.session?.access_token;
 
   const res = await fetch(API_CREATE_USER, {
     method: 'POST',
@@ -757,7 +751,7 @@ async function deleteCustomer(id, name) {
   const step2 = window.prompt('Zur Bestätigung bitte "LÖSCHEN" eingeben:');
   if (step2 !== 'LÖSCHEN') return;
 
-  const token = currentSession?.access_token;
+  const token = (await sb.auth.getSession()).data.session?.access_token;
   const res = await fetch(API_DELETE_CUSTOMER, {
     method: 'POST',
     headers: {
@@ -916,8 +910,8 @@ function isValidUrl(url) {
 /* ── TERMINKALENDER (Admin) ── */
 let _adminAllAppts = [];
 
-function sendApptEmail(type, customerId, date, time, appointmentType, appointmentId, address, guestName, guestEmail) {
-  const token = currentSession?.access_token;
+async function sendApptEmail(type, customerId, date, time, appointmentType, appointmentId, address, guestName, guestEmail) {
+  const token = (await sb.auth.getSession()).data.session?.access_token;
   if (!token) return;
   fetch('/api/send-appointment-email', {
     method: 'POST',
@@ -1279,9 +1273,10 @@ async function adminSendMessage() {
     clearTimeout(_adminTypingTimer);
     if (_adminMsgChannel) _adminMsgChannel.send({ type: 'broadcast', event: 'stop_typing', payload: { role: 'admin' } });
 
+    const token = (await sb.auth.getSession()).data.session?.access_token;
     const r = await fetch('/api/send-message', {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentSession?.access_token },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
       body:    JSON.stringify({
         customerId:      _adminMsgCustomerId,
         sender:          'admin',
@@ -1342,9 +1337,10 @@ document.getElementById('adminBookForm').addEventListener('submit', async (e) =>
 
   let result;
   try {
+    const token = (await sb.auth.getSession()).data.session?.access_token;
     const r = await fetch('/api/admin-book-appointment', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentSession?.access_token },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
       body: JSON.stringify({
         date, time,
         appointmentType: apptType,
