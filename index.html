@@ -185,8 +185,56 @@
     @keyframes rdMarqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     @media (prefers-reduced-motion: reduce) { .rd-marquee-track { animation: none; } }
 
-    /* Pakete: gemeinsamer CTA statt 3 Einzel-Buttons */
+    /* Pakete */
     .rd-pricing-cta { text-align: center; margin-top: 36px; }
+    .pricing-scope-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--c-text-3); margin-bottom: 14px;
+    }
+    .pricing-card { display: flex; flex-direction: column; height: 100%; }
+    .pricing-features { flex: 1; }
+    .pricing-note { font-size: 13px; color: var(--c-text-3); margin: -8px 0 20px; line-height: 1.5; }
+    .pricing-card-cta { margin-top: auto; }
+    .pricing-card-cta .btn { width: 100%; justify-content: center; }
+
+    /* Premium-Paket: dezent abgesetzt statt generischer 4. Karte, aber
+       ohne eigene Kartenreihe/Sonderlayout – bleibt Teil desselben Rasters. */
+    .pricing-card.pricing-premium {
+      background: linear-gradient(180deg, rgba(79,127,255,.12), rgba(139,92,246,.07)) !important;
+      border: 1.5px solid rgba(79,127,255,.4) !important;
+    }
+    .pricing-premium .pricing-price { background: rgba(79,127,255,.16); color: var(--c-text); }
+
+    /* Noch-unsicher-Link unter den Paketen */
+    .rd-unsure { text-align: center; margin-top: 28px; font-size: 14.5px; color: var(--c-text-2); }
+    .rd-unsure a { color: var(--c-accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Individuelle Großprojekte: hochwertiger Callout statt weiterer Karte */
+    .rd-enterprise-box {
+      margin-top: 56px; padding: 44px 40px; border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(79,127,255,.10), rgba(139,92,246,.08));
+      border: 1px solid rgba(79,127,255,.28);
+      text-align: center;
+    }
+    .rd-enterprise-box h3 { font-size: 24px; margin-bottom: 12px; }
+    .rd-enterprise-box p { font-size: 15.5px; color: var(--c-text-2); line-height: 1.7; max-width: 620px; margin: 0 auto 26px; }
+
+    /* Preishinweis */
+    .rd-price-note { text-align: center; font-size: 13.5px; color: var(--c-text-3); max-width: 640px; margin: 32px auto 0; line-height: 1.6; }
+
+    /* Laufende Betreuung: bewusst schlichter als die Website-Pakete */
+    .retainer-card {
+      background: var(--rd-ink-3); border: 1px solid var(--c-border); border-radius: var(--radius-lg);
+      padding: 30px 28px; display: flex; flex-direction: column;
+    }
+    .retainer-tier { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-accent); margin-bottom: 10px; }
+    .retainer-price { font-size: 21px; font-weight: 700; color: var(--c-text); margin-bottom: 4px; }
+    .retainer-price span { font-size: 13px; font-weight: 500; color: var(--c-text-3); }
+    .retainer-card ul { display: flex; flex-direction: column; gap: 8px; margin: 16px 0 0; flex: 1; }
+    .retainer-card li { font-size: 14px; color: var(--c-text-2); display: flex; gap: 8px; align-items: flex-start; }
+    @media (max-width: 900px) {
+      .rd-enterprise-box { padding: 32px 24px; margin-top: 40px; }
+    }
 
     /* Über mich (neue Sektion) */
     .rd-about-wrap { display: grid; grid-template-columns: 200px 1fr; gap: 44px; align-items: start; max-width: 800px; margin: 0 auto; }
@@ -222,7 +270,12 @@
        Schrumpfen, wie schon in der Redesign-Vorschau gefixt. ── */
     .hero-inner { grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important; }
     .contact-grid { grid-template-columns: minmax(0,1fr) minmax(0,1.4fr) !important; }
-    .pricing-grid, .demos-grid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+    .pricing-grid { grid-template-columns: repeat(4, minmax(0,1fr)) !important; }
+    .demos-grid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+    .retainer-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; }
+    @media (max-width: 1100px) {
+      .pricing-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    }
     .hero-content, .hero-visual, .contact-info, .chat-wrap, .chat-widget,
     .chat-input-area, .chat-text-row, .chat-messages, .devices-wrap { min-width: 0; }
     /* ── NACHTRÄGLICHER FIX (Runde 6): Der eigentliche Übeltäter beim
@@ -240,7 +293,7 @@
       .chat-text-input { padding: 11px 12px; }
     }
     @media (max-width: 900px) {
-      .hero-inner, .pricing-grid, .demos-grid, .contact-grid { grid-template-columns: minmax(0,1fr) !important; }
+      .hero-inner, .pricing-grid, .demos-grid, .contact-grid, .retainer-grid { grid-template-columns: minmax(0,1fr) !important; }
     }
 
     /* ── NACHTRÄGLICHER FIX 3 (Runde 2): Space-Punktraster durchgängig auf
@@ -377,7 +430,8 @@
       animation: salesFabPulse 2.2s ease-in-out infinite;
     }
     .sales-fab.dragging { cursor: grabbing; animation: none; transition: none !important; }
-    .sales-fab:not(.dragging) { transition: transform .18s cubic-bezier(.34,1.56,.64,1); }
+    .sales-fab:not(.dragging) { transition: transform .18s cubic-bezier(.34,1.56,.64,1), opacity .25s ease; }
+    .sales-fab.sales-fab-hidden { opacity: 0; pointer-events: none; }
     .sales-fab:hover { filter: brightness(1.08); }
     .sales-fab-icon { font-size: 34px; line-height: 1; }
     @keyframes salesFabPulse {
@@ -547,6 +601,26 @@
         positionNearHeroCard();
         clampToViewport();
       });
+
+      /* Der Button ist position:fixed und bleibt beim Scrollen sonst dauerhaft
+         an derselben Bildschirmstelle stehen – das würde irgendwann Inhalte
+         weiter unten (z.B. Buttons im Preisbereich) überlagern. Deshalb erst
+         zeigen, solange der Hero-Bereich sichtbar ist, danach ausblenden.
+         #hero steht im HTML ebenfalls erst nach diesem Skript – gleiches
+         Timing-Problem wie bei .hero-visual oben, gleiche Lösung. */
+      function watchHeroVisibility() {
+        const heroEl = document.getElementById('hero');
+        if (!heroEl || !('IntersectionObserver' in window)) return;
+        const io = new IntersectionObserver(([entry]) => {
+          fab.classList.toggle('sales-fab-hidden', !entry.isIntersecting);
+        }, { threshold: 0 });
+        io.observe(heroEl);
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', watchHeroVisibility);
+      } else {
+        watchHeroVisibility();
+      }
     })();
   </script>
 
@@ -559,6 +633,7 @@
       </a>
       <ul class="nav-links" id="navLinks">
         <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#angebote">Preise</a></li>
         <li><a href="/referenzen">Referenzen</a></li>
         <li><a href="#beispiele">Beispiele</a></li>
         <li><a href="#ablauf">Ablauf</a></li>
@@ -579,6 +654,7 @@
     <button class="mobile-close" id="mobileClose" aria-label="Menü schließen">✕</button>
     <ul>
       <li><a href="#leistungen" class="mobile-link">Leistungen</a></li>
+      <li><a href="#angebote" class="mobile-link">Preise</a></li>
       <li><a href="/referenzen" class="mobile-link">Referenzen</a></li>
       <li><a href="#beispiele" class="mobile-link">Beispiele</a></li>
       <li><a href="#ablauf" class="mobile-link">Ablauf</a></li>
@@ -906,60 +982,139 @@
     <section class="section-padding" id="angebote">
       <div class="container">
         <div class="section-intro reveal">
-          <div class="section-label">Pakete</div>
-          <h2 class="section-headline">Das passende Paket für Ihren Betrieb</h2>
-          <p class="section-sub">Kein Einheitstemplate – jede Website wird individuell für Sie entwickelt und auf Ihre Ziele abgestimmt.</p>
+          <div class="section-label">Preise</div>
+          <h2 class="section-headline">Was eine Website bei mir kostet</h2>
+          <p class="section-sub">Professionelle Websites starten bei ca. 2.000&nbsp;€, klassische Unternehmensauftritte bewegen sich meist im Bereich von 2.000–8.000&nbsp;€. Die folgenden Pakete sind Orientierungspunkte, keine starren Festpreisprodukte – jedes Projekt wird individuell betrachtet.</p>
         </div>
         <div class="pricing-grid">
           <div class="pricing-card reveal">
-            <div class="pricing-tier">Starter</div>
-            <h3 class="pricing-name">Starter Website</h3>
-            <div class="pricing-price">Preis auf Anfrage</div>
-            <p class="pricing-desc">Für Selbstständige und Einsteiger, die professionell online sichtbar sein möchten.</p>
+            <div class="pricing-tier">Start</div>
+            <h3 class="pricing-name">Start</h3>
+            <div class="pricing-price">ab 2.000 €</div>
+            <p class="pricing-desc">Für einen professionellen und schlanken Einstieg.</p>
+            <div class="pricing-scope-label">Typischer Umfang, z. B.</div>
             <ul class="pricing-features">
-              <li><span class="check">✓</span> Einseitige Website (Onepager)</li>
-              <li><span class="check">✓</span> Mobiloptimiert & schnell</li>
-              <li><span class="check">✓</span> Kontaktbereich</li>
-              <li><span class="check">✓</span> Modernes, klares Design</li>
-              <li><span class="check">✓</span> Schnelle Lieferzeit</li>
+              <li><span class="check">✓</span> One-Pager</li>
+              <li><span class="check">✓</span> Individuelles Design</li>
+              <li><span class="check">✓</span> Responsive Umsetzung</li>
+              <li><span class="check">✓</span> Kontaktmöglichkeit</li>
+              <li><span class="check">✓</span> Basis-SEO</li>
+              <li><span class="check">✓</span> Dezente Animationen</li>
             </ul>
+            <div class="pricing-card-cta">
+              <a href="#kontakt" class="btn btn-outline" onclick="tkRequestPackage('START – ab 2.000 €')">Projekt anfragen →</a>
+            </div>
           </div>
 
           <div class="pricing-card pricing-featured reveal">
             <div class="pricing-popular-badge">Beliebt</div>
             <div class="pricing-tier">Business</div>
-            <h3 class="pricing-name">Business Website</h3>
-            <div class="pricing-price">Individuelles Angebot</div>
-            <p class="pricing-desc">Für Unternehmen, die mehr Vertrauen und Anfragen über ihre Website gewinnen möchten.</p>
+            <h3 class="pricing-name">Business</h3>
+            <div class="pricing-price">ab 4.000 €</div>
+            <p class="pricing-desc">Für Unternehmen, die mehr als eine digitale Visitenkarte benötigen.</p>
+            <div class="pricing-scope-label">Typischer Umfang, z. B.</div>
             <ul class="pricing-features">
-              <li><span class="check">✓</span> Mehrere Seiten & Unterseiten</li>
-              <li><span class="check">✓</span> Professioneller Seitenaufbau</li>
-              <li><span class="check">✓</span> Texte & Struktur inklusive</li>
-              <li><span class="check">✓</span> Kontaktformular</li>
-              <li><span class="check">✓</span> SEO-Grundlagen</li>
-              <li><span class="check">✓</span> Persönliche Betreuung</li>
+              <li><span class="check">✓</span> Mehrere individuelle Seiten</li>
+              <li><span class="check">✓</span> Individuelle Seitenstruktur</li>
+              <li><span class="check">✓</span> Hochwertiges Design</li>
+              <li><span class="check">✓</span> Animationen & Übergänge</li>
+              <li><span class="check">✓</span> Formulare</li>
+              <li><span class="check">✓</span> Inhaltsaufbereitung</li>
             </ul>
+            <div class="pricing-card-cta">
+              <a href="#kontakt" class="btn btn-primary" onclick="tkRequestPackage('BUSINESS – ab 4.000 €')">Projekt anfragen →</a>
+            </div>
           </div>
 
           <div class="pricing-card reveal">
-            <div class="pricing-tier">Premium</div>
-            <h3 class="pricing-name">Premium Website</h3>
-            <div class="pricing-price">Individuelles Angebot</div>
-            <p class="pricing-desc">Für Betriebe, die einen besonders hochwertigen Webauftritt mit erweiterten Funktionen möchten.</p>
+            <div class="pricing-tier">Professional</div>
+            <h3 class="pricing-name">Professional</h3>
+            <div class="pricing-price">ab 6.000 €</div>
+            <p class="pricing-desc">Für anspruchsvolle, stärker individualisierte Unternehmensauftritte.</p>
+            <div class="pricing-scope-label">Typischer Umfang, z. B.</div>
             <ul class="pricing-features">
-              <li><span class="check">✓</span> Umfangreiche Webpräsenz</li>
-              <li><span class="check">✓</span> Individuelles Premium-Design</li>
-              <li><span class="check">✓</span> Animationen & Interaktionen</li>
-              <li><span class="check">✓</span> SEO & Performance-Optimierung</li>
+              <li><span class="check">✓</span> Umfangreichere Seitenstruktur</li>
+              <li><span class="check">✓</span> High-End-Design</li>
+              <li><span class="check">✓</span> Individuelle Animationen</li>
+              <li><span class="check">✓</span> Referenz-/Projektbereiche</li>
+              <li><span class="check">✓</span> Erweiterte Formulare</li>
+              <li><span class="check">✓</span> Conversion-orientierter Aufbau</li>
+            </ul>
+            <div class="pricing-card-cta">
+              <a href="#kontakt" class="btn btn-outline" onclick="tkRequestPackage('PROFESSIONAL – ab 6.000 €')">Projekt anfragen →</a>
+            </div>
+          </div>
+
+          <div class="pricing-card pricing-premium reveal">
+            <div class="pricing-tier">Premium</div>
+            <h3 class="pricing-name">Premium</h3>
+            <div class="pricing-price">Preis nach Absprache</div>
+            <p class="pricing-note">Für umfangreiche Projekte mit hohem Individualisierungsgrad.</p>
+            <p class="pricing-desc">Aufwendige Premium-Gestaltung mit hohem Konzeptions- und Entwicklungsaufwand.</p>
+            <div class="pricing-scope-label">Typischer Umfang, z. B.</div>
+            <ul class="pricing-features">
+              <li><span class="check">✓</span> Individuelle Premium-Gestaltung</li>
+              <li><span class="check">✓</span> Aufwendige Animationen & Interaktionen</li>
+              <li><span class="check">✓</span> Besondere Funktionen & Integrationen</li>
+              <li><span class="check">✓</span> Individuelle Benutzerführung</li>
+              <li><span class="check">✓</span> Individuelle technische Lösungen</li>
+            </ul>
+            <div class="pricing-card-cta">
+              <a href="#kontakt" class="btn btn-primary" onclick="tkRequestPackage('PREMIUM – Preis nach Absprache')">Projekt besprechen →</a>
+            </div>
+          </div>
+        </div>
+
+        <p class="rd-unsure reveal">Noch unsicher, was passt? <a href="#kontakt" onclick="tkRequestPackage('Noch unsicher / Beratung gewünscht')">Kostenlose Beratung anfordern →</a></p>
+
+        <div class="rd-enterprise-box reveal">
+          <h3>Ihr Projekt passt in keine Schublade?</h3>
+          <p>Bei besonders umfangreichen Anforderungen, individuellen Funktionen oder außergewöhnlichen digitalen Erlebnissen kalkulieren wir Ihr Projekt individuell. Gemeinsam definieren wir Anforderungen, Umfang und die passende technische Umsetzung.</p>
+          <a href="#kontakt" class="btn btn-primary btn-large" onclick="tkRequestPackage('individuelles Großprojekt – möchte ich unverbindlich besprechen')">Projekt unverbindlich besprechen →</a>
+        </div>
+
+        <p class="rd-price-note">Die dargestellten Preise dienen als Orientierung. Der tatsächliche Projektpreis richtet sich nach Umfang, Funktionsumfang, Designanspruch und individuellen Anforderungen.</p>
+      </div>
+    </section>
+
+    <!-- ===== LAUFENDE BETREUUNG ===== -->
+    <section class="section-padding bg-light" id="betreuung">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="section-label">Betreuung</div>
+          <h2 class="section-headline">Nach dem Launch sind wir weiterhin da.</h2>
+          <p class="section-sub">Auf Wunsch betreue ich Ihre Website auch nach der Fertigstellung weiter. Die folgenden Modelle sind Orientierungswerte – Umfang und genaue Leistungen vereinbaren wir individuell.</p>
+        </div>
+        <div class="retainer-grid">
+          <div class="retainer-card reveal">
+            <h3 class="retainer-tier">Basis</h3>
+            <div class="retainer-price">ab 150 € <span>/ Monat</span></div>
+            <ul>
+              <li><span class="check">✓</span> Hosting</li>
+              <li><span class="check">✓</span> Grundlegende technische Betreuung</li>
+            </ul>
+          </div>
+          <div class="retainer-card reveal">
+            <h3 class="retainer-tier">Business</h3>
+            <div class="retainer-price">ab 250 € <span>/ Monat</span></div>
+            <ul>
+              <li><span class="check">✓</span> Hosting</li>
               <li><span class="check">✓</span> Laufende Betreuung</li>
-              <li><span class="check">✓</span> Optional: KI-Funktionen</li>
-              <li><span class="check">✓</span> Erweiterbar nach Bedarf</li>
+              <li><span class="check">✓</span> Regelmäßige kleinere Änderungen</li>
+            </ul>
+          </div>
+          <div class="retainer-card reveal">
+            <h3 class="retainer-tier">Premium</h3>
+            <div class="retainer-price">ab 500 € <span>/ Monat</span></div>
+            <ul>
+              <li><span class="check">✓</span> Hosting</li>
+              <li><span class="check">✓</span> Umfangreichere laufende Betreuung</li>
+              <li><span class="check">✓</span> Höherer Änderungsbedarf</li>
+              <li><span class="check">✓</span> Individuelle Betreuung nach Vereinbarung</li>
             </ul>
           </div>
         </div>
-        <div class="rd-pricing-cta reveal">
-          <a href="#kontakt" class="btn btn-primary btn-large">Passendes Paket anfragen →</a>
-        </div>
+        <p class="rd-price-note">Auch diese Modelle sind keine starren Leistungspakete – Umfang und genaue Leistungen werden individuell vereinbart.</p>
       </div>
     </section>
 
@@ -1310,6 +1465,7 @@
         <div class="footer-col">
           <h4>Navigation</h4>
           <a href="#leistungen">Leistungen</a>
+          <a href="#angebote">Preise</a>
           <a href="/referenzen">Referenzen</a>
           <a href="#beispiele">Beispiele</a>
           <a href="#ablauf">Ablauf</a>

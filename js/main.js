@@ -251,6 +251,19 @@ document.addEventListener('DOMContentLoaded', () => {
   let conversationHistory = [];
   let chatBusy  = false;
   let chatDone  = false;
+  let pendingInterest = null;
+
+  /* Von den Paket-CTAs im Preisbereich aufgerufen (siehe tkRequestPackage
+     weiter unten): schickt das gewählte Paket als normale Chat-Nachricht,
+     als hätte der Nutzer sie selbst eingetippt. Ist der Chat noch nicht
+     bereit (Begrüßung läuft gerade noch), wird die Nachricht gepuffert und
+     sobald möglich nachgeholt (siehe Start- und Antwort-Handler unten). */
+  function sendPendingInterest() {
+    if (!pendingInterest) return;
+    const msg = pendingInterest;
+    pendingInterest = null;
+    sendUserMessage(msg, null);
+  }
 
   function scrollChat() {
     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -371,7 +384,11 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDoneStatus();
       } else {
         chatBusy = false;
-        renderInputRow(data.choices);
+        if (pendingInterest) {
+          sendPendingInterest();
+        } else {
+          renderInputRow(data.choices);
+        }
       }
     } catch (e) {
       removeTyping();
@@ -388,9 +405,28 @@ document.addEventListener('DOMContentLoaded', () => {
       removeTyping();
       addMsg(OPENING_MESSAGE, 'bot');
       conversationHistory.push({ role: 'assistant', content: OPENING_MESSAGE });
-      renderInputRow();
+      if (pendingInterest) {
+        sendPendingInterest();
+      } else {
+        renderInputRow();
+      }
     }, 1000);
   }, 500);
+
+  /* Von den Paket-CTAs im Preisbereich (siehe #angebote/#betreuung) und
+     vom "Noch unsicher"-Link aufgerufen. Läuft die Begrüßung noch, wird
+     die Nachricht gepuffert; ist der Chat schon fertig durchlaufen
+     (chatDone), lässt sich nichts mehr nachreichen – dann übernimmt der
+     Nutzer selbst per E-Mail-Link, der ohnehin direkt daneben steht. */
+  window.tkRequestPackage = function (label) {
+    const msg = 'Ich interessiere mich für: ' + label;
+    if (chatDone) return;
+    if (!chatBusy && conversationHistory.length > 0) {
+      sendUserMessage(msg, null);
+    } else {
+      pendingInterest = msg;
+    }
+  };
 
   } // end if (chatMessages)
 
