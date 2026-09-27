@@ -218,6 +218,16 @@
     }
     .rd-enterprise-box h3 { font-size: 24px; margin-bottom: 12px; }
     .rd-enterprise-box p { font-size: 15.5px; color: var(--c-text-2); line-height: 1.7; max-width: 620px; margin: 0 auto 26px; }
+    /* .btn ist standardmäßig inline-flex (für Button-Reihen nebeneinander
+       wie z.B. in den Hero-Actions) – bei zu langem Text auf schmalen
+       Bildschirmen überläuft ein inline-flex-Element text-align:center
+       nicht symmetrisch, sondern hängt einseitig über den Rand hinaus.
+       Hier gezielt (nur in dieser Box) auf einen zentrierten Flex-Block
+       mit eigener Breite umstellen statt die globale .btn-Klasse anzufassen. */
+    .rd-enterprise-box .btn {
+      display: flex; width: max-content; max-width: 100%; margin: 0 auto;
+      white-space: normal; text-align: center;
+    }
 
     /* Preishinweis */
     .rd-price-note { text-align: center; font-size: 13.5px; color: var(--c-text-3); max-width: 640px; margin: 32px auto 0; line-height: 1.6; }
@@ -1486,7 +1496,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2025 TK Webtalent. Alle Rechte vorbehalten.</p>
+        <p>© 2026 TK Webtalent. Alle Rechte vorbehalten.</p>
         <p><a href="/impressum" style="color:inherit;">Impressum</a> · <a href="/datenschutz" style="color:inherit;">Datenschutz</a></p>
       </div>
     </div>
