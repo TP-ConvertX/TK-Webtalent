@@ -4,22 +4,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ── COOKIE BANNER (shows every visit) ─────────── */
-  const cookieOverlay = document.getElementById('cookieOverlay');
-  const cookieAccept  = document.getElementById('cookieAccept');
-  const cookieDecline = document.getElementById('cookieDecline');
-
-  const closeCookieBanner = () => {
-    cookieOverlay.classList.add('hidden');
-    document.body.style.overflow = '';
-  };
-
-  if (cookieOverlay) {
-    document.body.style.overflow = 'hidden';
-    cookieAccept?.addEventListener('click', closeCookieBanner);
-    cookieDecline?.addEventListener('click', closeCookieBanner);
-  }
-
   /* ── NAV SCROLL EFFECT ──────────────────────────── */
   const nav = document.getElementById('nav');
   const onScroll = () => {
@@ -139,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const fixedBgImg = document.getElementById('fixedBgImg');
   if (fixedBg && fixedBgImg) {
     const targets = [
-      { el: document.querySelector('.window-section'), src: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&q=80' },
-      { el: document.getElementById('imgwin2'), src: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80' },
+      { el: document.querySelector('.window-section'), src: '/assets/unsplash/photo-1498050108023-c5249f4df085-1920.jpg' },
+      { el: document.getElementById('imgwin2'), src: '/assets/unsplash/photo-1521791136064-7986c2920216-1920.jpg' },
     ].filter(t => t.el);
 
     let currentSrc = '';
