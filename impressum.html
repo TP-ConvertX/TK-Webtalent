@@ -99,6 +99,12 @@
     .bottom-links a { color: #64748B; margin: 0 12px; }
     .bottom-links a:hover { color: #0F172A; }
 
+    /* eRecht24-Siegel: auf breiten Bildschirmen seitlich fixiert, läuft beim Scrollen mit */
+    @media (min-width: 1280px) {
+      .erecht-seal { position: fixed !important; right: 24px; top: 50%; transform: translateY(-50%); margin: 0 !important; z-index: 40; }
+      .erecht-seal img { width: min(260px, calc((100vw - 808px) / 2 - 24px)) !important; height: auto !important; filter: drop-shadow(0 8px 24px rgba(15,23,42,.18)); }
+    }
+
     @media (max-width: 640px) {
       .content { padding: 28px 24px; }
       .legal h1 { font-size: 28px; }
