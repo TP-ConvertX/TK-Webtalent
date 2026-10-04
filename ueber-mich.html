@@ -2,6 +2,8 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <!-- CCM19 Consent Management (muss möglichst weit oben im <head> stehen) -->
+  <script src="https://cloud.ccm19.de/app.js?apiKey=c90527487b67c5cc95b4e2fea0f3a5a74f5b7bcd98209dd4&domain=6ac28fe91c263182210e2432" referrerpolicy="origin"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Über mich – Tim Kunzelmann | TK Webtalent</title>
@@ -74,7 +76,7 @@
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
-  <script defer src="/js/consent.js"></script>
+  <script data-ccm-loader-group="vercel-analytics" data-ccm-loader-src="/_vercel/insights/script.js" type="text/x-ccm-loader" defer></script>
 </head>
 <body>
 
@@ -206,7 +208,7 @@
           <h4>Rechtliches</h4>
           <a href="/impressum">Impressum</a>
           <a href="/datenschutz">Datenschutz</a>
-          <a href="#" data-cookie-settings>Cookie-Einstellungen</a>
+          <a href="#" onclick="if(window.CCM&&CCM.openWidget){CCM.openWidget();}return false;">Cookie-Einstellungen</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -216,21 +218,6 @@
     </div>
   </footer>
 
-  <!-- COOKIE BANNER -->
-  <div class="cookie-overlay" id="cookieOverlay">
-    <div class="cookie-banner" id="cookieBanner">
-      <div class="cookie-icon-wrap">🍪</div>
-      <h3>Diese Website verwendet Cookies</h3>
-      <p>Wir nutzen Cookies, um Ihnen das beste Erlebnis auf unserer Website zu bieten und unsere Inhalte zu verbessern. Sie können selbst entscheiden, welche Cookies Sie zulassen möchten.</p>
-      <div class="cookie-actions">
-        <button class="btn btn-ghost cookie-btn" id="cookieDecline">Nur notwendige</button>
-        <button class="btn btn-primary cookie-btn" id="cookieAccept">Alle akzeptieren</button>
-      </div>
-      <div class="cookie-footer-links">
-        <a href="/datenschutz">Datenschutz</a> · <a href="/impressum">Impressum</a>
-      </div>
-    </div>
-  </div>
 
   <script src="js/main.js"></script>
 </body>

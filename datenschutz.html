@@ -2,6 +2,8 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <!-- CCM19 Consent Management (muss möglichst weit oben im <head> stehen) -->
+  <script src="https://cloud.ccm19.de/app.js?apiKey=c90527487b67c5cc95b4e2fea0f3a5a74f5b7bcd98209dd4&domain=6ac28fe91c263182210e2432" referrerpolicy="origin"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datenschutzerklärung – TK Webtalent</title>
   <meta name="robots" content="noindex, follow">
@@ -27,32 +29,17 @@
     .back-link { font-size: 14px; color: #64748B; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
     .back-link:hover { color: #0F172A; text-decoration: none; }
 
-    .page-header { padding: 56px 0 40px; }
-    .page-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #0EA5E9; background: #E0F2FE; padding: 4px 12px; border-radius: 100px; margin-bottom: 16px; }
-    .page-header h1 { font-size: 38px; letter-spacing: -0.02em; margin-bottom: 8px; }
-    .page-header p { color: #64748B; font-size: 15px; }
-
-    .toc {
-      background: #fff; border: 1px solid #E2E8F0; border-radius: 16px;
-      padding: 28px 32px; margin-bottom: 24px;
-    }
-    .toc h2 { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: #0F172A; }
-    .toc ol { padding-left: 20px; }
-    .toc ol li { font-size: 14px; color: #475569; margin-bottom: 6px; line-height: 1.6; }
-    .toc ol li a { color: #0EA5E9; }
-
     .content { background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 48px; margin-bottom: 48px; }
-    .ds-section { margin-bottom: 44px; padding-bottom: 44px; border-bottom: 1px solid #F1F5F9; }
-    .ds-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-    .ds-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #0F172A; }
-    .ds-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; margin-top: 22px; color: #334155; }
-    .ds-section p { font-size: 15px; color: #475569; line-height: 1.8; margin-bottom: 12px; }
-    .ds-section ul { margin: 8px 0 14px 20px; }
-    .ds-section ul li { font-size: 15px; color: #475569; line-height: 1.75; margin-bottom: 6px; list-style: disc; }
-    .ds-section table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
-    .ds-section table th { background: #F8FAFC; padding: 10px 14px; text-align: left; font-weight: 600; color: #374151; border: 1px solid #E2E8F0; }
-    .ds-section table td { padding: 10px 14px; color: #475569; border: 1px solid #E2E8F0; line-height: 1.6; vertical-align: top; }
-
+    .content.legal { margin-top: 56px; overflow-wrap: anywhere; }
+    .legal h1 { font-size: 38px; letter-spacing: -0.02em; margin-bottom: 24px; }
+    .legal h2 { font-size: 22px; font-weight: 700; margin: 40px 0 16px; padding-bottom: 10px; border-bottom: 1px solid #F1F5F9; color: #0F172A; }
+    .legal h3 { font-size: 17px; font-weight: 600; margin: 28px 0 10px; color: #334155; }
+    .legal h4 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; color: #334155; }
+    .legal h5 { font-size: 14px; font-weight: 600; margin: 16px 0 6px; color: #334155; }
+    .legal p { font-size: 15px; color: #475569; line-height: 1.8; margin-bottom: 12px; }
+    .legal ul { margin: 8px 0 14px 20px; }
+    .legal li { font-size: 15px; color: #475569; line-height: 1.75; margin-bottom: 6px; list-style: disc; }
+    .legal a { word-break: break-word; }
     .info-box { background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 12px; padding: 16px 20px; font-size: 14px; color: #0369A1; margin: 16px 0; line-height: 1.65; }
 
     .bottom-links { text-align: center; padding: 24px 0 48px; font-size: 14px; color: #94A3B8; }
@@ -61,15 +48,14 @@
 
     @media (max-width: 640px) {
       .content { padding: 28px 20px; }
-      .toc { padding: 20px 20px; }
-      .page-header h1 { font-size: 28px; }
+      .legal h1 { font-size: 28px; }
     }
   </style>
   <!-- Vercel Web Analytics -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
-  <script defer src="/js/consent.js"></script>
+  <script data-ccm-loader-group="vercel-analytics" data-ccm-loader-src="/_vercel/insights/script.js" type="text/x-ccm-loader" defer></script>
 </head>
 <body>
 
@@ -84,139 +70,72 @@
   </div>
 
   <div class="container">
-    <div class="page-header">
-      <div class="page-label">Rechtliches</div>
-      <h1>Datenschutzerklärung</h1>
-      <p>Stand: September 2026 | Gemäß DSGVO, BDSG und DDG</p>
-    </div>
+    <div class="content legal">
+<h1>Datenschutz&shy;erkl&auml;rung</h1>
+<h2>1. Datenschutz auf einen Blick</h2>
+<h3>Allgemeine Hinweise</h3> <p>Die folgenden Hinweise geben einen einfachen &Uuml;berblick dar&uuml;ber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie pers&ouml;nlich identifiziert werden k&ouml;nnen. Ausf&uuml;hrliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgef&uuml;hrten Datenschutzerkl&auml;rung.</p>
+<h3>Datenerfassung auf dieser Website</h3> <h4>Wer ist verantwortlich f&uuml;r die Datenerfassung auf dieser Website?</h4> <p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten k&ouml;nnen Sie dem Abschnitt &bdquo;Hinweis zur verantwortlichen Stelle&ldquo; in dieser Datenschutzerkl&auml;rung entnehmen.</p> <h4>Wie erfassen wir Ihre Daten?</h4> <p>Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z.&nbsp;B. um Daten handeln, die Sie in ein Kontaktformular eingeben.</p> <p>Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z.&nbsp;B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs). Die Erfassung dieser Daten erfolgt automatisch, sobald Sie diese Website betreten.</p> <h4>Wof&uuml;r nutzen wir Ihre Daten?</h4> <p>Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der Website zu gew&auml;hrleisten. Andere Daten k&ouml;nnen zur Analyse Ihres Nutzerverhaltens verwendet werden. Sofern &uuml;ber die Website Vertr&auml;ge geschlossen oder angebahnt werden k&ouml;nnen, werden die &uuml;bermittelten Daten auch f&uuml;r Vertragsangebote, Bestellungen oder sonstige Auftragsanfragen verarbeitet.</p> <h4>Welche Rechte haben Sie bez&uuml;glich Ihrer Daten?</h4> <p>Sie haben jederzeit das Recht, unentgeltlich Auskunft &uuml;ber Herkunft, Empf&auml;nger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben au&szlig;erdem ein Recht, die Berichtigung oder L&ouml;schung dieser Daten zu verlangen. Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, k&ouml;nnen Sie diese Einwilligung jederzeit f&uuml;r die Zukunft widerrufen. Au&szlig;erdem haben Sie das Recht, unter bestimmten Umst&auml;nden die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Des Weiteren steht Ihnen ein Beschwerderecht bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde zu.</p> <p>Hierzu sowie zu weiteren Fragen zum Thema Datenschutz k&ouml;nnen Sie sich jederzeit an uns wenden.</p>
+<h3>Analyse-Tools und Tools von Dritt&shy;anbietern</h3> <p>Beim Besuch dieser Website kann Ihr Surf-Verhalten statistisch ausgewertet werden. Das geschieht vor allem mit sogenannten Analyseprogrammen.</p> <p>Detaillierte Informationen zu diesen Analyseprogrammen finden Sie in der folgenden Datenschutzerkl&auml;rung.</p>
+<h2>2. Hosting</h2>
+<p>Wir hosten die Inhalte unserer Website bei folgendem Anbieter:</p>
+<h3>Externes Hosting</h3> <p>Diese Website wird extern gehostet. Die personenbezogenen Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters / der Hoster gespeichert. Hierbei kann es sich v.&nbsp;a. um IP-Adressen, Kontaktanfragen, Meta- und Kommunikationsdaten, Vertragsdaten, Kontaktdaten, Namen, Websitezugriffe und sonstige Daten, die &uuml;ber eine Website generiert werden, handeln.</p> <p>Das externe Hosting erfolgt zum Zwecke der Vertragserf&uuml;llung gegen&uuml;ber unseren potenziellen und bestehenden Kunden (Art. 6 Abs. 1 lit. b DSGVO) und im Interesse einer sicheren, schnellen und effizienten Bereitstellung unseres Online-Angebots durch einen professionellen Anbieter (Art. 6 Abs. 1 lit. f DSGVO). Sofern eine entsprechende Einwilligung abgefragt wurde, erfolgt die Verarbeitung ausschlie&szlig;lich auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO und &sect; 25 Abs. 1 TDDDG, soweit die Einwilligung die Speicherung von Cookies oder den Zugriff auf Informationen im Endger&auml;t des Nutzers (z.&nbsp;B. Device-Fingerprinting) im Sinne des TDDDG umfasst. Die Einwilligung ist jederzeit widerrufbar.</p> <p>Unser(e) Hoster wird bzw. werden Ihre Daten nur insoweit verarbeiten, wie dies zur Erf&uuml;llung seiner Leistungspflichten erforderlich ist und unsere Weisungen in Bezug auf diese Daten befolgen.</p> <p>Wir setzen folgende(n) Hoster ein:</p>
+<p>Vercel Inc.<br />
+440 N Barranca Ave #4133<br />
+Covina, CA 91723<br />
+USA</p>
+<h4>Auftragsverarbeitung</h4> <p>Wir haben einen Vertrag &uuml;ber Auftragsverarbeitung (AVV) zur Nutzung des oben genannten Dienstes geschlossen. Hierbei handelt es sich um einen datenschutzrechtlich vorgeschriebenen Vertrag, der gew&auml;hrleistet, dass dieser die personenbezogenen Daten unserer Websitebesucher nur nach unseren Weisungen und unter Einhaltung der DSGVO verarbeitet.</p>
+<h2>3. Allgemeine Hinweise und Pflicht&shy;informationen</h2>
+<h3>Datenschutz</h3> <p>Die Betreiber dieser Seiten nehmen den Schutz Ihrer pers&ouml;nlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend den gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerkl&auml;rung.</p> <p>Wenn Sie diese Website benutzen, werden verschiedene personenbezogene Daten erhoben. Personenbezogene Daten sind Daten, mit denen Sie pers&ouml;nlich identifiziert werden k&ouml;nnen. Die vorliegende Datenschutzerkl&auml;rung erl&auml;utert, welche Daten wir erheben und wof&uuml;r wir sie nutzen. Sie erl&auml;utert auch, wie und zu welchem Zweck das geschieht.</p> <p>Wir weisen darauf hin, dass die Daten&uuml;bertragung im Internet (z.&nbsp;B. bei der Kommunikation per E-Mail) Sicherheitsl&uuml;cken aufweisen kann. Ein l&uuml;ckenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht m&ouml;glich.</p>
+<h3>Hinweis zur verantwortlichen Stelle</h3> <p>Die verantwortliche Stelle f&uuml;r die Datenverarbeitung auf dieser Website ist:</p> <p>TP-ConvertX &ndash; TK Webtalent<br />
+Inhaber: Tim Kunzelmann<br />
+c/o POSTFLEX PFX-146-658<br />
+Emsdettener Stra&szlig;e 10<br />
+48268 Greven</p>
 
-    <div class="toc">
-      <h2>Inhaltsverzeichnis</h2>
-      <ol>
-        <li><a href="#verantwortlicher">Verantwortlicher</a></li>
-        <li><a href="#ueberblick">Überblick der Datenverarbeitung</a></li>
-        <li><a href="#hosting">Hosting (Vercel)</a></li>
-        <li><a href="#google-fonts">Google Fonts</a></li>
-        <li><a href="#kontaktformular">Kontaktformular (Formsubmit)</a></li>
-        <li><a href="#terminbuchung">Öffentliche Terminbuchung</a></li>
-        <li><a href="#vertriebspartner">Vertriebspartner-Bewerbungsfunnel</a></li>
-        <li><a href="#kundenbereich">Kundenbereich & Authentifizierung (Supabase)</a></li>
-        <li><a href="#nachrichten">Nachrichten & Dateiuploads</a></li>
-        <li><a href="#email">E-Mail-Benachrichtigungen (Resend)</a></li>
-        <li><a href="#realtime">Echtzeit-Funktionen (Online-Status & Tipp-Anzeige)</a></li>
-        <li><a href="#localstorage">Lokale Datenspeicherung (LocalStorage)</a></li>
-        <li><a href="#cookies">Cookies</a></li>
-        <li><a href="#rechte">Ihre Rechte</a></li>
-        <li><a href="#aenderungen">Änderungen dieser Datenschutzerklärung</a></li>
-      </ol>
-    </div>
+<p>Telefon: 015167261160<br />
+E-Mail: tk-webtalent@tp-convertx.de</p>
+ <p>Verantwortliche Stelle ist die nat&uuml;rliche oder juristische Person, die allein oder gemeinsam mit anderen &uuml;ber die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten (z.&nbsp;B. Namen, E-Mail-Adressen o. &Auml;.) entscheidet.</p>
 
-    <div class="content">
-
-      <!-- 1. Verantwortlicher -->
-      <div class="ds-section" id="verantwortlicher">
-        <h2>1. Verantwortlicher</h2>
-        <p>Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:</p>
-        <p>
-          <strong>Tim Kunzelmann</strong><br>
-          c/o POSTFLEX PFX-146-658<br>
-          Emsdettener Straße 10<br>
-          48268 Greven<br>
-          Deutschland<br><br>
-          E-Mail: <a href="mailto:kontakt@tp-convertx.de">kontakt@tp-convertx.de</a>
-        </p>
-      </div>
-
-      <!-- 2. Überblick -->
-      <div class="ds-section" id="ueberblick">
-        <h2>2. Überblick der Datenverarbeitung</h2>
-        <p>Die folgenden Dienste und Technologien werden auf dieser Website eingesetzt. Bei jeder Nutzung können dabei personenbezogene Daten verarbeitet werden.</p>
-        <table>
-          <tr>
-            <th>Dienst</th>
-            <th>Zweck</th>
-            <th>Verarbeitete Daten</th>
-          </tr>
-          <tr>
-            <td>Vercel (Hosting)</td>
-            <td>Bereitstellung der Website und API-Endpunkte</td>
-            <td>IP-Adresse, Browsertyp, Zugriffszeiten</td>
-          </tr>
-          <tr>
-            <td>Google Fonts</td>
-            <td>Einbindung von Schriftarten</td>
-            <td>IP-Adresse</td>
-          </tr>
-          <tr>
-            <td>Formsubmit.co</td>
-            <td>Verarbeitung von Kontaktformularen</td>
-            <td>Name, E-Mail, Nachrichtentext</td>
-          </tr>
-          <tr>
-            <td>Supabase</td>
-            <td>Authentifizierung, Datenbank, Dateispeicherung, Echtzeit-Verbindungen</td>
-            <td>E-Mail, Name, Unternehmen, Projektdaten, Termine, Nachrichten, Dateianhänge, Session-Token, Online-Status (temporär), Vertriebspartner-Bewerbungsdaten</td>
-          </tr>
-          <tr>
-            <td>OpenStreetMap Nominatim</td>
-            <td>Prüfung, ob die Adresse eines Vor-Ort-Termins im Einsatzgebiet liegt</td>
-            <td>Eingegebene Adresse (nur Adresstext, serverseitig übermittelt)</td>
-          </tr>
-          <tr>
-            <td>Resend</td>
-            <td>Versand von Transaktions-E-Mails</td>
-            <td>E-Mail-Adresse, Name, Nachrichteninhalt (Vorschau), Bewerbungsangaben (bei Vertriebspartner-Bewerbungen)</td>
-          </tr>
-        </table>
-      </div>
-
-      <!-- 3. Hosting -->
-      <div class="ds-section" id="hosting">
-        <h2>3. Hosting (Vercel)</h2>
-        <p>Diese Website wird bei <strong>Vercel Inc.</strong> (340 Pine Street, Suite 701, San Francisco, CA 94104, USA) gehostet. Vercel stellt sowohl die statischen Seiten als auch die serverseitigen API-Endpunkte (Serverless Functions) bereit, über die Terminbuchungen und Nachrichten verarbeitet werden.</p>
-        <p>Wenn Sie unsere Website besuchen oder API-Endpunkte aufrufen, werden automatisch Informationen in Server-Logfiles gespeichert:</p>
-        <ul>
-          <li>IP-Adresse des anfragenden Geräts</li>
-          <li>Datum und Uhrzeit des Zugriffs</li>
-          <li>Name und URL der abgerufenen Ressource</li>
-          <li>Betriebssystem und Browser des Nutzers</li>
-          <li>Übertragene Datenmenge und HTTP-Statuscode</li>
-        </ul>
-        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Sicherstellung der technischen Funktionsfähigkeit und Sicherheit der Website). Vercel ist nach dem EU-US Data Privacy Framework zertifiziert. Weitere Informationen: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">vercel.com/legal/privacy-policy</a></p>
-      </div>
-
-      <!-- 4. Google Fonts -->
-      <div class="ds-section" id="google-fonts">
-        <h2>4. Google Fonts</h2>
-        <p>Diese Website verwendet Google Fonts, einen Dienst von Google LLC (1600 Amphitheatre Parkway, Mountain View, CA 94043, USA). Dabei werden Schriftarten von den Google-Servern geladen, was zur Übermittlung Ihrer IP-Adresse an Google führt.</p>
-        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer einheitlichen Darstellung der Website). Informationen zum Datenschutz bei Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></p>
-      </div>
-
-      <!-- 5. Kontaktformular -->
-      <div class="ds-section" id="kontaktformular">
-        <h2>5. Kontaktformular (Formsubmit)</h2>
-        <p>Auf der Startseite steht ein Kontaktformular zur Verfügung. Wenn Sie dieses nutzen, werden Ihre eingegebenen Daten an <strong>Formsubmit.co</strong> übertragen und von dort per E-Mail an uns weitergeleitet.</p>
-
-        <h3>Verarbeitete Daten</h3>
-        <ul>
-          <li>Name</li>
-          <li>E-Mail-Adresse</li>
-          <li>Betrieb / Firma (freiwillig)</li>
-          <li>Art der Anfrage (freiwillig)</li>
-          <li>Nachrichtentext (freiwillig)</li>
-          <li>IP-Adresse und Zeitstempel (durch Formsubmit)</li>
-        </ul>
-
-        <h3>Anbieter</h3>
-        <p>Formsubmit wird betrieben von Formsubmit LLC. Die Daten werden ausschließlich zur Weiterleitung der Anfrage genutzt und nicht dauerhaft gespeichert. Weitere Informationen: <a href="https://formsubmit.co/privacy" target="_blank" rel="noopener">formsubmit.co/privacy</a></p>
-
-        <h3>Rechtsgrundlage & Speicherdauer</h3>
-        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO (Einwilligung durch aktive Übermittlung des Formulars). Die Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern oder der Zweck entfällt.</p>
-      </div>
-
-      <!-- 6. Terminbuchung -->
-      <div class="ds-section" id="terminbuchung">
-        <h2>6. Öffentliche Terminbuchung</h2>
+<h3>Speicherdauer</h3> <p>Soweit innerhalb dieser Datenschutzerkl&auml;rung keine speziellere Speicherdauer genannt wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck f&uuml;r die Datenverarbeitung entf&auml;llt. Wenn Sie ein berechtigtes L&ouml;schersuchen geltend machen oder eine Einwilligung zur Datenverarbeitung widerrufen, werden Ihre Daten gel&ouml;scht, sofern wir keine anderen rechtlich zul&auml;ssigen Gr&uuml;nde f&uuml;r die Speicherung Ihrer personenbezogenen Daten haben (z.&nbsp;B. steuer- oder handelsrechtliche Aufbewahrungsfristen); im letztgenannten Fall erfolgt die L&ouml;schung nach Fortfall dieser Gr&uuml;nde.</p>
+<h3>Allgemeine Hinweise zu den Rechtsgrundlagen der Datenverarbeitung auf dieser Website</h3> <p>Sofern Sie in die Datenverarbeitung eingewilligt haben, verarbeiten wir Ihre personenbezogenen Daten auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO bzw. Art. 9 Abs. 2 lit. a DSGVO, sofern besondere Datenkategorien nach Art. 9 Abs. 1 DSGVO verarbeitet werden. Im Falle einer ausdr&uuml;cklichen Einwilligung in die &Uuml;bertragung personenbezogener Daten in Drittstaaten erfolgt die Datenverarbeitung au&szlig;erdem auf Grundlage von Art. 49 Abs. 1 lit. a DSGVO. Sofern Sie in die Speicherung von Cookies oder in den Zugriff auf Informationen in Ihr Endger&auml;t (z.&nbsp;B. via Device-Fingerprinting) eingewilligt haben, erfolgt die Datenverarbeitung zus&auml;tzlich auf Grundlage von &sect; 25 Abs. 1 TDDDG. Die Einwilligung ist jederzeit widerrufbar. Sind Ihre Daten zur Vertragserf&uuml;llung oder zur Durchf&uuml;hrung vorvertraglicher Ma&szlig;nahmen erforderlich, verarbeiten wir Ihre Daten auf Grundlage des Art. 6 Abs. 1 lit. b DSGVO. Des Weiteren verarbeiten wir Ihre Daten, sofern diese zur Erf&uuml;llung einer rechtlichen Verpflichtung erforderlich sind, auf Grundlage von Art. 6 Abs. 1 lit. c DSGVO. Die Datenverarbeitung kann ferner auf Grundlage unseres berechtigten Interesses nach Art. 6 Abs. 1 lit. f DSGVO erfolgen. &Uuml;ber die jeweils im Einzelfall einschl&auml;gigen Rechtsgrundlagen wird in den folgenden Abs&auml;tzen dieser Datenschutzerkl&auml;rung informiert.</p>
+<h3>Empf&auml;nger von personenbezogenen Daten</h3> <p>Im Rahmen unserer Gesch&auml;ftst&auml;tigkeit arbeiten wir mit verschiedenen externen Stellen zusammen. Dabei ist teilweise auch eine &Uuml;bermittlung von personenbezogenen Daten an diese externen Stellen erforderlich. Wir geben personenbezogene Daten nur dann an externe Stellen weiter, wenn dies im Rahmen einer Vertragserf&uuml;llung erforderlich ist, wenn wir gesetzlich hierzu verpflichtet sind (z.&nbsp;B. Weitergabe von Daten an Steuerbeh&ouml;rden), wenn wir ein berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO an der Weitergabe haben oder wenn eine sonstige Rechtsgrundlage die Datenweitergabe erlaubt. Beim Einsatz von Auftragsverarbeitern geben wir personenbezogene Daten unserer Kunden nur auf Grundlage eines g&uuml;ltigen Vertrags &uuml;ber Auftragsverarbeitung weiter. Im Falle einer gemeinsamen Verarbeitung wird ein Vertrag &uuml;ber gemeinsame Verarbeitung geschlossen.</p>
+<h3>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h3> <p>Viele Datenverarbeitungsvorg&auml;nge sind nur mit Ihrer ausdr&uuml;cklichen Einwilligung m&ouml;glich. Sie k&ouml;nnen eine bereits erteilte Einwilligung jederzeit widerrufen. Die Rechtm&auml;&szlig;igkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt vom Widerruf unber&uuml;hrt.</p>
+<h3>Widerspruchsrecht gegen die Datenerhebung in besonderen F&auml;llen sowie gegen Direktwerbung (Art. 21 DSGVO)</h3> <p>WENN DIE DATENVERARBEITUNG AUF GRUNDLAGE VON ART. 6 ABS. 1 LIT. E ODER F DSGVO ERFOLGT, HABEN SIE JEDERZEIT DAS RECHT, AUS GR&Uuml;NDEN, DIE SICH AUS IHRER BESONDEREN SITUATION ERGEBEN, GEGEN DIE VERARBEITUNG IHRER PERSONENBEZOGENEN DATEN WIDERSPRUCH EINZULEGEN; DIES GILT AUCH F&Uuml;R EIN AUF DIESE BESTIMMUNGEN GEST&Uuml;TZTES PROFILING. DIE JEWEILIGE RECHTSGRUNDLAGE, AUF DENEN EINE VERARBEITUNG BERUHT, ENTNEHMEN SIE DIESER DATENSCHUTZERKL&Auml;RUNG. WENN SIE WIDERSPRUCH EINLEGEN, WERDEN WIR IHRE BETROFFENEN PERSONENBEZOGENEN DATEN NICHT MEHR VERARBEITEN, ES SEI DENN, WIR K&Ouml;NNEN ZWINGENDE SCHUTZW&Uuml;RDIGE GR&Uuml;NDE F&Uuml;R DIE VERARBEITUNG NACHWEISEN, DIE IHRE INTERESSEN, RECHTE UND FREIHEITEN &Uuml;BERWIEGEN ODER DIE VERARBEITUNG DIENT DER GELTENDMACHUNG, AUS&Uuml;BUNG ODER VERTEIDIGUNG VON RECHTSANSPR&Uuml;CHEN (WIDERSPRUCH NACH ART. 21 ABS. 1 DSGVO).</p> <p>WERDEN IHRE PERSONENBEZOGENEN DATEN VERARBEITET, UM DIREKTWERBUNG ZU BETREIBEN, SO HABEN SIE DAS RECHT, JEDERZEIT WIDERSPRUCH GEGEN DIE VERARBEITUNG SIE BETREFFENDER PERSONENBEZOGENER DATEN ZUM ZWECKE DERARTIGER WERBUNG EINZULEGEN; DIES GILT AUCH F&Uuml;R DAS PROFILING, SOWEIT ES MIT SOLCHER DIREKTWERBUNG IN VERBINDUNG STEHT. WENN SIE WIDERSPRECHEN, WERDEN IHRE PERSONENBEZOGENEN DATEN ANSCHLIESSEND NICHT MEHR ZUM ZWECKE DER DIREKTWERBUNG VERWENDET (WIDERSPRUCH NACH ART. 21 ABS. 2 DSGVO).</p>
+<h3>Beschwerde&shy;recht bei der zust&auml;ndigen Aufsichts&shy;beh&ouml;rde</h3> <p>Im Falle von Verst&ouml;&szlig;en gegen die DSGVO steht den Betroffenen ein Beschwerderecht bei einer Aufsichtsbeh&ouml;rde, insbesondere in dem Mitgliedstaat ihres gew&ouml;hnlichen Aufenthalts, ihres Arbeitsplatzes oder des Orts des mutma&szlig;lichen Versto&szlig;es zu. Das Beschwerderecht besteht unbeschadet anderweitiger verwaltungsrechtlicher oder gerichtlicher Rechtsbehelfe.</p>
+<h3>Recht auf Daten&shy;&uuml;bertrag&shy;barkeit</h3> <p>Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erf&uuml;llung eines Vertrags automatisiert verarbeiten, an sich oder an einen Dritten in einem g&auml;ngigen, maschinenlesbaren Format aush&auml;ndigen zu lassen. Sofern Sie die direkte &Uuml;bertragung der Daten an einen anderen Verantwortlichen verlangen, erfolgt dies nur, soweit es technisch machbar ist.</p>
+<h3>Auskunft, Berichtigung und L&ouml;schung</h3> <p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf unentgeltliche Auskunft &uuml;ber Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empf&auml;nger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung oder L&ouml;schung dieser Daten. Hierzu sowie zu weiteren Fragen zum Thema personenbezogene Daten k&ouml;nnen Sie sich jederzeit an uns wenden.</p>
+<h3>Recht auf Einschr&auml;nkung der Verarbeitung</h3> <p>Sie haben das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Hierzu k&ouml;nnen Sie sich jederzeit an uns wenden. Das Recht auf Einschr&auml;nkung der Verarbeitung besteht in folgenden F&auml;llen:</p> <ul> <li>Wenn Sie die Richtigkeit Ihrer bei uns gespeicherten personenbezogenen Daten bestreiten, ben&ouml;tigen wir in der Regel Zeit, um dies zu &uuml;berpr&uuml;fen. F&uuml;r die Dauer der Pr&uuml;fung haben Sie das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li> <li>Wenn die Verarbeitung Ihrer personenbezogenen Daten unrechtm&auml;&szlig;ig geschah/geschieht, k&ouml;nnen Sie statt der L&ouml;schung die Einschr&auml;nkung der Datenverarbeitung verlangen.</li> <li>Wenn wir Ihre personenbezogenen Daten nicht mehr ben&ouml;tigen, Sie sie jedoch zur Aus&uuml;bung, Verteidigung oder Geltendmachung von Rechtsanspr&uuml;chen ben&ouml;tigen, haben Sie das Recht, statt der L&ouml;schung die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li> <li>Wenn Sie einen Widerspruch nach Art. 21 Abs. 1 DSGVO eingelegt haben, muss eine Abw&auml;gung zwischen Ihren und unseren Interessen vorgenommen werden. Solange noch nicht feststeht, wessen Interessen &uuml;berwiegen, haben Sie das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li> </ul> <p>Wenn Sie die Verarbeitung Ihrer personenbezogenen Daten eingeschr&auml;nkt haben, d&uuml;rfen diese Daten &ndash; von ihrer Speicherung abgesehen &ndash; nur mit Ihrer Einwilligung oder zur Geltendmachung, Aus&uuml;bung oder Verteidigung von Rechtsanspr&uuml;chen oder zum Schutz der Rechte einer anderen nat&uuml;rlichen oder juristischen Person oder aus Gr&uuml;nden eines wichtigen &ouml;ffentlichen Interesses der Europ&auml;ischen Union oder eines Mitgliedstaats verarbeitet werden.</p>
+<h3>SSL- bzw. TLS-Verschl&uuml;sselung</h3> <p>Diese Seite nutzt aus Sicherheitsgr&uuml;nden und zum Schutz der &Uuml;bertragung vertraulicher Inhalte, wie zum Beispiel Bestellungen oder Anfragen, die Sie an uns als Seitenbetreiber senden, eine SSL- bzw. TLS-Verschl&uuml;sselung. Eine verschl&uuml;sselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von &bdquo;http://&ldquo; auf &bdquo;https://&ldquo; wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.</p> <p>Wenn die SSL- bzw. TLS-Verschl&uuml;sselung aktiviert ist, k&ouml;nnen die Daten, die Sie an uns &uuml;bermitteln, nicht von Dritten mitgelesen werden.</p>
+<h2>4. Datenerfassung auf dieser Website</h2>
+<h3>Cookies</h3> <p>Unsere Internetseiten verwenden so genannte &bdquo;Cookies&ldquo;. Cookies sind kleine Datenpakete und richten auf Ihrem Endger&auml;t keinen Schaden an. Sie werden entweder vor&uuml;bergehend f&uuml;r die Dauer einer Sitzung (Session-Cookies) oder dauerhaft (permanente Cookies) auf Ihrem Endger&auml;t gespeichert. Session-Cookies werden nach Ende Ihres Besuchs automatisch gel&ouml;scht. Permanente Cookies bleiben auf Ihrem Endger&auml;t gespeichert, bis Sie diese selbst l&ouml;schen oder eine automatische L&ouml;schung durch Ihren Webbrowser erfolgt.</p> <p>Cookies k&ouml;nnen von uns (First-Party-Cookies) oder von Drittunternehmen stammen (sog. Third-Party-Cookies). Third-Party-Cookies erm&ouml;glichen die Einbindung bestimmter Dienstleistungen von Drittunternehmen innerhalb von Webseiten (z.&nbsp;B. Cookies zur Abwicklung von Zahlungsdienstleistungen).</p> <p>Cookies haben verschiedene Funktionen. Zahlreiche Cookies sind technisch notwendig, da bestimmte Webseitenfunktionen ohne diese nicht funktionieren w&uuml;rden (z.&nbsp;B. die Warenkorbfunktion oder die Anzeige von Videos). Andere Cookies k&ouml;nnen zur Auswertung des Nutzerverhaltens oder zu Werbezwecken verwendet werden.</p> <p>Cookies, die zur Durchf&uuml;hrung des elektronischen Kommunikationsvorgangs, zur Bereitstellung bestimmter, von Ihnen erw&uuml;nschter Funktionen (z.&nbsp;B. f&uuml;r die Warenkorbfunktion) oder zur Optimierung der Website (z.&nbsp;B. Cookies zur Messung des Webpublikums) erforderlich sind (notwendige Cookies), werden auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO gespeichert, sofern keine andere Rechtsgrundlage angegeben wird. Der Websitebetreiber hat ein berechtigtes Interesse an der Speicherung von notwendigen Cookies zur technisch fehlerfreien und optimierten Bereitstellung seiner Dienste. Sofern eine Einwilligung zur Speicherung von Cookies und vergleichbaren Wiedererkennungstechnologien abgefragt wurde, erfolgt die Verarbeitung ausschlie&szlig;lich auf Grundlage dieser Einwilligung (Art. 6 Abs. 1 lit. a DSGVO und &sect; 25 Abs. 1 TDDDG); die Einwilligung ist jederzeit widerrufbar.</p> <p>Sie k&ouml;nnen Ihren Browser so einstellen, dass Sie &uuml;ber das Setzen von Cookies informiert werden und Cookies nur im Einzelfall erlauben, die Annahme von Cookies f&uuml;r bestimmte F&auml;lle oder generell ausschlie&szlig;en sowie das automatische L&ouml;schen der Cookies beim Schlie&szlig;en des Browsers aktivieren. Bei der Deaktivierung von Cookies kann die Funktionalit&auml;t dieser Website eingeschr&auml;nkt sein.</p> <p>Sofern weitere Cookies und Dienste auf dieser Website eingesetzt werden, k&ouml;nnen Sie dies dieser Datenschutzerkl&auml;rung entnehmen.</p>
+<h3>Server-Log-Dateien</h3> <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns &uuml;bermittelt. Dies sind:</p> <ul> <li>Browsertyp und Browserversion</li> <li>verwendetes Betriebssystem</li> <li>Referrer URL</li> <li>Hostname des zugreifenden Rechners</li> <li>Uhrzeit der Serveranfrage</li> <li>IP-Adresse</li> </ul> <p>Eine Zusammenf&uuml;hrung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.</p> <p>Die Erfassung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an der technisch fehlerfreien Darstellung und der Optimierung seiner Website &ndash; hierzu m&uuml;ssen die Server-Log-Files erfasst werden.</p>
+<h3>Kontaktformular</h3> <p>Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und f&uuml;r den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p> <p>Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erf&uuml;llung eines Vertrags zusammenh&auml;ngt oder zur Durchf&uuml;hrung vorvertraglicher Ma&szlig;nahmen erforderlich ist. In allen &uuml;brigen F&auml;llen beruht die Verarbeitung auf unserem berechtigten Interesse an der effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sofern diese abgefragt wurde; die Einwilligung ist jederzeit widerrufbar.</p> <p>Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns, bis Sie uns zur L&ouml;schung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck f&uuml;r die Datenspeicherung entf&auml;llt (z.&nbsp;B. nach abgeschlossener Bearbeitung Ihrer Anfrage). Zwingende gesetzliche Bestimmungen &ndash; insbesondere Aufbewahrungsfristen &ndash; bleiben unber&uuml;hrt.</p>
+<h3>Einsatz von KI auf der Website</h3> <p>Wir nutzen KI-gest&uuml;tzte Dienste und / oder Anwendungen auf unserer Website.</p> <p>Wir setzen K&uuml;nstliche Intelligenz (KI) auf unserer Website wie folgt ein:</p>
+<p>Wir verwenden KI-gest&uuml;tzte Funktionen in unserem Kontakt- und Chatbereich, um Besucheranfragen zu analysieren und automatisiert passende Antworten auf h&auml;ufige Fragen bereitzustellen.</p>
+ <p>Wenn Sie auf unserer Website mit Elementen interagieren oder in Ber&uuml;hrung kommen, in denen k&uuml;nstliche Intelligenz zu Einsatz kommt (z.&nbsp;B. Chatbot), werden Ihre Eingaben inklusive Metadaten verarbeitet, um eine passende Antwort oder Reaktion zu generieren.</p> <p>Die Nutzung dieser KI-gest&uuml;tzten Funktionen erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse daran, moderne Technologien auf unserer Website einzusetzen, um unsere Leistungen und Services zu verbessern und um neue Potenziale aus der Interaktion mit unseren Kunden zu erkennen. Falls eine Einwilligung erforderlich ist, erfolgt die Verarbeitung ausschlie&szlig;lich auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO und &sect; 25 Abs. 1 TDDDG. Ihre Einwilligung k&ouml;nnen Sie jederzeit widerrufen.</p> <p>Weitere Informationen zur Datenverarbeitung dieses Tools oder Dienstes erhalten Sie an der entsprechenden Stelle in dieser Datenschutzerkl&auml;rung.</p>
+<h3>Einsatz von K&uuml;nstlicher Intelligenz (KI) zur Beantwortung von Kundenanfragen</h3> <p>Wir setzen KI-gest&uuml;tzte Software zur Bearbeitung und Beantwortung von Kundenanfragen ein. Dabei analysiert die von uns eingesetzte KI den Inhalt Ihrer Nachricht, um autonom oder teilweise autonom eine passende Antwort bzw. einen Antwortvorschlag zu generieren. In diesem Zusammenhang verarbeitet unsere KI s&auml;mtliche Inhalte Ihrer Nachricht, inklusive Namen, E-Mail-Adressen, Kommunikationsinhalte oder technische Informationen (z.&nbsp;B. IP-Adressen, Ger&auml;teinformationen).</p> <p>Die Verwendung der eingesetzten KI-Software erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse an einer m&ouml;glichst effizienten Kundenkommunikation unter Einsatz moderner technischer L&ouml;sungen.</p>
+<p>Wir setzen folgende KI-Anwendungen ein:</p>
+<h4>Claude (Anthropic API)</h4> <p>Wir nutzen Claude (Anthropic API) f&uuml;r unsere Kundenkommunikation. Anbieter ist Anthropic Ireland Limited, Irland. Wenn Sie also Kontakt zu uns aufnehmen, k&ouml;nnen Ihre Anfragen inklusive Metadaten an die Server dieses Anbieters &uuml;bertragen und dort verarbeitet werden, um eine passende Antwort zu generieren.</p><h5>Auftragsverarbeitung</h5> <p>Wir haben einen Vertrag &uuml;ber Auftragsverarbeitung (AVV) zur Nutzung des oben genannten Dienstes geschlossen. Hierbei handelt es sich um einen datenschutzrechtlich vorgeschriebenen Vertrag, der gew&auml;hrleistet, dass dieser die personenbezogenen Daten unserer Websitebesucher nur nach unseren Weisungen und unter Einhaltung der DSGVO verarbeitet.</p>
+<h3>Anfrage per E-Mail, Telefon oder Telefax</h3> <p>Wenn Sie uns per E-Mail, Telefon oder Telefax kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten (Name, Anfrage) zum Zwecke der Bearbeitung Ihres Anliegens bei uns gespeichert und verarbeitet. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p> <p>Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erf&uuml;llung eines Vertrags zusammenh&auml;ngt oder zur Durchf&uuml;hrung vorvertraglicher Ma&szlig;nahmen erforderlich ist. In allen &uuml;brigen F&auml;llen beruht die Verarbeitung auf unserem berechtigten Interesse an der effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sofern diese abgefragt wurde; die Einwilligung ist jederzeit widerrufbar.</p> <p>Die von Ihnen an uns per Kontaktanfragen &uuml;bersandten Daten verbleiben bei uns, bis Sie uns zur L&ouml;schung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck f&uuml;r die Datenspeicherung entf&auml;llt (z.&nbsp;B. nach abgeschlossener Bearbeitung Ihres Anliegens). Zwingende gesetzliche Bestimmungen &ndash; insbesondere gesetzliche Aufbewahrungsfristen &ndash; bleiben unber&uuml;hrt.</p>
+<h3>Kommunikation via WhatsApp</h3> <p>F&uuml;r die Kommunikation mit unseren Kunden und sonstigen Dritten nutzen wir unter anderem den Instant-Messaging-Dienst WhatsApp. Anbieter ist die WhatsApp Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland.</p> <p>Die Kommunikation erfolgt &uuml;ber eine Ende-zu-Ende-Verschl&uuml;sselung (Peer-to-Peer), die verhindert, dass WhatsApp oder sonstige Dritte Zugriff auf die Kommunikationsinhalte erlangen k&ouml;nnen. WhatsApp erh&auml;lt jedoch Zugriff auf Metadaten, die im Zuge des Kommunikationsvorgangs entstehen (z.&nbsp;B. Absender, Empf&auml;nger und Zeitpunkt). Wir weisen ferner darauf hin, dass WhatsApp nach eigener Aussage, personenbezogene Daten seiner Nutzer mit seiner in den USA ans&auml;ssigen Konzernmutter Meta teilt. Weitere Details zur Datenverarbeitung finden Sie in der Datenschutzrichtlinie von WhatsApp unter: <a href="https://www.whatsapp.com/legal/#privacy-policy" target="_blank" rel="noopener noreferrer">https://www.whatsapp.com/legal/#privacy-policy</a>.</p> <p>Der Einsatz von WhatsApp erfolgt auf Grundlage unseres berechtigten Interesses an einer m&ouml;glichst schnellen und effektiven Kommunikation mit Kunden, Interessenten und sonstigen Gesch&auml;fts- und Vertragspartnern (Art. 6 Abs. 1 lit. f DSGVO). Sofern eine entsprechende Einwilligung abgefragt wurde, erfolgt die Datenverarbeitung ausschlie&szlig;lich auf Grundlage der Einwilligung; diese ist jederzeit mit Wirkung f&uuml;r die Zukunft widerrufbar.</p> <p>Die zwischen Ihnen und uns auf WhatsApp ausgetauschten Kommunikationsinhalte verbleiben bei uns, bis Sie uns zur L&ouml;schung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck f&uuml;r die Datenspeicherung entf&auml;llt (z.&nbsp;B. nach abgeschlossener Bearbeitung Ihrer Anfrage). Zwingende gesetzliche Bestimmungen &ndash; insbesondere Aufbewahrungsfristen &ndash; bleiben unber&uuml;hrt.</p>
+<p>Das Unternehmen verf&uuml;gt &uuml;ber eine Zertifizierung nach dem &bdquo;EU-US Data Privacy Framework&ldquo; (DPF). Der DPF ist ein &Uuml;bereinkommen zwischen der Europ&auml;ischen Union und den USA, der die Einhaltung europ&auml;ischer Datenschutzstandards bei Datenverarbeitungen in den USA gew&auml;hrleisten soll. Jedes nach dem DPF zertifizierte Unternehmen verpflichtet sich, diese Datenschutzstandards einzuhalten. Weitere Informationen hierzu erhalten Sie vom Anbieter unter folgendem Link: <a href="https://www.dataprivacyframework.gov/participant/7735" target="_blank" rel="noopener noreferrer">https://www.dataprivacyframework.gov/participant/7735</a>.</p>
+<p>Wir nutzen WhatsApp in der Variante &bdquo;WhatsApp Business&ldquo;.</p> <p>Die Daten&uuml;bertragung in die USA wird auf die Standardvertragsklauseln der EU-Kommission gest&uuml;tzt. Details finden Sie hier: <a href="https://www.whatsapp.com/legal/business-data-transfer-addendum" target="_blank" rel="noopener noreferrer">https://www.whatsapp.com/legal/business-data-transfer-addendum</a>.</p>
+<p>Wir haben einen Vertrag &uuml;ber Auftragsverarbeitung (AVV) mit dem oben genannten Anbieter geschlossen.</p>
+<h3>Registrierung auf dieser Website</h3> <p>Sie k&ouml;nnen sich auf dieser Website registrieren, um zus&auml;tzliche Funktionen auf der Seite zu nutzen. Die dazu eingegebenen Daten verwenden wir nur zum Zwecke der Nutzung des jeweiligen Angebotes oder Dienstes, f&uuml;r den Sie sich registriert haben. Die bei der Registrierung abgefragten Pflichtangaben m&uuml;ssen vollst&auml;ndig angegeben werden. Anderenfalls werden wir die Registrierung ablehnen.</p> <p>F&uuml;r wichtige &Auml;nderungen etwa beim Angebotsumfang oder bei technisch notwendigen &Auml;nderungen nutzen wir die bei der Registrierung angegebene E-Mail-Adresse, um Sie auf diesem Wege zu informieren.</p> <p>Die Verarbeitung der bei der Registrierung eingegebenen Daten erfolgt zum Zwecke der Durchf&uuml;hrung des durch die Registrierung begr&uuml;ndeten Nutzungsverh&auml;ltnisses und ggf. zur Anbahnung weiterer Vertr&auml;ge (Art. 6 Abs. 1 lit. b DSGVO).</p> <p>Die bei der Registrierung erfassten Daten werden von uns gespeichert, solange Sie auf dieser Website registriert sind und werden anschlie&szlig;end gel&ouml;scht. Gesetzliche Aufbewahrungsfristen bleiben unber&uuml;hrt.</p>
+<h2>5. Analyse-Tools und Werbung</h2>
+<h3>Google Ads</h3> <p>Der Websitebetreiber verwendet Google Ads. Google Ads ist ein Online-Werbeprogramm der Google Ireland Limited (&bdquo;Google&ldquo;), Gordon House, Barrow Street, Dublin 4, Irland.</p> <p>Google Ads erm&ouml;glicht es uns Werbeanzeigen in der Google-Suchmaschine oder auf Drittwebseiten auszuspielen, wenn der Nutzer bestimmte Suchbegriffe bei Google eingibt (Keyword-Targeting). Ferner k&ouml;nnen zielgerichtete Werbeanzeigen anhand der bei Google vorhandenen Nutzerdaten (z.&nbsp;B. Standortdaten und Interessen) ausgespielt werden (Zielgruppen-Targeting). Wir als Websitebetreiber k&ouml;nnen diese Daten quantitativ auswerten, indem wir beispielsweise analysieren, welche Suchbegriffe zur Ausspielung unserer Werbeanzeigen gef&uuml;hrt haben und wie viele Anzeigen zu entsprechenden Klicks gef&uuml;hrt haben.</p> <p>Die Nutzung dieses Dienstes erfolgt auf Grundlage Ihrer Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und &sect; 25 Abs. 1 TDDDG. Die Einwilligung ist jederzeit widerrufbar.</p> <p>Die Daten&uuml;bertragung in die USA wird auf die Standardvertragsklauseln der EU-Kommission gest&uuml;tzt. Details finden Sie hier: <a href="https://policies.google.com/privacy/frameworks" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy/frameworks</a> und <a href="https://business.safety.google/controllerterms/" target="_blank" rel="noopener noreferrer">https://business.safety.google/controllerterms/</a>.</p>
+<p>Das Unternehmen verf&uuml;gt &uuml;ber eine Zertifizierung nach dem &bdquo;EU-US Data Privacy Framework&ldquo; (DPF). Der DPF ist ein &Uuml;bereinkommen zwischen der Europ&auml;ischen Union und den USA, der die Einhaltung europ&auml;ischer Datenschutzstandards bei Datenverarbeitungen in den USA gew&auml;hrleisten soll. Jedes nach dem DPF zertifizierte Unternehmen verpflichtet sich, diese Datenschutzstandards einzuhalten. Weitere Informationen hierzu erhalten Sie vom Anbieter unter folgendem Link: <a href="https://www.dataprivacyframework.gov/participant/5780" target="_blank" rel="noopener noreferrer">https://www.dataprivacyframework.gov/participant/5780</a>.</p>
+<h2>6. Plugins und Tools</h2>
+<h3>Google Fonts (lokales Hosting)</h3> <p>Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten so genannte Google Fonts, die von Google bereitgestellt werden. Die Google Fonts sind lokal installiert. Eine Verbindung zu Servern von Google findet dabei nicht statt.</p> <p>Weitere Informationen zu Google Fonts finden Sie unter <a href="https://developers.google.com/fonts/faq" target="_blank" rel="noopener noreferrer">https://developers.google.com/fonts/faq</a> und in der Datenschutzerkl&auml;rung von Google: <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy?hl=de</a>.</p>
+<h2>7. Audio- und Videokonferenzen</h2>
+<h3>Datenverarbeitung</h3> <p>F&uuml;r die Kommunikation mit unseren Kunden setzen wir unter anderen Online-Konferenz-Tools ein. Die im Einzelnen von uns genutzten Tools sind unten aufgelistet. Wenn Sie mit uns per Video- oder Audiokonferenz via Internet kommunizieren, werden Ihre personenbezogenen Daten von uns und dem Anbieter des jeweiligen Konferenz-Tools erfasst und verarbeitet.</p> <p>Die Konferenz-Tools erfassen dabei alle Daten, die Sie zur Nutzung der Tools bereitstellen/einsetzen (E-Mail-Adresse und/oder Ihre Telefonnummer). Ferner verarbeiten die Konferenz-Tools die Dauer der Konferenz, Beginn und Ende (Zeit) der Teilnahme an der Konferenz, Anzahl der Teilnehmer und sonstige &bdquo;Kontextinformationen&ldquo; im Zusammenhang mit dem Kommunikationsvorgang (Metadaten).</p> <p>Des Weiteren verarbeitet der Anbieter des Tools alle technischen Daten, die zur Abwicklung der Online-Kommunikation erforderlich sind. Dies umfasst insbesondere IP-Adressen, MAC-Adressen, Ger&auml;te-IDs, Ger&auml;tetyp, Betriebssystemtyp und -version, Client-Version, Kameratyp, Mikrofon oder Lautsprecher sowie die Art der Verbindung.</p> <p>Sofern innerhalb des Tools Inhalte ausgetauscht, hochgeladen oder in sonstiger Weise bereitgestellt werden, werden diese ebenfalls auf den Servern der Tool-Anbieter gespeichert. Zu solchen Inhalten z&auml;hlen insbesondere Cloud-Aufzeichnungen, Chat-/ Sofortnachrichten, Voicemails hochgeladene Fotos und Videos, Dateien, Whiteboards und andere Informationen, die w&auml;hrend der Nutzung des Dienstes geteilt werden.</p> <p>Bitte beachten Sie, dass wir nicht vollumf&auml;nglich Einfluss auf die Datenverarbeitungsvorg&auml;nge der verwendeten Tools haben. Unsere M&ouml;glichkeiten richten sich ma&szlig;geblich nach der Unternehmenspolitik des jeweiligen Anbieters. Weitere Hinweise zur Datenverarbeitung durch die Konferenztools entnehmen Sie den Datenschutzerkl&auml;rungen der jeweils eingesetzten Tools, die wir unter diesem Text aufgef&uuml;hrt haben.</p> <h3>Zweck und Rechtsgrundlagen</h3> <p>Die Konferenz-Tools werden genutzt, um mit angehenden oder bestehenden Vertragspartnern zu kommunizieren oder bestimmte Leistungen gegen&uuml;ber unseren Kunden anzubieten (Art. 6 Abs. 1 lit. b DSGVO). Des Weiteren dient der Einsatz der Tools der allgemeinen Vereinfachung und Beschleunigung der Kommunikation mit uns bzw. unserem Unternehmen (berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO). Soweit eine Einwilligung abgefragt wurde, erfolgt der Einsatz der betreffenden Tools auf Grundlage dieser Einwilligung; die Einwilligung ist jederzeit mit Wirkung f&uuml;r die Zukunft widerrufbar.</p> <h3>Speicherdauer</h3> <p>Die unmittelbar von uns &uuml;ber die Video- und Konferenz-Tools erfassten Daten werden von unseren Systemen gel&ouml;scht, sobald Sie uns zur L&ouml;schung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck f&uuml;r die Datenspeicherung entf&auml;llt. Gespeicherte Cookies verbleiben auf Ihrem Endger&auml;t, bis Sie sie l&ouml;schen. Zwingende gesetzliche Aufbewahrungsfristen bleiben unber&uuml;hrt.</p> <p>Auf die Speicherdauer Ihrer Daten, die von den Betreibern der Konferenz-Tools zu eigenen Zwecken gespeichert werden, haben wir keinen Einfluss. F&uuml;r Einzelheiten dazu informieren Sie sich bitte direkt bei den Betreibern der Konferenz-Tools.</p> <h3>Eingesetzte Konferenz-Tools</h3> <p>Wir setzen folgende Konferenz-Tools ein:</p>
+<h4>Zoom</h4> <p>Wir nutzen Zoom. Anbieter dieses Dienstes ist die Zoom Communications Inc., San Jose, 55 Almaden Boulevard, 6th Floor, San Jose, CA 95113, USA. Details zur Datenverarbeitung entnehmen Sie der Datenschutzerkl&auml;rung von Zoom: <a href="https://www.zoom.com/de/trust/privacy/privacy-statement/" target="_blank" rel="noopener noreferrer">https://www.zoom.com/de/trust/privacy/privacy-statement/</a>.</p> <p>Die Daten&uuml;bertragung in die USA wird auf die Standardvertragsklauseln der EU-Kommission gest&uuml;tzt. Details finden Sie hier: <a href="https://www.zoom.com/de/trust/privacy/privacy-statement/" target="_blank" rel="noopener noreferrer">https://www.zoom.com/de/trust/privacy/privacy-statement/</a>.</p>
+<p>Das Unternehmen verf&uuml;gt &uuml;ber eine Zertifizierung nach dem &bdquo;EU-US Data Privacy Framework&ldquo; (DPF). Der DPF ist ein &Uuml;bereinkommen zwischen der Europ&auml;ischen Union und den USA, der die Einhaltung europ&auml;ischer Datenschutzstandards bei Datenverarbeitungen in den USA gew&auml;hrleisten soll. Jedes nach dem DPF zertifizierte Unternehmen verpflichtet sich, diese Datenschutzstandards einzuhalten. Weitere Informationen hierzu erhalten Sie vom Anbieter unter folgendem Link: <a href="https://www.dataprivacyframework.gov/participant/5728" target="_blank" rel="noopener noreferrer">https://www.dataprivacyframework.gov/participant/5728</a>.</p>
+<h2>8. Eigene Dienste</h2>
+<h3>Umgang mit Bewerberdaten</h3> <p>Wir bieten Ihnen die M&ouml;glichkeit, sich bei uns zu bewerben (z.&nbsp;B. per E-Mail, postalisch oder via Online-Bewerberformular). Im Folgenden informieren wir Sie &uuml;ber Umfang, Zweck und Verwendung Ihrer im Rahmen des Bewerbungsprozesses erhobenen personenbezogenen Daten. Wir versichern, dass die Erhebung, Verarbeitung und Nutzung Ihrer Daten in &Uuml;bereinstimmung mit geltendem Datenschutzrecht und allen weiteren gesetzlichen Bestimmungen erfolgt und Ihre Daten streng vertraulich behandelt werden.</p> <h4>Umfang und Zweck der Datenerhebung </h4> <p>Wenn Sie uns eine Bewerbung zukommen lassen, verarbeiten wir Ihre damit verbundenen personenbezogenen Daten (z.&nbsp;B. Kontakt- und Kommunikationsdaten, Bewerbungsunterlagen, Notizen im Rahmen von Bewerbungsgespr&auml;chen etc.), soweit dies zur Entscheidung &uuml;ber die Begr&uuml;ndung eines Besch&auml;ftigungsverh&auml;ltnisses erforderlich ist. Rechtsgrundlage hierf&uuml;r ist &sect; 26 BDSG nach deutschem Recht (Anbahnung eines Besch&auml;ftigungsverh&auml;ltnisses), Art. 6 Abs. 1 lit. b DSGVO (allgemeine Vertragsanbahnung) und &ndash; sofern Sie eine Einwilligung erteilt haben &ndash; Art. 6 Abs. 1 lit. a DSGVO. Die Einwilligung ist jederzeit widerrufbar. Ihre personenbezogenen Daten werden innerhalb unseres Unternehmens ausschlie&szlig;lich an Personen weitergegeben, die an der Bearbeitung Ihrer Bewerbung beteiligt sind.</p> <p>Sofern die Bewerbung erfolgreich ist, werden die von Ihnen eingereichten Daten auf Grundlage von &sect; 26 BDSG und Art. 6 Abs. 1 lit. b DSGVO zum Zwecke der Durchf&uuml;hrung des Besch&auml;ftigungsverh&auml;ltnisses in unseren Datenverarbeitungssystemen gespeichert.</p> <p>Im Rahmen des Bewerbungsverfahrens f&uuml;hren wir unter Umst&auml;nden auch eine Internetrecherche Ihrer Person durch. Dies umfasst vor allem die Google-Suche, Linkedin und Xing. Rechtsgrundlage f&uuml;r diese Art der Verarbeitung ist unser berechtigtes Interesse uns ein Gesamteindruck von &ouml;ffentlich zug&auml;nglichen Informationen gem&auml;&szlig; Art. 6 Abs. 1 lit. f DSGVO &uuml;ber Sie zu verschaffen.</p> <h4>Aufbewahrungsdauer der Daten</h4> <p>Sofern wir Ihnen kein Stellenangebot machen k&ouml;nnen, Sie ein Stellenangebot ablehnen oder Ihre Bewerbung zur&uuml;ckziehen, behalten wir uns das Recht vor, die von Ihnen &uuml;bermittelten Daten auf Grundlage unserer berechtigten Interessen (Art. 6 Abs. 1 lit. f DSGVO) bis zu 6 Monate ab der Beendigung des Bewerbungsverfahrens (Ablehnung oder Zur&uuml;ckziehung der Bewerbung) bei uns aufzubewahren. Anschlie&szlig;end werden die Daten gel&ouml;scht und die physischen Bewerbungsunterlagen vernichtet. Die Aufbewahrung dient insbesondere Nachweiszwecken im Falle eines Rechtsstreits. Sofern ersichtlich ist, dass die Daten nach Ablauf der 6-Monatsfrist erforderlich sein werden (z.&nbsp;B. aufgrund eines drohenden oder anh&auml;ngigen Rechtsstreits), findet eine L&ouml;schung erst statt, wenn der Zweck f&uuml;r die weitergehende Aufbewahrung entf&auml;llt.</p> <p>Eine l&auml;ngere Aufbewahrung kann au&szlig;erdem stattfinden, wenn Sie eine entsprechende Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) erteilt haben oder wenn gesetzliche Aufbewahrungspflichten der L&ouml;schung entgegenstehen.</p>
+<h4>Aufnahme in den Bewerber-Pool</h4> <p>Sofern wir Ihnen kein Stellenangebot machen, besteht ggf. die M&ouml;glichkeit, Sie in unseren Bewerber-Pool aufzunehmen. Im Falle der Aufnahme werden alle Dokumente und Angaben aus der Bewerbung in den Bewerber-Pool &uuml;bernommen, um Sie im Falle von passenden Vakanzen zu kontaktieren.</p> <p>Die Aufnahme in den Bewerber-Pool geschieht ausschlie&szlig;lich auf Grundlage Ihrer ausdr&uuml;cklichen Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Die Abgabe der Einwilligung ist freiwillig und steht in keinem Bezug zum laufenden Bewerbungsverfahren. <strong>Der Betroffene kann seine Einwilligung jederzeit widerrufen.</strong> In diesem Falle werden die Daten aus dem Bewerber-Pool unwiderruflich gel&ouml;scht, sofern keine gesetzlichen Aufbewahrungsgr&uuml;nde vorliegen.</p> <p>Die Daten aus dem Bewerber-Pool werden sp&auml;testens zwei Jahre nach Erteilung der Einwilligung unwiderruflich gel&ouml;scht.</p>
+      <div id="terminbuchung">
+        <h2>9. Öffentliche Terminbuchung</h2>
         <p>Auf der Website besteht die Möglichkeit, einen kostenlosen Beratungstermin (telefonisch, persönlich vor Ort oder per Zoom) direkt zu buchen, ohne sich vorher registrieren zu müssen.</p>
 
         <h3>Verarbeitete Daten</h3>
@@ -231,7 +150,7 @@
         <p>Die Daten werden benötigt, um den Termin in unserem System anzulegen, Ihnen eine Buchungsbestätigung per E-Mail zuzusenden, den Termin intern zu verwalten und – bei Stornierung – die entsprechende Benachrichtigung zu versenden.</p>
 
         <h3>Datenspeicherung</h3>
-        <p>Die Termindaten (Datum, Uhrzeit, Terminart, Status) sowie Ihr Name und Ihre E-Mail-Adresse werden in der Datenbank von Supabase gespeichert (siehe Abschnitt 7), damit der Termin später auch von Ihnen selbst über einen Link in der Bestätigungs-E-Mail storniert werden kann. Bei einem persönlichen Termin vor Ort wird zusätzlich die von Ihnen angegebene Adresse gespeichert.</p>
+        <p>Die Termindaten (Datum, Uhrzeit, Terminart, Status) sowie Ihr Name und Ihre E-Mail-Adresse werden in der Datenbank von Supabase gespeichert (siehe Abschnitt 10), damit der Termin später auch von Ihnen selbst über einen Link in der Bestätigungs-E-Mail storniert werden kann. Bei einem persönlichen Termin vor Ort wird zusätzlich die von Ihnen angegebene Adresse gespeichert.</p>
 
         <h3>Zoom (bei Terminart "Per Zoom")</h3>
         <p>Wählen Sie als Terminart "Per Zoom", wird für den Termin automatisiert ein Meeting über die Zoom-API angelegt. Dabei werden Datum, Uhrzeit und ein Gesprächstitel an Zoom Video Communications, Inc. übermittelt. Es gelten die Datenschutzbestimmungen von Zoom.</p>
@@ -247,8 +166,8 @@
       </div>
 
       <!-- 7. Vertriebspartner-Bewerbungsfunnel -->
-      <div class="ds-section" id="vertriebspartner">
-        <h2>7. Vertriebspartner-Bewerbungsfunnel</h2>
+      <div id="vertriebspartner">
+        <h2>10. Vertriebspartner-Bewerbungsfunnel</h2>
         <p>Unter <strong>tk-webtalent.de/vertriebspartner</strong> besteht die Möglichkeit, sich als selbstständiger Vertriebspartner zu bewerben. Interessierte durchlaufen dabei einen mehrstufigen Fragebogen zu ihrer Vertriebserfahrung und Verfügbarkeit.</p>
 
         <h3>Automatischer Ausstieg ohne Datenerhebung</h3>
@@ -270,7 +189,7 @@
         <p>Die Daten dienen der Vorauswahl geeigneter Bewerber für eine mögliche Zusammenarbeit als selbstständiger, erfolgsabhängig vergüteter Vertriebspartner sowie der anschließenden Kontaktaufnahme zu einem Kennenlerngespräch.</p>
 
         <h3>Datenspeicherung & Benachrichtigung</h3>
-        <p>Vollständige Bewerbungen werden in der Datenbank von Supabase gespeichert (siehe Abschnitt 8) und lösen eine interne E-Mail-Benachrichtigung über Resend aus (siehe Abschnitt 10), damit die Bewerbung persönlich geprüft werden kann.</p>
+        <p>Vollständige Bewerbungen werden in der Datenbank von Supabase gespeichert (siehe Abschnitt 11) und lösen eine interne E-Mail-Benachrichtigung über Resend aus (siehe Abschnitt 13), damit die Bewerbung persönlich geprüft werden kann.</p>
 
         <h3>Rechtsgrundlage</h3>
         <p>Für die Bewerbungsdaten ist die Rechtsgrundlage Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen zur Anbahnung einer möglichen Vertriebspartnerschaft). Für die anonymen Funnel-Statistiken bei automatischem Ausstieg ist die Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Optimierung des Bewerbungsprozesses) – hier liegt mangels Personenbezugs bereits kein Anwendungsfall der DSGVO im engeren Sinne vor.</p>
@@ -280,8 +199,8 @@
       </div>
 
       <!-- 8. Kundenbereich -->
-      <div class="ds-section" id="kundenbereich">
-        <h2>8. Kundenbereich & Authentifizierung (Supabase)</h2>
+      <div id="kundenbereich">
+        <h2>11. Kundenbereich & Authentifizierung (Supabase)</h2>
         <p>Aktive Kunden erhalten Zugang zu einem passwortgeschützten Kundenbereich unter <strong>tk-webtalent.de/kundenbereich</strong>. Die technische Infrastruktur für Authentifizierung und Datenbankbetrieb wird durch <strong>Supabase Inc.</strong> (San Francisco, USA) bereitgestellt.</p>
 
         <h3>Verarbeitete Daten im Kundenbereich</h3>
@@ -310,8 +229,8 @@
       </div>
 
       <!-- 8. Nachrichten -->
-      <div class="ds-section" id="nachrichten">
-        <h2>9. Nachrichten & Dateiuploads</h2>
+      <div id="nachrichten">
+        <h2>12. Nachrichten & Dateiuploads</h2>
         <p>Innerhalb des Kundenbereichs steht eine Nachrichtenfunktion zur Verfügung, über die Kunden direkt mit TK Webtalent kommunizieren können.</p>
 
         <h3>Verarbeitete Daten</h3>
@@ -331,15 +250,15 @@
       </div>
 
       <!-- 9. E-Mail -->
-      <div class="ds-section" id="email">
-        <h2>10. E-Mail-Benachrichtigungen (Resend)</h2>
+      <div id="email">
+        <h2>13. E-Mail-Benachrichtigungen (Resend)</h2>
         <p>Für den Versand von Transaktions-E-Mails (Terminbestätigungen, Nachrichten-Benachrichtigungen) wird der Dienst <strong>Resend</strong> von Resend Inc. (548 Market St, PMB 72878, San Francisco, CA 94104, USA) eingesetzt.</p>
 
         <h3>Anlässe für automatische E-Mails</h3>
         <ul>
           <li>Bestätigung einer Terminbuchung (an Kunden und intern)</li>
           <li>Benachrichtigung bei neuen Nachrichten im Kundenbereich (sofern der Empfänger gerade nicht online ist)</li>
-          <li>Interne Benachrichtigung bei vollständig eingegangenen Vertriebspartner-Bewerbungen (siehe Abschnitt 7)</li>
+          <li>Interne Benachrichtigung bei vollständig eingegangenen Vertriebspartner-Bewerbungen (siehe Abschnitt 10)</li>
         </ul>
 
         <div class="info-box">
@@ -359,8 +278,8 @@
       </div>
 
       <!-- 10. Realtime -->
-      <div class="ds-section" id="realtime">
-        <h2>11. Echtzeit-Funktionen (Online-Status & Tipp-Anzeige)</h2>
+      <div id="realtime">
+        <h2>14. Echtzeit-Funktionen (Online-Status & Tipp-Anzeige)</h2>
         <p>Im Nachrichten-Bereich werden zwei Echtzeit-Funktionen eingesetzt, die über Supabase Realtime (WebSocket-Verbindungen) realisiert werden:</p>
 
         <h3>Online-Status-Anzeige</h3>
@@ -374,8 +293,8 @@
       </div>
 
       <!-- 11. LocalStorage -->
-      <div class="ds-section" id="localstorage">
-        <h2>12. Lokale Datenspeicherung (LocalStorage)</h2>
+      <div id="localstorage">
+        <h2>15. Lokale Datenspeicherung (LocalStorage)</h2>
         <p>Für die Authentifizierung im Kunden- und Admin-Bereich speichert Supabase einen verschlüsselten <strong>Session-Token</strong> im LocalStorage Ihres Browsers. Dieser Token dient ausschließlich dazu, Sie nach dem Schließen des Tabs weiterhin als eingeloggt zu erkennen, ohne dass Sie sich erneut anmelden müssen.</p>
         <p>Der Token enthält keine Klardaten (keine Passwörter, keine Nachrichten). Er wird automatisch gelöscht, wenn Sie sich abmelden, oder nach Ablauf der Sitzungsgültigkeitsdauer.</p>
 
@@ -383,44 +302,10 @@
         <p>Auf der Startseite kann der frei schwebende "Partner werden"-Button per Ziehen verschoben werden. Die von Ihnen gewählte Position wird ausschließlich lokal in Ihrem Browser (LocalStorage) gespeichert, damit der Button beim nächsten Besuch an der gewählten Stelle bleibt. Diese Information wird nicht an unsere Server übertragen.</p>
 
         <h3>Anonyme Sitzungs-ID im Bewerbungsfunnel</h3>
-        <p>Beim Ausfüllen des Vertriebspartner-Fragebogens (siehe Abschnitt 7) wird in Ihrem Browser (SessionStorage) eine zufällig erzeugte, nicht personenbeziehbare Kennung erzeugt. Sie dient ausschließlich dazu, die anonymen Funnel-Statistiken einer zusammenhängenden Sitzung zuzuordnen, und wird gelöscht, sobald Sie den Tab schließen.</p>
+        <p>Beim Ausfüllen des Vertriebspartner-Fragebogens (siehe Abschnitt 10) wird in Ihrem Browser (SessionStorage) eine zufällig erzeugte, nicht personenbeziehbare Kennung erzeugt. Sie dient ausschließlich dazu, die anonymen Funnel-Statistiken einer zusammenhängenden Sitzung zuzuordnen, und wird gelöscht, sobald Sie den Tab schließen.</p>
 
         <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (technisch notwendig für den Betrieb des Kundenbereichs) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an nutzerfreundlicher Darstellung und Funnel-Optimierung).</p>
       </div>
-
-      <!-- 12. Cookies -->
-      <div class="ds-section" id="cookies">
-        <h2>13. Cookies</h2>
-        <p>Diese Website setzt keine Tracking-Cookies, Analyse-Cookies oder Marketing-Cookies ein. Im Kundenbereich wird der Supabase-Session-Token im LocalStorage des Browsers abgelegt (kein Cookie im technischen Sinne). Ein Cookie-Banner ist daher nicht erforderlich.</p>
-        <p>Sollten in Zukunft Analyse- oder Marketing-Dienste hinzugefügt werden, wird diese Datenschutzerklärung aktualisiert und ein Cookie-Consent-Tool eingebunden.</p>
-      </div>
-
-      <!-- 13. Rechte -->
-      <div class="ds-section" id="rechte">
-        <h2>14. Ihre Rechte als betroffene Person</h2>
-        <p>Sie haben nach der DSGVO folgende Rechte gegenüber uns:</p>
-        <ul>
-          <li><strong>Auskunftsrecht</strong> (Art. 15 DSGVO): Sie können Auskunft über Ihre gespeicherten Daten verlangen.</li>
-          <li><strong>Berichtigungsrecht</strong> (Art. 16 DSGVO): Sie können die Berichtigung unrichtiger Daten verlangen.</li>
-          <li><strong>Recht auf Löschung</strong> (Art. 17 DSGVO): Sie können die Löschung Ihrer Daten verlangen, sofern keine gesetzliche Aufbewahrungspflicht entgegensteht.</li>
-          <li><strong>Recht auf Einschränkung der Verarbeitung</strong> (Art. 18 DSGVO).</li>
-          <li><strong>Recht auf Datenübertragbarkeit</strong> (Art. 20 DSGVO).</li>
-          <li><strong>Widerspruchsrecht</strong> (Art. 21 DSGVO): Sie können der Verarbeitung Ihrer Daten widersprechen, sofern die Verarbeitung auf berechtigtem Interesse beruht.</li>
-          <li><strong>Recht auf Widerruf der Einwilligung</strong> (Art. 7 Abs. 3 DSGVO): Soweit die Verarbeitung auf einer Einwilligung beruht, können Sie diese jederzeit widerrufen.</li>
-        </ul>
-        <p>Zur Ausübung Ihrer Rechte wenden Sie sich bitte an: <a href="mailto:kontakt@tp-convertx.de">kontakt@tp-convertx.de</a></p>
-
-        <h3>Beschwerderecht bei einer Aufsichtsbehörde</h3>
-        <p>Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Eine Liste der Aufsichtsbehörden in Deutschland finden Sie unter: <a href="https://www.bfdi.bund.de" target="_blank" rel="noopener">www.bfdi.bund.de</a></p>
-      </div>
-
-      <!-- 14. Änderungen -->
-      <div class="ds-section" id="aenderungen">
-        <h2>15. Änderungen dieser Datenschutzerklärung</h2>
-        <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie stets den aktuellen rechtlichen Anforderungen anzupassen oder um Änderungen unserer Leistungen umzusetzen. Die neue Datenschutzerklärung gilt dann für Ihren nächsten Besuch.</p>
-        <p>Stand dieser Erklärung: September 2026</p>
-      </div>
-
     </div>
 
     <div class="bottom-links">
