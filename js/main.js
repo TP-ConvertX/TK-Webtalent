@@ -123,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const fixedBgImg = document.getElementById('fixedBgImg');
   if (fixedBg && fixedBgImg) {
     const targets = [
-      { el: document.querySelector('.window-section'), src: '/assets/unsplash/photo-1498050108023-c5249f4df085-1920.jpg' },
-      { el: document.getElementById('imgwin2'), src: '/assets/unsplash/photo-1521791136064-7986c2920216-1920.jpg' },
+      { el: document.querySelector('.window-section'), src: '/assets/unsplash/photo-1498050108023-c5249f4df085-1920.webp' },
+      { el: document.getElementById('imgwin2'), src: '/assets/unsplash/photo-1521791136064-7986c2920216-1920.webp' },
     ].filter(t => t.el);
 
     let currentSrc = '';
