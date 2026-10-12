@@ -36,7 +36,7 @@ async function geocode(address) {
   try {
     const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=de&q=' + encodeURIComponent(address);
     const r = await fetch(url, {
-      headers: { 'User-Agent': 'TK-Webtalent/1.0 (kontakt@tp-convertx.de)' },
+      headers: { 'User-Agent': 'TK-Webtalent/1.0 (tk-webtalent@tp-convertx.de)' },
       signal: ctrl.signal,
     });
     if (!r.ok) throw new Error('nominatim_' + r.status);

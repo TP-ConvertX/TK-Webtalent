@@ -28,7 +28,7 @@ module.exports = async function handler(req, res) {
 
   const RESEND_KEY  = process.env.RESEND_API_KEY;
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'kunzelmanntim00@gmail.com';
-  const FROM        = process.env.FROM_EMAIL  || 'TK Webtalent <kontakt@tp-convertx.de>';
+  const FROM        = process.env.FROM_EMAIL  || 'TK Webtalent <tk-webtalent@tp-convertx.de>';
 
   /* Resend nicht konfiguriert → still überspringen */
   if (!RESEND_KEY) {

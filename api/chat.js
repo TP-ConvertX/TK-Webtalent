@@ -182,7 +182,7 @@ module.exports = async function handler(req, res) {
        ist einzeln try/catch-abgesichert, damit ein Fehler hier nie den
        Chat-Abschluss für den Kunden blockiert. */
     const RESEND_KEY = process.env.RESEND_API_KEY;
-    const FROM = process.env.FROM_EMAIL || 'TK Webtalent <kontakt@tp-convertx.de>';
+    const FROM = process.env.FROM_EMAIL || 'TK Webtalent <tk-webtalent@tp-convertx.de>';
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'kunzelmanntim00@gmail.com';
 
     if (RESEND_KEY) {

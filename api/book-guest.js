@@ -92,7 +92,7 @@ module.exports = async function handler(req, res) {
   /* E-Mails senden */
   const RESEND_KEY  = process.env.RESEND_API_KEY;
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'kunzelmanntim00@gmail.com';
-  const from        = process.env.FROM_EMAIL  || 'TK Webtalent <kontakt@tp-convertx.de>';
+  const from        = process.env.FROM_EMAIL  || 'TK Webtalent <tk-webtalent@tp-convertx.de>';
   const fmt         = formatAppt(date, time);
 
   if (RESEND_KEY) {
@@ -116,7 +116,7 @@ module.exports = async function handler(req, res) {
           ${zoomNote}
           ${addressNote}
           ${p('Der Termin dauert <strong>60 Minuten</strong>.')}
-          ${p('Fragen vorher? Schreib einfach an <a href="mailto:kontakt@tp-convertx.de" style="color:#0EA5E9">kontakt@tp-convertx.de</a>.')}
+          ${p('Fragen vorher? Schreib einfach an <a href="mailto:tk-webtalent@tp-convertx.de" style="color:#0EA5E9">tk-webtalent@tp-convertx.de</a>.')}
           ${sign}
           ${cancelNote}
         `)

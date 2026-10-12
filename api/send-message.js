@@ -68,7 +68,7 @@ module.exports = async function handler(req, res) {
   /* E-Mail-Benachrichtigung */
   const RESEND_KEY  = process.env.RESEND_API_KEY;
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'kunzelmanntim00@gmail.com';
-  const from        = process.env.FROM_EMAIL  || 'TK Webtalent <kontakt@tp-convertx.de>';
+  const from        = process.env.FROM_EMAIL  || 'TK Webtalent <tk-webtalent@tp-convertx.de>';
 
   if (RESEND_KEY && !recipientOnline) {
     const { data: custProfile } = await sbAdmin

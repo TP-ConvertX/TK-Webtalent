@@ -5,4 +5,4 @@ Disallow: /kundenbereich
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://tk-webtalent.vercel.app/sitemap.xml
+Sitemap: https://tk-webtalent.de/sitemap.xml

@@ -62,7 +62,7 @@ function renderTranscript(conversation) {
 module.exports = async function handler(req, res) {
   const sbAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
   const RESEND_KEY = process.env.RESEND_API_KEY;
-  const FROM = process.env.FROM_EMAIL || 'TK Webtalent <kontakt@tp-convertx.de>';
+  const FROM = process.env.FROM_EMAIL || 'TK Webtalent <tk-webtalent@tp-convertx.de>';
 
   const isJson = (req.headers['content-type'] || '').includes('application/json');
   const id = req.method === 'GET' ? req.query.id : (req.body || {}).id;
