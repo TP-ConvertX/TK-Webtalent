@@ -62,55 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     revealObserver.observe(el);
   });
 
-  /* ── HERO 3D-GLASKARTE: dreht sich beim Scrollen ──
-     Kein Sticky-Pin mehr (führte dazu, dass die Seite beim Scrollen
-     "hängen blieb") – die Karte dreht sich stattdessen anhand des
-     ganz normalen Scroll-Fortschritts, während der Hero-Bereich
-     selbst normal wegscrollt. */
-  const heroPin = document.querySelector('.hero-pin-outer');
-
-  if (heroPin) {
-    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    let ticking = false;
-    const updateProgress = () => {
-      ticking = false;
-      if (reducedMotionQuery.matches) return;
-      const rect = heroPin.getBoundingClientRect();
-      /* Nicht über die komplette Hero-Höhe strecken, sonst verteilt sich die
-         Drehung über eine so lange Scrollstrecke, dass man beim normalen
-         Scrollen kaum eine Veränderung wahrnimmt. Stattdessen reicht ein
-         kurzer Scroll (max. 420px) bis zum "Endanschlag". */
-      const total = Math.min(rect.height || 1, 420);
-      const progress = Math.min(Math.max(-rect.top, 0), total) / total;
-      if (typeof window.heroGlassCard?.setProgress === 'function') {
-        window.heroGlassCard.setProgress(progress);
-      }
-    };
-
-    const requestUpdate = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(updateProgress);
-      }
-    };
-
-    const applyModeChange = () => {
-      if (reducedMotionQuery.matches) {
-        if (typeof window.heroGlassCard?.setProgress === 'function') {
-          window.heroGlassCard.setProgress(1); // direkt zugewandt zeigen, keine Scroll-Animation
-        }
-      } else {
-        updateProgress();
-      }
-    };
-
-    window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate, { passive: true });
-    reducedMotionQuery.addEventListener('change', applyModeChange);
-    applyModeChange();
-  }
-
   /* ── FESTSTEHENDE HINTERGRUNDBILDER (echtes position:fixed) ──────
      Ein gemeinsames position:fixed-Element (#fixedBg, z-index:-1 hinter
      dem gesamten Seiteninhalt) statt background-attachment:fixed, das
