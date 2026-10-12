@@ -1188,12 +1188,25 @@
        bauen mit:
        npx esbuild js/hero-glass-card.js --bundle --minify --format=esm
          --target=es2020 --outfile=js/hero-glass-card.bundle.js */
-    const loadHeroGlassCard = () => import('./js/hero-glass-card.bundle.js');
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadHeroGlassCard, { timeout: 2000 });
-    } else {
-      window.addEventListener('load', loadHeroGlassCard);
+    /* Performance: Three.js blockiert den Hauptthread mehrere hundert ms.
+       Deshalb erst bei der ersten Nutzer-Interaktion laden, spätestens nach
+       4 s – die Karte blendet dann weich ein. */
+    const heroCanvas = document.getElementById('heroGlassCard');
+    if (heroCanvas) {
+      heroCanvas.style.opacity = '0';
+      heroCanvas.style.transition = 'opacity .8s ease';
     }
+    let heroGlassStarted = false;
+    const loadHeroGlassCard = () => {
+      if (heroGlassStarted) return;
+      heroGlassStarted = true;
+      ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(ev => window.removeEventListener(ev, loadHeroGlassCard));
+      import('./js/hero-glass-card.bundle.js')
+        .then(() => { if (heroCanvas) requestAnimationFrame(() => { heroCanvas.style.opacity = '1'; }); })
+        .catch(() => { if (heroCanvas) heroCanvas.style.opacity = '1'; });
+    };
+    ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(ev => window.addEventListener(ev, loadHeroGlassCard, { passive: true, once: true }));
+    setTimeout(loadHeroGlassCard, 4000);
   </script>
   <script src="js/main.js"></script>
 
